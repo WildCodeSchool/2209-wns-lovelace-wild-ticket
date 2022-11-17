@@ -64,4 +64,6 @@ https://fr.reactjs.org/
 
 [Anthony](https://github.com/Anthony-AGTN)
 
-test
+## School
+
+[Wild Code School](https://github.com/WildCodeSchool)
