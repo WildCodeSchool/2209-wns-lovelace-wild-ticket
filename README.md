@@ -1,39 +1,13 @@
 # 2209-wns-lovelace-wild-ticket
 
-## Installation
+## Getting started
 
-### Back-end (Node.js API)
+### Run server in dev mode
 
-Install dependencies:
+Docker and Docker Compose are required on host system.
 
-```sh
-cd back-end
 ```
-```sh
-npm install
-```
-
-Start server in development mode:
-
-```sh
-npm run start:watch
-```
-
-### Web app front-end (Create React App)
-
-Install dependencies:
-
-```sh
-cd web-app
-```
-```sh
-npm install
-```
-
-Start server in development mode:
-
-```sh
-npm run start
+./build-start.dev.sh
 ```
 ## Stack technique
 
