@@ -16,8 +16,14 @@ Docker and Docker Compose are required on host system.
 Node.js: 
 https://nodejs.org/fr/
 
-Express.js: 
-https://expressjs.com/fr/
+Apollo:
+https://www.apollographql.com/
+
+GraphQL:
+https://graphql.org/
+
+TypeGraphQL
+https://typegraphql.com/
 
 TypeORM: 
 https://typeorm.io/
