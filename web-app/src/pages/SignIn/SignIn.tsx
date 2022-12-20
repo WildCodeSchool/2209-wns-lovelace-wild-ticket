@@ -2,11 +2,11 @@ import { gql, useMutation } from "@apollo/client";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Loader from "../../components/Loader";
+import Loader from "../../components/Loader/Loader";
 import { SignInMutation, SignInMutationVariables } from "../../gql/graphql";
-import { SectionTitle } from "../../styles/base-styles";
 import { getErrorMessage } from "../../utils";
 import { HOME_PATH } from "../paths";
+import "react-toastify/dist/ReactToastify.css";
 
 const SIGN_IN = gql`
   mutation SignIn($emailAddress: String!, $password: String!) {
@@ -44,7 +44,7 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
 
   return (
     <>
-      <SectionTitle>Connexion</SectionTitle>
+      <h1>Connexion</h1>
       <form
         onSubmit={async (event) => {
           event.preventDefault();
