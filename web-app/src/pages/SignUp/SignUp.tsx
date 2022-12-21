@@ -2,10 +2,10 @@ import { gql, useMutation } from "@apollo/client";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import Loader from "../../components/Loader";
+import Loader from "../../components/Loader/Loader";
 import { SignUpMutation, SignUpMutationVariables } from "../../gql/graphql";
-import { SectionTitle } from "../../styles/base-styles";
 import { getErrorMessage } from "../../utils";
 import { SIGN_IN_PATH } from "../paths";
 
@@ -56,7 +56,7 @@ const SignUp = () => {
 
   return (
     <>
-      <SectionTitle>Inscription</SectionTitle>
+      <h1>Inscription</h1>
       <form
         onSubmit={async (event) => {
           event.preventDefault();
