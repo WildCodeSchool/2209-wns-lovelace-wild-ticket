@@ -1,4 +1,10 @@
-import { Contains, IsEmail, Matches, MaxLength, MinLength } from "class-validator";
+import {
+  Contains,
+  IsEmail,
+  Matches,
+  MaxLength,
+  MinLength,
+} from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
 const passwordRegExp = new RegExp(

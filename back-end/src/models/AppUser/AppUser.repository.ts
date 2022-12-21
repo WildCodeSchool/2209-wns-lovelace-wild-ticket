@@ -12,7 +12,7 @@ export default class AppUserRepository extends AppUserDb {
   }
 
   static getUserById(id: string): Promise<AppUser | null> {
-    const user =  this.repository.findOneBy({ id });
+    const user = this.repository.findOneBy({ id });
 
     if (!user) {
       throw Error("Aucun utilisateur de correspond à cet id.");
@@ -28,13 +28,7 @@ export default class AppUserRepository extends AppUserDb {
     role: string
   ): Promise<AppUser> {
     const createdAt = new Date();
-    const user = new AppUser(
-      login,
-      email,
-      hashSync(password),
-      role,
-      createdAt,
-    );
+    const user = new AppUser(login, email, hashSync(password), role, createdAt);
     return this.saveUser(user);
   }
 
@@ -55,7 +49,7 @@ export default class AppUserRepository extends AppUserDb {
       email: email,
       role: role,
       updatedAt: updatedAt,
-    })
+    });
   }
 
   static async deleteUser(id: string): Promise<AppUser> {

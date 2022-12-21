@@ -1,4 +1,12 @@
-import { Arg, Args, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Args,
+  Authorized,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+} from "type-graphql";
 import AppUser from "../../models/AppUser/AppUser.entity";
 import AppUserRepository from "../../models/AppUser/AppUser.repository";
 import { SignInArgs, UserCreationArgs, UserUpdateArgs } from "./AppUser.input";
@@ -21,24 +29,14 @@ export default class AppUserResolver {
   createUser(
     @Args() { login, email, password, role }: UserCreationArgs
   ): Promise<AppUser> {
-    return AppUserRepository.createUser(
-      login,
-      email,
-      password,
-      role
-    );
+    return AppUserRepository.createUser(login, email, password, role);
   }
 
   @Mutation(() => AppUser)
   updateUser(
     @Args() { id, login, email, role }: UserUpdateArgs
   ): Promise<AppUser> {
-    return AppUserRepository.updateUser(
-      id,
-      login,
-      email,
-      role
-    );
+    return AppUserRepository.updateUser(id, login, email, role);
   }
 
   @Mutation(() => AppUser)
@@ -51,10 +49,7 @@ export default class AppUserResolver {
     @Args() { email, password }: SignInArgs,
     @Ctx() context: GlobalContext
   ): Promise<AppUser> {
-    const { user, session } = await AppUserRepository.signIn(
-      email,
-      password
-    );
+    const { user, session } = await AppUserRepository.signIn(email, password);
     setSessionIdInCookie(context, session.id);
     return user;
   }
