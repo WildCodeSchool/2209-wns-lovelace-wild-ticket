@@ -4,7 +4,8 @@ import Session from "./Session.entity";
 
 export default class SessionRepository extends SessionDb {
   static createSession(user: AppUser): Promise<Session> {
-    const session = new Session(user);
+    const createdAt = new Date();
+    const session = new Session(user, createdAt);
     return this.saveSession(session);
   }
 
