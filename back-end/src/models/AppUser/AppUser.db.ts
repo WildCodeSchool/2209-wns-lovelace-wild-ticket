@@ -13,9 +13,9 @@ export default class AppUserDb {
   }
 
   protected static findByEmailAddress(
-    emailAddress: string
+    email: string
   ): Promise<AppUser | null> {
-    return this.repository.findOneBy({ emailAddress });
+    return this.repository.findOneBy({ email });
   }
 
   static async clearRepository(): Promise<void> {
