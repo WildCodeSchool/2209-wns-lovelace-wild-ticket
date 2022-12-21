@@ -3,10 +3,10 @@ import { ApolloServer } from "apollo-server";
 import { ExpressContext } from "apollo-server-express";
 import { ApolloServerPluginLandingPageLocalDefault } from "apollo-server-core";
 import { buildSchema } from "type-graphql";
+import { initializeDatabaseRepositories } from "./database/utils";
 
 import AppUserResolver from "./resolvers/AppUser/AppUser.resolver";
 import AppUserRepository from "./models/AppUser/AppUser.repository";
-import SessionRepository from "./models/AppUser/Session.repository";
 import { getSessionIdInCookie } from "./http-utils";
 import AppUser from "./models/AppUser/AppUser.entity";
 
@@ -44,8 +44,7 @@ const startServer = async () => {
 
   // The `listen` method launches a web server.
   const { url } = await server.listen();
-  await AppUserRepository.initializeRepository();
-  await SessionRepository.initializeRepository();
+    await initializeDatabaseRepositories();
 
   console.log(`🚀  Server ready at ${url}`);
 };
