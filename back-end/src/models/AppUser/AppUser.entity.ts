@@ -11,7 +11,7 @@ export default class AppUser {
     hashedPassword: string,
     role: string,
     createdAt: Date,
-    updatedAt?: Date,
+    updatedAt?: Date
   ) {
     this.login = login;
     this.email = email;
@@ -25,14 +25,14 @@ export default class AppUser {
   @Field(() => ID)
   id: string;
 
-  @Column('varchar', {
-    length: 255,    
+  @Column("varchar", {
+    length: 255,
   })
   @Field()
   login: string;
 
-  @Column('varchar', {
-    length: 255,    
+  @Column("varchar", {
+    length: 255,
   })
   @Field()
   @Index({ unique: true })
@@ -42,8 +42,8 @@ export default class AppUser {
   @Column()
   hashedPassword: string;
 
-  @Column('varchar', {
-    length: 255,    
+  @Column("varchar", {
+    length: 255,
   })
   @Field()
   role: string;
