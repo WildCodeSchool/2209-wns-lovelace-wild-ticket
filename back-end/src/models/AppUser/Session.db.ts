@@ -3,7 +3,7 @@ import { getRepository } from "../../database/utils";
 import Session from "./Session.entity";
 
 export default class SessionDb {
-  protected static repository: Repository<Session>;
+  static repository: Repository<Session>;
 
   static async initializeRepository() {
     this.repository = await getRepository(Session);
