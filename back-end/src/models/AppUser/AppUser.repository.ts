@@ -52,6 +52,22 @@ export default class AppUserRepository extends AppUserDb {
     });
   }
 
+  static async updateUserPassword(
+    id: string,
+    password: string
+  ): Promise<AppUser> {
+    const updatedAt = new Date();
+    const userToUpdate = await this.getUserById(id);
+
+    if (!userToUpdate) throw Error("Aucun utilisateur ne correspond à cet id.");
+
+    return this.repository.save({
+      id: id,
+      hashedPassword: hashSync(password),
+      updatedAt: updatedAt,
+    });
+  }
+
   static async deleteUser(id: string): Promise<AppUser> {
     const user = await this.getUserById(id);
 

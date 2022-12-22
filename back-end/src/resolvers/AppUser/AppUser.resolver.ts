@@ -9,7 +9,12 @@ import {
 } from "type-graphql";
 import AppUser from "../../models/AppUser/AppUser.entity";
 import AppUserRepository from "../../models/AppUser/AppUser.repository";
-import { SignInArgs, UserCreationArgs, UserUpdateArgs } from "./AppUser.input";
+import {
+  SignInArgs,
+  UserCreationArgs,
+  UserUpdateArgs,
+  updateUserPasswordArgs,
+} from "./AppUser.input";
 import { setSessionIdInCookie } from "../../http-utils";
 import { GlobalContext } from "../..";
 
@@ -57,6 +62,13 @@ export default class AppUserResolver {
   @Mutation(() => AppUser)
   async signOut(@Arg("id") id: string): Promise<AppUser> {
     return AppUserRepository.signOut(id);
+  }
+
+  @Mutation(() => AppUser)
+  async updateUserPassword(
+    @Args() { id, password }: updateUserPasswordArgs
+  ): Promise<AppUser> {
+    return AppUserRepository.updateUserPassword(id, password);
   }
 
   @Authorized()
