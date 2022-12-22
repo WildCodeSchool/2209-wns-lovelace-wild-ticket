@@ -74,14 +74,28 @@ export default class AppUserRepository extends AppUserDb {
       throw new Error("Identifiants incorrects.");
     }
     const session = await SessionRepository.createSession(user);
+
     return { user, session };
+  }
+
+  static async signOut(id: string): Promise<AppUser> {
+    const user = await this.getUserById(id);
+
+    if (!user) {
+      throw Error("Aucun utilisateur de correspond à cet id.");
+    }
+    await SessionRepository.deleteSession(user);
+
+    return user;
   }
 
   static async findBySessionId(sessionId: string): Promise<AppUser | null> {
     const session = await SessionRepository.findById(sessionId);
+
     if (!session) {
       return null;
     }
+
     return session.user;
   }
 }
