@@ -11,6 +11,8 @@ import PoleRepository from "./models/Pole/Pole.repository";
 import RestaurantRepository from "./models/Restaurant/Restaurant.repository";
 import { getSessionIdInCookie } from "./http-utils";
 import AppUser from "./models/AppUser/AppUser.entity";
+import PoleResolver from "./resolvers/Pole/Pole.resolver";
+import RestaurantResolver from "./resolvers/Restaurant/Restaurant.resolver";
 
 export type GlobalContext = ExpressContext & {
   user: AppUser | null;
@@ -19,7 +21,7 @@ export type GlobalContext = ExpressContext & {
 const startServer = async () => {
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [AppUserResolver],
+      resolvers: [AppUserResolver, PoleResolver, RestaurantResolver],
       authChecker: async ({ context }) => {
         return Boolean(context.user);
       },

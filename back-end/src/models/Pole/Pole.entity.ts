@@ -12,16 +12,18 @@ export default class Pole {
     zip_code: string,
     city: string,
     email: string,
-    created_at: Date,
-    updated_at: Date
+    createdAt: Date,
+    updatedAt?: Date
   ) {
     this.name = name;
     this.address = address;
     this.zip_code = zip_code;
     this.city = city;
     this.email = email;
-    this.created_at = created_at;
-    this.updated_at = updated_at;
+    this.created_at = createdAt;
+    if (updatedAt) {
+      this.updated_at = updatedAt;
+    }
   }
 
   @PrimaryGeneratedColumn("uuid")
@@ -53,9 +55,9 @@ export default class Pole {
   @Field()
   created_at: Date;
 
-  @Column()
+  @Column({ nullable: true })
   @Field()
-  updated_at: Date;
+  updated_at?: Date;
 
   @OneToMany(() => Restaurant, (restaurant) => restaurant.pole)
   @Field(() => [Restaurant])
