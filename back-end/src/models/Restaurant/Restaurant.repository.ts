@@ -1,6 +1,4 @@
-import { Repository } from "typeorm";
 import Restaurant from "./Restaurant.entity";
-import { getRepository } from "../../database/utils";
 import Pole from "../Pole/Pole.entity";
 import PoleRepository from "../Pole/Pole.repository";
 import RestaurantDb from "./Restaurant.db";
