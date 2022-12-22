@@ -1,6 +1,5 @@
 import { Repository } from "typeorm";
 import Pole from "./Pole.entity";
-import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import { getRepository } from "../../database/utils";
 import PoleFixtures from "../../DataFixtures/PoleFixtures";
 
