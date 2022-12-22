@@ -7,6 +7,8 @@ import { buildSchema } from "type-graphql";
 import AppUserResolver from "./resolvers/AppUser/AppUser.resolver";
 import AppUserRepository from "./models/AppUser/AppUser.repository";
 import SessionRepository from "./models/AppUser/Session.repository";
+import PoleRepository from "./models/Pole/Pole.repository";
+import RestaurantRepository from "./models/Restaurant/Restaurant.repository";
 import { getSessionIdInCookie } from "./http-utils";
 import AppUser from "./models/AppUser/AppUser.entity";
 
@@ -46,6 +48,11 @@ const startServer = async () => {
   const { url } = await server.listen();
   await AppUserRepository.initializeRepository();
   await SessionRepository.initializeRepository();
+  await PoleRepository.initializeRepository();
+  await RestaurantRepository.initializeRepository();
+
+  await PoleRepository.initializePoles();
+  await RestaurantRepository.initializeRestaurants();
 
   console.log(`🚀  Server ready at ${url}`);
 };

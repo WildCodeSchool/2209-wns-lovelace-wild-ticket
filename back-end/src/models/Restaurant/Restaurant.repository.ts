@@ -9,12 +9,98 @@ export default class RestaurantRepository extends RestaurantDb {
   static async initializeRestaurants(): Promise<void> {
     await this.clearRepository();
     const lyonPole = (await PoleRepository.getPoleByName(
-      "Lyon"
+      "Pôle de Lyon"
     )) as Pole;
-    const pizzaMinute = new Restaurant("PizzaMinute", lyonPole);
-    const lardonaise = new Restaurant("Lardonaise", lyonPole);
+    const brestPole = (await PoleRepository.getPoleByName(
+      "Pôle de Brest"
+    )) as Pole;
+    const marseillePole = (await PoleRepository.getPoleByName(
+      "Pôle de Marseille"
+    )) as Pole;
+    const pizzaMinute = new Restaurant(
+      "PizzaMinute",
+      lyonPole,
+      new Date("2022-12-20T11:00:00"),
+      new Date("2022-12-20T11:00:00"),
+      new Date("2022-12-24T11:00:00"),
+      new Date("2022-12-24T23:30:00")
+    );
+    const lardonaise = new Restaurant(
+      "Lardonaise",
+      lyonPole,
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-24T11:00:00"),
+      new Date("2022-12-24T23:30:00")
+    );
+    const leBouchonVégé = new Restaurant(
+      "le Bouchon Végé",
+      lyonPole,
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-24T11:00:00"),
+      new Date("2022-12-24T23:30:00")
+    );
+    const laGaletteFlambée = new Restaurant(
+      "La Galette Flambée",
+      brestPole,
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-24T11:00:00"),
+      new Date("2022-12-24T23:30:00")
+    );
+    const laBigoudèneJoyeuse = new Restaurant(
+      "La Bigoudène Joyeuse",
+      brestPole,
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-24T11:00:00"),
+      new Date("2022-12-24T23:30:00")
+    );
+    const laSardineDeBrest = new Restaurant(
+      "La Sardine De Brest",
+      brestPole,
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-24T11:00:00"),
+      new Date("2022-12-24T23:30:00")
+    );
+    const laMaisonDeLaBouillabaisse = new Restaurant(
+      "La Maison De La Bouillabaisse",
+      marseillePole,
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-24T11:00:00"),
+      new Date("2022-12-24T23:30:00")
+    );
+    const tapenadePastisEtCompagnie = new Restaurant(
+      "Tapenade Pastis Et Compagnie",
+      marseillePole,
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-24T11:00:00"),
+      new Date("2022-12-24T23:30:00")
+    );
+    const aioliDesCopains = new Restaurant(
+      "L'Aïoli Des Copains",
+      marseillePole,
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-20T11:12:00"),
+      new Date("2022-12-24T11:00:00"),
+      new Date("2022-12-24T23:30:00")
+    );
 
-    await this.repository.save([pizzaMinute, lardonaise]);
+    await this.repository.save([
+      pizzaMinute,
+      lardonaise,
+      leBouchonVégé,
+      laGaletteFlambée,
+      laBigoudèneJoyeuse,
+      laSardineDeBrest,
+      laMaisonDeLaBouillabaisse,
+      tapenadePastisEtCompagnie,
+      aioliDesCopains,
+    ]);
   }
 
   static async getRestaurants(): Promise<Restaurant[]> {
@@ -22,14 +108,17 @@ export default class RestaurantRepository extends RestaurantDb {
   }
 
   static async createRestaurant(
-    name: string
+    name: string,
+    idPole: string
   ): Promise<Restaurant> {
-    const newRestaurant = this.repository.create({ name });
+    const created_at = new Date("now");
+    const pole = (await PoleRepository.getPoleById(idPole)) as Pole;
+    const newRestaurant = new Restaurant(name, pole, created_at);
     await this.repository.save(newRestaurant);
     return newRestaurant;
   }
 
-  static async updateRestaurant(
+  static async updateRestaurantName(
     id: string,
     name: string
   ): Promise<
@@ -45,6 +134,28 @@ export default class RestaurantRepository extends RestaurantDb {
     return this.repository.save({
       id,
       name,
+    });
+  }
+
+  static async updateRestaurantOpeningTime(
+    id: string,
+    open_at: Date,
+    close_at: Date
+  ): Promise<
+    {
+      id: string;
+      open_at: Date;
+      close_at: Date;
+    } & Restaurant
+  > {
+    const existingRestaurant = await this.repository.findOneBy({ id });
+    if (!existingRestaurant) {
+      throw Error("No existing Restaurant matching ID.");
+    }
+    return this.repository.save({
+      id,
+      open_at,
+      close_at,
     });
   }
 

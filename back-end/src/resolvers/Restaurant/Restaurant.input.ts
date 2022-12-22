@@ -8,6 +8,10 @@ class CreateRestaurantArgs {
     message: "Le nom doit faire au moins un caractère de long.",
   })
   name: string;
+
+  @Field(() => ID)
+  @IsUUID()
+  pole: string;
 }
 
 @ArgsType()
@@ -17,4 +21,21 @@ class UpdateRestaurantArgs extends CreateRestaurantArgs {
   id: string;
 }
 
-export { CreateRestaurantArgs, UpdateRestaurantArgs };
+@ArgsType()
+class UpdateRestaurantOpeningTime extends CreateRestaurantArgs {
+  @Field(() => ID)
+  @IsUUID()
+  id: string;
+
+  @Field()
+  open_at: Date;
+
+  @Field()
+  close_at: Date;
+}
+
+export {
+  CreateRestaurantArgs,
+  UpdateRestaurantArgs,
+  UpdateRestaurantOpeningTime,
+};
