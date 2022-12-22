@@ -54,6 +54,11 @@ export default class AppUserResolver {
     return user;
   }
 
+  @Mutation(() => AppUser)
+  async signOut(@Arg("id") id: string): Promise<AppUser> {
+    return AppUserRepository.signOut(id);
+  }
+
   @Authorized()
   @Query(() => AppUser)
   async myProfile(@Ctx() context: GlobalContext): Promise<AppUser> {
