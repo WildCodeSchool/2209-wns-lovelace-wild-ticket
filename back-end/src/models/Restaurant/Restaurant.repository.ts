@@ -111,9 +111,9 @@ export default class RestaurantRepository extends RestaurantDb {
     name: string,
     idPole: string
   ): Promise<Restaurant> {
-    const created_at = new Date("now");
+    const createdAt = new Date();
     const pole = (await PoleRepository.getPoleById(idPole)) as Pole;
-    const newRestaurant = new Restaurant(name, pole, created_at);
+    const newRestaurant = new Restaurant(name, pole, createdAt);
     await this.repository.save(newRestaurant);
     return newRestaurant;
   }
@@ -139,13 +139,13 @@ export default class RestaurantRepository extends RestaurantDb {
 
   static async updateRestaurantOpeningTime(
     id: string,
-    open_at: Date,
-    close_at: Date
+    openAt: Date,
+    closeAt: Date
   ): Promise<
     {
       id: string;
-      open_at: Date;
-      close_at: Date;
+      openAt: Date;
+      closeAt: Date;
     } & Restaurant
   > {
     const existingRestaurant = await this.repository.findOneBy({ id });
@@ -154,8 +154,8 @@ export default class RestaurantRepository extends RestaurantDb {
     }
     return this.repository.save({
       id,
-      open_at,
-      close_at,
+      openAt,
+      closeAt,
     });
   }
 

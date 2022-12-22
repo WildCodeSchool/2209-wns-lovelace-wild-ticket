@@ -20,29 +20,29 @@ export default class PoleRepository {
     await this.repository.save({
       name: "Pôle de Lyon",
       address: "1 rue de la République",
-      zip_code: "69001",
+      zipCode: "69001",
       city: "Lyon",
       email: "contact@poledelyon.com",
-      created_at: "2022-12-03 16:08:00",
-      updated_at: "2022-12-03 16:08:00",
+      createdAt: "2022-12-03 16:08:00",
+      updatedAt: "2022-12-03 16:08:00",
     });
     await this.repository.save({
       name: "Pôle de Brest",
       address: "98 bd de la Liberté",
-      zip_code: "29200",
+      zipCode: "29200",
       city: "Brest",
       email: "contact@poledebrest.com",
-      created_at: "2022-12-14 09:15:56",
-      updated_at: "2022-12-14 09:15:56",
+      createdAt: "2022-12-14 09:15:56",
+      updatedAt: "2022-12-14 09:15:56",
     });
     await this.repository.save({
       name: "Pôle de Marseille",
       address: "56 rue de la mer",
-      zip_code: "13001",
+      zipCode: "13001",
       city: "Marseille",
       email: "contact@poledemarseille.com",
-      created_at: "2022-12-15 10:28:32",
-      updated_at: "2022-12-15 10:28:32",
+      createdAt: "2022-12-15 10:28:32",
+      updatedAt: "2022-12-15 10:28:32",
     });
   }
 
@@ -53,12 +53,12 @@ export default class PoleRepository {
   static async createPole(
     name: string,
     address: string,
-    zip_code: string,
+    zipCode: string,
     city: string,
     email: string
   ): Promise<Pole> {
     const createdAt = new Date();
-    const newPole = new Pole(name, address, zip_code, city, email, createdAt);
+    const newPole = new Pole(name, address, zipCode, city, email, createdAt);
     await this.repository.save(newPole);
     return newPole;
   }
@@ -67,7 +67,7 @@ export default class PoleRepository {
     id: string,
     name: string,
     address: string,
-    zip_code: string,
+    zipCode: string,
     city: string,
     email: string
   ): Promise<
@@ -75,7 +75,7 @@ export default class PoleRepository {
       id: string;
       name: string;
       address: string;
-      zip_code: string;
+      zipCode: string;
       city: string;
       email: string;
     } & Pole
@@ -89,7 +89,7 @@ export default class PoleRepository {
       id,
       name,
       address,
-      zip_code,
+      zipCode,
       city,
       email,
       updatedAt,

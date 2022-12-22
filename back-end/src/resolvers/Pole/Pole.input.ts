@@ -13,7 +13,7 @@ class CreatePoleArgs {
   address: string;
 
   @Field()
-  zip_code: string;
+  zipCode: string;
 
   @Field()
   city: string;
@@ -29,7 +29,4 @@ class UpdatePoleArgs extends CreatePoleArgs {
   id: string;
 }
 
-export {
-  CreatePoleArgs,
-  UpdatePoleArgs,
-};
+export { CreatePoleArgs, UpdatePoleArgs };
