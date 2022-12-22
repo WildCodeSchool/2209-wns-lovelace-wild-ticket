@@ -11,7 +11,7 @@ import {
 @Resolver(Restaurant)
 export default class RestaurantResolver {
   @Query(() => [Restaurant])
-  restaurant(): Promise<Restaurant[]> {
+  restaurants(): Promise<Restaurant[]> {
     return RestaurantRepository.getRestaurants();
   }
 
@@ -31,17 +31,17 @@ export default class RestaurantResolver {
 
   @Mutation(() => Restaurant)
   updateRestaurantOpeningTime(
-    @Args() { id, open_at, close_at }: UpdateRestaurantOpeningTime
+    @Args() { id, openAt, closeAt }: UpdateRestaurantOpeningTime
   ): Promise<Restaurant> {
     return RestaurantRepository.updateRestaurantOpeningTime(
       id,
-      open_at,
-      close_at
+      openAt,
+      closeAt
     );
   }
 
   @Mutation(() => Restaurant)
-  deleteWilder(@Arg("id") id: string): Promise<Restaurant> {
+  deleteRestaurant(@Arg("id") id: string): Promise<Restaurant> {
     return RestaurantRepository.deleteRestaurant(id);
   }
 }

@@ -9,7 +9,7 @@ export default class Pole {
   constructor(
     name: string,
     address: string,
-    zip_code: string,
+    zipCode: string,
     city: string,
     email: string,
     createdAt: Date,
@@ -17,12 +17,12 @@ export default class Pole {
   ) {
     this.name = name;
     this.address = address;
-    this.zip_code = zip_code;
+    this.zipCode = zipCode;
     this.city = city;
     this.email = email;
-    this.created_at = createdAt;
+    this.createdAt = createdAt;
     if (updatedAt) {
-      this.updated_at = updatedAt;
+      this.updatedAt = updatedAt;
     }
   }
 
@@ -40,7 +40,7 @@ export default class Pole {
 
   @Column()
   @Field()
-  zip_code: string;
+  zipCode: string;
 
   @Column()
   @Field()
@@ -53,11 +53,11 @@ export default class Pole {
 
   @Column()
   @Field()
-  created_at: Date;
+  createdAt: Date;
 
   @Column({ nullable: true })
   @Field()
-  updated_at?: Date;
+  updatedAt?: Date;
 
   @OneToMany(() => Restaurant, (restaurant) => restaurant.pole)
   @Field(() => [Restaurant])

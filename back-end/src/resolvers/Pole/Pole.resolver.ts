@@ -2,10 +2,7 @@ import { Arg, Args, Ctx, Mutation, Query, Resolver } from "type-graphql";
 
 import Pole from "../../models/Pole/Pole.entity";
 import PoleRepository from "../../models/Pole/Pole.repository";
-import {
-  CreatePoleArgs,
-  UpdatePoleArgs,
-} from "./Pole.input";
+import { CreatePoleArgs, UpdatePoleArgs } from "./Pole.input";
 
 @Resolver(Pole)
 export default class PoleResolver {
@@ -16,16 +13,16 @@ export default class PoleResolver {
 
   @Mutation(() => Pole)
   createPole(
-    @Args() { name, address, zip_code, city, email }: CreatePoleArgs
+    @Args() { name, address, zipCode, city, email }: CreatePoleArgs
   ): Promise<Pole> {
-    return PoleRepository.createPole(name, address, zip_code, city, email);
+    return PoleRepository.createPole(name, address, zipCode, city, email);
   }
 
   @Mutation(() => Pole)
   updatePoleName(
-    @Args() { id, name, address, zip_code, city, email }: UpdatePoleArgs
+    @Args() { id, name, address, zipCode, city, email }: UpdatePoleArgs
   ): Promise<Pole> {
-    return PoleRepository.updatePole(id, name, address, zip_code, city, email);
+    return PoleRepository.updatePole(id, name, address, zipCode, city, email);
   }
 
   @Mutation(() => Pole)

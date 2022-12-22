@@ -28,10 +28,10 @@ class UpdateRestaurantOpeningTime extends CreateRestaurantArgs {
   id: string;
 
   @Field()
-  open_at: Date;
+  openAt: Date;
 
   @Field()
-  close_at: Date;
+  closeAt: Date;
 }
 
 export {
