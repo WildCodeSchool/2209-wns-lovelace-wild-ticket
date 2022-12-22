@@ -1,17 +1,29 @@
 import { IsEmail } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
-import {
-  Column,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import Restaurant from "../Restaurant/Restaurant.entity";
 
 @Entity()
 @ObjectType()
 export default class Pole {
+  constructor(
+    name: string,
+    address: string,
+    zip_code: string,
+    city: string,
+    email: string,
+    created_at: Date,
+    updated_at: Date
+  ) {
+    this.name = name;
+    this.address = address;
+    this.zip_code = zip_code;
+    this.city = city;
+    this.email = email;
+    this.created_at = created_at;
+    this.updated_at = updated_at;
+  }
+
   @PrimaryGeneratedColumn("uuid")
   @Field(() => ID)
   id: string;
@@ -39,11 +51,11 @@ export default class Pole {
 
   @Column()
   @Field()
-  created_at: string;
+  created_at: Date;
 
   @Column()
   @Field()
-  updated_at: string;
+  updated_at: Date;
 
   @OneToMany(() => Restaurant, (restaurant) => restaurant.pole)
   @Field(() => [Restaurant])
