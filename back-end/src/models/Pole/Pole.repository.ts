@@ -2,6 +2,7 @@ import { Repository } from "typeorm";
 import Pole from "./Pole.entity";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import { getRepository } from "../../database/utils";
+import PoleFixtures from "../../DataFixtures/PoleFixtures";
 
 export default class PoleRepository {
   private static repository: Repository<Pole>;
@@ -15,35 +16,12 @@ export default class PoleRepository {
   }
 
   static async initializePoles(): Promise<void> {
-    await RestaurantRepository.clearRepository();
+    await PoleRepository.clearRepository();
     await this.repository.delete({});
-    await this.repository.save({
-      name: "Pôle de Lyon",
-      address: "1 rue de la République",
-      zipCode: "69001",
-      city: "Lyon",
-      email: "contact@poledelyon.com",
-      createdAt: "2022-12-03 16:08:00",
-      updatedAt: "2022-12-03 16:08:00",
-    });
-    await this.repository.save({
-      name: "Pôle de Brest",
-      address: "98 bd de la Liberté",
-      zipCode: "29200",
-      city: "Brest",
-      email: "contact@poledebrest.com",
-      createdAt: "2022-12-14 09:15:56",
-      updatedAt: "2022-12-14 09:15:56",
-    });
-    await this.repository.save({
-      name: "Pôle de Marseille",
-      address: "56 rue de la mer",
-      zipCode: "13001",
-      city: "Marseille",
-      email: "contact@poledemarseille.com",
-      createdAt: "2022-12-15 10:28:32",
-      updatedAt: "2022-12-15 10:28:32",
-    });
+    const poleFixtures = PoleFixtures.PoleFixtures;
+    for (const poleFixture of poleFixtures) {
+      await this.repository.save(poleFixture);
+    }
   }
 
   static async getPoles(): Promise<Pole[]> {
