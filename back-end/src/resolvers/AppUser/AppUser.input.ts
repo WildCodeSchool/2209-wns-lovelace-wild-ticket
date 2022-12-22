@@ -68,6 +68,18 @@ export class UserUpdateArgs {
 }
 
 //USER UPDATE PASSWORD
+@ArgsType()
+export class updateUserPasswordArgs {
+  @Field(() => ID)
+  id: string;
+
+  @Field()
+  @Matches(passwordRegExp, {
+    message:
+      "Le mot de passe doit comporter au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.",
+  })
+  password: string;
+}
 
 @ArgsType()
 export class SignInArgs {
