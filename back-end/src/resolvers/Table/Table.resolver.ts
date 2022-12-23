@@ -6,6 +6,11 @@ import { CreateTableArgs, UpdateTableArgs } from "./Table.input";
 
 @Resolver(Table)
 export default class TableResolver {
+  @Query(() => Table)
+  Table(@Arg("id") id:string): Promise<Table | null> {
+    return TableRepository.getTableById(id);
+  }
+
   @Query(() => [Table])
   Tables(): Promise<Table[]> {
     return TableRepository.getTables();

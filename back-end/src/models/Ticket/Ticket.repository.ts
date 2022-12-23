@@ -11,13 +11,6 @@ export default class TicketRepository extends TicketDb {
     this.repository.delete({});
   }
 
-  static async initializeTicket() {
-    this.clearRepository();
-    await this.repository.save({
-      number: 0,
-    });
-  }
-
   static async getTickets(): Promise<Ticket[]> {
     return this.repository.find();
   }
@@ -31,23 +24,24 @@ export default class TicketRepository extends TicketDb {
   }
 
   static async getLastTicket(): Promise<Ticket | null> {
-    return this.repository.findOne({ order: { id: "DESC" } });
+    return this.repository.findOne({ where: {}, order: { createdAt: "DESC" }});
   }
 
   static async createTicket(
     name: string,
-    email: string,
-    phoneNumber: string
+    email: string | undefined,
+    phoneNumber: string | undefined
   ): Promise<Ticket> {
-    const lastTicket = await this.getLastTicket() as Ticket;
-    const ticketNumber = lastTicket.number + 1;
+    const lastTicket = await this.getLastTicket();
+    let ticketNumber = 1;
+    (lastTicket && lastTicket.number < 10) ? ticketNumber = lastTicket.number + 1 : ticketNumber;
     const createdAt = new Date();
     const newTicket = new Ticket(
       ticketNumber,
       name,
+      createdAt,
       email,
       phoneNumber,
-      createdAt
     );
     await this.repository.save(newTicket);
     return newTicket;
