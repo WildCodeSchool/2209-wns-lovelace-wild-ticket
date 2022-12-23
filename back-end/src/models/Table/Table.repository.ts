@@ -11,13 +11,6 @@ export default class TableRepository extends TableDb {
     this.repository.delete({});
   }
 
-  static async initializeTable() {
-    this.clearRepository();
-    await this.repository.save({
-      number : 0,
-    });
-  }
-
   static async getTables(): Promise<Table[]> {
     return this.repository.find();
   }

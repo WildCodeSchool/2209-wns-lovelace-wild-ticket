@@ -12,9 +12,9 @@ export default class Ticket {
   constructor(
     number: number,
     name : string,
-    email: string,
-    phoneNumber: string,
     createdAt : Date,
+    email?: string,
+    phoneNumber?: string,
     deliveredAt? : Date,
     placedAt? : Date,
     closedAt? : Date
@@ -41,13 +41,13 @@ export default class Ticket {
   @Field()
   name: string;
 
-  @Column()
+  @Column({nullable: true})
   @Field()
-  email: string;
+  email?: string;
 
-  @Column()
+  @Column({nullable: true})
   @Field()
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @Column()
   @Field()

@@ -1,12 +1,10 @@
-import { IsUUID, IsPositive, MinLength, IsEmail, IsMobilePhone, IsDate } from "class-validator";
+import { IsUUID, MinLength, IsEmail, IsMobilePhone, Matches } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
+
+const regexPhoneNumber = /^(?:(?:\+|00|0)((262|692)|(263|693)|508|(5|6)90|(5|6)94|(5|6|7)96|681|687|689))(?:[\s.-]*\d{2}){3,4}$/;
 
 @ArgsType()
 class CreateTicketArgs {
-  @Field()
-  @IsPositive()
-  number: number;
-
   @Field()
   @MinLength(1, {
     message: "Le prénom doit faire au moins un caractère de long.",
@@ -15,27 +13,13 @@ class CreateTicketArgs {
 
   @Field()
   @IsEmail()
-  email: string;
+  email?: string;
 
   @Field()
-  @IsMobilePhone(locale: string)
-  phoneNumber: string;
+  // @IsMobilePhone()
+  // @Matches(regexPhoneNumber)
+  phoneNumber?: string;
 
-  @Field()
-  @IsDate()
-  createdAt: Date;
-
-  @Field()
-  @IsDate()
-  deliveredAt?: Date;
-
-  @Field()
-  @IsDate()
-  placedAt?: Date;
-
-  @Field()
-  @IsDate()
-  closedAt?: Date;
 }
 
 @ArgsType()

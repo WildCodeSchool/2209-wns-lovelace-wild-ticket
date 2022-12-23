@@ -9,6 +9,10 @@ import AppUserRepository from "./models/AppUser/AppUser.repository";
 import SessionRepository from "./models/AppUser/Session.repository";
 import { getSessionIdInCookie } from "./http-utils";
 import AppUser from "./models/AppUser/AppUser.entity";
+import TableRepository from "./models/Table/Table.repository";
+import TicketRepository from "./models/Ticket/Ticket.repository";
+import TableResolver from "./resolvers/Table/Table.resolver";
+import TicketResolver from "./resolvers/Ticket/Ticket.resolver";
 
 export type GlobalContext = ExpressContext & {
   user: AppUser | null;
@@ -17,7 +21,7 @@ export type GlobalContext = ExpressContext & {
 const startServer = async () => {
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [AppUserResolver],
+      resolvers: [AppUserResolver, TableResolver, TicketResolver],
       authChecker: async ({ context }) => {
         return Boolean(context.user);
       },
@@ -46,6 +50,8 @@ const startServer = async () => {
   const { url } = await server.listen();
   await AppUserRepository.initializeRepository();
   await SessionRepository.initializeRepository();
+  await TableRepository.initializeRepository();
+  await TicketRepository.initializeRepository();
 
   console.log(`🚀  Server ready at ${url}`);
 };
