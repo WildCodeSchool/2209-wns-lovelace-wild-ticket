@@ -57,10 +57,10 @@ export default class PoleRepository {
       email: string;
     } & Pole
   > {
-    const existingRestaurant = await this.repository.findOneBy({ id });
+    const existingPole = await this.repository.findOneBy({ id });
     const updatedAt = new Date();
-    if (!existingRestaurant) {
-      throw Error("No existing Restaurant matching ID.");
+    if (!existingPole) {
+      throw Error("No existing Pole matching ID.");
     }
     return this.repository.save({
       id,
@@ -87,7 +87,7 @@ export default class PoleRepository {
       throw Error("No existing Pole matching ID.");
     }
     await this.repository.remove(existingPole);
-    // resetting ID because existingRestaurant loses ID after calling remove
+    // resetting ID because existingPole loses ID after calling remove
     existingPole.id = id;
     return existingPole;
   }
