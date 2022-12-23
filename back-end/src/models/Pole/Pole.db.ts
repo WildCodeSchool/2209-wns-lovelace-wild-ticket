@@ -8,7 +8,7 @@ export default class PoleDb {
     this.repository = await getRepository(Pole);
   }
 
-  protected static findRestaurantById(poleId: string) {
+  protected static findPoleById(poleId: string) {
     return this.repository.findOneBy({ id: poleId });
   }
 

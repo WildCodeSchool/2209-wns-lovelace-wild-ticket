@@ -45,7 +45,7 @@ export default class Restaurant {
   @Field()
   closeAt?: Date;
 
-  @ManyToOne(() => Pole, (pole) => pole.restaurant, { eager: true })
+  @ManyToOne(() => Pole, { eager: true, onDelete: "CASCADE" })
   @Field(() => Pole, { nullable: false })
   pole: Pole;
 
