@@ -48,9 +48,4 @@ export default class Restaurant {
   @ManyToOne(() => Pole, { eager: true, onDelete: "CASCADE" })
   @Field(() => Pole, { nullable: false })
   pole: Pole;
-
-  @Field(() => String)
-  getName() {
-    return this.name;
-  }
 }

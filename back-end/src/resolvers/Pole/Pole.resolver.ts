@@ -19,7 +19,7 @@ export default class PoleResolver {
   }
 
   @Mutation(() => Pole)
-  updatePoleName(
+  updatePole(
     @Args() { id, name, address, zipCode, city, email }: UpdatePoleArgs
   ): Promise<Pole> {
     return PoleRepository.updatePole(id, name, address, zipCode, city, email);
