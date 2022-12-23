@@ -5,45 +5,43 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Loader from "../../components/Loader/Loader";
-import { SignUpMutation, SignUpMutationVariables } from "../../gql/graphql";
+import {
+  CreateUserMutation,
+  CreateUserMutationVariables,
+} from "../../gql/graphql";
 import { getErrorMessage } from "../../utils";
 import { SIGN_IN_PATH } from "../paths";
 
-const SIGN_UP = gql`
-  mutation SignUp(
-    $firstName: String!
-    $lastName: String!
-    $emailAddress: String!
+const CREATE_USER = gql`
+  mutation createUser(
+    $login: String!
+    $email: String!
     $password: String!
+    $role: String!
   ) {
-    signUp(
-      firstName: $firstName
-      lastName: $lastName
-      emailAddress: $emailAddress
-      password: $password
-    ) {
+    createUser(login: $login, email: $email, password: $password, role: $role) {
       id
-      emailAddress
+      email
     }
   }
 `;
 
 const SignUp = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [emailAddress, setEmailAddress] = useState("");
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
 
-  const [signUp, { loading }] = useMutation<
-    SignUpMutation,
-    SignUpMutationVariables
-  >(SIGN_UP);
+  const [createUser, { loading }] = useMutation<
+    CreateUserMutation,
+    CreateUserMutationVariables
+  >(CREATE_USER);
   const navigate = useNavigate();
 
   const submit = async () => {
     try {
-      await signUp({
-        variables: { firstName, lastName, emailAddress, password },
+      await createUser({
+        variables: { login, email, password, role },
       });
       toast.success(
         `Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.`
@@ -64,31 +62,16 @@ const SignUp = () => {
         }}
       >
         <label>
-          Prénom
+          Login
           <br />
           <input
             type="text"
             required
-            id="firstName"
-            name="firstName"
-            value={firstName}
+            id="login"
+            name="login"
+            value={login}
             onChange={(event) => {
-              setFirstName(event.target.value);
-            }}
-          />
-        </label>
-        <br />
-        <label>
-          Nom
-          <br />
-          <input
-            type="text"
-            required
-            id="lastName"
-            name="lastName"
-            value={lastName}
-            onChange={(event) => {
-              setLastName(event.target.value);
+              setLogin(event.target.value);
             }}
           />
         </label>
@@ -100,17 +83,17 @@ const SignUp = () => {
             type="email"
             required
             autoComplete="email"
-            id="emailAddress"
-            name="emailAddress"
-            value={emailAddress}
+            id="email"
+            name="email"
+            value={email}
             onChange={(event) => {
-              setEmailAddress(event.target.value);
+              setEmail(event.target.value);
             }}
           />
         </label>
         <br />
         <label>
-          Mot de passe
+          Mot de passe (8 caractères minimum, 1 minuscule, 1 majuscule, 1 chiffre, 1 caractère spécial)
           <br />
           <input
             type="password"
@@ -121,6 +104,21 @@ const SignUp = () => {
             value={password}
             onChange={(event) => {
               setPassword(event.target.value);
+            }}
+          />
+        </label>
+        <br />
+        <label>
+          Rôle (ROLE_USER)
+          <br />
+          <input
+            type="text"
+            required
+            id="role"
+            name="role"
+            value={role}
+            onChange={(event) => {
+              setRole(event.target.value);
             }}
           />
         </label>
