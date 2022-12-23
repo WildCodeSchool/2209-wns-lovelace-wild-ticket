@@ -149,11 +149,13 @@ export default class RestaurantRepository extends RestaurantDb {
     } & Restaurant
   > {
     const existingRestaurant = await this.repository.findOneBy({ id });
+    const updatedAt = new Date();
     if (!existingRestaurant) {
       throw Error("No existing Restaurant matching ID.");
     }
     return this.repository.save({
       id,
+      updatedAt: updatedAt,
       openAt,
       closeAt,
     });
