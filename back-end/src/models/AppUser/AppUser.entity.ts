@@ -6,35 +6,53 @@ import { Entity, PrimaryGeneratedColumn, Column, Index } from "typeorm";
 @ObjectType()
 export default class AppUser {
   constructor(
-    firstName: string,
-    lastName: string,
-    emailAddress: string,
-    hashedPassword: string
+    login: string,
+    email: string,
+    hashedPassword: string,
+    role: string,
+    createdAt: Date,
+    updatedAt?: Date
   ) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.emailAddress = emailAddress;
+    this.login = login;
+    this.email = email;
     this.hashedPassword = hashedPassword;
+    this.role = role;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 
   @PrimaryGeneratedColumn("uuid")
   @Field(() => ID)
   id: string;
 
-  @Column()
+  @Column("varchar", {
+    length: 255,
+  })
+  @Field()
+  login: string;
+
+  @Column("varchar", {
+    length: 255,
+  })
   @Field()
   @Index({ unique: true })
   @IsEmail()
-  emailAddress: string;
-
-  @Column()
-  @Field()
-  firstName: string;
-
-  @Column()
-  @Field()
-  lastName: string;
+  email: string;
 
   @Column()
   hashedPassword: string;
+
+  @Column("varchar", {
+    length: 255,
+  })
+  @Field()
+  role: string;
+
+  @Column()
+  @Field()
+  createdAt: Date;
+
+  @Column({ nullable: true })
+  @Field()
+  updatedAt?: Date;
 }
