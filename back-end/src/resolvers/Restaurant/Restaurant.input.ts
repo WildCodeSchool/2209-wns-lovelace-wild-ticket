@@ -15,14 +15,20 @@ class CreateRestaurantArgs {
 }
 
 @ArgsType()
-class UpdateRestaurantArgs extends CreateRestaurantArgs {
+class UpdateRestaurantArgs {
   @Field(() => ID)
   @IsUUID()
   id: string;
+
+  @Field()
+  @MinLength(1, {
+    message: "Le nom doit faire au moins un caractère de long.",
+  })
+  name: string;
 }
 
 @ArgsType()
-class UpdateRestaurantOpeningTime extends CreateRestaurantArgs {
+class UpdateRestaurantOpeningTime {
   @Field(() => ID)
   @IsUUID()
   id: string;
