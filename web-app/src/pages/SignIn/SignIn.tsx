@@ -9,18 +9,16 @@ import { HOME_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
 
 const SIGN_IN = gql`
-  mutation SignIn($emailAddress: String!, $password: String!) {
-    signIn(emailAddress: $emailAddress, password: $password) {
+  mutation SignIn($email: String!, $password: String!) {
+    signIn(email: $email, password: $password) {
       id
-      emailAddress
-      firstName
-      lastName
+      email
     }
   }
 `;
 
 const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
-  const [emailAddress, setEmailAddress] = useState("");
+  const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
 
   const [signIn, { loading }] = useMutation<
@@ -32,7 +30,7 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
   const submit = async () => {
     try {
       await signIn({
-        variables: { emailAddress, password },
+        variables: { email, password },
       });
       toast.success(`Vous vous êtes connecté avec succès.`);
       onSuccess();
@@ -48,6 +46,8 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
+          console.log(email);
+          console.log(password);
           await submit();
         }}
       >
@@ -58,11 +58,11 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
             type="email"
             required
             autoComplete="email"
-            id="emailAddress"
-            name="emailAddress"
-            value={emailAddress}
+            id="email"
+            name="email"
+            value={email}
             onChange={(event) => {
-              setEmailAddress(event.target.value);
+              setemail(event.target.value);
             }}
           />
         </label>
