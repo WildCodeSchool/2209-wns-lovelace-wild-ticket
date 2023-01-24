@@ -27,6 +27,14 @@ export default class PoleRepository {
     return this.repository.find();
   }
 
+  static async getPoleById(id: string): Promise<Pole | null> {
+    return this.repository.findOneBy({ id: id });
+  }
+
+  static async getPoleByName(name: string): Promise<Pole | null> {
+    return this.repository.findOneBy({ name: name });
+  }
+
   static async createPole(
     name: string,
     address: string,
@@ -71,14 +79,6 @@ export default class PoleRepository {
       email,
       updatedAt,
     });
-  }
-
-  static async getPoleById(id: string): Promise<Pole | null> {
-    return this.repository.findOneBy({ id: id });
-  }
-
-  static async getPoleByName(name: string): Promise<Pole | null> {
-    return this.repository.findOneBy({ name: name });
   }
 
   static async deletePole(id: string): Promise<Pole> {
