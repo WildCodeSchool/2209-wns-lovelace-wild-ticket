@@ -105,6 +105,14 @@ export default class RestaurantRepository extends RestaurantDb {
     return this.repository.find();
   }
 
+  static async getRestaurantById(id: string): Promise<Restaurant | null> {
+    return this.repository.findOneBy({ id: id });
+  }
+
+  static async getRestaurantByName(name: string): Promise<Restaurant | null> {
+    return this.repository.findOneBy({ name: name });
+  }
+
   static async createRestaurant(
     name: string,
     idPole: string

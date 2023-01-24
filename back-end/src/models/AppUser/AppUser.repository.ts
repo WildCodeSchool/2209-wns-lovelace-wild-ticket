@@ -4,7 +4,7 @@ import AppUser from "./AppUser.entity";
 import { hashSync, compareSync } from "bcryptjs";
 import SessionRepository from "./Session.repository";
 import Session from "./Session.entity";
-import { ERROR_NO_USER_SIGNED_IN } from "./error-messages";
+export const INVALID_CREDENTIALS_ERROR_MESSAGE = "Identifiants incorrects.";
 
 export default class AppUserRepository extends AppUserDb {
   static getUsers(): Promise<AppUser[]> {
@@ -87,13 +87,17 @@ export default class AppUserRepository extends AppUserDb {
     const user = await this.findByEmailAddress(email);
 
     if (!user || !compareSync(password, user.hashedPassword)) {
-      throw new Error("Identifiants incorrects.");
+      throw new Error(INVALID_CREDENTIALS_ERROR_MESSAGE);
     }
     const session = await SessionRepository.createSession(user);
 
     return { user, session };
   }
 
+    // static async signOut(user: AppUser): Promise<AppUser> {
+    // delete session linked to user
+    // return user
+    // }
   static async signOut(id: string): Promise<AppUser> {
     const user = await this.getUserById(id);
 
