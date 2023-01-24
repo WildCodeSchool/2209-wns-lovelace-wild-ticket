@@ -1,6 +1,8 @@
 import { Field, ID, ObjectType } from "type-graphql";
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
 import Pole from "../Pole/Pole.entity";
+import Table from "../Table/Table.entity";
+import Ticket from "../Ticket/Ticket.entity";
 
 @Entity()
 @ObjectType()
@@ -8,12 +10,16 @@ export default class Restaurant {
   constructor(
     name: string,
     pole: Pole,
+    // table: Table[],
+    // ticket: Ticket[],
     createdAt: Date,
     updatedAt?: Date,
     openAt?: Date,
     closeAt?: Date
   ) {
     this.name = name;
+    // this.table = table;
+    // this.ticket= ticket;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.openAt = openAt;
@@ -48,4 +54,12 @@ export default class Restaurant {
   @ManyToOne(() => Pole, { eager: true, onDelete: "CASCADE" })
   @Field(() => Pole, { nullable: false })
   pole: Pole;
+
+  @OneToMany(() => Table, (table: any) => table.restaurant,  { eager: true })
+  @Field(() => [Table])
+  table: Table[];
+
+  @OneToMany(() => Ticket, (ticket: any) => ticket.restaurant,  { eager: true })
+  @Field(() => [Ticket])
+  ticket: Ticket[];
 }
