@@ -1,4 +1,9 @@
+
 import { getRepository } from "../../database/utils";
+import Restaurant from "../Restaurant/Restaurant.entity";
+import RestaurantRepository from "../Restaurant/Restaurant.repository";
+import Table from "../Table/Table.entity";
+import TableRepository from "../Table/Table.repository";
 import TicketDb from "./Ticket.db";
 import Ticket from "./Ticket.entity";
 
@@ -29,9 +34,13 @@ export default class TicketRepository extends TicketDb {
 
   static async createTicket(
     name: string,
+    restaurantId: string,
     email: string | undefined,
     phoneNumber: string | undefined
   ): Promise<Ticket> {
+    const restaurant = await RestaurantRepository.getRestaurantById(restaurantId) as Restaurant;
+    if (!restaurant) throw new Error;
+
     const lastTicket = await this.getLastTicket();
     let ticketNumber = 1;
     (lastTicket && lastTicket.number < 10) ? ticketNumber = lastTicket.number + 1 : ticketNumber;
@@ -40,6 +49,7 @@ export default class TicketRepository extends TicketDb {
       ticketNumber,
       name,
       createdAt,
+      restaurant,
       email,
       phoneNumber,
     );
@@ -49,36 +59,44 @@ export default class TicketRepository extends TicketDb {
 
   static async updateDeliveredAt (
     id: string,
+    tableId: string,
   ): Promise<
     {
       id: string;
+      table: Table;
     } & Ticket
   > {
     const existingTicket = await this.repository.findOneBy({ id });
+    const table = await TableRepository.getTableById(tableId) as Table;
     const deliveredAt = new Date();
     if (!existingTicket) {
       throw Error("No existing Ticket matching ID.");
     }
     return this.repository.save({
       id,
+      table,
       deliveredAt
     });
   }
 
   static async updatePlacedAt (
     id: string,
+    tableId: string,
   ): Promise<
     {
       id: string;
+      table: Table;
     } & Ticket
   > {
     const existingTicket = await this.repository.findOneBy({ id });
+    const table = await TableRepository.getTableById(tableId) as Table;
     const placedAt = new Date();
     if (!existingTicket) {
       throw Error("No existing Ticket matching ID.");
     }
     return this.repository.save({
       id,
+      table,
       placedAt
     });
   }

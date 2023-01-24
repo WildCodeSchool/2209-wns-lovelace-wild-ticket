@@ -20,13 +20,21 @@ class CreateTicketArgs {
   // @Matches(regexPhoneNumber)
   phoneNumber?: string;
 
+  @Field()
+  @IsUUID()
+  restaurant: string;
+
 }
 
 @ArgsType()
-class UpdateTicketArgs extends CreateTicketArgs {
+class UpdateTicketArgs {
   @Field(() => ID)
   @IsUUID()
   id: string;
+
+  @Field()
+  @IsUUID()
+  table: string;
 }
 
 export { CreateTicketArgs, UpdateTicketArgs };

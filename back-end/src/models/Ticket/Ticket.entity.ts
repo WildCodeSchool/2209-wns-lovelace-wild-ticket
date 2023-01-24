@@ -15,24 +15,24 @@ export default class Ticket {
     number: number,
     name : string,
     createdAt : Date,
-    // table: Table,
-    // restaurant : Restaurant,
+    restaurant : Restaurant,
     email?: string,
     phoneNumber?: string,
-    deliveredAt? : Date,
-    placedAt? : Date,
-    closedAt? : Date
+    table?: Table,
+    deliveredAt?: Date,
+    placedAt?: Date,
+    closedAt?: Date
     ) {
     this.number = number;
     this.name = name;
-    // this.table = table;
-    // this.restaurant = restaurant;
-    this.email = email,
-    this.phoneNumber = phoneNumber,
-    this.createdAt = createdAt,
-    this.deliveredAt = deliveredAt,
-    this.placedAt = placedAt,
-    this.closedAt = closedAt
+    this.restaurant = restaurant;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    this.table = table;
+    this.createdAt = createdAt;
+    this.deliveredAt = deliveredAt;
+    this.placedAt = placedAt;
+    this.closedAt = closedAt;
   }
 
   @PrimaryGeneratedColumn("uuid")
@@ -73,7 +73,7 @@ export default class Ticket {
 
   @ManyToOne(() => Table, (table: any) => table.tickets,  { eager: true })
   @Field(() => Table)
-  table: Table;
+  table?: Table;
 
   @ManyToOne(() => Restaurant, (restaurant: any) => restaurant.tickets,  { eager: true })
   @Field(() => Restaurant)

@@ -15,11 +15,13 @@ export default class Table {
   constructor(
     number: number,
     capacity: number,
-    // ticket:  Ticket[]
+    restaurant: Restaurant,
+    ticket?:  Ticket[],
     ) {
     this.number = number;
     this.capacity = capacity;
-    // this.ticket = ticket;
+    this.restaurant = restaurant;
+    this.ticket = ticket;
   }
 
   @PrimaryGeneratedColumn("uuid")
@@ -38,8 +40,8 @@ export default class Table {
   @Field(() => Restaurant)
   restaurant: Restaurant;
 
-  @OneToMany(() => Ticket, (ticket: any) => ticket.table,  { eager: true })
+  @OneToMany(() => Ticket, (ticket: any) => ticket.table)
   @Field(() => [Ticket])
-  ticket: Ticket[];
+  ticket?: Ticket[];
 
 }
