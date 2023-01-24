@@ -51,6 +51,7 @@
     "@graphql-codegen/cli": "2.13.7",
     "@graphql-codegen/client-preset": "^1.0.7",
     "@types/styled-components": "^5.1.26",
+    "jest": "^27.5.1",
     "node-sass": "^8.0.0"
   }
 }

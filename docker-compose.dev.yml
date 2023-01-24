@@ -5,6 +5,7 @@ services:
     build: ./back-end
     environment:
       DATABASE_URL: postgres://postgres:password@database:5432/postgres
+      TEST_DATABASE_URL: postgres://postgres:password@test-database:5432/postgres
     ports:
       - 4000:4000
     volumes:
@@ -31,6 +32,13 @@ services:
       - 4001:5432
     volumes:
       - database-content:/var/lib/postgresql/data
+    expose:
+      - 5432
+  
+  test-database:
+    image: postgres:14.5-alpine
+    environment:
+      POSTGRES_PASSWORD: password
     expose:
       - 5432
 
