@@ -3,10 +3,10 @@ import { ApolloServer } from "apollo-server";
 import { ExpressContext } from "apollo-server-express";
 import { ApolloServerPluginLandingPageLocalDefault } from "apollo-server-core";
 import { buildSchema } from "type-graphql";
+import { initializeDatabaseRepositories } from "./database/utils";
 
 import AppUserResolver from "./resolvers/AppUser/AppUser.resolver";
 import AppUserRepository from "./models/AppUser/AppUser.repository";
-import SessionRepository from "./models/AppUser/Session.repository";
 import PoleRepository from "./models/Pole/Pole.repository";
 import RestaurantRepository from "./models/Restaurant/Restaurant.repository";
 import { getSessionIdInCookie } from "./http-utils";
@@ -17,6 +17,7 @@ import TableResolver from "./resolvers/Table/Table.resolver";
 import TicketResolver from "./resolvers/Ticket/Ticket.resolver";
 import PoleResolver from "./resolvers/Pole/Pole.resolver";
 import RestaurantResolver from "./resolvers/Restaurant/Restaurant.resolver";
+import SessionRepository from "./models/AppUser/Session.repository";
 
 export type GlobalContext = ExpressContext & {
   user: AppUser | null;
@@ -25,7 +26,13 @@ export type GlobalContext = ExpressContext & {
 const startServer = async () => {
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [AppUserResolver, TableResolver, TicketResolver,PoleResolver, RestaurantResolver],
+      resolvers: [
+        AppUserResolver,
+        TableResolver,
+        TicketResolver,
+        PoleResolver,
+        RestaurantResolver,
+      ],
       authChecker: async ({ context }) => {
         return Boolean(context.user);
       },
@@ -52,6 +59,7 @@ const startServer = async () => {
 
   // The `listen` method launches a web server.
   const { url } = await server.listen();
+  await initializeDatabaseRepositories();
   await AppUserRepository.initializeRepository();
   await SessionRepository.initializeRepository();
   await TableRepository.initializeRepository();
