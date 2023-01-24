@@ -2,9 +2,11 @@ import { Field, ID, ObjectType } from "type-graphql";
 import {
   Column,
   Entity,
-  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import Restaurant from "../Restaurant/Restaurant.entity";
+import Table from "../Table/Table.entity";
 
 @Entity()
 @ObjectType()
@@ -13,6 +15,8 @@ export default class Ticket {
     number: number,
     name : string,
     createdAt : Date,
+    // table: Table,
+    // restaurant : Restaurant,
     email?: string,
     phoneNumber?: string,
     deliveredAt? : Date,
@@ -21,6 +25,8 @@ export default class Ticket {
     ) {
     this.number = number;
     this.name = name;
+    // this.table = table;
+    // this.restaurant = restaurant;
     this.email = email,
     this.phoneNumber = phoneNumber,
     this.createdAt = createdAt,
@@ -65,4 +71,11 @@ export default class Ticket {
   @Field()
   closedAt?: Date;
 
+  @ManyToOne(() => Table, (table: any) => table.tickets,  { eager: true })
+  @Field(() => Table)
+  table: Table;
+
+  @ManyToOne(() => Restaurant, (restaurant: any) => restaurant.tickets,  { eager: true })
+  @Field(() => Restaurant)
+  restaurant: Restaurant;
 }
