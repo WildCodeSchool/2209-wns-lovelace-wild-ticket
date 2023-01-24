@@ -58,6 +58,7 @@ const startServer = async () => {
   });
 
   // The `listen` method launches a web server.
+  // TODO: Modifier l'ordre initialisation
   const { url } = await server.listen();
   await initializeDatabaseRepositories();
   await AppUserRepository.initializeRepository();

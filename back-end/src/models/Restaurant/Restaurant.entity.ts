@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from "type-graphql";
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, OneToMany } from "typeorm";
+import AppUser from "../AppUser/AppUser.entity";
 import Pole from "../Pole/Pole.entity";
 import Table from "../Table/Table.entity";
 import Ticket from "../Ticket/Ticket.entity";
@@ -13,13 +14,15 @@ export default class Restaurant {
     createdAt: Date,
     updatedAt?: Date,
     openAt?: Date,
-    closeAt?: Date
+    closeAt?: Date,
+    appUser?: AppUser,
   ) {
     this.name = name;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.openAt = openAt;
     this.closeAt = closeAt;
+    this.appUser = appUser;
     this.pole = pole;
   }
 
@@ -58,4 +61,6 @@ export default class Restaurant {
   @OneToMany(() => Ticket, (ticket: any) => ticket.restaurant)
   @Field(() => [Ticket])
   ticket: Ticket[];
+  @OneToOne(() => AppUser, (appUser) => appUser.restaurant)
+  appUser?: AppUser;
 }
