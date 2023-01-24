@@ -1,6 +1,6 @@
 import { IsUUID, IsPositive } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
-import Restaurant from "../../models/Restaurant/Restaurant.entity";
+
 
 @ArgsType()
 class CreateTableArgs {
