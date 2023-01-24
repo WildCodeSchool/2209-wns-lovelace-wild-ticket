@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from "type-graphql";
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne } from "typeorm";
+import AppUser from "../AppUser/AppUser.entity";
 import Pole from "../Pole/Pole.entity";
 
 @Entity()
@@ -11,13 +12,15 @@ export default class Restaurant {
     createdAt: Date,
     updatedAt?: Date,
     openAt?: Date,
-    closeAt?: Date
+    closeAt?: Date,
+    appUser?: AppUser,
   ) {
     this.name = name;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.openAt = openAt;
     this.closeAt = closeAt;
+    this.appUser = appUser;
     this.pole = pole;
   }
 
@@ -48,4 +51,7 @@ export default class Restaurant {
   @ManyToOne(() => Pole, { eager: true, onDelete: "CASCADE" })
   @Field(() => Pole, { nullable: false })
   pole: Pole;
+
+  @OneToOne(() => AppUser, (appUser) => appUser.restaurant)
+  appUser?: AppUser;
 }
