@@ -11,11 +11,11 @@ class CreateTicketArgs {
   })
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsEmail()
   email?: string;
 
-  @Field()
+  @Field({ nullable: true })
   // @IsMobilePhone()
   // @Matches(regexPhoneNumber)
   phoneNumber?: string;
