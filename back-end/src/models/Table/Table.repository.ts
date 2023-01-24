@@ -1,6 +1,9 @@
 import { getRepository } from "../../database/utils";
 import Table from "./Table.entity";
 import TableDb from "./Table.db";
+import Restaurant from "../Restaurant/Restaurant.entity";
+import RestaurantRepository from "../Restaurant/Restaurant.repository";
+import Ticket from "../Ticket/Ticket.entity";
 
 export default class TableRepository extends TableDb {
   static async initializeRepository() {
@@ -25,9 +28,12 @@ export default class TableRepository extends TableDb {
 
   static async createTable(
     number: number,
-    capacity:  number
+    capacity:  number,
+    restaurantId: string,
   ): Promise<Table> {
-    const newTable = this.repository.create({ number, capacity });
+    const restaurant = await RestaurantRepository.getRestaurantById(restaurantId) as Restaurant;
+    if (!restaurant) throw new Error;
+    const newTable = new Table(number, capacity, restaurant)
     await this.repository.save(newTable);
     return newTable;
   }
@@ -35,22 +41,26 @@ export default class TableRepository extends TableDb {
   static async updateTable(
     id: string,
     number: number,
-    capacity:  number
+    capacity:  number,
+    restaurantId: string,
   ): Promise<
     {
       id: string;
       number: number,
-      capacity:  number
+      capacity:  number,
+      restaurant: Restaurant,
     } & Table
   > {
     const existingTable = await this.repository.findOneBy({ id });
-    if (!existingTable) {
-      throw Error("No existing Table matching ID.");
+    const restaurant = await RestaurantRepository.getRestaurantById(restaurantId) as Restaurant;
+    if (!existingTable || !restaurant) {
+      throw Error("No existing Table matching ID or restaurant");
     }
     return this.repository.save({
       id,
       number,
       capacity,
+      restaurant
     });
   }
 

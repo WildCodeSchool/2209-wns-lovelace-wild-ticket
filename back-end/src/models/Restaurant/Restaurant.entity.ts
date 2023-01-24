@@ -55,11 +55,11 @@ export default class Restaurant {
   @Field(() => Pole, { nullable: false })
   pole: Pole;
 
-  @OneToMany(() => Table, (table: any) => table.restaurant,  { eager: true })
+  @OneToMany(() => Table, (table: any) => table.restaurant)
   @Field(() => [Table])
   table: Table[];
 
-  @OneToMany(() => Ticket, (ticket: any) => ticket.restaurant,  { eager: true })
+  @OneToMany(() => Ticket, (ticket: any) => ticket.restaurant)
   @Field(() => [Ticket])
   ticket: Ticket[];
 }

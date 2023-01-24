@@ -1,4 +1,5 @@
 import { Arg, Args, Mutation, Query, Resolver } from "type-graphql";
+import Restaurant from "../../models/Restaurant/Restaurant.entity";
 
 import Table from "../../models/Table/Table.entity";
 import TableRepository from "../../models/Table/Table.repository";
@@ -18,16 +19,16 @@ export default class TableResolver {
 
   @Mutation(() => Table)
   createTable(
-    @Args() { number, capacity }: CreateTableArgs
+    @Args() { number, capacity, restaurant }: CreateTableArgs
   ): Promise<Table> {
-    return TableRepository.createTable(number, capacity);
+    return TableRepository.createTable(number, capacity, restaurant);
   }
 
   @Mutation(() => Table)
   updateTable(
-    @Args() { id, number, capacity }: UpdateTableArgs
+    @Args() { id, number, capacity, restaurant }: UpdateTableArgs
   ): Promise<Table> {
-    return TableRepository.updateTable(id, number, capacity);
+    return TableRepository.updateTable(id, number, capacity, restaurant);
   }
 
   @Mutation(() => Table)
