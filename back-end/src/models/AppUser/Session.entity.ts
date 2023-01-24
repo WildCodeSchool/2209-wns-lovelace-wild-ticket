@@ -1,11 +1,18 @@
 import { randomBytes } from "crypto";
-import { BeforeInsert, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryColumn,
+} from "typeorm";
 import AppUser from "./AppUser.entity";
 
 @Entity()
 export default class Session {
-  constructor(user: AppUser) {
+  constructor(user: AppUser, createdAt: Date) {
     this.user = user;
+    this.createdAt = createdAt;
   }
 
   @PrimaryColumn("varchar", {
@@ -13,7 +20,10 @@ export default class Session {
   })
   id: string;
 
-  @ManyToOne(() => AppUser, { eager: true })
+  @Column()
+  createdAt: Date;
+
+  @ManyToOne(() => AppUser, { eager: true, onDelete: "CASCADE" })
   user: AppUser;
 
   @BeforeInsert()

@@ -12,7 +12,8 @@ import SignUp from "../pages/SignUp/SignUp";
 const MY_PROFILE = gql`
   query MyProfile {
     myProfile {
-      emailAddress
+      id
+      email
     }
   }
 `;
@@ -28,7 +29,7 @@ function App() {
             <Link to={HOME_PATH}>R'Ticket</Link>
           </h1>
           {data?.myProfile ? (
-            <i>{data?.myProfile.emailAddress}</i>
+            <i>{data?.myProfile.email}</i>
           ) : (
             <nav>
               <Link to={SIGN_UP_PATH}>Inscription</Link>

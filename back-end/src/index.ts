@@ -7,8 +7,17 @@ import { initializeDatabaseRepositories } from "./database/utils";
 
 import AppUserResolver from "./resolvers/AppUser/AppUser.resolver";
 import AppUserRepository from "./models/AppUser/AppUser.repository";
+import PoleRepository from "./models/Pole/Pole.repository";
+import RestaurantRepository from "./models/Restaurant/Restaurant.repository";
 import { getSessionIdInCookie } from "./http-utils";
 import AppUser from "./models/AppUser/AppUser.entity";
+import TableRepository from "./models/Table/Table.repository";
+import TicketRepository from "./models/Ticket/Ticket.repository";
+import TableResolver from "./resolvers/Table/Table.resolver";
+import TicketResolver from "./resolvers/Ticket/Ticket.resolver";
+import PoleResolver from "./resolvers/Pole/Pole.resolver";
+import RestaurantResolver from "./resolvers/Restaurant/Restaurant.resolver";
+import SessionRepository from "./models/AppUser/Session.repository";
 
 export type GlobalContext = ExpressContext & {
   user: AppUser | null;
@@ -17,7 +26,13 @@ export type GlobalContext = ExpressContext & {
 const startServer = async () => {
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [AppUserResolver],
+      resolvers: [
+        AppUserResolver,
+        TableResolver,
+        TicketResolver,
+        PoleResolver,
+        RestaurantResolver,
+      ],
       authChecker: async ({ context }) => {
         return Boolean(context.user);
       },
@@ -44,7 +59,16 @@ const startServer = async () => {
 
   // The `listen` method launches a web server.
   const { url } = await server.listen();
-    await initializeDatabaseRepositories();
+  await initializeDatabaseRepositories();
+  await AppUserRepository.initializeRepository();
+  await SessionRepository.initializeRepository();
+  await TableRepository.initializeRepository();
+  await TicketRepository.initializeRepository();
+  await PoleRepository.initializeRepository();
+  await RestaurantRepository.initializeRepository();
+
+  await PoleRepository.initializePoles();
+  await RestaurantRepository.initializeRestaurants();
 
   console.log(`🚀  Server ready at ${url}`);
 };

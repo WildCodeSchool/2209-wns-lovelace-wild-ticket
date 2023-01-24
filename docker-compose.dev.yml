@@ -28,6 +28,8 @@ services:
     image: postgres:14.5-alpine
     environment:
       POSTGRES_PASSWORD: password
+    ports:
+      - 4001:5432
     volumes:
       - database-content:/var/lib/postgresql/data
     expose:
