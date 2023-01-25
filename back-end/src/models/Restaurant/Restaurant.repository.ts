@@ -5,7 +5,6 @@ import RestaurantDb from "./Restaurant.db";
 
 export default class RestaurantRepository extends RestaurantDb {
   static async initializeRestaurants(): Promise<void> {
-    await this.clearRepository();
     const lyonPole = (await PoleRepository.getPoleByName(
       "Pôle de Lyon"
     )) as Pole;

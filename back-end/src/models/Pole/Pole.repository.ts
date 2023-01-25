@@ -15,8 +15,6 @@ export default class PoleRepository {
   }
 
   static async initializePoles(): Promise<void> {
-    await PoleRepository.clearRepository();
-    await this.repository.delete({});
     const poleFixtures = PoleFixtures.PoleFixtures;
     for (const poleFixture of poleFixtures) {
       await this.repository.save(poleFixture);
