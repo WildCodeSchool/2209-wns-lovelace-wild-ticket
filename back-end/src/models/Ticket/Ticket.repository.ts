@@ -78,7 +78,7 @@ export default class TicketRepository extends TicketDb {
     if (!existingTicket) {
       throw Error("No existing Ticket matching ID.");
     }
-
+    // TODO: Modify +15mn
     const closedAt =  new Date(deliveredAt.setMinutes(deliveredAt.getMinutes() + 15));
   
     return this.repository.save({
