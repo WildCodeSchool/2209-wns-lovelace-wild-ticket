@@ -15,7 +15,7 @@ export const AppUserFixtures: AppUserFixtures[] = [
     password: "Vincent69!",
     role: "ROLE_ADMIN",
     createdAt: "2022-12-03 16:08:00",
-    poles: ["Pôle de Lyon", "Pôle de Brest"],
+    poles: ["Pôle de Lyon"],
   },
   {
     login: "Estelle",
