@@ -10,16 +10,12 @@ export default class Restaurant {
   constructor(
     name: string,
     pole: Pole,
-    // table: Table[],
-    // ticket: Ticket[],
     createdAt: Date,
     updatedAt?: Date,
     openAt?: Date,
     closeAt?: Date
   ) {
     this.name = name;
-    // this.table = table;
-    // this.ticket= ticket;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.openAt = openAt;
