@@ -38,7 +38,7 @@ export default class TableRepository extends TableDb {
   ): Promise<Table> {
     const restaurant = await RestaurantRepository.getRestaurantById(restaurantId) as Restaurant;
     if (!restaurant) throw new Error;
-    const newTable = new Table(number, capacity, restaurant)
+    const newTable = new Table(number, capacity, restaurant);
     await this.repository.save(newTable);
     return newTable;
   }

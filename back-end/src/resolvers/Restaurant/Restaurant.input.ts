@@ -1,4 +1,4 @@
-import { IsUUID, MinLength } from "class-validator";
+import { IsUUID, MinLength, MaxLength } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
 @ArgsType()
@@ -6,6 +6,9 @@ class CreateRestaurantArgs {
   @Field()
   @MinLength(1, {
     message: "Le nom doit faire au moins un caractère de long.",
+  })
+  @MaxLength(255, {
+    message: "Le nom doit faire au maximum 255 caractères de long.",
   })
   name: string;
 
@@ -23,6 +26,9 @@ class UpdateRestaurantArgs {
   @Field()
   @MinLength(1, {
     message: "Le nom doit faire au moins un caractère de long.",
+  })
+  @MaxLength(255, {
+    message: "Le nom doit faire au maximum 255 caractères de long.",
   })
   name: string;
 }
