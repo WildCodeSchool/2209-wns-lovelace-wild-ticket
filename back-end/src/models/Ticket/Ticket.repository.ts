@@ -94,6 +94,9 @@ export default class TicketRepository extends TicketDb {
     if (!existingTicket) {
       throw Error("No existing Ticket matching ID.");
     }
+    if (!table) {
+      throw Error("No existing table matching ID.");
+    }
     return this.repository.save({
       id,
       table,
