@@ -4,9 +4,54 @@ import AppUser from "./AppUser.entity";
 import { hashSync, compareSync } from "bcryptjs";
 import SessionRepository from "./Session.repository";
 import Session from "./Session.entity";
+import { AppUserFixtures } from "../../DataFixtures/AppUserFixtures";
+import PoleRepository from "../Pole/Pole.repository";
+import Pole from "../Pole/Pole.entity";
+import RestaurantRepository from "../Restaurant/Restaurant.repository";
+import Restaurant from "../Restaurant/Restaurant.entity";
+
 export const INVALID_CREDENTIALS_ERROR_MESSAGE = "Identifiants incorrects.";
 
 export default class AppUserRepository extends AppUserDb {
+  static async initializeAppUsers(
+    AppUserFixtures: AppUserFixtures[]
+  ): Promise<void> {
+    await Promise.all(
+      AppUserFixtures.map(async (appUser) => {
+        const appUserPassword = hashSync(appUser.password);
+        const appUserCreationDate = new Date(appUser.createdAt);
+        let appUserPoles = [];
+        let appUserRestaurant = undefined;
+
+        if (appUser.poles) {
+          for (const pole of appUser.poles) {
+            appUserPoles.push(
+              (await PoleRepository.getPoleByName(pole)) as Pole
+            );
+          }
+        }
+
+        if (appUser.restaurant) {
+          appUserRestaurant = (await RestaurantRepository.getRestaurantByName(
+            appUser.restaurant
+          )) as Restaurant;
+        }
+
+        const newAppUser = new AppUser(
+          appUser.login,
+          appUser.email,
+          appUserPassword,
+          appUser.role,
+          appUserCreationDate,
+          appUserRestaurant,
+          appUserPoles
+        );
+
+        await this.repository.save(newAppUser);
+      })
+    );
+  }
+
   static getUsers(): Promise<AppUser[]> {
     return this.repository.find();
   }
@@ -25,23 +70,68 @@ export default class AppUserRepository extends AppUserDb {
     login: string,
     email: string,
     password: string,
-    role: string
+    role: string,
+    poles: string[],
+    restaurant: string
   ): Promise<AppUser> {
     const createdAt = new Date();
-    const user = new AppUser(login, email, hashSync(password), role, createdAt);
-    return this.saveUser(user);
+    console.log(restaurant);
+    let appUserPoles = [];
+    let appUserRestaurant = undefined;
+
+    if (poles) {
+      for (const pole of poles) {
+        appUserPoles.push((await PoleRepository.getPoleById(pole)) as Pole);
+      }
+    }
+
+    if (restaurant) {
+      appUserRestaurant = (await RestaurantRepository.getRestaurantById(
+        restaurant
+      )) as Restaurant;
+    }
+
+    const newAppUser = new AppUser(
+      login,
+      email,
+      password,
+      role,
+      createdAt,
+      appUserRestaurant,
+      appUserPoles
+    );
+
+    console.log(newAppUser);
+
+    return await this.repository.save(newAppUser);
   }
 
   static async updateUser(
     id: string,
     login: string,
     email: string,
-    role: string
+    role: string,
+    poles: string[],
+    restaurant: string
   ): Promise<AppUser> {
     const updatedAt = new Date();
     const userToUpdate = await this.getUserById(id);
+    let appUserPoles = [];
+    let appUserRestaurant = undefined;
 
     if (!userToUpdate) throw Error("Aucun utilisateur ne correspond à cet id.");
+
+    if (poles) {
+      for (const pole of poles) {
+        appUserPoles.push((await PoleRepository.getPoleById(pole)) as Pole);
+      }
+    }
+
+    if (restaurant) {
+      appUserRestaurant = (await RestaurantRepository.getRestaurantById(
+        restaurant
+      )) as Restaurant;
+    }
 
     return this.repository.save({
       id: id,
@@ -49,6 +139,8 @@ export default class AppUserRepository extends AppUserDb {
       email: email,
       role: role,
       updatedAt: updatedAt,
+      poles: appUserPoles,
+      restaurant: appUserRestaurant,
     });
   }
 
@@ -94,10 +186,6 @@ export default class AppUserRepository extends AppUserDb {
     return { user, session };
   }
 
-    // static async signOut(user: AppUser): Promise<AppUser> {
-    // delete session linked to user
-    // return user
-    // }
   static async signOut(id: string): Promise<AppUser> {
     const user = await this.getUserById(id);
 

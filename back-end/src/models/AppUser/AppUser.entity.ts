@@ -1,6 +1,17 @@
 import { IsEmail } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
-import { Entity, PrimaryGeneratedColumn, Column, Index } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Index,
+  ManyToMany,
+  JoinTable,
+  OneToOne,
+  JoinColumn,
+} from "typeorm";
+import Pole from "../Pole/Pole.entity";
+import Restaurant from "../Restaurant/Restaurant.entity";
 
 @Entity()
 @ObjectType()
@@ -11,6 +22,8 @@ export default class AppUser {
     hashedPassword: string,
     role: string,
     createdAt: Date,
+    restaurant?: Restaurant,
+    poles?: Pole[],
     updatedAt?: Date
   ) {
     this.login = login;
@@ -18,7 +31,15 @@ export default class AppUser {
     this.hashedPassword = hashedPassword;
     this.role = role;
     this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
+    if (restaurant) {
+      this.restaurant = restaurant;
+    }
+    if (poles) {
+      this.poles = poles;
+    }
+    if (updatedAt) {
+      this.updatedAt = updatedAt;
+    }
   }
 
   @PrimaryGeneratedColumn("uuid")
@@ -47,6 +68,16 @@ export default class AppUser {
   })
   @Field()
   role: string;
+
+  @OneToOne(() => Restaurant, (restaurant) => restaurant.appUser, { eager: true })
+  @JoinColumn()
+  @Field({ nullable: true })
+  restaurant?: Restaurant;
+
+  @ManyToMany(() => Pole, { eager: true })
+  @JoinTable()
+  @Field(() => [Pole])
+  poles?: Pole[];
 
   @Column()
   @Field()
