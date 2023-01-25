@@ -3,7 +3,10 @@ import { ApolloServer } from "apollo-server";
 import { ExpressContext } from "apollo-server-express";
 import { ApolloServerPluginLandingPageLocalDefault } from "apollo-server-core";
 import { buildSchema } from "type-graphql";
-import { initializeDatabaseRepositories } from "./database/utils";
+import {
+  initializeDatabaseRepositories,
+  clearAllRepositories,
+} from "./database/utils";
 
 import AppUserResolver from "./resolvers/AppUser/AppUser.resolver";
 import AppUserRepository from "./models/AppUser/AppUser.repository";
@@ -17,7 +20,7 @@ import TableResolver from "./resolvers/Table/Table.resolver";
 import TicketResolver from "./resolvers/Ticket/Ticket.resolver";
 import PoleResolver from "./resolvers/Pole/Pole.resolver";
 import RestaurantResolver from "./resolvers/Restaurant/Restaurant.resolver";
-import SessionRepository from "./models/AppUser/Session.repository";
+import { AppUserFixtures } from "./DataFixtures/AppUserFixtures";
 
 export type GlobalContext = ExpressContext & {
   user: AppUser | null;
@@ -60,17 +63,20 @@ const startServer = async () => {
   // The `listen` method launches a web server.
   const { url } = await server.listen();
   await initializeDatabaseRepositories();
-  await AppUserRepository.initializeRepository();
-  await SessionRepository.initializeRepository();
-  await TableRepository.initializeRepository();
-  await TicketRepository.initializeRepository();
-  await PoleRepository.initializeRepository();
-  await RestaurantRepository.initializeRepository();
+  console.log("🚀  Database init : OK  🚀");
+
+  await clearAllRepositories();
+  console.log("🚀  Data truncate : OK  🚀");
 
   await PoleRepository.initializePoles();
   await RestaurantRepository.initializeRestaurants();
+  await AppUserRepository.initializeAppUsers(AppUserFixtures);
+  // TODO: Create some fixtures for tables and tickets
+  // await TableRepository.initializeTables();
+  // await TicketRepository.initializeTickets();
+  console.log("🚀  Data init : OK  🚀");
 
-  console.log(`🚀  Server ready at ${url}`);
+  console.log(`🚀  Server ready at ${url}  🚀`);
 };
 
 startServer();

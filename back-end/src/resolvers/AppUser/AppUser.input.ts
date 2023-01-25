@@ -39,6 +39,12 @@ export class UserCreationArgs {
   @Field()
   @Contains("ROLE_")
   role: string;
+
+  @Field(() => [String], { nullable: true })
+  poles: string[];
+
+  @Field({ nullable: true })
+  restaurant: string;
 }
 
 @ArgsType()
@@ -65,6 +71,12 @@ export class UserUpdateArgs {
   @Field()
   @Contains("ROLE_")
   role: string;
+
+  @Field(() => [String], { nullable: true })
+  poles: string[];
+
+  @Field({ nullable: true })
+  restaurant: string;
 }
 
 //USER UPDATE PASSWORD
