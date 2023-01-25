@@ -1,6 +1,15 @@
 import { IsEmail } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
-import { Entity, PrimaryGeneratedColumn, Column, Index, ManyToMany, JoinTable, ManyToOne, OneToOne, JoinColumn } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Index,
+  ManyToMany,
+  JoinTable,
+  OneToOne,
+  JoinColumn,
+} from "typeorm";
 import Pole from "../Pole/Pole.entity";
 import Restaurant from "../Restaurant/Restaurant.entity";
 
