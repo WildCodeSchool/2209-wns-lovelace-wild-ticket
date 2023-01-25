@@ -1,6 +1,7 @@
 import { IsUUID, IsPositive } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
+
 @ArgsType()
 class CreateTableArgs {
   @Field()
@@ -10,6 +11,10 @@ class CreateTableArgs {
   @Field()
   @IsPositive()
   capacity: number;
+
+  @Field()
+  @IsUUID()
+  restaurant: string;
 }
 
 @ArgsType()
