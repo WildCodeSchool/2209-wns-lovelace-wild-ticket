@@ -61,6 +61,7 @@ export default class Pole {
   email: string;
 
   @ManyToMany(() => AppUser, (appUser) => appUser.poles)
+  @Field(() => AppUser)
   appUser?: AppUser;
 
   @OneToMany(() => Restaurant, (restaurant) => restaurant.pole)
