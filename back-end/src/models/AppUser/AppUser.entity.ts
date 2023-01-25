@@ -69,12 +69,14 @@ export default class AppUser {
   @Field()
   role: string;
 
-  @OneToOne(() => Restaurant, (restaurant) => restaurant.appUser)
+  @OneToOne(() => Restaurant, (restaurant) => restaurant.appUser, { eager: true })
   @JoinColumn()
+  @Field({ nullable: true })
   restaurant?: Restaurant;
 
   @ManyToMany(() => Pole, { eager: true })
   @JoinTable()
+  @Field(() => [Pole])
   poles?: Pole[];
 
   @Column()
