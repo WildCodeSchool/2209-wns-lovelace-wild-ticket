@@ -1,7 +1,7 @@
 import { IsUUID, MinLength, IsEmail, IsMobilePhone, Matches } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
-// const regexPhoneNumber = /^(?:(?:\+|00|0)((262|692)|(263|693)|508|(5|6)90|(5|6)94|(5|6|7)96|681|687|689))(?:[\s.-]*\d{2}){3,4}$/;
+// const regexPhoneNumber = '^0[1-9][0-9]{8}$';
 
 @ArgsType()
 class CreateTicketArgs {

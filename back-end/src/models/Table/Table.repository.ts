@@ -3,7 +3,6 @@ import Table from "./Table.entity";
 import TableDb from "./Table.db";
 import Restaurant from "../Restaurant/Restaurant.entity";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
-import Ticket from "../Ticket/Ticket.entity";
 
 export default class TableRepository extends TableDb {
   static async initializeRepository() {
@@ -20,6 +19,12 @@ export default class TableRepository extends TableDb {
 
   static async getTableByNumber(number: number): Promise<Table | null> {
     return this.repository.findOneBy({ number: number });
+  }
+
+  static async getTablesByRestaurant(id: string ): Promise<Table[] | null> {
+    const restaurant = await RestaurantRepository.getRestaurantById(id);
+    if (!restaurant) throw new Error;
+    return await this.repository.findBy({restaurant});
   }
 
   static async getTableById(id: string): Promise<Table | null> {

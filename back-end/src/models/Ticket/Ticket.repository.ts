@@ -24,6 +24,12 @@ export default class TicketRepository extends TicketDb {
     return this.repository.findOneBy({ number: number });
   }
 
+  static async getTicketsByRestaurant(id: string ): Promise<Ticket[] | null> {
+    const restaurant = await RestaurantRepository.getRestaurantById(id);
+    if (!restaurant) throw new Error;
+    return await this.repository.findBy({restaurant});
+  }
+
   static async getTicketById(id: string): Promise<Ticket | null> {
     return this.repository.findOneBy({ id });
   }
@@ -72,10 +78,14 @@ export default class TicketRepository extends TicketDb {
     if (!existingTicket) {
       throw Error("No existing Ticket matching ID.");
     }
+
+    const closedAt =  new Date(deliveredAt.setMinutes(deliveredAt.getMinutes() + 15));
+  
     return this.repository.save({
       id,
       table,
-      deliveredAt
+      deliveredAt,
+      closedAt
     });
   }
 
@@ -91,6 +101,7 @@ export default class TicketRepository extends TicketDb {
     const existingTicket = await this.repository.findOneBy({ id });
     const table = await TableRepository.getTableById(tableId) as Table;
     const placedAt = new Date();
+    const closedAt = undefined;
     if (!existingTicket) {
       throw Error("No existing Ticket matching ID.");
     }
@@ -100,7 +111,8 @@ export default class TicketRepository extends TicketDb {
     return this.repository.save({
       id,
       table,
-      placedAt
+      placedAt,
+      closedAt
     });
   }
 
