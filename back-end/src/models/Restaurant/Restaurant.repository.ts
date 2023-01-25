@@ -4,6 +4,9 @@ import PoleRepository from "../Pole/Pole.repository";
 import RestaurantDb from "./Restaurant.db";
 
 export default class RestaurantRepository extends RestaurantDb {
+  static findOneBy(arg0: { id: string; }): import("../Ticket/Ticket.entity").default | PromiseLike<import("../Ticket/Ticket.entity").default | null> | null {
+    throw new Error("Method not implemented.");
+  }
   static async initializeRestaurants(): Promise<void> {
     await this.clearRepository();
     const lyonPole = (await PoleRepository.getPoleByName(

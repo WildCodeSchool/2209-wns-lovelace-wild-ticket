@@ -10,6 +10,17 @@ export default class TicketResolver {
     return TicketRepository.getTickets();
   }
 
+  @Query(() => [Ticket])
+  TicketsByRestaurant(@Arg("id") id:string): Promise<Ticket[] | null> {
+    return TicketRepository.getTicketsByRestaurant(id);
+  }
+
+  @Query(() => Ticket)
+  Ticket(@Arg("id") id:string): Promise<Ticket | null> {
+    return TicketRepository.getTicketById(id);
+  }
+
+
   @Mutation(() => Ticket)
   createTicket(
     @Args() {name, restaurant, email, phoneNumber }: CreateTicketArgs
