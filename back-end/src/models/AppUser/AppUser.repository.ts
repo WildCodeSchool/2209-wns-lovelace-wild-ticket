@@ -4,9 +4,66 @@ import AppUser from "./AppUser.entity";
 import { hashSync, compareSync } from "bcryptjs";
 import SessionRepository from "./Session.repository";
 import Session from "./Session.entity";
+import { AppUserFixtures } from "../../DataFixtures/AppUserFixtures";
+import PoleRepository from "../Pole/Pole.repository";
+import Pole from "../Pole/Pole.entity";
+import RestaurantRepository from "../Restaurant/Restaurant.repository";
+import Restaurant from "../Restaurant/Restaurant.entity";
+
 export const INVALID_CREDENTIALS_ERROR_MESSAGE = "Identifiants incorrects.";
 
 export default class AppUserRepository extends AppUserDb {
+  static async initializeAppUsers(
+    AppUserFixtures: AppUserFixtures[]
+  ): Promise<void> {
+    await Promise.all(
+      AppUserFixtures.map(async (appUser) => {
+        const appUserPassword = hashSync(appUser.password);
+        const appUserCreationDate = new Date(appUser.createdAt);
+
+        if (appUser.poles) {
+          let appUserPoles = [];
+
+          for (const pole of appUser.poles) {
+            appUserPoles.push(
+              (await PoleRepository.getPoleByName(pole)) as Pole
+            );
+          }
+
+          const newAppUser = new AppUser(
+            appUser.login,
+            appUser.email,
+            appUserPassword,
+            appUser.role,
+            appUserCreationDate,
+            undefined,
+            appUserPoles
+          );
+
+          await this.repository.save(newAppUser);
+        }
+
+        if (appUser.restaurant) {
+          const appUserRestaurant =
+            (await RestaurantRepository.getRestaurantByName(
+              appUser.restaurant
+            )) as Restaurant;
+
+          const newAppUser = new AppUser(
+            appUser.login,
+            appUser.email,
+            appUserPassword,
+            appUser.role,
+            appUserCreationDate,
+            appUserRestaurant
+          );
+
+          await this.repository.save(newAppUser);
+        }
+      })
+    );
+  }
+
   static getUsers(): Promise<AppUser[]> {
     return this.repository.find();
   }
@@ -94,10 +151,6 @@ export default class AppUserRepository extends AppUserDb {
     return { user, session };
   }
 
-    // static async signOut(user: AppUser): Promise<AppUser> {
-    // delete session linked to user
-    // return user
-    // }
   static async signOut(id: string): Promise<AppUser> {
     const user = await this.getUserById(id);
 

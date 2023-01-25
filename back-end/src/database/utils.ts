@@ -2,6 +2,10 @@ import { DataSource, EntityTarget } from "typeorm";
 import { DATABASE_URL, NODE_ENV, TEST_DATABASE_URL } from "../config";
 import AppUserRepository from "../models/AppUser/AppUser.repository";
 import SessionRepository from "../models/AppUser/Session.repository";
+import PoleRepository from "../models/Pole/Pole.repository";
+import RestaurantRepository from "../models/Restaurant/Restaurant.repository";
+import TableRepository from "../models/Table/Table.repository";
+import TicketRepository from "../models/Ticket/Ticket.repository";
 
 const dataSource = new DataSource({
   type: "postgres",
@@ -28,8 +32,21 @@ async function getRepository(entity: EntityTarget<any>) {
 }
 
 async function initializeDatabaseRepositories() {
-  await AppUserRepository.initializeRepository();
   await SessionRepository.initializeRepository();
+  await TicketRepository.initializeRepository();
+  await TableRepository.initializeRepository();
+  await AppUserRepository.initializeRepository();
+  await RestaurantRepository.initializeRepository();
+  await PoleRepository.initializeRepository();
+}
+
+async function clearAllRepositories() {
+  await SessionRepository.clearRepository();
+  await TicketRepository.clearRepository();
+  await TableRepository.clearRepository();
+  await AppUserRepository.clearRepository();
+  await RestaurantRepository.clearRepository();
+  await PoleRepository.clearRepository();
 }
 
 async function closeConnection() {
@@ -40,5 +57,6 @@ export {
   getDatabase,
   getRepository,
   initializeDatabaseRepositories,
+  clearAllRepositories,
   closeConnection,
 };
