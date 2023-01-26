@@ -9,8 +9,8 @@ import { HOME_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
 
 const SIGN_IN = gql`
-  mutation SignIn($email: String!, $password: String!) {
-    signIn(email: $email, password: $password) {
+  mutation SignIn($email: String!, $password: String!, $rememberMe: Boolean!) {
+    signIn(email: $email, password: $password, rememberMe: $rememberMe) {
       id
       email
     }
@@ -20,6 +20,7 @@ const SIGN_IN = gql`
 const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   const [signIn, { loading }] = useMutation<
     SignInMutation,
@@ -30,7 +31,7 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
   const submit = async () => {
     try {
       await signIn({
-        variables: { email, password },
+        variables: { email, password, rememberMe: Boolean(rememberMe) },
       });
       toast.success(`Vous vous êtes connecté avec succès.`);
       onSuccess();
@@ -42,49 +43,62 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
 
   return (
     <>
-      <h1>Connexion</h1>
-      <form
-        onSubmit={async (event) => {
-          event.preventDefault();
-          console.log(email);
-          console.log(password);
-          await submit();
-        }}
-      >
-        <label>
-          Adresse email
-          <br />
-          <input
-            type="email"
-            required
-            autoComplete="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(event) => {
-              setemail(event.target.value);
-            }}
-          />
-        </label>
-        <br />
-        <label>
-          Mot de passe
-          <br />
-          <input
-            type="password"
-            required
-            autoComplete="current-password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={(event) => {
-              setPassword(event.target.value);
-            }}
-          />
-        </label>
-        <br />
-        <button disabled={loading}>{loading ? <Loader /> : "Valider"}</button>
-      </form>
+      <div className="signin-form-container">
+        <h1>Connexion</h1>
+        <form
+          onSubmit={async (event) => {
+            event.preventDefault();
+            console.log(email);
+            console.log(password);
+            await submit();
+          }}
+        >
+          <div className="signin-form-input">
+            <label>Adresse email</label>
+            <input
+              type="email"
+              required
+              autoComplete="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(event) => {
+                setemail(event.target.value);
+              }}
+            />
+          </div>
+          <div className="signin-form-input">
+            <label>Mot de passe</label>
+            <input
+              type="password"
+              required
+              autoComplete="current-password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={(event) => {
+                setPassword(event.target.value);
+              }}
+            />
+          </div>
+          <div className="signin-form-input2">
+            <div className="remember-me-container">
+              <input
+                type="checkbox"
+                id="remember-me"
+                name="remember-me"
+                checked={rememberMe}
+                onChange={(event) => {
+                  setRememberMe(event.target.checked);
+                }}
+              />
+              <label>Se souvenir de moi</label>
+            </div>
+            <a href="#">Mot de passe oublié ?</a>
+          </div>
+          <button disabled={loading}>{loading ? <Loader /> : "Valider"}</button>
+        </form>
+      </div>
     </>
   );
 };
