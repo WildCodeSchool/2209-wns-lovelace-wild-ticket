@@ -36,12 +36,12 @@ export default class Table {
   @Field()
   capacity: number;
 
-  @ManyToOne(() => Restaurant, (restaurant: any) => restaurant.tables,  { eager: true })
+  @ManyToOne(() => Restaurant, (restaurant: any) => restaurant.tables,  { eager: true, onDelete: "CASCADE" })
   @Field(() => Restaurant)
   restaurant: Restaurant;
 
   @OneToMany(() => Ticket, (ticket: any) => ticket.table)
-  @Field(() => [Ticket])
+  @Field(() => [Ticket], { nullable: true })
   ticket?: Ticket[];
 
 }

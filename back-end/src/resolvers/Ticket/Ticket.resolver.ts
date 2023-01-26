@@ -35,9 +35,9 @@ export default class TicketResolver {
   }
 
   @Mutation(() => Ticket)
-  updatePlacedAt(@Args() { id, table }: UpdateTicketArgs
+  updatePlacedAt(@Arg("id") id: string
   ): Promise<Ticket> {
-    return TicketRepository.updatePlacedAt(id, table);
+    return TicketRepository.updatePlacedAt(id);
   }
 
   @Mutation(() => Ticket)
