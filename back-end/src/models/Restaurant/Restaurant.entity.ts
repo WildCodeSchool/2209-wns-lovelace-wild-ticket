@@ -39,28 +39,29 @@ export default class Restaurant {
   createdAt: Date;
 
   @Column({ nullable: true })
-  @Field()
+  @Field({ nullable: true })
   updatedAt?: Date;
 
   @Column({ nullable: true })
-  @Field()
+  @Field({ nullable: true })
   openAt?: Date;
 
   @Column({ nullable: true })
-  @Field()
+  @Field({ nullable: true })
   closeAt?: Date;
 
   @ManyToOne(() => Pole, { eager: true, onDelete: "CASCADE" })
   @Field(() => Pole, { nullable: false })
   pole: Pole;
 
-  @OneToMany(() => Table, (table: any) => table.restaurant)
+  @OneToMany(() => Table, (table: any) => table.restaurant, { cascade: true })
   @Field(() => [Table])
   table: Table[];
-
-  @OneToMany(() => Ticket, (ticket: any) => ticket.restaurant)
+  
+  @OneToMany(() => Ticket, (ticket: any) => ticket.restaurant, { cascade: true })
   @Field(() => [Ticket])
   ticket: Ticket[];
+
   @OneToOne(() => AppUser, (appUser) => appUser.restaurant)
   appUser?: AppUser;
 }
