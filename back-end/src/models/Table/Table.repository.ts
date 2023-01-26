@@ -61,10 +61,10 @@ export default class TableRepository extends TableDb {
     restaurantId: string
   ): Promise<
     {
-      id: string;
-      number: number;
-      capacity: number;
-      restaurant: Restaurant;
+      id: string,
+      number: number,
+      capacity: number,
+      restaurant: Restaurant,
     } & Table
   > {
     const existingTable = await this.repository.findOneBy({ id });
