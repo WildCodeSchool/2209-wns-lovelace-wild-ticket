@@ -21,6 +21,7 @@ import TicketResolver from "./resolvers/Ticket/Ticket.resolver";
 import PoleResolver from "./resolvers/Pole/Pole.resolver";
 import RestaurantResolver from "./resolvers/Restaurant/Restaurant.resolver";
 import { AppUserFixtures } from "./DataFixtures/AppUserFixtures";
+import { TableFixtures } from "./DataFixtures/TableFixtures";
 
 export type GlobalContext = ExpressContext & {
   user: AppUser | null;
@@ -71,9 +72,8 @@ const startServer = async () => {
   await PoleRepository.initializePoles();
   await RestaurantRepository.initializeRestaurants();
   await AppUserRepository.initializeAppUsers(AppUserFixtures);
-  // TODO: Create some fixtures for tables and tickets
-  // await TableRepository.initializeTables();
-  // await TicketRepository.initializeTickets();
+  await TableRepository.initializeTables(TableFixtures);
+  await TicketRepository.initializeTickets();
   console.log("🚀  Data init : OK  🚀");
 
   console.log(`🚀  Server ready at ${url}  🚀`);
