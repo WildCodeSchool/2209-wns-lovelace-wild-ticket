@@ -1,6 +1,7 @@
 import TicketFixtures, {
   TicketFixturesType,
 } from "../../DataFixtures/TicketFixtures";
+import DateUpdates from "../../services/DateUpdates";
 import Restaurant from "../Restaurant/Restaurant.entity";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import Table from "../Table/Table.entity";
@@ -105,13 +106,11 @@ export default class TicketRepository extends TicketDb {
     const existingTicket = await this.repository.findOneBy({ id });
     const table = (await TableRepository.getTableById(tableId)) as Table;
     const deliveredAt = new Date();
+    const closedAt = DateUpdates.addMinutesToDate(deliveredAt, 15);
+
     if (!existingTicket) {
       throw Error("No existing Ticket matching ID.");
     }
-    // TODO: Modify +15mn
-    const closedAt = new Date(
-      deliveredAt.setMinutes(deliveredAt.getMinutes() + 15)
-    );
 
     return this.repository.save({
       id,
