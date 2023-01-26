@@ -121,27 +121,20 @@ export default class TicketRepository extends TicketDb {
   }
 
   static async updatePlacedAt(
-    id: string,
-    tableId: string
+    id: string
   ): Promise<
     {
       id: string;
-      table: Table;
     } & Ticket
   > {
     const existingTicket = await this.repository.findOneBy({ id });
-    const table = (await TableRepository.getTableById(tableId)) as Table;
     const placedAt = new Date();
-    const closedAt = undefined;
+    const closedAt = DateUpdates.addMinutesToDate(placedAt, 240);
     if (!existingTicket) {
       throw Error("No existing Ticket matching ID.");
     }
-    if (!table) {
-      throw Error("No existing table matching ID.");
-    }
     return this.repository.save({
       id,
-      table,
       placedAt,
       closedAt,
     });

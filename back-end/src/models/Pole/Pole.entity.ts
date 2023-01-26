@@ -61,11 +61,11 @@ export default class Pole {
   email: string;
 
   @ManyToMany(() => AppUser, (appUser) => appUser.poles)
-  @Field(() => AppUser)
+  @Field(() => AppUser, { nullable: true })
   appUser?: AppUser;
 
   @OneToMany(() => Restaurant, (restaurant) => restaurant.pole)
-  @Field(() => [Restaurant])
+  @Field(() => [Restaurant], { nullable: true })
   restaurant: Restaurant[];
 
   @Column()
@@ -73,6 +73,6 @@ export default class Pole {
   createdAt: Date;
 
   @Column({ nullable: true })
-  @Field()
+  @Field({ nullable: true })
   updatedAt?: Date;
 }

@@ -69,14 +69,14 @@ export default class AppUser {
   @Field()
   role: string;
 
-  @OneToOne(() => Restaurant, (restaurant) => restaurant.appUser, { eager: true })
+  @OneToOne(() => Restaurant, (restaurant) => restaurant.appUser, { eager: true, onDelete: "CASCADE" })
   @JoinColumn()
   @Field({ nullable: true })
   restaurant?: Restaurant;
 
   @ManyToMany(() => Pole, { eager: true })
   @JoinTable()
-  @Field(() => [Pole])
+  @Field(() => [Pole], { nullable: true })
   poles?: Pole[];
 
   @Column()
@@ -84,6 +84,6 @@ export default class AppUser {
   createdAt: Date;
 
   @Column({ nullable: true })
-  @Field()
+  @Field({ nullable: true })
   updatedAt?: Date;
 }

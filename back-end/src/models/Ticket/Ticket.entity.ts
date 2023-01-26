@@ -52,7 +52,7 @@ export default class Ticket {
   email?: string;
 
   @Column({nullable: true})
-  @Field()
+  @Field({ nullable: true })
   phoneNumber?: string;
 
   @Column()
@@ -60,22 +60,22 @@ export default class Ticket {
   createdAt: Date;
 
   @Column({nullable: true})
-  @Field()
+  @Field({ nullable: true })
   deliveredAt?: Date;
 
   @Column({nullable: true})
-  @Field()
+  @Field({ nullable: true })
   placedAt?: Date;
 
   @Column({nullable: true})
-  @Field()
+  @Field({ nullable: true })
   closedAt?: Date;
 
-  @ManyToOne(() => Table, (table: any) => table.tickets,  { eager: true })
-  @Field(() => Table)
+  @ManyToOne(() => Table, (table: any) => table.tickets,  { eager: true, onDelete: "CASCADE" })
+  @Field(() => Table, { nullable: true })
   table?: Table;
 
-  @ManyToOne(() => Restaurant, (restaurant: any) => restaurant.tickets,  { eager: true })
+  @ManyToOne(() => Restaurant, (restaurant: any) => restaurant.tickets,  { eager: true, onDelete: "CASCADE" })
   @Field(() => Restaurant)
   restaurant: Restaurant;
 }
