@@ -66,11 +66,11 @@ export default class AppUserResolver {
 
   @Mutation(() => AppUser)
   async signIn(
-    @Args() { email, password }: SignInArgs,
+    @Args() { email, password, rememberMe }: SignInArgs,
     @Ctx() context: GlobalContext
   ): Promise<AppUser> {
     const { user, session } = await AppUserRepository.signIn(email, password);
-    setSessionIdInCookie(context, session.id);
+    setSessionIdInCookie(context, session.id, rememberMe);
     return user;
   }
 
