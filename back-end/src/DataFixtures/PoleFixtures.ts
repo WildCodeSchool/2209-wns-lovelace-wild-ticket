@@ -6,8 +6,8 @@ export default class PoleFixtures {
       zipCode: "69001",
       city: "Lyon",
       email: "contact@poledelyon.com",
-      createdAt: "2022-12-03 16:08:00",
-      updatedAt: "2022-12-03 16:08:00",
+      createdAt: "2022-12-15 16:08:00",
+      updatedAt: "2022-12-15 16:08:00",
     },
     {
       name: "Pôle de Brest",
@@ -15,8 +15,8 @@ export default class PoleFixtures {
       zipCode: "29200",
       city: "Brest",
       email: "contact@poledebrest.com",
-      createdAt: "2022-12-14 09:15:56",
-      updatedAt: "2022-12-14 09:15:56",
+      createdAt: "2022-12-15 09:15:56",
+      updatedAt: "2022-12-15 09:15:56",
     },
     {
       name: "Pôle de Marseille",
