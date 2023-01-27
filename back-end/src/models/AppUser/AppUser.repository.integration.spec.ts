@@ -20,12 +20,7 @@ describe("AppUserRepository integration", () => {
   });
 
   beforeEach(async () => {
-    // eslint-disable-next-line no-restricted-syntax
-    const database = await getDatabase();
-    for (const entity of database.entityMetadatas) {
-      const repository = database.getRepository(entity.name);
-      clearAllRepositories();
-    }
+    clearAllRepositories();
   });
 
   describe("signIn", () => {
@@ -103,8 +98,50 @@ describe("AppUserRepository integration", () => {
 
   describe("signOut", () => {
     describe("when passed existing user", () => {
-      it("deletes session in database", () => {});
-      it("returns user", () => {});
+      const emailAddress = "jean@user.com";
+      it("deletes session in database", async () => {
+        await AppUserRepository.createUser(
+          "Jean",
+          emailAddress,
+          hashSync("mot-de-passe-de-jean"),
+          "ROLE_ADMIN",
+          [],
+          ""
+        );
+
+        const signIn = await AppUserRepository.signIn(
+          emailAddress,
+          "mot-de-passe-de-jean"
+        );
+
+        const userId = signIn.user.id;
+
+        const signOut = await AppUserRepository.signOut(userId);
+        
+        expect(signOut).not.toHaveProperty("session");
+      });
+      
+      it("returns user", async () => {
+        await AppUserRepository.createUser(
+          "Jean",
+          emailAddress,
+          hashSync("mot-de-passe-de-jean"),
+          "ROLE_ADMIN",
+          [],
+          ""
+        );
+
+        const signIn = await AppUserRepository.signIn(
+          emailAddress,
+          "mot-de-passe-de-jean"
+        );
+
+        const userId = signIn.user.id;
+
+        const signOut = await AppUserRepository.signOut(userId);
+
+        expect(signOut.email).toEqual(emailAddress);
+      });
     });
   });
 });
