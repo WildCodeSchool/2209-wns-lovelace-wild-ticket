@@ -6,7 +6,7 @@ import { CreateTableArgs, UpdateTableArgs } from "./Table.input";
 @Resolver(Table)
 export default class TableResolver {
   @Query(() => Table)
-  Table(@Arg("id") id:string): Promise<Table | null> {
+  Table(@Arg("id") id: string): Promise<Table | null> {
     return TableRepository.getTableById(id);
   }
 
@@ -16,7 +16,7 @@ export default class TableResolver {
   }
 
   @Query(() => [Table])
-  TablesByRestaurant(@Arg("id") id:string): Promise<Table[] | null> {
+  TablesByRestaurant(@Arg("id") id: string): Promise<Table[] | null> {
     return TableRepository.getTablesByRestaurant(id);
   }
 
