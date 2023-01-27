@@ -1,4 +1,4 @@
-import { IsUUID, MinLength } from "class-validator";
+import { IsUUID, MinLength, MaxLength, IsInt } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
 @ArgsType()
@@ -6,6 +6,9 @@ class CreateRestaurantArgs {
   @Field()
   @MinLength(1, {
     message: "Le nom doit faire au moins un caractère de long.",
+  })
+  @MaxLength(255, {
+    message: "Le nom doit faire au maximum 255 caractères de long.",
   })
   name: string;
 
@@ -15,16 +18,10 @@ class CreateRestaurantArgs {
 }
 
 @ArgsType()
-class UpdateRestaurantArgs {
+class UpdateRestaurantArgs extends CreateRestaurantArgs {
   @Field(() => ID)
   @IsUUID()
   id: string;
-
-  @Field()
-  @MinLength(1, {
-    message: "Le nom doit faire au moins un caractère de long.",
-  })
-  name: string;
 }
 
 @ArgsType()
@@ -34,10 +31,20 @@ class UpdateRestaurantOpeningTime {
   id: string;
 
   @Field()
-  openAt: Date;
+  @IsInt()
+  hourOpenAt: number;
 
   @Field()
-  closeAt: Date;
+  @IsInt()
+  minutesOpenAt: number;
+
+  @Field()
+  @IsInt()
+  hourCloseAt: number;
+
+  @Field()
+  @IsInt()
+  minutesCloseAt: number;
 }
 
 export {

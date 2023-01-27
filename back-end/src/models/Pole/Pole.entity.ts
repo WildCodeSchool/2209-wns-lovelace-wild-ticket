@@ -1,6 +1,14 @@
 import { IsEmail } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import AppUser from "../AppUser/AppUser.entity";
 import Restaurant from "../Restaurant/Restaurant.entity";
 
 @Entity()
@@ -13,6 +21,7 @@ export default class Pole {
     city: string,
     email: string,
     createdAt: Date,
+    appUser?: AppUser,
     updatedAt?: Date
   ) {
     this.name = name;
@@ -21,6 +30,7 @@ export default class Pole {
     this.city = city;
     this.email = email;
     this.createdAt = createdAt;
+    this.appUser = appUser;
     if (updatedAt) {
       this.updatedAt = updatedAt;
     }
@@ -51,15 +61,20 @@ export default class Pole {
   @IsEmail()
   email: string;
 
+  @ManyToMany(() => AppUser, (appUser) => appUser.poles, {onDelete: "CASCADE"})
+  @JoinTable()
+  @Field(() => AppUser, { nullable: true })
+  appUser?: AppUser;
+
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.pole)
+  @Field(() => [Restaurant], { nullable: true })
+  restaurant: Restaurant[];
+
   @Column()
   @Field()
   createdAt: Date;
 
   @Column({ nullable: true })
-  @Field()
+  @Field({ nullable: true })
   updatedAt?: Date;
-
-  @OneToMany(() => Restaurant, (restaurant) => restaurant.pole)
-  @Field(() => [Restaurant])
-  restaurant: Restaurant[];
 }

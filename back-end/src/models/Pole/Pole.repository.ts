@@ -15,8 +15,6 @@ export default class PoleRepository {
   }
 
   static async initializePoles(): Promise<void> {
-    await PoleRepository.clearRepository();
-    await this.repository.delete({});
     const poleFixtures = PoleFixtures.PoleFixtures;
     for (const poleFixture of poleFixtures) {
       await this.repository.save(poleFixture);
@@ -25,6 +23,14 @@ export default class PoleRepository {
 
   static async getPoles(): Promise<Pole[]> {
     return this.repository.find();
+  }
+
+  static async getPoleById(id: string): Promise<Pole | null> {
+    return this.repository.findOneBy({ id: id });
+  }
+
+  static async getPoleByName(name: string): Promise<Pole | null> {
+    return this.repository.findOneBy({ name: name });
   }
 
   static async createPole(
@@ -71,14 +77,6 @@ export default class PoleRepository {
       email,
       updatedAt,
     });
-  }
-
-  static async getPoleById(id: string): Promise<Pole | null> {
-    return this.repository.findOneBy({ id: id });
-  }
-
-  static async getPoleByName(name: string): Promise<Pole | null> {
-    return this.repository.findOneBy({ name: name });
   }
 
   static async deletePole(id: string): Promise<Pole> {

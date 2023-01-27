@@ -9,6 +9,21 @@ Docker and Docker Compose are required on host system.
 ```
 ./build-start.dev.sh
 ```
+
+## Run Integration testing with test-database (back-end)
+
+Use this command in the root of the project, when the server is running.
+
+```
+docker compose -f docker-compose.dev.yml exec back-end npm run test:watch
+```
+## Update the library on the client side (web-app)
+
+When modifying the schema on the backend side, use the following command to update the library on the client side.
+
+```
+npm run gql-codegen
+```
 ## Stack technique
 
 ### Back-end

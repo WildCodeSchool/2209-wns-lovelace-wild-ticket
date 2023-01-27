@@ -10,6 +10,10 @@ class CreateTableArgs {
   @Field()
   @IsPositive()
   capacity: number;
+
+  @Field()
+  @IsUUID()
+  restaurant: string;
 }
 
 @ArgsType()

@@ -32,16 +32,31 @@ export default class AppUserResolver {
 
   @Mutation(() => AppUser)
   createUser(
-    @Args() { login, email, password, role }: UserCreationArgs
+    @Args()
+    { login, email, password, role, poles, restaurant }: UserCreationArgs
   ): Promise<AppUser> {
-    return AppUserRepository.createUser(login, email, password, role);
+    return AppUserRepository.createUser(
+      login,
+      email,
+      password,
+      role,
+      poles,
+      restaurant
+    );
   }
 
   @Mutation(() => AppUser)
   updateUser(
-    @Args() { id, login, email, role }: UserUpdateArgs
+    @Args() { id, login, email, role, poles, restaurant }: UserUpdateArgs
   ): Promise<AppUser> {
-    return AppUserRepository.updateUser(id, login, email, role);
+    return AppUserRepository.updateUser(
+      id,
+      login,
+      email,
+      role,
+      poles,
+      restaurant
+    );
   }
 
   @Mutation(() => AppUser)
@@ -51,11 +66,11 @@ export default class AppUserResolver {
 
   @Mutation(() => AppUser)
   async signIn(
-    @Args() { email, password }: SignInArgs,
+    @Args() { email, password, rememberMe }: SignInArgs,
     @Ctx() context: GlobalContext
   ): Promise<AppUser> {
     const { user, session } = await AppUserRepository.signIn(email, password);
-    setSessionIdInCookie(context, session.id);
+    setSessionIdInCookie(context, session.id, rememberMe);
     return user;
   }
 
