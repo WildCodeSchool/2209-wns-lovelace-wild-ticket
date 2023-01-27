@@ -108,4 +108,7 @@ export class SignInArgs {
       "Le mot de passe doit comporter au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.",
   })
   password: string;
+
+  @Field({ nullable: true })
+  rememberMe: boolean;
 }
