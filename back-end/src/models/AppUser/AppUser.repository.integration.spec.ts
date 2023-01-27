@@ -1,4 +1,6 @@
+import { hashSync } from "bcryptjs";
 import {
+  clearAllRepositories,
   closeConnection,
   getDatabase,
   initializeDatabaseRepositories,
@@ -22,9 +24,7 @@ describe("AppUserRepository integration", () => {
     const database = await getDatabase();
     for (const entity of database.entityMetadatas) {
       const repository = database.getRepository(entity.name);
-      await repository.query(
-        `TRUNCATE ${entity.tableName} RESTART IDENTITY CASCADE;`
-      );
+      clearAllRepositories();
     }
   });
 
@@ -44,9 +44,11 @@ describe("AppUserRepository integration", () => {
           it("throws invalid credentials error", async () => {
             await AppUserRepository.createUser(
               "Jean",
-              "User",
               emailAddress,
-              "mot-de-passe-de-jean"
+              hashSync("mot-de-passe-de-jean"),
+              "ROLE_ADMIN",
+              [],
+              ""
             );
 
             expect(() =>
@@ -59,10 +61,14 @@ describe("AppUserRepository integration", () => {
           it("creates session in database", async () => {
             await AppUserRepository.createUser(
               "Jean",
-              "User",
               emailAddress,
-              "mot-de-passe-de-jean"
+              hashSync("mot-de-passe-de-jean"),
+              "ROLE_ADMIN",
+              [],
+              ""
             );
+
+            console.log(await AppUserRepository.getUsers());
 
             await AppUserRepository.signIn(
               emailAddress,
@@ -71,15 +77,17 @@ describe("AppUserRepository integration", () => {
 
             const sessions = await SessionRepository.repository.find();
             expect(sessions).toHaveLength(1);
-            expect(sessions[0].user.emailAddress).toEqual(emailAddress);
+            expect(sessions[0].user.email).toEqual(emailAddress);
           });
 
           it("returns user and session", async () => {
             await AppUserRepository.createUser(
               "Jean",
-              "User",
               emailAddress,
-              "mot-de-passe-de-jean"
+              hashSync("mot-de-passe-de-jean"),
+              "ROLE_ADMIN",
+              [],
+              ""
             );
 
             const result = await AppUserRepository.signIn(
@@ -88,7 +96,7 @@ describe("AppUserRepository integration", () => {
             );
             expect(result).toHaveProperty("user");
             expect(result).toHaveProperty("session");
-            expect(result.user.emailAddress).toEqual(emailAddress);
+            expect(result.user.email).toEqual(emailAddress);
           });
         });
       });
