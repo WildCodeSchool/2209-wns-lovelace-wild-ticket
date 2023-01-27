@@ -4,6 +4,7 @@ import DateUpdates from "../services/DateUpdates";
 export type TicketFixturesType = {
   number: number;
   name: string;
+  seats: number;
   email: string;
   phoneNumber: string;
   createdAt: Date;
@@ -14,6 +15,18 @@ export type TicketFixturesType = {
 };
 
 export default class TicketFixtures {
+  static getSeatsFromTable(table: number): number {
+    if (table <= 6) {
+      return 2;
+    } else if (table <= 11) {
+      return 4;
+    } else if (table <= 13) {
+      return 6;
+    } else {
+      return 8;
+    }
+  }
+
   static async getRandomTickets(): Promise<TicketFixturesType[]> {
     const ticketsFixtures: TicketFixturesType[] = [];
     const dateNow = new Date();
@@ -25,15 +38,17 @@ export default class TicketFixtures {
 
       for (let ticketNumber = 1; ticketNumber < ticketsPerDay; ticketNumber++) {
         let lastName = faker.name.lastName();
+        let table = Math.floor(Math.random() * 15 + 1);
 
         ticketsFixtures.push({
           number: ticketNumber,
           name: lastName,
+          seats: this.getSeatsFromTable(table),
           email: faker.internet.email(faker.name.firstName(), lastName),
-          phoneNumber: faker.phone.number("06 ## ## ## ##"),
+          phoneNumber: faker.phone.number("06########"),
           createdAt: ticketsDate,
           deliveredAt: ticketsDate,
-          table: Math.floor(Math.random() * 15 + 1),
+          table: table,
           placedAt: ticketsDate,
           closedAt: ticketsDate,
         });
@@ -51,15 +66,17 @@ export default class TicketFixtures {
       closedTickets++
     ) {
       let lastName = faker.name.lastName();
+      let table = Math.floor(Math.random() * 15 + 1);
 
       ticketsFixtures.push({
         number: ticketNumber,
         name: lastName,
+        seats: this.getSeatsFromTable(table),
         email: faker.internet.email(faker.name.firstName(), lastName),
-        phoneNumber: faker.phone.number("06 ## ## ## ##"),
+        phoneNumber: faker.phone.number("06########"),
         createdAt: ticketsDate,
         deliveredAt: ticketsDate,
-        table: Math.floor(Math.random() * 15 + 1),
+        table: table,
         placedAt: ticketsDate,
         closedAt: ticketsDate,
       });
@@ -76,8 +93,9 @@ export default class TicketFixtures {
       ticketsFixtures.push({
         number: ticketNumber,
         name: lastName,
+        seats: this.getSeatsFromTable(table),
         email: faker.internet.email(faker.name.firstName(), lastName),
-        phoneNumber: faker.phone.number("06 ## ## ## ##"),
+        phoneNumber: faker.phone.number("06########"),
         createdAt: DateUpdates.substractMinutesToDate(
           dateNow,
           minutesToSubstract
@@ -105,12 +123,14 @@ export default class TicketFixtures {
     ) {
       let lastName = faker.name.lastName();
       let minutesToSubstract = Math.floor(Math.random() * 10) + 1;
+      let table = Math.floor(Math.random() * 15 + 1);
 
       ticketsFixtures.push({
         number: ticketNumber,
         name: lastName,
+        seats: this.getSeatsFromTable(table),
         email: faker.internet.email(faker.name.firstName(), lastName),
-        phoneNumber: faker.phone.number("06 ## ## ## ##"),
+        phoneNumber: faker.phone.number("06########"),
         createdAt: DateUpdates.substractMinutesToDate(
           dateNow,
           minutesToSubstract
@@ -119,7 +139,7 @@ export default class TicketFixtures {
           dateNow,
           minutesToSubstract
         ),
-        table: Math.floor(Math.random() * 15) + 1,
+        table: table,
         closedAt: DateUpdates.addMinutesToDate(
           DateUpdates.substractMinutesToDate(dateNow, minutesToSubstract),
           15

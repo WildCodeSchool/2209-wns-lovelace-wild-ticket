@@ -80,6 +80,7 @@ export type MutationCreateTicketArgs = {
   name: Scalars['String'];
   phoneNumber?: InputMaybe<Scalars['String']>;
   restaurant: Scalars['String'];
+  seats: Scalars['Float'];
 };
 
 
@@ -290,6 +291,7 @@ export type Ticket = {
   phoneNumber?: Maybe<Scalars['String']>;
   placedAt?: Maybe<Scalars['DateTime']>;
   restaurant: Restaurant;
+  seats: Scalars['Float'];
   table?: Maybe<Table>;
 };
 
