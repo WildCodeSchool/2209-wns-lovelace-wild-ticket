@@ -1,4 +1,4 @@
-import { Arg, Args, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Args, Mutation, Query, Resolver } from "type-graphql";
 
 import Pole from "../../models/Pole/Pole.entity";
 import PoleRepository from "../../models/Pole/Pole.repository";
@@ -9,6 +9,11 @@ export default class PoleResolver {
   @Query(() => [Pole])
   poles(): Promise<Pole[]> {
     return PoleRepository.getPoles();
+  }
+
+  @Query(() => Pole)
+  getPoleById(@Arg("id") id: string): Promise<Pole | null> {
+    return PoleRepository.getPoleById(id);
   }
 
   @Mutation(() => Pole)

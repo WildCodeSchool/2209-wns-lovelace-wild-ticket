@@ -1,7 +1,6 @@
 import { IsUUID, IsPositive } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
-
 @ArgsType()
 class CreateTableArgs {
   @Field()
