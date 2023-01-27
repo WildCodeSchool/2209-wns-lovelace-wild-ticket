@@ -68,8 +68,6 @@ describe("AppUserRepository integration", () => {
               ""
             );
 
-            console.log(await AppUserRepository.getUsers());
-
             await AppUserRepository.signIn(
               emailAddress,
               "mot-de-passe-de-jean"
