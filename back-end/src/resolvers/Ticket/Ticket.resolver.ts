@@ -22,9 +22,15 @@ export default class TicketResolver {
 
   @Mutation(() => Ticket)
   createTicket(
-    @Args() { name, restaurant, email, phoneNumber }: CreateTicketArgs
+    @Args() { name, seats, restaurant, email, phoneNumber }: CreateTicketArgs
   ): Promise<Ticket> {
-    return TicketRepository.createTicket(name, restaurant, email, phoneNumber);
+    return TicketRepository.createTicket(
+      name,
+      seats,
+      restaurant,
+      email,
+      phoneNumber
+    );
   }
 
   @Mutation(() => Ticket)
