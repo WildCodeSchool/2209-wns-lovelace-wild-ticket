@@ -22,7 +22,7 @@ docker compose -f docker-compose.dev.yml exec back-end npm run test:watch
 When modifying the schema on the backend side, use the following command to update the library on the client side.
 
 ```
-graphql-codegen --config codegen.ts
+npm run gql-codegen
 ```
 ## Stack technique
 
