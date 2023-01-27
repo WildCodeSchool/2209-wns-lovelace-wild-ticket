@@ -22,10 +22,10 @@ export type AppUser = {
   email: Scalars['String'];
   id: Scalars['ID'];
   login: Scalars['String'];
-  poles: Array<Pole>;
+  poles?: Maybe<Array<Pole>>;
   restaurant?: Maybe<Restaurant>;
   role: Scalars['String'];
-  updatedAt: Scalars['DateTime'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type Mutation = {
@@ -45,7 +45,7 @@ export type Mutation = {
   updateDeliveredAt: Ticket;
   updatePlacedAt: Ticket;
   updatePole: Pole;
-  updateRestaurantName: Restaurant;
+  updateRestaurant: Restaurant;
   updateRestaurantOpeningTime: Restaurant;
   updateTable: Table;
   updateUser: AppUser;
@@ -137,8 +137,7 @@ export type MutationUpdateDeliveredAtArgs = {
 
 
 export type MutationUpdatePlacedAtArgs = {
-  id: Scalars['ID'];
-  table: Scalars['String'];
+  id: Scalars['String'];
 };
 
 
@@ -152,16 +151,19 @@ export type MutationUpdatePoleArgs = {
 };
 
 
-export type MutationUpdateRestaurantNameArgs = {
+export type MutationUpdateRestaurantArgs = {
   id: Scalars['ID'];
   name: Scalars['String'];
+  pole: Scalars['ID'];
 };
 
 
 export type MutationUpdateRestaurantOpeningTimeArgs = {
-  closeAt: Scalars['DateTime'];
+  hourCloseAt: Scalars['Float'];
+  hourOpenAt: Scalars['Float'];
   id: Scalars['ID'];
-  openAt: Scalars['DateTime'];
+  minutesCloseAt: Scalars['Float'];
+  minutesOpenAt: Scalars['Float'];
 };
 
 
@@ -191,14 +193,14 @@ export type MutationUpdateUserPasswordArgs = {
 export type Pole = {
   __typename?: 'Pole';
   address: Scalars['String'];
-  appUser: AppUser;
+  appUser?: Maybe<AppUser>;
   city: Scalars['String'];
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  restaurant: Array<Restaurant>;
-  updatedAt: Scalars['DateTime'];
+  restaurant?: Maybe<Array<Restaurant>>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
   zipCode: Scalars['String'];
 };
 
@@ -210,11 +212,13 @@ export type Query = {
   Ticket: Ticket;
   Tickets: Array<Ticket>;
   TicketsByRestaurant: Array<Ticket>;
+  getPoleById: Pole;
+  getRestaurantById: Restaurant;
+  getRestaurants: Array<Restaurant>;
   getUserById: AppUser;
   getUsers: Array<AppUser>;
   myProfile: AppUser;
   poles: Array<Pole>;
-  restaurants: Array<Restaurant>;
 };
 
 
@@ -238,21 +242,31 @@ export type QueryTicketsByRestaurantArgs = {
 };
 
 
+export type QueryGetPoleByIdArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryGetRestaurantByIdArgs = {
+  id: Scalars['String'];
+};
+
+
 export type QueryGetUserByIdArgs = {
   id: Scalars['String'];
 };
 
 export type Restaurant = {
   __typename?: 'Restaurant';
-  closeAt: Scalars['DateTime'];
+  closeAt?: Maybe<Scalars['DateTime']>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  openAt: Scalars['DateTime'];
+  openAt?: Maybe<Scalars['DateTime']>;
   pole: Pole;
   table: Array<Table>;
   ticket: Array<Ticket>;
-  updatedAt: Scalars['DateTime'];
+  updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type Table = {
@@ -261,22 +275,22 @@ export type Table = {
   id: Scalars['ID'];
   number: Scalars['Float'];
   restaurant: Restaurant;
-  ticket: Array<Ticket>;
+  ticket?: Maybe<Array<Ticket>>;
 };
 
 export type Ticket = {
   __typename?: 'Ticket';
-  closedAt: Scalars['DateTime'];
+  closedAt?: Maybe<Scalars['DateTime']>;
   createdAt: Scalars['DateTime'];
-  deliveredAt: Scalars['DateTime'];
+  deliveredAt?: Maybe<Scalars['DateTime']>;
   email: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
   number: Scalars['Float'];
-  phoneNumber: Scalars['String'];
-  placedAt: Scalars['DateTime'];
+  phoneNumber?: Maybe<Scalars['String']>;
+  placedAt?: Maybe<Scalars['DateTime']>;
   restaurant: Restaurant;
-  table: Table;
+  table?: Maybe<Table>;
 };
 
 export type MyProfileQueryVariables = Exact<{ [key: string]: never; }>;
