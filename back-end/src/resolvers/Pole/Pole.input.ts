@@ -8,6 +8,8 @@ import {
 } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
+const postalCodeRegex = new RegExp("^[0-9]{5}$");
+
 @ArgsType()
 class CreatePoleArgs {
   @Field()
@@ -27,7 +29,7 @@ class CreatePoleArgs {
 
   @Field()
   @IsString({ message: "Le code postal doit être une chaine de caractère." })
-  @Matches(/^[0-9]{5}$/, {
+  @Matches(postalCodeRegex, {
     message: "Le code postal n'est pas un code postal valide.",
   })
   zipCode: string;
