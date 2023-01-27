@@ -1,4 +1,13 @@
-import { IsUUID, MinLength, IsEmail, Matches, MaxLength } from "class-validator";
+import {
+  IsUUID,
+  MinLength,
+  IsEmail,
+  Matches,
+  MaxLength,
+  IsInt,
+  Min,
+  Max,
+} from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
 const regexPhoneNumber = new RegExp("^(06|07)[0-9]{8}$");
@@ -13,6 +22,12 @@ class CreateTicketArgs {
     message: "Le nom doit faire au maximum 255 caractères de long.",
   })
   name: string;
+
+  @Field()
+  @IsInt()
+  @Min(1)
+  @Max(8)
+  seats: number;
 
   @Field({ nullable: true })
   @IsEmail()
