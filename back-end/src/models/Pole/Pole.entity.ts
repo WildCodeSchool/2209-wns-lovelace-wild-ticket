@@ -3,6 +3,7 @@ import { Field, ID, ObjectType } from "type-graphql";
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -60,12 +61,13 @@ export default class Pole {
   @IsEmail()
   email: string;
 
-  @ManyToMany(() => AppUser, (appUser) => appUser.poles)
-  @Field(() => AppUser)
+  @ManyToMany(() => AppUser, (appUser) => appUser.poles, {onDelete: "CASCADE"})
+  @JoinTable()
+  @Field(() => AppUser, { nullable: true })
   appUser?: AppUser;
 
   @OneToMany(() => Restaurant, (restaurant) => restaurant.pole)
-  @Field(() => [Restaurant])
+  @Field(() => [Restaurant], { nullable: true })
   restaurant: Restaurant[];
 
   @Column()
@@ -73,6 +75,6 @@ export default class Pole {
   createdAt: Date;
 
   @Column({ nullable: true })
-  @Field()
+  @Field({ nullable: true })
   updatedAt?: Date;
 }

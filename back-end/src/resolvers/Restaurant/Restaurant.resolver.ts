@@ -1,4 +1,4 @@
-import { Arg, Args, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Args, Mutation, Query, Resolver } from "type-graphql";
 
 import Restaurant from "../../models/Restaurant/Restaurant.entity";
 import RestaurantRepository from "../../models/Restaurant/Restaurant.repository";
@@ -11,8 +11,13 @@ import {
 @Resolver(Restaurant)
 export default class RestaurantResolver {
   @Query(() => [Restaurant])
-  restaurants(): Promise<Restaurant[]> {
+  getRestaurants(): Promise<Restaurant[]> {
     return RestaurantRepository.getRestaurants();
+  }
+
+  @Query(() => Restaurant)
+  getRestaurantById(@Arg("id") id: string): Promise<Restaurant | null> {
+    return RestaurantRepository.getRestaurantById(id);
   }
 
   @Mutation(() => Restaurant)
@@ -23,20 +28,29 @@ export default class RestaurantResolver {
   }
 
   @Mutation(() => Restaurant)
-  updateRestaurantName(
-    @Args() { id, name }: UpdateRestaurantArgs
+  updateRestaurant(
+    @Args() { id, name, pole }: UpdateRestaurantArgs
   ): Promise<Restaurant> {
-    return RestaurantRepository.updateRestaurantName(id, name);
+    return RestaurantRepository.updateRestaurantName(id, name, pole);
   }
 
   @Mutation(() => Restaurant)
   updateRestaurantOpeningTime(
-    @Args() { id, openAt, closeAt }: UpdateRestaurantOpeningTime
+    @Args()
+    {
+      id,
+      hourOpenAt,
+      minutesOpenAt,
+      hourCloseAt,
+      minutesCloseAt,
+    }: UpdateRestaurantOpeningTime
   ): Promise<Restaurant> {
     return RestaurantRepository.updateRestaurantOpeningTime(
       id,
-      openAt,
-      closeAt
+      hourOpenAt,
+      minutesOpenAt,
+      hourCloseAt,
+      minutesCloseAt
     );
   }
 

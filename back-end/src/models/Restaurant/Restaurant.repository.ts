@@ -5,6 +5,7 @@ import RestaurantDb from "./Restaurant.db";
 import RestaurantFixtures, {
   RestaurantFixturesType,
 } from "../../DataFixtures/RestaurantFixtures";
+import DateUpdates from "../../services/DateUpdates";
 
 export default class RestaurantRepository extends RestaurantDb {
   static async initializeRestaurants(): Promise<void> {
@@ -48,36 +49,47 @@ export default class RestaurantRepository extends RestaurantDb {
   ): Promise<Restaurant> {
     const createdAt = new Date();
     const pole = (await PoleRepository.getPoleById(idPole)) as Pole;
-    const newRestaurant = new Restaurant(name, pole, createdAt);
+    const openAt = DateUpdates.updateOpenedClosedHoursRestaurant(11, 0o0);
+    const closeAt = DateUpdates.updateOpenedClosedHoursRestaurant(23, 30);
+    const newRestaurant = new Restaurant(name, pole, createdAt, undefined, openAt, closeAt);
     await this.repository.save(newRestaurant);
     return newRestaurant;
   }
 
   static async updateRestaurantName(
     id: string,
-    name: string
+    name: string,
+    pole: string,
   ): Promise<
     {
       id: string;
       name: string;
+      pole: Pole;
     } & Restaurant
   > {
     const existingRestaurant = await this.repository.findOneBy({ id });
+    const updatedPole = (await PoleRepository.getPoleById(pole)) as Pole;
     const updatedAt = new Date();
     if (!existingRestaurant) {
       throw Error("No existing Restaurant matching ID.");
     }
+    if (!updatedPole) {
+      throw Error("No existing Pole matching ID.");
+    }
     return this.repository.save({
       id,
       name,
+      pole: updatedPole,
       updatedAt: updatedAt,
     });
   }
 
   static async updateRestaurantOpeningTime(
     id: string,
-    openAt: Date,
-    closeAt: Date
+    hourOpenAt: number,
+    minutesOpenAt: number,
+    hourCloseAt: number,
+    minutesCloseAt: number,
   ): Promise<
     {
       id: string;
@@ -90,6 +102,8 @@ export default class RestaurantRepository extends RestaurantDb {
     if (!existingRestaurant) {
       throw Error("No existing Restaurant matching ID.");
     }
+    const openAt = DateUpdates.updateOpenedClosedHoursRestaurant(hourOpenAt, minutesOpenAt);
+    const closeAt = DateUpdates.updateOpenedClosedHoursRestaurant(hourCloseAt, minutesCloseAt);
     return this.repository.save({
       id,
       updatedAt: updatedAt,
