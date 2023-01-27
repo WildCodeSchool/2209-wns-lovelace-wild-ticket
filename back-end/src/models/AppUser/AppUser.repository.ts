@@ -75,7 +75,6 @@ export default class AppUserRepository extends AppUserDb {
     restaurant: string
   ): Promise<AppUser> {
     const createdAt = new Date();
-    console.log(restaurant);
     let appUserPoles = [];
     let appUserRestaurant = undefined;
 
@@ -100,8 +99,6 @@ export default class AppUserRepository extends AppUserDb {
       appUserRestaurant,
       appUserPoles
     );
-
-    console.log(newAppUser);
 
     return await this.repository.save(newAppUser);
   }
