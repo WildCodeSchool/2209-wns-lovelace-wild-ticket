@@ -1,4 +1,6 @@
+import { hashSync } from "bcryptjs";
 import {
+  clearAllRepositories,
   closeConnection,
   getDatabase,
   initializeDatabaseRepositories,
@@ -18,14 +20,7 @@ describe("AppUserRepository integration", () => {
   });
 
   beforeEach(async () => {
-    // eslint-disable-next-line no-restricted-syntax
-    const database = await getDatabase();
-    for (const entity of database.entityMetadatas) {
-      const repository = database.getRepository(entity.name);
-      await repository.query(
-        `TRUNCATE ${entity.tableName} RESTART IDENTITY CASCADE;`
-      );
-    }
+    clearAllRepositories();
   });
 
   describe("signIn", () => {
@@ -44,9 +39,11 @@ describe("AppUserRepository integration", () => {
           it("throws invalid credentials error", async () => {
             await AppUserRepository.createUser(
               "Jean",
-              "User",
               emailAddress,
-              "mot-de-passe-de-jean"
+              hashSync("mot-de-passe-de-jean"),
+              "ROLE_ADMIN",
+              [],
+              ""
             );
 
             expect(() =>
@@ -59,9 +56,11 @@ describe("AppUserRepository integration", () => {
           it("creates session in database", async () => {
             await AppUserRepository.createUser(
               "Jean",
-              "User",
               emailAddress,
-              "mot-de-passe-de-jean"
+              hashSync("mot-de-passe-de-jean"),
+              "ROLE_ADMIN",
+              [],
+              ""
             );
 
             await AppUserRepository.signIn(
@@ -71,15 +70,17 @@ describe("AppUserRepository integration", () => {
 
             const sessions = await SessionRepository.repository.find();
             expect(sessions).toHaveLength(1);
-            expect(sessions[0].user.emailAddress).toEqual(emailAddress);
+            expect(sessions[0].user.email).toEqual(emailAddress);
           });
 
           it("returns user and session", async () => {
             await AppUserRepository.createUser(
               "Jean",
-              "User",
               emailAddress,
-              "mot-de-passe-de-jean"
+              hashSync("mot-de-passe-de-jean"),
+              "ROLE_ADMIN",
+              [],
+              ""
             );
 
             const result = await AppUserRepository.signIn(
@@ -88,7 +89,7 @@ describe("AppUserRepository integration", () => {
             );
             expect(result).toHaveProperty("user");
             expect(result).toHaveProperty("session");
-            expect(result.user.emailAddress).toEqual(emailAddress);
+            expect(result.user.email).toEqual(emailAddress);
           });
         });
       });
@@ -97,8 +98,50 @@ describe("AppUserRepository integration", () => {
 
   describe("signOut", () => {
     describe("when passed existing user", () => {
-      it("deletes session in database", () => {});
-      it("returns user", () => {});
+      const emailAddress = "jean@user.com";
+      it("deletes session in database", async () => {
+        await AppUserRepository.createUser(
+          "Jean",
+          emailAddress,
+          hashSync("mot-de-passe-de-jean"),
+          "ROLE_ADMIN",
+          [],
+          ""
+        );
+
+        const signIn = await AppUserRepository.signIn(
+          emailAddress,
+          "mot-de-passe-de-jean"
+        );
+
+        const userId = signIn.user.id;
+
+        const signOut = await AppUserRepository.signOut(userId);
+        
+        expect(signOut).not.toHaveProperty("session");
+      });
+      
+      it("returns user", async () => {
+        await AppUserRepository.createUser(
+          "Jean",
+          emailAddress,
+          hashSync("mot-de-passe-de-jean"),
+          "ROLE_ADMIN",
+          [],
+          ""
+        );
+
+        const signIn = await AppUserRepository.signIn(
+          emailAddress,
+          "mot-de-passe-de-jean"
+        );
+
+        const userId = signIn.user.id;
+
+        const signOut = await AppUserRepository.signOut(userId);
+
+        expect(signOut.email).toEqual(emailAddress);
+      });
     });
   });
 });
