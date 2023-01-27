@@ -91,7 +91,6 @@ export default class TicketFixtures {
           dateNow,
           minutesToSubstract
         ),
-        closedAt: undefined,
       });
       ticketNumber++;
     }
@@ -121,7 +120,6 @@ export default class TicketFixtures {
           minutesToSubstract
         ),
         table: Math.floor(Math.random() * 15) + 1,
-        placedAt: undefined,
         closedAt: DateUpdates.addMinutesToDate(
           DateUpdates.substractMinutesToDate(dateNow, minutesToSubstract),
           15
