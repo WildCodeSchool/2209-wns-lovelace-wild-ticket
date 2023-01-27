@@ -1,13 +1,16 @@
-import { IsUUID, MinLength, IsEmail, IsMobilePhone, Matches } from "class-validator";
+import { IsUUID, MinLength, IsEmail, Matches, MaxLength } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
-// const regexPhoneNumber = '^0[1-9][0-9]{8}$';
+const regexPhoneNumber = new RegExp("^(06|07)[0-9]{8}$");
 
 @ArgsType()
 class CreateTicketArgs {
   @Field()
   @MinLength(1, {
     message: "Le prénom doit faire au moins un caractère de long.",
+  })
+  @MaxLength(255, {
+    message: "Le nom doit faire au maximum 255 caractères de long.",
   })
   name: string;
 
@@ -16,14 +19,12 @@ class CreateTicketArgs {
   email?: string;
 
   @Field({ nullable: true })
-  // @IsMobilePhone()
-  // @Matches(regexPhoneNumber)
+  @Matches(regexPhoneNumber)
   phoneNumber?: string;
 
   @Field()
   @IsUUID()
   restaurant: string;
-
 }
 
 @ArgsType()
