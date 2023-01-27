@@ -27,6 +27,7 @@ export default class TicketRepository extends TicketDb {
           const newTicket = new Ticket(
             ticket.number,
             ticket.name,
+            ticket.seats,
             ticket.createdAt,
             restaurant,
             ticket.email,
@@ -67,6 +68,7 @@ export default class TicketRepository extends TicketDb {
 
   static async createTicket(
     name: string,
+    seats: number,
     restaurantId: string,
     email: string | undefined,
     phoneNumber: string | undefined
@@ -78,13 +80,14 @@ export default class TicketRepository extends TicketDb {
 
     const lastTicket = await this.getLastTicket();
     let ticketNumber = 1;
-    lastTicket && lastTicket.number < 10
+    lastTicket && lastTicket.number < 1000
       ? (ticketNumber = lastTicket.number + 1)
       : ticketNumber;
     const createdAt = new Date();
     const newTicket = new Ticket(
       ticketNumber,
       name,
+      seats,
       createdAt,
       restaurant,
       email,
@@ -120,9 +123,7 @@ export default class TicketRepository extends TicketDb {
     });
   }
 
-  static async updatePlacedAt(
-    id: string
-  ): Promise<
+  static async updatePlacedAt(id: string): Promise<
     {
       id: string;
     } & Ticket
