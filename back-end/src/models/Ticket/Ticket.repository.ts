@@ -148,7 +148,7 @@ export default class TicketRepository extends TicketDb {
     const existingTicket = await this.repository.findOneBy({ id });
 
     if (!existingTicket) {
-      throw Error("Aucun ticket ne correspond à cet ID.");
+      throw new Error("Aucun ticket ne correspond à cet ID.");
     }
 
     const placedAt = new Date();
@@ -169,7 +169,7 @@ export default class TicketRepository extends TicketDb {
     const existingTicket = await this.repository.findOneBy({ id });
 
     if (!existingTicket) {
-      throw Error("No existing Ticket matching ID.");
+      throw new Error("Aucun ticket ne correspond à cet ID.");
     }
 
     const closedAt = new Date();

@@ -23,13 +23,25 @@ export default class Ticket {
     this.name = name;
     this.seats = seats;
     this.restaurant = restaurant;
-    this.email = email;
-    this.phoneNumber = phoneNumber;
-    this.table = table;
     this.createdAt = createdAt;
-    this.deliveredAt = deliveredAt;
-    this.placedAt = placedAt;
-    this.closedAt = closedAt;
+    if (email) {
+      this.email = email;
+    }
+    if (phoneNumber) {
+      this.phoneNumber = phoneNumber;
+    }
+    if (table) {
+      this.table = table;
+    }
+    if (deliveredAt) {
+      this.deliveredAt = deliveredAt;
+    }
+    if (placedAt) {
+      this.placedAt = placedAt;
+    }
+    if (closedAt) {
+      this.closedAt = closedAt;
+    }
   }
 
   @PrimaryGeneratedColumn("uuid")
