@@ -19,7 +19,7 @@ describe("AppUserRepository integration", () => {
   });
 
   beforeEach(async () => {
-    clearAllRepositories();
+    await clearAllRepositories();
   });
 
   describe("signIn", () => {

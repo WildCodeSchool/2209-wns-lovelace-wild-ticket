@@ -19,7 +19,7 @@ describe("TicketRepository integration", () => {
   });
 
   beforeEach(async () => {
-    clearAllRepositories();
+    await clearAllRepositories();
   });
 
   describe("createTicket", () => {
