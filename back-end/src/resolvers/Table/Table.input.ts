@@ -17,10 +17,18 @@ class CreateTableArgs {
 }
 
 @ArgsType()
-class UpdateTableArgs extends CreateTableArgs {
+class UpdateTableArgs {
   @Field(() => ID)
   @IsUUID()
   id: string;
+
+  @Field()
+  @IsPositive()
+  number: number;
+
+  @Field()
+  @IsPositive()
+  capacity: number;
 }
 
 export { CreateTableArgs, UpdateTableArgs };
