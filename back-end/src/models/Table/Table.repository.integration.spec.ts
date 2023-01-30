@@ -1,4 +1,8 @@
-import { clearAllRepositories, closeConnection, initializeDatabaseRepositories } from "../../database/utils";
+import {
+  clearAllRepositories,
+  closeConnection,
+  initializeDatabaseRepositories,
+} from "../../database/utils";
 import PoleRepository from "../Pole/Pole.repository";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import TableRepository from "./Table.repository";
@@ -22,11 +26,7 @@ describe("TableRepository integration", () => {
         let falseUuid = "c1b646ca-926b-4fdc-8571-1423d47c295d";
 
         return expect(() =>
-          TableRepository.createTable(
-            1,
-            2,
-            falseUuid,
-          )
+          TableRepository.createTable(1, 2, falseUuid)
         ).rejects.toThrowError("Aucun restaurant ne correspond à cet ID.");
       });
     });
@@ -58,15 +58,11 @@ describe("TableRepository integration", () => {
         let falseUuid = "c1b646ca-926b-4fdc-8571-1423d47c295d";
 
         return expect(() =>
-          TableRepository.updateTable(
-            falseUuid,
-            1,
-            2,
-          )
+          TableRepository.updateTable(falseUuid, 1, 2)
         ).rejects.toThrowError("Aucune table ne correspond à cet ID.");
       });
     });
-    describe("when a ticket exists", () => {
+    describe("when a table exists", () => {
       it("returns the updated table", async () => {
         const pole = await PoleRepository.createPole(
           "Pôle de Lyon",
@@ -96,16 +92,12 @@ describe("TableRepository integration", () => {
         let falseUuid = "c1b646ca-926b-4fdc-8571-1423d47c295d";
 
         return expect(() =>
-          TableRepository.updateTable(
-            falseUuid,
-            1,
-            2,
-          )
+          TableRepository.updateTable(falseUuid, 1, 2)
         ).rejects.toThrowError("Aucune table ne correspond à cet ID.");
       });
     });
     describe("when a ticket exists", () => {
-      it("returns the updated table", async () => {
+      it("expects table is null in database", async () => {
         const pole = await PoleRepository.createPole(
           "Pôle de Lyon",
           "rue de la Poste",
