@@ -7,6 +7,7 @@ import {
   IsInt,
   Min,
   Max,
+  ValidateIf,
 } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
@@ -31,10 +32,12 @@ class CreateTicketArgs {
 
   @Field({ nullable: true })
   @IsEmail()
+  @ValidateIf((value) => value == null)
   email?: string;
 
   @Field({ nullable: true })
   @Matches(regexPhoneNumber)
+  @ValidateIf((value) => value == null)
   phoneNumber?: string;
 
   @Field()
