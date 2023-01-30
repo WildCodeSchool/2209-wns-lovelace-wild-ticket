@@ -47,39 +47,49 @@ export default class RestaurantRepository extends RestaurantDb {
     name: string,
     idPole: string
   ): Promise<Restaurant> {
-    const createdAt = new Date();
     const pole = (await PoleRepository.getPoleById(idPole)) as Pole;
+
+    if (!pole) {
+      throw new Error("Aucun pôle ne correspond à cet ID.");
+    }
+
+    const createdAt = new Date();
+
     const openAt = DateUpdates.updateOpenedClosedHoursRestaurant(11, 0o0);
     const closeAt = DateUpdates.updateOpenedClosedHoursRestaurant(23, 30);
-    const newRestaurant = new Restaurant(name, pole, createdAt, undefined, openAt, closeAt);
+
+    const newRestaurant = new Restaurant(
+      name,
+      pole,
+      createdAt,
+      undefined,
+      openAt,
+      closeAt
+    );
     await this.repository.save(newRestaurant);
     return newRestaurant;
   }
 
-  static async updateRestaurantName(
+  static async updateRestaurant(
     id: string,
-    name: string,
-    pole: string,
+    name: string
   ): Promise<
     {
       id: string;
       name: string;
-      pole: Pole;
     } & Restaurant
   > {
     const existingRestaurant = await this.repository.findOneBy({ id });
-    const updatedPole = (await PoleRepository.getPoleById(pole)) as Pole;
-    const updatedAt = new Date();
+
     if (!existingRestaurant) {
-      throw Error("No existing Restaurant matching ID.");
+      throw Error("Aucun restaurant ne correspond à cet ID.");
     }
-    if (!updatedPole) {
-      throw Error("No existing Pole matching ID.");
-    }
+
+    const updatedAt = new Date();
+
     return this.repository.save({
       id,
       name,
-      pole: updatedPole,
       updatedAt: updatedAt,
     });
   }
@@ -89,7 +99,7 @@ export default class RestaurantRepository extends RestaurantDb {
     hourOpenAt: number,
     minutesOpenAt: number,
     hourCloseAt: number,
-    minutesCloseAt: number,
+    minutesCloseAt: number
   ): Promise<
     {
       id: string;
@@ -98,12 +108,22 @@ export default class RestaurantRepository extends RestaurantDb {
     } & Restaurant
   > {
     const existingRestaurant = await this.repository.findOneBy({ id });
-    const updatedAt = new Date();
+
     if (!existingRestaurant) {
       throw Error("No existing Restaurant matching ID.");
     }
-    const openAt = DateUpdates.updateOpenedClosedHoursRestaurant(hourOpenAt, minutesOpenAt);
-    const closeAt = DateUpdates.updateOpenedClosedHoursRestaurant(hourCloseAt, minutesCloseAt);
+
+    const updatedAt = new Date();
+
+    const openAt = DateUpdates.updateOpenedClosedHoursRestaurant(
+      hourOpenAt,
+      minutesOpenAt
+    );
+    const closeAt = DateUpdates.updateOpenedClosedHoursRestaurant(
+      hourCloseAt,
+      minutesCloseAt
+    );
+
     return this.repository.save({
       id,
       updatedAt: updatedAt,
@@ -114,12 +134,16 @@ export default class RestaurantRepository extends RestaurantDb {
 
   static async deleteRestaurant(id: string): Promise<Restaurant> {
     const existingRestaurant = await this.findRestaurantById(id);
+
     if (!existingRestaurant) {
-      throw Error("No existing Restaurant matching ID.");
+      throw Error("Aucun restaurant ne correspond à cet ID.");
     }
+
     await this.repository.remove(existingRestaurant);
+
     // resetting ID because existingRestaurant loses ID after calling remove
     existingRestaurant.id = id;
+
     return existingRestaurant;
   }
 }

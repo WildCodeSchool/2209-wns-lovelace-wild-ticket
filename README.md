@@ -10,6 +10,21 @@ Docker and Docker Compose are required on host system.
 ./build-start.dev.sh
 ```
 
+## Development mode
+
+### Back-end tests
+
+When you develop some tests with Jest, and have some underlines problems with VsCode :
+
+1. Build your app
+2. Go to back-end > tsconfig.ts
+3. Comment these lines
+```
+"exclude": ["**/*.test.ts", "**/*.spec.ts"]
+```
+4. Do your job nicely.
+5. If you have to rebuild Docker during tests or if your test development is done, just uncomment those lines before.
+
 ## Run Integration testing with test-database (back-end)
 
 Use this command in the root of the project, when the server is running.
