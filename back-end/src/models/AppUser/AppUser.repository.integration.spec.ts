@@ -2,7 +2,6 @@ import { hashSync } from "bcryptjs";
 import {
   clearAllRepositories,
   closeConnection,
-  getDatabase,
   initializeDatabaseRepositories,
 } from "../../database/utils";
 import AppUserRepository, {
@@ -117,10 +116,10 @@ describe("AppUserRepository integration", () => {
         const userId = signIn.user.id;
 
         const signOut = await AppUserRepository.signOut(userId);
-        
+
         expect(signOut).not.toHaveProperty("session");
       });
-      
+
       it("returns user", async () => {
         await AppUserRepository.createUser(
           "Jean",
