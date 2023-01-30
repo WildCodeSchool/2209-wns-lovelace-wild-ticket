@@ -4,6 +4,7 @@ import {
   closeConnection,
   initializeDatabaseRepositories,
 } from "../../database/utils";
+import PoleRepository from "../Pole/Pole.repository";
 import AppUserRepository, {
   INVALID_CREDENTIALS_ERROR_MESSAGE,
 } from "./AppUser.repository";
@@ -20,6 +21,87 @@ describe("AppUserRepository integration", () => {
 
   beforeEach(async () => {
     await clearAllRepositories();
+  });
+
+  describe("updateAppUser", () => {
+    describe("when a user doesn't exists", () => {
+      it("returns invalid user error", async () => {
+        let falseUuid = "c1b646ca-926b-4fdc-8571-1423d47c295d";
+
+        return expect(() =>
+          AppUserRepository.updateUser(
+            falseUuid,
+            "Jean",
+            "jean@user.com",
+            "ROLE_ADMIN",
+            [],
+            ""
+          )
+        ).rejects.toThrowError("Aucun utilisateur ne correspond à cet ID.");
+      });
+    });
+    describe("when a user exists", () => {
+      it("returns the updated user", async () => {
+        const pole = await PoleRepository.createPole(
+          "Pôle de Lyon",
+          "rue de la Poste",
+          "69002",
+          "Lyon",
+          "polelyon@polelyon.fr"
+        );
+
+        const user = await AppUserRepository.createUser(
+          "Jean",
+          "jean@user.com",
+          hashSync("mot-de-passe-de-jean"),
+          "ROLE_ADMIN",
+          [],
+          ""
+        );
+
+        const updatedUser = await AppUserRepository.updateUser(
+          user.id,
+          "Jean",
+          "jean@user.fr",
+          "ROLE_ADMIN",
+          [pole.id],
+          ""
+        );
+
+        expect(updatedUser.id).toBe(user.id);
+        expect(updatedUser.email).toBe("jean@user.fr");
+      });
+    });
+  });
+
+  describe("deleteUser", () => {
+    describe("when a user doesn't exists", () => {
+      it("returns invalid user error", async () => {
+        let falseUuid = "c1b646ca-926b-4fdc-8571-1423d47c295d";
+
+        return expect(() =>
+          AppUserRepository.deleteUser(falseUuid)
+        ).rejects.toThrowError("Aucun utilisateur ne correspond à cet ID.");
+      });
+    });
+    describe("when a user exists", () => {
+      it("expects user is null in database", async () => {
+        const user = await AppUserRepository.createUser(
+          "Jean",
+          "jean@user.com",
+          hashSync("mot-de-passe-de-jean"),
+          "ROLE_ADMIN",
+          [],
+          ""
+        );
+
+        await AppUserRepository.deleteUser(user.id);
+
+        const userById = await PoleRepository.getPoleById(user.id);
+
+        expect(userById).toBe(null);
+      });
+    });
   });
 
   describe("signIn", () => {
