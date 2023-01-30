@@ -82,7 +82,7 @@ export default class RestaurantRepository extends RestaurantDb {
     const existingRestaurant = await this.repository.findOneBy({ id });
 
     if (!existingRestaurant) {
-      throw Error("Aucun restaurant ne correspond à cet ID.");
+      throw new Error("Aucun restaurant ne correspond à cet ID.");
     }
 
     const updatedAt = new Date();
@@ -110,7 +110,7 @@ export default class RestaurantRepository extends RestaurantDb {
     const existingRestaurant = await this.repository.findOneBy({ id });
 
     if (!existingRestaurant) {
-      throw Error("No existing Restaurant matching ID.");
+      throw new Error("Aucun restaurant ne correspond à cet ID.");
     }
 
     const updatedAt = new Date();
@@ -136,7 +136,7 @@ export default class RestaurantRepository extends RestaurantDb {
     const existingRestaurant = await this.findRestaurantById(id);
 
     if (!existingRestaurant) {
-      throw Error("Aucun restaurant ne correspond à cet ID.");
+      throw new Error("Aucun restaurant ne correspond à cet ID.");
     }
 
     await this.repository.remove(existingRestaurant);

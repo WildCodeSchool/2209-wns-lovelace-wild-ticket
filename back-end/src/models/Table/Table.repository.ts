@@ -74,7 +74,7 @@ export default class TableRepository extends TableDb {
     const existingTable = await this.repository.findOneBy({ id });
 
     if (!existingTable) {
-      throw Error("Aucune table ne correspond à cet ID.");
+      throw new Error("Aucune table ne correspond à cet ID.");
     }
 
     return this.repository.save({
@@ -88,7 +88,7 @@ export default class TableRepository extends TableDb {
     const existingTable = await this.findTableById(id);
 
     if (!existingTable) {
-      throw Error("Aucune table ne correspond à cet ID.");
+      throw new Error("Aucune table ne correspond à cet ID.");
     }
 
     await this.repository.remove(existingTable);

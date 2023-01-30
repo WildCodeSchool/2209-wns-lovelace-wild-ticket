@@ -60,7 +60,7 @@ export default class AppUserRepository extends AppUserDb {
     const user = this.repository.findOneBy({ id });
 
     if (!user) {
-      throw Error("Aucun utilisateur de correspond à cet id.");
+      throw new Error("Aucun utilisateur de correspond à cet id.");
     }
 
     return user;
@@ -114,7 +114,7 @@ export default class AppUserRepository extends AppUserDb {
     const userToUpdate = await this.getUserById(id);
 
     if (!userToUpdate) {
-      throw Error("Aucun utilisateur ne correspond à cet ID.");
+      throw new Error("Aucun utilisateur ne correspond à cet ID.");
     }
 
     const updatedAt = new Date();
@@ -151,7 +151,7 @@ export default class AppUserRepository extends AppUserDb {
     const userToUpdate = await this.getUserById(id);
 
     if (!userToUpdate) {
-      throw Error("Aucun utilisateur ne correspond à cet ID.");
+      throw new Error("Aucun utilisateur ne correspond à cet ID.");
     }
 
     const updatedAt = new Date();
@@ -167,7 +167,7 @@ export default class AppUserRepository extends AppUserDb {
     const user = await this.getUserById(id);
 
     if (!user) {
-      throw Error("Aucun utilisateur ne correspond à cet ID.");
+      throw new Error("Aucun utilisateur ne correspond à cet ID.");
     }
 
     await this.repository.remove(user);
@@ -194,7 +194,7 @@ export default class AppUserRepository extends AppUserDb {
     const user = await this.getUserById(id);
 
     if (!user) {
-      throw Error("Aucun utilisateur de correspond à cet id.");
+      throw new Error("Aucun utilisateur ne correspond à cet id.");
     }
 
     await SessionRepository.deleteSession(user);

@@ -68,7 +68,7 @@ export default class PoleRepository {
     const existingPole = await this.repository.findOneBy({ id });
 
     if (!existingPole) {
-      throw Error("Aucun pôle ne correspond à cet ID.");
+      throw new Error("Aucun pôle ne correspond à cet ID.");
     }
 
     const updatedAt = new Date();
@@ -88,7 +88,7 @@ export default class PoleRepository {
     const existingPole = await this.getPoleById(id);
 
     if (!existingPole) {
-      throw Error("Aucun pôle ne correspond à cet ID.");
+      throw new Error("Aucun pôle ne correspond à cet ID.");
     }
 
     await this.repository.remove(existingPole);
