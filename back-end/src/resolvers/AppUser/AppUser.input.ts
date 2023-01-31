@@ -23,7 +23,7 @@ export class UserCreationArgs {
   login: string;
 
   @Field()
-  @IsEmail()
+  @IsEmail({ message: "L'email rentré n'est pas au bon format." })
   @MaxLength(255, {
     message: "L'adresse email doit faire au plus 255 caractères de long.",
   })
@@ -62,7 +62,7 @@ export class UserUpdateArgs {
   login: string;
 
   @Field()
-  @IsEmail()
+  @IsEmail({ message: "L'email rentré n'est pas au bon format." })
   @MaxLength(255, {
     message: "L'adresse email doit faire au plus 255 caractères de long.",
   })
@@ -96,7 +96,7 @@ export class updateUserPasswordArgs {
 @ArgsType()
 export class SignInArgs {
   @Field()
-  @IsEmail()
+  @IsEmail({ message: "L'email rentré n'est pas au bon format." })
   @MaxLength(255, {
     message: "L'adresse email doit faire au plus 255 caractères de long.",
   })

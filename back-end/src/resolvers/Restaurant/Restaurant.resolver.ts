@@ -29,9 +29,9 @@ export default class RestaurantResolver {
 
   @Mutation(() => Restaurant)
   updateRestaurant(
-    @Args() { id, name, pole }: UpdateRestaurantArgs
+    @Args() { id, name }: UpdateRestaurantArgs
   ): Promise<Restaurant> {
-    return RestaurantRepository.updateRestaurantName(id, name, pole);
+    return RestaurantRepository.updateRestaurant(id, name);
   }
 
   @Mutation(() => Restaurant)

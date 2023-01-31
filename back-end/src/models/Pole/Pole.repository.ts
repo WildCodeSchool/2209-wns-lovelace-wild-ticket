@@ -11,8 +11,7 @@ export default class PoleRepository {
   }
 
   static async clearRepository(): Promise<void> {
-    this.repository.delete({});
-  }
+    await this.repository.delete({});  }
 
   static async initializePoles(): Promise<void> {
     const poleFixtures = PoleFixtures.PoleFixtures;
@@ -42,7 +41,9 @@ export default class PoleRepository {
   ): Promise<Pole> {
     const createdAt = new Date();
     const newPole = new Pole(name, address, zipCode, city, email, createdAt);
+
     await this.repository.save(newPole);
+
     return newPole;
   }
 
@@ -64,10 +65,13 @@ export default class PoleRepository {
     } & Pole
   > {
     const existingPole = await this.repository.findOneBy({ id });
-    const updatedAt = new Date();
+
     if (!existingPole) {
-      throw Error("No existing Pole matching ID.");
+      throw new Error("Aucun pôle ne correspond à cet ID.");
     }
+
+    const updatedAt = new Date();
+
     return this.repository.save({
       id,
       name,
@@ -81,12 +85,16 @@ export default class PoleRepository {
 
   static async deletePole(id: string): Promise<Pole> {
     const existingPole = await this.getPoleById(id);
+
     if (!existingPole) {
-      throw Error("No existing Pole matching ID.");
+      throw new Error("Aucun pôle ne correspond à cet ID.");
     }
+
     await this.repository.remove(existingPole);
+
     // resetting ID because existingPole loses ID after calling remove
     existingPole.id = id;
+
     return existingPole;
   }
 }
