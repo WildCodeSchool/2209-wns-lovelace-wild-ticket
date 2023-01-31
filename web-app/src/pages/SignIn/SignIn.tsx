@@ -98,7 +98,7 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
         </form>
       </div>
     </>
-  )
+  );
 };
 
 export default SignIn;
