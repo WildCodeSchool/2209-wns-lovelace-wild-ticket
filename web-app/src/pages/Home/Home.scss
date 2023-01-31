@@ -1,0 +1,33 @@
+@import '../../index.scss';
+
+.HomePage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+ 
+  .HomePageButtonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 400px;
+
+    button {
+      width: 280px;
+      height: 40px;
+      border: none;
+      border-radius: 5px;
+      background-color: #164e63;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      
+      & :hover {
+        cursor: pointer;
+      }
+    }
+ }
+}

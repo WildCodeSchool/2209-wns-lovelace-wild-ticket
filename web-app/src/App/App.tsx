@@ -1,58 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route  } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { MyProfileQuery } from "../gql/graphql";
 
 import Home from "../pages/Home/Home";
-import { HOME_PATH, SIGN_IN_PATH, SIGN_UP_PATH, FORGOT_PASSWORD_PATH } from "../pages/paths";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import { DASHBOARD_HOME, HOME_PATH, SIGN_IN_PATH } from "../pages/paths";
 import SignIn from "../pages/SignIn/SignIn";
-import ForgotPassword from "../pages/SignIn/ForgotPassword";
-import SignUp from "../pages/SignUp/SignUp";
 
 const MY_PROFILE = gql`
   query MyProfile {
     myProfile {
       id
       email
+      role
+      poles {
+        id
+        name
+      }
+      restaurant {
+        id
+        name
+      }
     }
   }
 `;
 
 function App() {
-  const { data, refetch } = useQuery<MyProfileQuery>(MY_PROFILE);
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+
+  const { data, refetch } = useQuery<MyProfileQuery>(MY_PROFILE, {
+    onCompleted: (data) => {
+      if (data.myProfile) {
+        setIsUserAuthenticated(true);
+      }
+    },
+    onError: () => {
+      setIsUserAuthenticated(false);
+    }
+  });
 
   return (
     <>
-      <header>
-        <div>
-          <h1>
-            <Link to={HOME_PATH}>R'Ticket</Link>
-          </h1>
-          {data?.myProfile ? (
-            <i>{data?.myProfile.email}</i>
-          ) : (
-            <nav>
-              <Link to={SIGN_UP_PATH}>Inscription</Link>
-              {" | "}
-              <Link to={SIGN_IN_PATH}>Connexion</Link>
-              {" | "}
-              <Link to={FORGOT_PASSWORD_PATH}>ForgotPassword</Link>
-            </nav>
-          )}
-        </div>
-      </header>
       <main>
         <Routes>
-          <Route path={HOME_PATH} element={<Home />} />
-          <Route path={SIGN_UP_PATH} element={<SignUp />} />
+          <Route path={HOME_PATH} element={<Home isUserAuth={isUserAuthenticated} />} />
           <Route path={SIGN_IN_PATH} element={<SignIn onSuccess={refetch} />} />
-          <Route path={FORGOT_PASSWORD_PATH} element={<ForgotPassword />} />
+          <Route path={DASHBOARD_HOME} element={<Dashboard userData={data?.myProfile} />} />
         </Routes>
       </main>
-      <footer>
-        <div></div>
-      </footer>
       <ToastContainer />
     </>
   );
