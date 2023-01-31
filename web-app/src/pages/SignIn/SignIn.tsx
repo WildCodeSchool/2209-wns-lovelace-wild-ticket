@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import Loader from "../../components/Loader/Loader";
 import { SignInMutation, SignInMutationVariables } from "../../gql/graphql";
 import { getErrorMessage } from "../../utils";
-import { HOME_PATH } from "../paths";
+import { DASHBOARD_HOME } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
 
 const SIGN_IN = gql`
@@ -35,7 +35,7 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
       });
       toast.success(`Vous vous êtes connecté avec succès.`);
       onSuccess();
-      navigate(HOME_PATH);
+      navigate(DASHBOARD_HOME);
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -48,8 +48,6 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
         <form
           onSubmit={async (event) => {
             event.preventDefault();
-            console.log(email);
-            console.log(password);
             await submit();
           }}
         >
@@ -100,7 +98,7 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
         </form>
       </div>
     </>
-  );
+  )
 };
 
 export default SignIn;
