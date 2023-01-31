@@ -1,6 +1,6 @@
 import React from "react";
 
-const Dashboard = ({userData}: {userData: any}) => {
+const Dashboard = ({ userData }: { userData: any }) => {
   console.log(userData);
 
   return (
@@ -9,6 +9,6 @@ const Dashboard = ({userData}: {userData: any}) => {
       <button>Signout</button>
     </div>
   );
-}
+};
 
 export default Dashboard;
