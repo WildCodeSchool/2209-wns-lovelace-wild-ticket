@@ -60,7 +60,7 @@ export default class AppUserRepository extends AppUserDb {
     const user = this.repository.findOneBy({ id });
 
     if (!user) {
-      throw Error("Aucun utilisateur de correspond à cet id.");
+      throw new Error("Aucun utilisateur de correspond à cet id.");
     }
 
     return user;
@@ -111,12 +111,15 @@ export default class AppUserRepository extends AppUserDb {
     poles: string[],
     restaurant: string
   ): Promise<AppUser> {
-    const updatedAt = new Date();
     const userToUpdate = await this.getUserById(id);
+
+    if (!userToUpdate) {
+      throw new Error("Aucun utilisateur ne correspond à cet ID.");
+    }
+
+    const updatedAt = new Date();
     let appUserPoles = [];
     let appUserRestaurant = undefined;
-
-    if (!userToUpdate) throw Error("Aucun utilisateur ne correspond à cet id.");
 
     if (poles) {
       for (const pole of poles) {
@@ -145,10 +148,13 @@ export default class AppUserRepository extends AppUserDb {
     id: string,
     password: string
   ): Promise<AppUser> {
-    const updatedAt = new Date();
     const userToUpdate = await this.getUserById(id);
 
-    if (!userToUpdate) throw Error("Aucun utilisateur ne correspond à cet id.");
+    if (!userToUpdate) {
+      throw new Error("Aucun utilisateur ne correspond à cet ID.");
+    }
+
+    const updatedAt = new Date();
 
     return this.repository.save({
       id: id,
@@ -161,7 +167,7 @@ export default class AppUserRepository extends AppUserDb {
     const user = await this.getUserById(id);
 
     if (!user) {
-      throw Error("Aucun utilisateur de correspond à cet id.");
+      throw new Error("Aucun utilisateur ne correspond à cet ID.");
     }
 
     await this.repository.remove(user);
@@ -178,6 +184,7 @@ export default class AppUserRepository extends AppUserDb {
     if (!user || !compareSync(password, user.hashedPassword)) {
       throw new Error(INVALID_CREDENTIALS_ERROR_MESSAGE);
     }
+
     const session = await SessionRepository.createSession(user);
 
     return { user, session };
@@ -187,8 +194,9 @@ export default class AppUserRepository extends AppUserDb {
     const user = await this.getUserById(id);
 
     if (!user) {
-      throw Error("Aucun utilisateur de correspond à cet id.");
+      throw new Error("Aucun utilisateur ne correspond à cet id.");
     }
+
     await SessionRepository.deleteSession(user);
 
     return user;

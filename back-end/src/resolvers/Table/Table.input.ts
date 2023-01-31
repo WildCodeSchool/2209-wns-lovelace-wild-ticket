@@ -4,11 +4,11 @@ import { ArgsType, Field, ID } from "type-graphql";
 @ArgsType()
 class CreateTableArgs {
   @Field()
-  @IsPositive()
+  @IsPositive({ message: "Les nombres négatifs ne sont pas autorisés." })
   number: number;
 
   @Field()
-  @IsPositive()
+  @IsPositive({ message: "Les nombres négatifs ne sont pas autorisés." })
   capacity: number;
 
   @Field()
@@ -17,10 +17,18 @@ class CreateTableArgs {
 }
 
 @ArgsType()
-class UpdateTableArgs extends CreateTableArgs {
+class UpdateTableArgs {
   @Field(() => ID)
   @IsUUID()
   id: string;
+
+  @Field()
+  @IsPositive()
+  number: number;
+
+  @Field()
+  @IsPositive()
+  capacity: number;
 }
 
 export { CreateTableArgs, UpdateTableArgs };

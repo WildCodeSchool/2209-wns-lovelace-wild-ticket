@@ -155,7 +155,6 @@ export type MutationUpdatePoleArgs = {
 export type MutationUpdateRestaurantArgs = {
   id: Scalars['ID'];
   name: Scalars['String'];
-  pole: Scalars['ID'];
 };
 
 
@@ -172,7 +171,6 @@ export type MutationUpdateTableArgs = {
   capacity: Scalars['Float'];
   id: Scalars['ID'];
   number: Scalars['Float'];
-  restaurant: Scalars['String'];
 };
 
 

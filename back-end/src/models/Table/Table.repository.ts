@@ -48,47 +48,53 @@ export default class TableRepository extends TableDb {
     const restaurant = (await RestaurantRepository.getRestaurantById(
       restaurantId
     )) as Restaurant;
-    if (!restaurant) throw new Error();
+
+    if (!restaurant) {
+      throw new Error("Aucun restaurant ne correspond à cet ID.");
+    }
+
     const newTable = new Table(number, capacity, restaurant);
+
     await this.repository.save(newTable);
+
     return newTable;
   }
 
   static async updateTable(
     id: string,
     number: number,
-    capacity: number,
-    restaurantId: string
+    capacity: number
   ): Promise<
     {
-      id: string,
-      number: number,
-      capacity: number,
-      restaurant: Restaurant,
+      id: string;
+      number: number;
+      capacity: number;
     } & Table
   > {
     const existingTable = await this.repository.findOneBy({ id });
-    const restaurant = (await RestaurantRepository.getRestaurantById(
-      restaurantId
-    )) as Restaurant;
-    if (!existingTable || !restaurant) {
-      throw Error("No existing Table matching ID or restaurant");
+
+    if (!existingTable) {
+      throw new Error("Aucune table ne correspond à cet ID.");
     }
+
     return this.repository.save({
       id,
       number,
       capacity,
-      restaurant,
     });
   }
 
   static async deleteTable(id: string): Promise<Table> {
     const existingTable = await this.findTableById(id);
+
     if (!existingTable) {
-      throw Error("No existing Table matching ID.");
+      throw new Error("Aucune table ne correspond à cet ID.");
     }
+
     await this.repository.remove(existingTable);
+
     existingTable.id = id;
+
     return existingTable;
   }
 }

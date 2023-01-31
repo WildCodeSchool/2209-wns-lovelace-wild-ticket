@@ -29,9 +29,9 @@ export default class TableResolver {
 
   @Mutation(() => Table)
   updateTable(
-    @Args() { id, number, capacity, restaurant }: UpdateTableArgs
+    @Args() { id, number, capacity }: UpdateTableArgs
   ): Promise<Table> {
-    return TableRepository.updateTable(id, number, capacity, restaurant);
+    return TableRepository.updateTable(id, number, capacity);
   }
 
   @Mutation(() => Table)
