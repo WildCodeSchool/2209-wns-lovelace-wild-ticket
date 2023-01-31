@@ -1,19 +1,31 @@
 @import '../../index.scss';
 
-.HomePage {
+.NotFoundMain {
   display: flex;
   justify-content: center;
   width: 100vw;
   height: 100vh;
 
-  .HomePageButtonContainer {
+  .NotFoundContent {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 500px;
     height: auto;
 
-    .HomePageButton {
+    .NotFound404Text {
+      color: $black;
+      font-size: 6em;
+      margin: 0 0 10px 0;
+    }
+
+    .NotFoundText {
+      color: $black;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    .NotFoundButton {
       width: 280px;
       height: 40px;
       border: none;
