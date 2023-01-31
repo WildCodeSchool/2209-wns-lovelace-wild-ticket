@@ -9,7 +9,7 @@ import {
 import Restaurant from "../Restaurant/Restaurant.entity";
 import Ticket from "../Ticket/Ticket.entity";
 
-@Entity()
+@Entity("AppTable")
 @ObjectType()
 export default class Table {
   constructor(
