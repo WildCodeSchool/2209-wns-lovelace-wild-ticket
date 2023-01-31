@@ -66,7 +66,6 @@ export default class Pole {
   @ManyToMany(() => AppUser, (appUser) => appUser.poles, {
     onDelete: "CASCADE",
   })
-  @JoinTable()
   @Field(() => AppUser, { nullable: true })
   appUser?: AppUser;
 
