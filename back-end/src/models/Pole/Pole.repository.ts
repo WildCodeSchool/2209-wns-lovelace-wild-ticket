@@ -11,8 +11,7 @@ export default class PoleRepository {
   }
 
   static async clearRepository(): Promise<void> {
-    this.repository.delete({});
-  }
+    await this.repository.delete({});  }
 
   static async initializePoles(): Promise<void> {
     const poleFixtures = PoleFixtures.PoleFixtures;

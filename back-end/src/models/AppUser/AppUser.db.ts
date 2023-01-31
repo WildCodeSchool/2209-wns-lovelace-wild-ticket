@@ -17,6 +17,6 @@ export default class AppUserDb {
   }
 
   static async clearRepository(): Promise<void> {
-    this.repository.delete({});
+    await this.repository.delete({});
   }
 }
