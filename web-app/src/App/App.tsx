@@ -9,6 +9,7 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import NotFound from "../pages/NotFound/NotFound";
 import { DASHBOARD_HOME, HOME_PATH, SIGN_IN_PATH } from "../pages/paths";
 import SignIn from "../pages/SignIn/SignIn";
+import Protected from "../components/Protected/Protected";
 
 const MY_PROFILE = gql`
   query MyProfile {
@@ -30,11 +31,13 @@ const MY_PROFILE = gql`
 
 function App() {
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(false);
+  const [user, setUser] = useState({});
 
-  const { data, refetch } = useQuery<MyProfileQuery>(MY_PROFILE, {
+  const { refetch } = useQuery<MyProfileQuery>(MY_PROFILE, {
     onCompleted: (data) => {
       if (data.myProfile) {
         setIsUserAuthenticated(true);
+        setUser(data.myProfile);
       }
     },
     onError: () => {
@@ -53,7 +56,11 @@ function App() {
           <Route path={SIGN_IN_PATH} element={<SignIn onSuccess={refetch} />} />
           <Route
             path={DASHBOARD_HOME}
-            element={<Dashboard userData={data?.myProfile} />}
+            element={
+              <Protected userData={user}>
+                <Dashboard userData={user} onSuccess={refetch} />
+              </Protected>
+            }
           />
           <Route path="*" element={<NotFound />} />
         </Routes>

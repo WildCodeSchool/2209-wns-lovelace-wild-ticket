@@ -6,8 +6,6 @@ import logoLightBig from "../../assets/logos/r-ticket-light-big.png";
 const Home = ({ isUserAuth }: { isUserAuth: boolean }) => {
   const navigate = useNavigate();
 
-  console.log(isUserAuth);
-
   const handleButton = (): void => {
     if (isUserAuth) {
       navigate(DASHBOARD_HOME);
