@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import "./Dashboard.scss";
-import logoLightBig from "../../assets/logos/r-ticket-light-big.png";
 import { gql, useMutation } from "@apollo/client";
 import { SignOutMutation, SignOutMutationVariables } from "../../gql/graphql";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { HOME_PATH } from "../paths";
 import { UserContext } from "../../context/UserContext";
+import SVGLogoBig from "../../components/SVGLogoBig/SVGLogoBig";
 
 const SIGN_OUT = gql`
   mutation SignOut($signOutId: String!) {
@@ -47,7 +47,7 @@ const Dashboard = () => {
   return (
     <div className="DashboardMain">
       <div className="DashboardContent">
-        <img className="DashboardLogo" src={logoLightBig} alt="Logo R'Ticket" />
+        <SVGLogoBig />
         <p className="DashboardText">Page Under Construction...</p>
         <p>Connecté avec l'adresse email : {userContext?.userData.email}</p>
         <button
