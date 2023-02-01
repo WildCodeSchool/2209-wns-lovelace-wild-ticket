@@ -22,7 +22,11 @@ const Home = () => {
   return (
     <div className="HomePage">
       <div className="HomePageButtonContainer">
-      <SVGLogo logoWidth={logoSize} logoHeight={logoSize} />
+        <SVGLogo
+          logoWidth={logoSize}
+          logoHeight={logoSize}
+          logoFill={userContext?.userSVGColorScheme}
+        />
         <button className="HomePageButton" onClick={handleButton}>
           Accès au dashboard R'Ticket
         </button>
