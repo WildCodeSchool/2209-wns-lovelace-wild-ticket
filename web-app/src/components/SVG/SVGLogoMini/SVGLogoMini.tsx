@@ -1,12 +1,11 @@
 import React from "react";
+import "./SVGLogoMini.scss";
 
 export default function SVGLogo({
   logoWidth,
-  logoHeight,
   logoFill,
 }: {
   logoWidth: string;
-  logoHeight: string;
   logoFill: string | undefined;
 }) {
   return (
@@ -16,8 +15,8 @@ export default function SVGLogo({
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         width={logoWidth}
-        height={logoHeight}
         viewBox="0, 0, 400,570.6051873198847"
+        className="SvgLogoMini"
       >
         <g id="svgg">
           <path

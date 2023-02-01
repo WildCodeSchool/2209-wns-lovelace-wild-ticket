@@ -2,7 +2,7 @@ import "./NotFound.scss";
 
 import { useNavigate } from "react-router-dom";
 import { HOME_PATH } from "../paths";
-import SVGLogo from "../../components/SVGLogo/SVGLogo";
+import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
 import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
 

@@ -3,7 +3,7 @@ import { DASHBOARD_HOME, SIGN_IN_PATH } from "../paths";
 import "./Home.scss";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
-import SVGLogo from "../../components/SVGLogo/SVGLogo";
+import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
 
 const Home = () => {
   const userContext = useContext(UserContext);
