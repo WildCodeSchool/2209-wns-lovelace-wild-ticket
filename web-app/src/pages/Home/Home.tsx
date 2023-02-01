@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { DASHBOARD_HOME, SIGN_IN_PATH } from "../paths";
 import "./Home.scss";
-import logoLightBig from "../../assets/logos/r-ticket-light-big.png";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
+import SVGLogo from "../../components/SVGLogo/SVGLogo";
 
 const Home = () => {
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
+  const logoSize = "500";
 
   const handleButton = (): void => {
     if (userContext?.isAuthenticated) {
@@ -21,7 +22,7 @@ const Home = () => {
   return (
     <div className="HomePage">
       <div className="HomePageButtonContainer">
-        <img className="NotFoundLogo" src={logoLightBig} alt="Logo R'Ticket" />
+      <SVGLogo logoWidth={logoSize} logoHeight={logoSize} />
         <button className="HomePageButton" onClick={handleButton}>
           Accès au dashboard R'Ticket
         </button>
