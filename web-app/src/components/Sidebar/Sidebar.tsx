@@ -5,7 +5,15 @@ import { toast } from "react-toastify";
 import { UserContext } from "../../context/UserContext";
 import { SignOutMutation, SignOutMutationVariables } from "../../gql/graphql";
 import { HOME_PATH } from "../../pages/paths";
+import SVGIconTable from "../SVG/SVGIconeTable/SVGIconTable";
 import SVGIconExit from "../SVG/SVGIconExit/SVGIconExit";
+import SVGIconHome from "../SVG/SVGIconHome/SVGIconHome";
+import SVGIconOptions from "../SVG/SVGIconOptions/SVGIconOptions";
+import SVGIconPole from "../SVG/SVGIconPole/SVGIconPole";
+import SVGIconRestaurant from "../SVG/SVGIconRestaurant/SVGIconRestaurant";
+import SVGIconStats from "../SVG/SVGIconStats/SVGIconStats";
+import SVGIconTicket from "../SVG/SVGIconTicket/SVGIconTicket";
+import SVGIconUser from "../SVG/SVGIconUser/SVGIconUser";
 import SVGLogoMini from "../SVG/SVGLogoMini/SVGLogoMini";
 import "./Sidebar.scss";
 
@@ -20,6 +28,7 @@ const SIGN_OUT = gql`
 export default function SideBar() {
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
+  const userRole = userContext?.userData.role;
 
   const [signOut] = useMutation<SignOutMutation, SignOutMutationVariables>(
     SIGN_OUT,
@@ -46,12 +55,25 @@ export default function SideBar() {
 
   return (
     <aside>
-      <SVGLogoMini logoWidth="60" logoFill="#f3f4f6" />
-      <SVGIconExit
-        iconWidth="35"
-        iconFill="#f3f4f6"
-        userSignOut={userDisconnect}
-      />
+      <div>
+        <SVGLogoMini logoWidth="60" logoFill="#f3f4f8" />
+        <SVGIconHome iconWidth="35" iconFill="#f3f4f8" />
+      </div>
+
+      <SVGIconTicket iconWidth="35" iconFill="#f3f4f8" />
+      <SVGIconTable iconWidth="35" iconFill="#f3f4f8" />
+      <SVGIconRestaurant iconWidth="35" iconFill="#f3f4f8" />
+      <SVGIconPole iconWidth="35" iconFill="#f3f4f8" />
+      <SVGIconUser iconWidth="35" iconFill="#f3f4f8" />
+      <div>
+        <SVGIconStats iconWidth="35" iconFill="#f3f4f8" />
+        <SVGIconOptions iconWidth="35" iconFill="#f3f4f8" />
+        <SVGIconExit
+          iconWidth="35"
+          iconFill="#f3f4f6"
+          userSignOut={userDisconnect}
+        />
+      </div>
     </aside>
   );
 }
