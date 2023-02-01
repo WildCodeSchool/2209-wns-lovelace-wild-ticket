@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function SVGLogoBig() {
+export default function SVGLogo({logoWidth, logoHeight}: {logoWidth: string, logoHeight: string}) {
 
   return (
     <>
@@ -8,8 +8,8 @@ export default function SVGLogoBig() {
         id="svg"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
-        width="500"
-        height="500"
+        width={logoWidth}
+        height={logoHeight}
         viewBox="0, 0, 400,400"
       >
         <g id="svgg">
