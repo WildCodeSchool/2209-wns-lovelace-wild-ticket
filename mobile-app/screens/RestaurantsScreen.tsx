@@ -15,7 +15,7 @@ export const GET_RESTAURANTS = gql`
 `;
 
 const RestaurantsScreen = () => {
-  const { loading, data, error } = useQuery<GetRestaurantsQuery>(GET_RESTAURANTS);
+  const { data } = useQuery<GetRestaurantsQuery>(GET_RESTAURANTS);
   return (
     <View>
       <Text>RestaurantsScreen</Text>
