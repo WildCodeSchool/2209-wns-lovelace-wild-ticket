@@ -22,6 +22,7 @@ const MY_PROFILE = gql`
 
 type UserContextType = {
   userData: any;
+  userSVGColorScheme: string;
   isAuthenticated: boolean;
   loading: boolean;
   refetch: () => {};
@@ -32,6 +33,10 @@ export const UserContext = createContext<UserContextType | null>(null);
 export function ContextProvider({ children }: any) {
   const [isAuthenticated, setIsUserAuthenticated] = useState(false);
   const [userData, setUserData] = useState({});
+  const userSVGColorScheme = window.matchMedia("(prefers-color-scheme: light)")
+    .matches
+    ? "#333333"
+    : "#f3f4f6";
 
   const { loading, refetch } = useQuery<MyProfileQuery>(MY_PROFILE, {
     notifyOnNetworkStatusChange: true,
@@ -48,7 +53,13 @@ export function ContextProvider({ children }: any) {
 
   return (
     <UserContext.Provider
-      value={{ userData, isAuthenticated, loading, refetch }}
+      value={{
+        userData,
+        userSVGColorScheme,
+        isAuthenticated,
+        loading,
+        refetch,
+      }}
     >
       {children}
     </UserContext.Provider>

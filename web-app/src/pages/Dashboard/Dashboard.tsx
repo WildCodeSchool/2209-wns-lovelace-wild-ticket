@@ -47,7 +47,11 @@ const Dashboard = () => {
   return (
     <div className="DashboardMain">
       <div className="DashboardContent">
-        <SVGLogo logoWidth={logoSize} logoHeight={logoSize} />
+        <SVGLogo
+          logoWidth={logoSize}
+          logoHeight={logoSize}
+          logoFill={userContext?.userSVGColorScheme}
+        />
         <p className="DashboardText">Page Under Construction...</p>
         <p>Connecté avec l'adresse email : {userContext?.userData.email}</p>
         <button
