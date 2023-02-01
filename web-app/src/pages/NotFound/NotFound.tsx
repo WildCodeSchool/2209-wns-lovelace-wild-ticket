@@ -2,10 +2,11 @@ import "./NotFound.scss";
 
 import { useNavigate } from "react-router-dom";
 import { HOME_PATH } from "../paths";
-import SVGLogoBig from "../../components/SVGLogoBig/SVGLogoBig";
+import SVGLogo from "../../components/SVGLogo/SVGLogo";
 
 const NotFound = () => {
   const navigate = useNavigate();
+  const logoSize = "500";
 
   const handleRedirect = () => {
     navigate(HOME_PATH);
@@ -14,7 +15,7 @@ const NotFound = () => {
   return (
     <div className="NotFoundMain">
       <div className="NotFoundContent">
-        <SVGLogoBig />
+      <SVGLogo logoWidth={logoSize} logoHeight={logoSize} />
         <p className="NotFound404Text">404</p>
         <p className="NotFoundText">La page recherchée n'existe pas.</p>
         <button className="NotFoundButton" onClick={handleRedirect}>
