@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { HOME_PATH } from "../paths";
 import { UserContext } from "../../context/UserContext";
-import SVGLogo from "../../components/SVGLogo/SVGLogo";
+import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
 
 const SIGN_OUT = gql`
   mutation SignOut($signOutId: String!) {
