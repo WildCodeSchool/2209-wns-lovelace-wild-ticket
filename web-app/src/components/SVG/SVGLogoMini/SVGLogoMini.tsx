@@ -1,7 +1,7 @@
 import React from "react";
 import "./SVGLogoMini.scss";
 
-export default function SVGLogo({
+export default function SVGLogoMini({
   logoWidth,
   logoFill,
 }: {
