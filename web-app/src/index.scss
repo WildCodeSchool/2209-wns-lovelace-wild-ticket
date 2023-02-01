@@ -61,6 +61,10 @@ body {
   background-color: $background-color;
 }
 
+main {
+  display: flex;
+}
+
 h1,
 h2,
 h3,
@@ -100,7 +104,8 @@ form {
 
 /********** SIGNIN FORM STYLE **********/
 .signin-form-container {
-  width: 70%;
+  width: auto;
+  height: 100%;
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
