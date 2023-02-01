@@ -8,7 +8,17 @@ import NotFound from "../pages/NotFound/NotFound";
 import SignIn from "../pages/SignIn/SignIn";
 import Protected from "../components/Protected/Protected";
 
-import { DASHBOARD_HOME, HOME_PATH, SIGN_IN_PATH } from "../pages/paths";
+import {
+  DASHBOARD_HOME,
+  DASHBOARD_OPTIONS,
+  DASHBOARD_POLE,
+  DASHBOARD_RESTAURANT,
+  DASHBOARD_STATS,
+  DASHBOARD_TICKET,
+  DASHBOARD_USER,
+  HOME_PATH,
+  SIGN_IN_PATH,
+} from "../pages/paths";
 import SideBar from "../components/Sidebar/Sidebar";
 
 function App() {
@@ -29,7 +39,56 @@ function App() {
                   <Dashboard />
                 </Protected>
               }
-            />
+            >
+              <Route
+                path={DASHBOARD_RESTAURANT}
+                element={
+                  <Protected>
+                    <Dashboard />
+                  </Protected>
+                }
+              />
+              <Route
+                path={DASHBOARD_POLE}
+                element={
+                  <Protected>
+                    <Dashboard />
+                  </Protected>
+                }
+              />
+              <Route
+                path={DASHBOARD_USER}
+                element={
+                  <Protected>
+                    <Dashboard />
+                  </Protected>
+                }
+              />
+              <Route
+                path={DASHBOARD_TICKET}
+                element={
+                  <Protected>
+                    <Dashboard />
+                  </Protected>
+                }
+              />
+              <Route
+                path={DASHBOARD_STATS}
+                element={
+                  <Protected>
+                    <Dashboard />
+                  </Protected>
+                }
+              />
+              <Route
+                path={DASHBOARD_OPTIONS}
+                element={
+                  <Protected>
+                    <Dashboard />
+                  </Protected>
+                }
+              />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </>
