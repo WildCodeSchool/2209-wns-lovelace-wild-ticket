@@ -19,6 +19,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               },
             },
           },
+          Ticket: {
+            screens: {
+              CreateTicketScreen: "Ticket"
+            }
+          }
         },
       },
       NotFound: "*",

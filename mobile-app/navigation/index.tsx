@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ColorSchemeName} from "react-native";
+import { ColorSchemeName } from "react-native";
 import {
   NavigationContainer,
   DefaultTheme,
@@ -13,8 +13,7 @@ import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SelectScreen from "../screens/SelectScreen";
 import RestaurantsScreen from "../screens/RestaurantsScreen";
-
-
+import CreateTicketScreen from "../screens/CreateTicketScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -39,17 +38,19 @@ function RootNavigator() {
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        options={{headerShown: false}} 
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Select"
         component={SelectScreen}
-        options={{headerShown: false}} 
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Restaurants"
         component={RestaurantsScreen}
+        options={{ headerShown: false }}
       />
+      <Stack.Screen name="Ticket" component={CreateTicketScreen} />
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
