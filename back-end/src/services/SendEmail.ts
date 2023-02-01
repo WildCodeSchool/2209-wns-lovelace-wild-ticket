@@ -15,15 +15,15 @@ const sendResetPasswordEmail = async (email: string) => {
         },
         To: [
           {
-            Email: "anthony.gouton@gmail.com",
+            Email: "anthony@r-ticket.agtn.fr",
             Name: "Anthony Gouton",
           },
         ],
-        Subject: "Your email flight plan!",
+        Subject: "Réinitialisation de votre mot de passe",
         TextPart:
-          "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+          "Bonjour, pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.",
         HTMLPart:
-          '<h3>Dear passenger 1, welcome to <a href="https://www.mailjet.com/">Mailjet</a>!</h3><br />May the delivery force be with you!',
+          '<p>Bonjour,<br /><br />Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.<br /><br />Ici le lien</p>',
       },
     ],
   });
