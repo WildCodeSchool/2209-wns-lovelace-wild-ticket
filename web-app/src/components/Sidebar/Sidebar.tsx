@@ -56,20 +56,27 @@ export default function SideBar() {
   return (
     <aside>
       <div>
-        <SVGLogoMini logoWidth="60" logoFill="#f3f4f8" />
-        <SVGIconHome iconWidth="35" iconFill="#f3f4f8" />
+        <SVGLogoMini logoWidth="55" logoFill="#f3f4f8" />
       </div>
-
-      <SVGIconTicket iconWidth="35" iconFill="#f3f4f8" />
-      <SVGIconTable iconWidth="35" iconFill="#f3f4f8" />
-      <SVGIconRestaurant iconWidth="35" iconFill="#f3f4f8" />
-      <SVGIconPole iconWidth="35" iconFill="#f3f4f8" />
-      <SVGIconUser iconWidth="35" iconFill="#f3f4f8" />
       <div>
-        <SVGIconStats iconWidth="35" iconFill="#f3f4f8" />
-        <SVGIconOptions iconWidth="35" iconFill="#f3f4f8" />
+        <SVGIconHome iconWidth="30" iconFill="#f3f4f8" />
+        {userRole === "ROLE_ADMIN" && (
+          <div>
+            <SVGIconRestaurant iconWidth="20" iconFill="#f3f4f8" />
+            <SVGIconPole iconWidth="25" iconFill="#f3f4f8" />
+            <SVGIconUser iconWidth="25" iconFill="#f3f4f8" />
+          </div>
+        )}
+        {userRole === "ROLE_RESTAURANT" && (
+          <div>
+            <SVGIconTicket iconWidth="25" iconFill="#f3f4f8" />
+            <SVGIconTable iconWidth="25" iconFill="#f3f4f8" />
+          </div>
+        )}
+        <SVGIconStats iconWidth="25" iconFill="#f3f4f8" />
+        <SVGIconOptions iconWidth="25" iconFill="#f3f4f8" />
         <SVGIconExit
-          iconWidth="35"
+          iconWidth="25"
           iconFill="#f3f4f6"
           userSignOut={userDisconnect}
         />
