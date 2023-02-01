@@ -1,20 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import Constants from "expo-constants";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import Navigation from "./navigation";
+
+const GRAPHQL_API_URL = Constants?.expoConfig?.extra?.GRAPHQL_API_URL;
+const client = new ApolloClient({
+  uri: GRAPHQL_API_URL,
+  cache: new InMemoryCache(),
+});
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <ApolloProvider client={client}>
+        <Navigation colorScheme={undefined} />
+      </ApolloProvider>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
