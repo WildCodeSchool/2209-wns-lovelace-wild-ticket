@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Dashboard.scss";
 import logoLightBig from "../../assets/logos/r-ticket-light-big.png";
 import { gql, useMutation } from "@apollo/client";
@@ -6,6 +6,7 @@ import { SignOutMutation, SignOutMutationVariables } from "../../gql/graphql";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { HOME_PATH } from "../paths";
+import { UserContext } from "../../context/UserContext";
 
 const SIGN_OUT = gql`
   mutation SignOut($signOutId: String!) {
@@ -15,13 +16,9 @@ const SIGN_OUT = gql`
   }
 `;
 
-const Dashboard = ({
-  userData,
-  onSuccess,
-}: {
-  userData: any;
-  onSuccess: () => {};
-}) => {
+const Dashboard = () => {
+  const userContext = useContext(UserContext);
+
   const navigate = useNavigate();
 
   const [signOut] = useMutation<SignOutMutation, SignOutMutationVariables>(
@@ -29,7 +26,7 @@ const Dashboard = ({
     {
       onCompleted: () => {
         toast.success("Vous êtes déconnecté.");
-        onSuccess();
+        userContext?.refetch();
         //TODO: Voir pour supprimer les cookies dans le navigateur.
         navigate(HOME_PATH);
       },
@@ -52,11 +49,11 @@ const Dashboard = ({
       <div className="DashboardContent">
         <img className="DashboardLogo" src={logoLightBig} alt="Logo R'Ticket" />
         <p className="DashboardText">Page Under Construction...</p>
-        <p>Connecté avec l'adresse email : {userData.email}</p>
+        <p>Connecté avec l'adresse email : {userContext?.userData.email}</p>
         <button
           className="DashboardButton"
           onClick={() => {
-            handleDisconnect(userData);
+            handleDisconnect(userContext?.userData);
           }}
         >
           Déconnexion
