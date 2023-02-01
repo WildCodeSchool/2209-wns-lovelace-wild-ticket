@@ -1,12 +1,13 @@
 import { gql, useMutation } from "@apollo/client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader/Loader";
 import { SignInMutation, SignInMutationVariables } from "../../gql/graphql";
 import { getErrorMessage } from "../../utils";
-import { HOME_PATH } from "../paths";
+import { DASHBOARD_HOME } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
+import { UserContext } from "../../context/UserContext";
 
 const SIGN_IN = gql`
   mutation SignIn($email: String!, $password: String!, $rememberMe: Boolean!) {
@@ -17,10 +18,12 @@ const SIGN_IN = gql`
   }
 `;
 
-const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
+const SignIn = () => {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+
+  const userContext = useContext(UserContext);
 
   const [signIn, { loading }] = useMutation<
     SignInMutation,
@@ -34,8 +37,8 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
         variables: { email, password, rememberMe: Boolean(rememberMe) },
       });
       toast.success(`Vous vous êtes connecté avec succès.`);
-      onSuccess();
-      navigate(HOME_PATH);
+      userContext?.refetch();
+      navigate(DASHBOARD_HOME);
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -48,8 +51,6 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
         <form
           onSubmit={async (event) => {
             event.preventDefault();
-            console.log(email);
-            console.log(password);
             await submit();
           }}
         >
