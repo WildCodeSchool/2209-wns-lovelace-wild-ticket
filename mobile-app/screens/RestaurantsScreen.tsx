@@ -1,8 +1,8 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-// import { GetRestaurantsQuery } from '../gql/graphql';
+import { GetRestaurantsQuery } from '../gql/graphql';
 import { gql, useQuery } from '@apollo/client';
-// import Restaurant from '../components/Restaurant';
+import Restaurant from '../components/Restaurant';
 
 
 export const GET_RESTAURANTS = gql`
@@ -15,11 +15,11 @@ export const GET_RESTAURANTS = gql`
 `;
 
 const RestaurantsScreen = () => {
-  // const { loading, data, error } = useQuery<GetRestaurantsQuery>(GET_RESTAURANTS);
+  const { loading, data, error } = useQuery<GetRestaurantsQuery>(GET_RESTAURANTS);
   return (
     <View>
       <Text>RestaurantsScreen</Text>
-      {/* <ScrollView style={styles.restaurantList}>
+      <ScrollView style={styles.restaurantList}>
         {data?.getRestaurants.map((restaurant) => (
           <View key={restaurant.id}>
             <Restaurant {...restaurant} />
@@ -27,7 +27,7 @@ const RestaurantsScreen = () => {
 
         ))}
           <Text>Test</Text>
-      </ScrollView> */}
+      </ScrollView>
     </View>
   )
 }
