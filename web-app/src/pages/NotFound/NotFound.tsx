@@ -1,8 +1,8 @@
 import "./NotFound.scss";
 
-import logoLightBig from "../../assets/logos/r-ticket-light-big.png";
 import { useNavigate } from "react-router-dom";
 import { HOME_PATH } from "../paths";
+import SVGLogoBig from "../../components/SVGLogoBig/SVGLogoBig";
 
 const NotFound = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const NotFound = () => {
   return (
     <div className="NotFoundMain">
       <div className="NotFoundContent">
-        <img className="NotFoundLogo" src={logoLightBig} alt="Logo R'Ticket" />
+        <SVGLogoBig />
         <p className="NotFound404Text">404</p>
         <p className="NotFoundText">La page recherchée n'existe pas.</p>
         <button className="NotFoundButton" onClick={handleRedirect}>
