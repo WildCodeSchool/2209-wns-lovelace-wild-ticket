@@ -112,3 +112,13 @@ export class SignInArgs {
   @Field({ nullable: true })
   rememberMe: boolean;
 }
+
+@ArgsType()
+export class sendResetPasswordEmailArgs {
+  @Field()
+  @IsEmail({ message: "L'email rentré n'est pas au bon format." })
+  @MaxLength(255, {
+    message: "L'adresse email doit faire au plus 255 caractères de long.",
+  })
+  email: string;
+}

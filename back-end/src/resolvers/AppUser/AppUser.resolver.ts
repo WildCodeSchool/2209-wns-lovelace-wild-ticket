@@ -14,9 +14,11 @@ import {
   UserCreationArgs,
   UserUpdateArgs,
   updateUserPasswordArgs,
+  sendResetPasswordEmailArgs,
 } from "./AppUser.input";
 import { setSessionIdInCookie } from "../../http-utils";
 import { GlobalContext } from "../..";
+import sendResetPasswordEmail from "../../services/SendEmail";
 
 @Resolver(AppUser)
 export default class AppUserResolver {
@@ -84,6 +86,14 @@ export default class AppUserResolver {
     @Args() { id, password }: updateUserPasswordArgs
   ): Promise<AppUser> {
     return AppUserRepository.updateUserPassword(id, password);
+  }
+
+  @Mutation(() => Boolean)
+  async sendResetPasswordEmail(
+    @Args() { email }: sendResetPasswordEmailArgs
+  ): Promise<boolean> {
+    await sendResetPasswordEmail(email);
+    return true;
   }
 
   @Authorized()
