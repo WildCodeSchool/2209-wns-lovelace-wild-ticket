@@ -5,8 +5,9 @@ import { ToastContainer } from "react-toastify";
 import { MyProfileQuery } from "../gql/graphql";
 
 import Home from "../pages/Home/Home";
-import { HOME_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "../pages/paths";
+import { HOME_PATH, SIGN_IN_PATH, SIGN_UP_PATH, FORGOT_PASSWORD_PATH } from "../pages/paths";
 import SignIn from "../pages/SignIn/SignIn";
+import ForgotPassword from "../pages/SignIn/ForgotPassword";
 import SignUp from "../pages/SignUp/SignUp";
 
 const MY_PROFILE = gql`
@@ -35,6 +36,8 @@ function App() {
               <Link to={SIGN_UP_PATH}>Inscription</Link>
               {" | "}
               <Link to={SIGN_IN_PATH}>Connexion</Link>
+              {" | "}
+              <Link to={FORGOT_PASSWORD_PATH}>ForgotPassword</Link>
             </nav>
           )}
         </div>
@@ -44,6 +47,7 @@ function App() {
           <Route path={HOME_PATH} element={<Home />} />
           <Route path={SIGN_UP_PATH} element={<SignUp />} />
           <Route path={SIGN_IN_PATH} element={<SignIn onSuccess={refetch} />} />
+          <Route path={FORGOT_PASSWORD_PATH} element={<ForgotPassword />} />
         </Routes>
       </main>
       <footer>
