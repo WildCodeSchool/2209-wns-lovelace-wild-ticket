@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { HOME_PATH } from "../paths";
 import { UserContext } from "../../context/UserContext";
-import SVGLogoBig from "../../components/SVGLogoBig/SVGLogoBig";
+import SVGLogo from "../../components/SVGLogo/SVGLogo";
 
 const SIGN_OUT = gql`
   mutation SignOut($signOutId: String!) {
@@ -18,8 +18,8 @@ const SIGN_OUT = gql`
 
 const Dashboard = () => {
   const userContext = useContext(UserContext);
-
   const navigate = useNavigate();
+  const logoSize = "500";
 
   const [signOut] = useMutation<SignOutMutation, SignOutMutationVariables>(
     SIGN_OUT,
@@ -47,7 +47,7 @@ const Dashboard = () => {
   return (
     <div className="DashboardMain">
       <div className="DashboardContent">
-        <SVGLogoBig />
+        <SVGLogo logoWidth={logoSize} logoHeight={logoSize} />
         <p className="DashboardText">Page Under Construction...</p>
         <p>Connecté avec l'adresse email : {userContext?.userData.email}</p>
         <button
