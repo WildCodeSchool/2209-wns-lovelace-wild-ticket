@@ -1,20 +1,53 @@
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { DASHBOARD_TABLE } from "../../../pages/paths";
+import { MAX_ICON_PARAMS_TYPE, MIN_ICON_PARAMS_TYPE } from "../../utils";
 import "./SVGIconTable.scss";
 
 export default function SVGIconTable({
-  iconWidth,
-  iconFill,
+  iconMaxParams,
+  iconMinParams,
 }: {
-  iconWidth: string;
-  iconFill: string;
+  iconMaxParams: MAX_ICON_PARAMS_TYPE;
+  iconMinParams: MIN_ICON_PARAMS_TYPE;
 }) {
+  const [isMouseOver, setIsMouseOver] = useState(false);
+  const location = useLocation().pathname;
+  const navigate = useNavigate();
+
+  const svgOnMouseOver = () => {
+    setIsMouseOver(true);
+  };
+
+  const svgOnMouseLeave = () => {
+    setIsMouseOver(false);
+  };
+
+  const goTo = () => {
+    navigate(DASHBOARD_TABLE);
+  };
+
   return (
-    <button className="SvgButton">
+    <button
+      className="SvgButton"
+      onMouseOver={svgOnMouseOver}
+      onMouseLeave={svgOnMouseLeave}
+      onClick={goTo}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={iconWidth}
+        width={
+          isMouseOver || location === DASHBOARD_TABLE
+            ? iconMaxParams.width
+            : iconMinParams.width
+        }
         viewBox="0 0 48 48"
         className="SvgIcon"
-        fill={iconFill}
+        fill={
+          isMouseOver || location === DASHBOARD_TABLE
+            ? iconMaxParams.fill
+            : iconMinParams.fill
+        }
       >
         <path d="M28.555,39.7,26.445,38.3A1,1,0,0,1,26,37.465V25H22V37.465a1,1,0,0,1-.445.832L19.445,39.7a1,1,0,0,0-.445.832V41a1,1,0,0,0,1,1h8a1,1,0,0,0,1-1v-.465A1,1,0,0,0,28.555,39.7Z" />
         <rect x="9" y="19" width="29" height="4" rx="1" />

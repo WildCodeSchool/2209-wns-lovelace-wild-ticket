@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import Home from "../pages/Home/Home";
-import Dashboard from "../pages/Dashboard/Dashboard";
+import Dashboard from "../pages/Dashboard/DashboardHome/DashboardHome";
 import NotFound from "../pages/NotFound/NotFound";
 import SignIn from "../pages/SignIn/SignIn";
 import Protected from "../components/Protected/Protected";
@@ -14,6 +14,7 @@ import {
   DASHBOARD_POLE,
   DASHBOARD_RESTAURANT,
   DASHBOARD_STATS,
+  DASHBOARD_TABLE,
   DASHBOARD_TICKET,
   DASHBOARD_USER,
   HOME_PATH,
@@ -39,56 +40,63 @@ function App() {
                   <Dashboard />
                 </Protected>
               }
-            >
-              <Route
-                path={DASHBOARD_RESTAURANT}
-                element={
-                  <Protected>
-                    <Dashboard />
-                  </Protected>
-                }
-              />
-              <Route
-                path={DASHBOARD_POLE}
-                element={
-                  <Protected>
-                    <Dashboard />
-                  </Protected>
-                }
-              />
-              <Route
-                path={DASHBOARD_USER}
-                element={
-                  <Protected>
-                    <Dashboard />
-                  </Protected>
-                }
-              />
-              <Route
-                path={DASHBOARD_TICKET}
-                element={
-                  <Protected>
-                    <Dashboard />
-                  </Protected>
-                }
-              />
-              <Route
-                path={DASHBOARD_STATS}
-                element={
-                  <Protected>
-                    <Dashboard />
-                  </Protected>
-                }
-              />
-              <Route
-                path={DASHBOARD_OPTIONS}
-                element={
-                  <Protected>
-                    <Dashboard />
-                  </Protected>
-                }
-              />
-            </Route>
+            />
+            <Route
+              path={DASHBOARD_RESTAURANT}
+              element={
+                <Protected>
+                  <Dashboard />
+                </Protected>
+              }
+            />
+            <Route
+              path={DASHBOARD_POLE}
+              element={
+                <Protected>
+                  <Dashboard />
+                </Protected>
+              }
+            />
+            <Route
+              path={DASHBOARD_USER}
+              element={
+                <Protected>
+                  <Dashboard />
+                </Protected>
+              }
+            />
+            <Route
+              path={DASHBOARD_TICKET}
+              element={
+                <Protected>
+                  <Dashboard />
+                </Protected>
+              }
+            />
+            <Route
+              path={DASHBOARD_TABLE}
+              element={
+                <Protected>
+                  <Dashboard />
+                </Protected>
+              }
+            />
+            <Route
+              path={DASHBOARD_STATS}
+              element={
+                <Protected>
+                  <Dashboard />
+                </Protected>
+              }
+            />
+            <Route
+              path={DASHBOARD_OPTIONS}
+              element={
+                <Protected>
+                  <Dashboard />
+                </Protected>
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </>
