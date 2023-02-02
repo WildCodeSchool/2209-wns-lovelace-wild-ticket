@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DASHBOARD_OPTIONS } from "../../../pages/paths";
 import { MAX_ICON_PARAMS_TYPE, MIN_ICON_PARAMS_TYPE } from "../../utils";
-import "./SVGIconOptions.scss";
+import '../SVGIcon.scss';
 
 export default function SVGIconOptions({
   iconMaxParams,

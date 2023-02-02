@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import "./DashboardRestaurant.scss";
+import "../DashboardTemp.scss";
 import { UserContext } from "../../../context/UserContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 
