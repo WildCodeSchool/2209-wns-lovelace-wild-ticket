@@ -18,7 +18,7 @@ import {
 } from "./AppUser.input";
 import { setSessionIdInCookie } from "../../http-utils";
 import { GlobalContext } from "../..";
-import sendResetPasswordEmail from "../../services/SendEmail";
+import EmailService from "../../services/EmailService";
 
 @Resolver(AppUser)
 export default class AppUserResolver {
@@ -92,7 +92,7 @@ export default class AppUserResolver {
   async sendResetPasswordEmail(
     @Args() { email }: sendResetPasswordEmailArgs
   ): Promise<boolean> {
-    await sendResetPasswordEmail(email);
+    await EmailService.sendResetPasswordEmail(email);
     return true;
   }
 
