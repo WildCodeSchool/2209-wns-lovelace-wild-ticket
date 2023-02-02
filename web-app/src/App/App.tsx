@@ -28,6 +28,7 @@ import DashboardTicket from "../pages/Dashboard/DashboardTicket/DashboardTicket"
 import DashboardTable from "../pages/Dashboard/DashboardTable/DashboardTable";
 import DashboardStats from "../pages/Dashboard/DashboardStats/DashboardStats";
 import DashboardOptions from "../pages/Dashboard/DashboardOptions/DashboardOptions";
+import DashBoardHeader from "../components/Dashboard/DashboardHeader/DashboardHeader";
 
 function App() {
   const location = useLocation();
@@ -37,6 +38,7 @@ function App() {
       <main>
         {location.pathname.includes(DASHBOARD_HOME) && <SideBar />}
         <>
+          {location.pathname.includes(DASHBOARD_HOME) && <DashBoardHeader />}
           <Routes>
             <Route path={HOME_PATH} element={<Home />} />
             <Route path={SIGN_IN_PATH} element={<SignIn />} />
