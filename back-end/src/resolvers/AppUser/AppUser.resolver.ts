@@ -22,16 +22,19 @@ import EmailService from "../../services/EmailService";
 
 @Resolver(AppUser)
 export default class AppUserResolver {
+  @Authorized("ROLE_ADMIN")
   @Query(() => [AppUser])
   getUsers(): Promise<AppUser[]> {
     return AppUserRepository.getUsers();
   }
 
+  @Authorized()
   @Query(() => AppUser)
   getUserById(@Arg("id") id: string): Promise<AppUser | null> {
     return AppUserRepository.getUserById(id);
   }
 
+  @Authorized("ROLE_ADMIN")
   @Mutation(() => AppUser)
   createUser(
     @Args()
@@ -47,6 +50,7 @@ export default class AppUserResolver {
     );
   }
 
+  @Authorized()
   @Mutation(() => AppUser)
   updateUser(
     @Args() { id, login, email, role, poles, restaurant }: UserUpdateArgs
@@ -61,6 +65,7 @@ export default class AppUserResolver {
     );
   }
 
+  @Authorized("ROLE_ADMIN")
   @Mutation(() => AppUser)
   deleteUser(@Arg("id") id: string): Promise<AppUser> {
     return AppUserRepository.deleteUser(id);
@@ -76,11 +81,13 @@ export default class AppUserResolver {
     return user;
   }
 
+  @Authorized()
   @Mutation(() => AppUser)
   async signOut(@Arg("id") id: string): Promise<AppUser> {
     return AppUserRepository.signOut(id);
   }
 
+  @Authorized()
   @Mutation(() => AppUser)
   async updateUserPassword(
     @Args() { id, password }: updateUserPasswordArgs
