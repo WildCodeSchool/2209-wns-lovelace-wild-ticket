@@ -37,8 +37,20 @@ const startServer = async () => {
         PoleResolver,
         RestaurantResolver,
       ],
-      authChecker: async ({ context }) => {
-        return Boolean(context.user);
+      authChecker: async ({ context }, roles: string[]) => {
+        if (roles.length === 0) {
+          return Boolean(context.user);
+        }
+
+        if (!context.user) {
+          return false;
+        }
+
+        if (roles.includes(context.user.role)) {
+          return true;
+        }
+
+        return false;
       },
     }),
     context: async (context): Promise<GlobalContext> => {
