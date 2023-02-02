@@ -18,8 +18,8 @@ const RestaurantsScreen = ({
 }: RootStackScreenProps<"Restaurants">) => {
   const { data } = useQuery<GetRestaurantsQuery>(GET_RESTAURANTS);
 
-  const [restoId, setRestoId] = useState< any | null>("");
-  console.log(restoId)  
+  const [resto, setRestoId] = useState< any | null>("");
+  console.log(resto)  
   // const [queryById, { loading, error }] = useLazyQuery<GetRestaurantByIdQuery, GetRestaurantByIdQueryVariables>(GET_RESTAURANT_BY_ID);
   // const GetResto = async (getRestaurantByIdId: string) => {
   //   try { await queryById({
@@ -35,14 +35,14 @@ const RestaurantsScreen = ({
         <Button title="Retour" onPress={() => navigation.navigate("Select")} />
         <Button
           title="Continuer"
-          onPress={() => navigation.navigate("Ticket", {restoId})}
+          onPress={() => navigation.navigate("Ticket", {resto})}
         />
       </View>
       <Text>RestaurantsScreen</Text>
       <ScrollView style={styles.restaurantList}>
         {data?.getRestaurants.map((restaurant) => (
           <View key={restaurant.id}>
-            <TouchableOpacity onPress={() => setRestoId(restaurant.id)}>
+            <TouchableOpacity onPress={() => setRestoId(restaurant)}>
               <Restaurant {...restaurant} />
             </TouchableOpacity>
           </View>
