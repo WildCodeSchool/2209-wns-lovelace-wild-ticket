@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import "./DashboardPole.scss";
+import "../DashboardTemp.scss";
 import { UserContext } from "../../../context/UserContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 

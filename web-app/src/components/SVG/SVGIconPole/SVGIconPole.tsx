@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DASHBOARD_POLE } from "../../../pages/paths";
 import { MAX_ICON_PARAMS_TYPE, MIN_ICON_PARAMS_TYPE } from "../../utils";
-import "./SVGIconPole.scss";
+import '../SVGIcon.scss';
 
 export default function SVGIconPole({
   iconMaxParams,
