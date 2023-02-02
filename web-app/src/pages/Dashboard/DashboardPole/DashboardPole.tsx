@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import "./DashboardHome.scss";
+import "./DashboardPole.scss";
 import { UserContext } from "../../../context/UserContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 
-const DashboardHome = () => {
+const DashboardPole = () => {
   const userContext = useContext(UserContext);
   const logoSize = "500";
 
@@ -15,7 +15,7 @@ const DashboardHome = () => {
           logoHeight={logoSize}
           logoFill={userContext?.userSVGColorScheme}
         />
-        <h1>DASHBOARD HOME</h1>
+        <h1>DASHBOARD POLE</h1>
         <p className="DashboardText">Page Under Construction...</p>
         <p>Connecté avec l'adresse email : {userContext?.userData.email}</p>
       </div>
@@ -23,4 +23,4 @@ const DashboardHome = () => {
   );
 };
 
-export default DashboardHome;
+export default DashboardPole;
