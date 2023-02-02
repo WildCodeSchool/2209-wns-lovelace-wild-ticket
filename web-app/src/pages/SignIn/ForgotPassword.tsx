@@ -1,40 +1,66 @@
+import { gql, useMutation } from "@apollo/client";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getErrorMessage } from "../../utils";
+import { HOME_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
-import Loader from "../../components/Loader/Loader";
-import { SignInMutation, SignInMutationVariables } from "../../gql/graphql";
 
+const SIGN_IN = gql`
+  mutation SignIn($email: String!, $password: String!, $rememberMe: Boolean!) {
+    signIn(email: $email, password: $password, rememberMe: $rememberMe) {
+      id
+      email
+    }
+  }
+`;
 
+const SEND_RESET_PASSWORD_EMAIL = gql`
+  mutation SendResetPasswordEmail($email: String!) {
+    sendResetPasswordEmail(email: $email)
+  }
+`;
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
+  const [email, setemail] = useState("");
+  const [sendResetPasswordEmail] = useMutation(SEND_RESET_PASSWORD_EMAIL);
 
-  const [loading, setLoading] = useState(false);
-
-  const [email, setEmail] = useState("");
-
-  const [emailSent, setEmailSent] = useState(false);
-
-  const handleSendEmail = () => {
-    setEmailSent(true);
+  const submit = async () => {
+    try {
+      await sendResetPasswordEmail({ variables: { email } });
+      toast.success(`Un mail vient de vous être envoyé à l'adresse ${email}.`);
+      navigate(HOME_PATH);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   };
 
   return (
     <>
       <div className="signin-form-container">
-        <h1>ForgotPassword</h1>
-        <form>
+        <h1>Réinitialisez votre mot de passe</h1>
+        <form
+          onSubmit={async (event) => {
+            event.preventDefault();
+            await submit();
+          }}
+        >
           <div className="signin-form-input">
-            <label htmlFor="email">Email</label>
+            <label>Adresse email</label>
             <input
-              id="email"
               type="email"
+              required
+              autoComplete="email"
+              id="email"
+              name="email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => {
+                setemail(event.target.value);
+              }}
             />
           </div>
-          <button>
-            Réinitialiser le mot de passe
-          </button>
-          {emailSent && <p>Réinitialiser le mot de passe</p>}
+          <button>Valider</button>
         </form>
       </div>
     </>
