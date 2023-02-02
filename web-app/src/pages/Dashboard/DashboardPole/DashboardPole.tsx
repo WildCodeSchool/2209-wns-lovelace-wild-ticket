@@ -5,7 +5,7 @@ import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 
 const DashboardPole = () => {
   const userContext = useContext(UserContext);
-  const logoSize = "500";
+  const logoSize = "400";
 
   return (
     <div className="DashboardMain">
