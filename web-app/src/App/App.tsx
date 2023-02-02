@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import Home from "../pages/Home/Home";
-import Dashboard from "../pages/Dashboard/DashboardHome/DashboardHome";
+import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import NotFound from "../pages/NotFound/NotFound";
 import SignIn from "../pages/SignIn/SignIn";
 import Protected from "../components/Protected/Protected";
@@ -21,6 +21,13 @@ import {
   SIGN_IN_PATH,
 } from "../pages/paths";
 import SideBar from "../components/Sidebar/Sidebar";
+import DashboardRestaurant from "../pages/Dashboard/DashboardRestaurant/DashboardRestaurant";
+import DashboardPole from "../pages/Dashboard/DashboardPole/DashboardPole";
+import DashboardUser from "../pages/Dashboard/DashboardUser/DashboardUser";
+import DashboardTicket from "../pages/Dashboard/DashboardTicket/DashboardTicket";
+import DashboardTable from "../pages/Dashboard/DashboardTable/DashboardTable";
+import DashboardStats from "../pages/Dashboard/DashboardStats/DashboardStats";
+import DashboardOptions from "../pages/Dashboard/DashboardOptions/DashboardOptions";
 
 function App() {
   const location = useLocation();
@@ -37,7 +44,7 @@ function App() {
               path={DASHBOARD_HOME}
               element={
                 <Protected>
-                  <Dashboard />
+                  <DashboardHome />
                 </Protected>
               }
             />
@@ -45,7 +52,7 @@ function App() {
               path={DASHBOARD_RESTAURANT}
               element={
                 <Protected>
-                  <Dashboard />
+                  <DashboardRestaurant />
                 </Protected>
               }
             />
@@ -53,7 +60,7 @@ function App() {
               path={DASHBOARD_POLE}
               element={
                 <Protected>
-                  <Dashboard />
+                  <DashboardPole />
                 </Protected>
               }
             />
@@ -61,7 +68,7 @@ function App() {
               path={DASHBOARD_USER}
               element={
                 <Protected>
-                  <Dashboard />
+                  <DashboardUser />
                 </Protected>
               }
             />
@@ -69,7 +76,7 @@ function App() {
               path={DASHBOARD_TICKET}
               element={
                 <Protected>
-                  <Dashboard />
+                  <DashboardTicket />
                 </Protected>
               }
             />
@@ -77,7 +84,7 @@ function App() {
               path={DASHBOARD_TABLE}
               element={
                 <Protected>
-                  <Dashboard />
+                  <DashboardTable />
                 </Protected>
               }
             />
@@ -85,7 +92,7 @@ function App() {
               path={DASHBOARD_STATS}
               element={
                 <Protected>
-                  <Dashboard />
+                  <DashboardStats />
                 </Protected>
               }
             />
@@ -93,7 +100,7 @@ function App() {
               path={DASHBOARD_OPTIONS}
               element={
                 <Protected>
-                  <Dashboard />
+                  <DashboardOptions />
                 </Protected>
               }
             />
