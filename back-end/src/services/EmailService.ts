@@ -1,4 +1,5 @@
 import Mailjet from "node-mailjet";
+import AppUserRepository from "../models/AppUser/AppUser.repository";
 
 export default class EmailService {
   private static mailjet = Mailjet.apiConnect(
@@ -10,6 +11,18 @@ export default class EmailService {
   private static senderName = "R-Ticket";
 
   static async sendResetPasswordEmail(email: string) {
+    const user = await AppUserRepository.getUserByEmailAddress(email);
+    if (!user) {
+      throw new Error("Aucun utilisateur ne correspond à cet email.");
+    }
+    const recipientName = user.login;
+    // const token = user.generateResetPasswordToken();
+    const token = "faketoken66466125t35dhy453t5j4hfy65j4ty";
+    const link = `http://localhost:3000/reset-password/${token}`;
+    const subject = "Réinitialisation de votre mot de passe";
+    const text = `Bonjour ${recipientName},\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.\n\n${link}`;
+    const html = `<p>Bonjour ${recipientName},<br /><br />Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.<br /><br /><a href="${link}">${link}</a></a></p>`;
+
     await this.mailjet.post("send", { version: "v3.1" }).request({
       Messages: [
         {
@@ -20,14 +33,12 @@ export default class EmailService {
           To: [
             {
               Email: email,
-              Name: "Destinataire",
+              Name: recipientName,
             },
           ],
-          Subject: "Réinitialisation de votre mot de passe",
-          TextPart:
-            "Bonjour, pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.",
-          HTMLPart:
-            "<p>Bonjour,<br /><br />Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.<br /><br />Ici le lien</p>",
+          Subject: subject,
+          TextPart: text,
+          HTMLPart: html,
         },
       ],
     });

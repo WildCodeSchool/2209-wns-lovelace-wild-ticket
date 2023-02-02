@@ -60,7 +60,17 @@ export default class AppUserRepository extends AppUserDb {
     const user = this.repository.findOneBy({ id });
 
     if (!user) {
-      throw new Error("Aucun utilisateur de correspond à cet id.");
+      throw new Error("Aucun utilisateur ne correspond à cet id.");
+    }
+
+    return user;
+  }
+
+  static getUserByEmailAddress(email: string): Promise<AppUser | null> {
+    const user = this.findByEmailAddress(email);
+
+    if (!user) {
+      throw new Error("Aucun utilisateur correspond à cet email.");
     }
 
     return user;
