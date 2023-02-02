@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n    }\n  }\n": types.GetRestaurantsDocument,
+    "\n  query GetRestaurantById($getRestaurantByIdId: String!) {\n    getRestaurantById(id: $getRestaurantByIdId) {\n      id\n      name\n    }\n  }\n": types.GetRestaurantByIdDocument,
 };
 
 /**
@@ -34,6 +35,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetRestaurantById($getRestaurantByIdId: String!) {\n    getRestaurantById(id: $getRestaurantByIdId) {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  query GetRestaurantById($getRestaurantByIdId: String!) {\n    getRestaurantById(id: $getRestaurantByIdId) {\n      id\n      name\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

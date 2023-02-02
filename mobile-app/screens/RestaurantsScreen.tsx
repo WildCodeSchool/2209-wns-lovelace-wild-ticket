@@ -1,48 +1,58 @@
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { GetRestaurantsQuery } from '../gql/graphql';
-import { gql, useQuery } from '@apollo/client';
-import Restaurant from '../components/Restaurant';
-import { RootStackScreenProps } from '../types';
+import {
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
+import { GetRestaurantsQuery } from "../gql/graphql";
+import {useQuery } from "@apollo/client";
+import Restaurant from "../components/Restaurant";
+import { RootStackScreenProps } from "../types";
+import { GET_RESTAURANT_BY_ID, GET_RESTAURANTS } from "../gql/queries";
 
-
-export const GET_RESTAURANTS = gql`
-  query GetRestaurants {
-    getRestaurants {
-      id
-      name
-    }
-  }
-`;
-
-const RestaurantsScreen = ({ navigation }: RootStackScreenProps<"Restaurants">) => {
+const RestaurantsScreen = ({
+  navigation,
+}: RootStackScreenProps<"Restaurants">) => {
   const { data } = useQuery<GetRestaurantsQuery>(GET_RESTAURANTS);
+
+  const [restoId, setRestoId] = useState< any | null>("");
+  console.log(restoId)  
+  // const [queryById, { loading, error }] = useLazyQuery<GetRestaurantByIdQuery, GetRestaurantByIdQueryVariables>(GET_RESTAURANT_BY_ID);
+  // const GetResto = async (getRestaurantByIdId: string) => {
+  //   try { await queryById({
+  //     variables: { getRestaurantByIdId },
+  //   }); } catch (error) {
+
+  //   }
+  // }
+
   return (
     <View>
-       <View style={styles.containerHeaderBoutton}>
-        <Button
-          title="Retour"
-          onPress={() => navigation.navigate("Select")}
-        />
+      <View style={styles.containerHeaderBoutton}>
+        <Button title="Retour" onPress={() => navigation.navigate("Select")} />
         <Button
           title="Continuer"
-          onPress={() => navigation.navigate("Ticket")}
+          onPress={() => navigation.navigate("Ticket", {restoId})}
         />
       </View>
       <Text>RestaurantsScreen</Text>
       <ScrollView style={styles.restaurantList}>
         {data?.getRestaurants.map((restaurant) => (
           <View key={restaurant.id}>
-            <Restaurant {...restaurant} />
+            <TouchableOpacity onPress={() => setRestoId(restaurant.id)}>
+              <Restaurant {...restaurant} />
+            </TouchableOpacity>
           </View>
-
         ))}
       </ScrollView>
     </View>
-  )
-}
+  );
+};
 
-export default RestaurantsScreen
+export default RestaurantsScreen;
 
 const styles = StyleSheet.create({
   container: { marginTop: 50, marginLeft: 50, marginRight: 50 },
@@ -55,6 +65,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     fontSize: 20,
     fontWeight: "bold",
+    color: 'black'
   },
   restaurantList: {
     padding: 12,
@@ -65,4 +76,4 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
-})
+});
