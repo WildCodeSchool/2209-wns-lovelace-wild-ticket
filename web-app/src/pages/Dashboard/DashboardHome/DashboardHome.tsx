@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import "./Dashboard.scss";
-import { UserContext } from "../../context/UserContext";
-import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
+import "./DashboardHome.scss";
+import { UserContext } from "../../../context/UserContext";
+import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 
-const Dashboard = () => {
+const DashboardHome = () => {
   const userContext = useContext(UserContext);
   const logoSize = "500";
 
@@ -22,4 +22,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardHome;

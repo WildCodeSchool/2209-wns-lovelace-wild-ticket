@@ -15,6 +15,7 @@ import SVGIconStats from "../SVG/SVGIconStats/SVGIconStats";
 import SVGIconTicket from "../SVG/SVGIconTicket/SVGIconTicket";
 import SVGIconUser from "../SVG/SVGIconUser/SVGIconUser";
 import SVGLogoMini from "../SVG/SVGLogoMini/SVGLogoMini";
+import { MAX_ICON_PARAMS, MIN_ICON_PARAMS } from "../utils";
 import "./Sidebar.scss";
 
 const SIGN_OUT = gql`
@@ -52,32 +53,60 @@ export default function SideBar() {
       },
     });
   };
-
+  //TODO: Voir si possibilité de transition lors du hover sur les icones.
   return (
-    <aside>
-      <div>
+    <aside className="SideBar">
+      <div className="SideBarIconsContainer">
         <SVGLogoMini logoWidth="55" logoFill="#f3f4f8" />
       </div>
-      <div>
-        <SVGIconHome iconWidth="30" iconFill="#f3f4f8" />
+      <div className="SideBarIconsContainer">
+        <SVGIconHome
+          iconMaxParams={MAX_ICON_PARAMS}
+          iconMinParams={MIN_ICON_PARAMS}
+        />
         {userRole === "ROLE_ADMIN" && (
-          <div>
-            <SVGIconRestaurant iconWidth="20" iconFill="#f3f4f8" />
-            <SVGIconPole iconWidth="25" iconFill="#f3f4f8" />
-            <SVGIconUser iconWidth="25" iconFill="#f3f4f8" />
-          </div>
+          <SVGIconRestaurant
+            iconMaxParams={MAX_ICON_PARAMS}
+            iconMinParams={MIN_ICON_PARAMS}
+          />
+        )}
+        {userRole === "ROLE_ADMIN" && (
+          <SVGIconPole
+            iconMaxParams={MAX_ICON_PARAMS}
+            iconMinParams={MIN_ICON_PARAMS}
+          />
+        )}
+        {userRole === "ROLE_ADMIN" && (
+          <SVGIconUser
+            iconMaxParams={MAX_ICON_PARAMS}
+            iconMinParams={MIN_ICON_PARAMS}
+          />
         )}
         {userRole === "ROLE_RESTAURANT" && (
-          <div>
-            <SVGIconTicket iconWidth="25" iconFill="#f3f4f8" />
-            <SVGIconTable iconWidth="25" iconFill="#f3f4f8" />
-          </div>
+          <SVGIconTicket
+            iconMaxParams={MAX_ICON_PARAMS}
+            iconMinParams={MIN_ICON_PARAMS}
+          />
         )}
-        <SVGIconStats iconWidth="25" iconFill="#f3f4f8" />
-        <SVGIconOptions iconWidth="25" iconFill="#f3f4f8" />
+        {userRole === "ROLE_RESTAURANT" && (
+          <SVGIconTable
+            iconMaxParams={MAX_ICON_PARAMS}
+            iconMinParams={MIN_ICON_PARAMS}
+          />
+        )}
+        <SVGIconStats
+          iconMaxParams={MAX_ICON_PARAMS}
+          iconMinParams={MIN_ICON_PARAMS}
+        />
+      </div>
+      <div className="SideBarIconsContainer">
+        <SVGIconOptions
+          iconMaxParams={MAX_ICON_PARAMS}
+          iconMinParams={MIN_ICON_PARAMS}
+        />
         <SVGIconExit
-          iconWidth="25"
-          iconFill="#f3f4f6"
+          iconMaxParams={MAX_ICON_PARAMS}
+          iconMinParams={MIN_ICON_PARAMS}
           userSignOut={userDisconnect}
         />
       </div>
