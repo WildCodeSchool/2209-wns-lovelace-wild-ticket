@@ -9,7 +9,8 @@ import {
 import React from "react";
 import { RootStackScreenProps } from "../types";
 
-const CreateTicketScreen = ({ navigation }: RootStackScreenProps<"Ticket">) => {
+const CreateTicketScreen = ({ navigation, route }: RootStackScreenProps<"Ticket">) => {
+  const { restoId } = route.params;
   const [firstName, onChangeFirstName] = React.useState("");
   const [email, onChangeEmail] = React.useState("");
   const [number, onChangeNumber] = React.useState("");
@@ -22,7 +23,7 @@ const CreateTicketScreen = ({ navigation }: RootStackScreenProps<"Ticket">) => {
       />
       <View>
         <Text>Infos restaurant</Text>
-        <Text>Restaurant :</Text>
+        <Text>Restaurant : {restoId}  </Text>
         <Text>Nombre de couverts :</Text>
         <Text>Temps d’attente estimé :</Text>
       </View>

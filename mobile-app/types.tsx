@@ -10,7 +10,7 @@ export type RootStackParamList = {
   Home: undefined;
   Select: undefined;
   Restaurants: undefined;
-  Ticket: undefined;
+  Ticket: {restoId : string};
   NotFound: undefined;
 };
 

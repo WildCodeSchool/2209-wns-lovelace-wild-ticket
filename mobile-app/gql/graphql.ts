@@ -298,5 +298,13 @@ export type GetRestaurantsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetRestaurantsQuery = { __typename?: 'Query', getRestaurants: Array<{ __typename?: 'Restaurant', id: string, name: string }> };
 
+export type GetRestaurantByIdQueryVariables = Exact<{
+  getRestaurantByIdId: Scalars['String'];
+}>;
+
+
+export type GetRestaurantByIdQuery = { __typename?: 'Query', getRestaurantById: { __typename?: 'Restaurant', id: string, name: string } };
+
 
 export const GetRestaurantsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetRestaurants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getRestaurants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetRestaurantsQuery, GetRestaurantsQueryVariables>;
+export const GetRestaurantByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetRestaurantById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"getRestaurantByIdId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getRestaurantById"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"getRestaurantByIdId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetRestaurantByIdQuery, GetRestaurantByIdQueryVariables>;

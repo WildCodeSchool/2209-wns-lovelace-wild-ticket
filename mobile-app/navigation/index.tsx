@@ -14,6 +14,7 @@ import HomeScreen from "../screens/HomeScreen";
 import SelectScreen from "../screens/SelectScreen";
 import RestaurantsScreen from "../screens/RestaurantsScreen";
 import CreateTicketScreen from "../screens/CreateTicketScreen";
+import Restaurant from "../components/Restaurant";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -50,7 +51,7 @@ function RootNavigator() {
         component={RestaurantsScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Ticket" component={CreateTicketScreen} />
+      <Stack.Screen name="Ticket" component={CreateTicketScreen}/>
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
