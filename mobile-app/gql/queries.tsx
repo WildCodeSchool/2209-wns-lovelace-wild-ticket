@@ -9,14 +9,6 @@ export const GET_RESTAURANTS = gql`
   }
 `;
 
-export const GET_RESTAURANT_BY_ID = gql`
-  query GetRestaurantById($getRestaurantByIdId: String!) {
-    getRestaurantById(id: $getRestaurantByIdId) {
-      id
-      name
-    }
-  }
-`;
 
 export const CREATE_TICKET = gql`
   mutation CreateTicket($name: String!, $seats: Float!, $restaurant: String!) {

@@ -47,6 +47,10 @@ const DATA = [
 
 const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
   const ticketContext = useContext(TicketContext);
+  const handleClick = (id: any) => {
+    ticketContext?.setSelectedId(id)
+    ticketContext?.setIsDisabled(false)
+  }
 
   return (
     <View style={styles.container}>
@@ -54,7 +58,7 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
         <Button title="Retour" onPress={() => navigation.navigate("Home")} />
         <Button
           title="Continuer"
-          onPress={() => navigation.navigate("Restaurants")}
+          onPress={() => navigation.navigate("Restaurants")} disabled={ticketContext?.isDisabled}
         />
       </View>
       <SafeAreaView style={styles.mainContainer}>
@@ -63,7 +67,7 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
           {DATA.map((d) => (
             <View key={d.id}>
               <TouchableOpacity
-                onPress={() => {ticketContext?.setSelectedId(d.id)}}
+                onPress={() => handleClick(d.id)}
                 style={styles.boutonSelect}
               >
                 <Text style={styles.textButton}>{d.id}</Text>
