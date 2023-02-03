@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   Button,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { RootStackScreenProps } from "../types";
 import { TicketContext } from "../context/TicketContext";
 
@@ -58,7 +58,7 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
         />
       </View>
       <SafeAreaView style={styles.mainContainer}>
-        <Text>Sélectionnez le nombre de couverts</Text>
+        <Text style={styles.title}>Sélectionnez le nombre de couverts</Text>
         <View style={styles.containerButton}>
           {DATA.map((d) => (
             <View key={d.id}>
@@ -66,7 +66,7 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
                 onPress={() => {ticketContext?.setSelectedId(d.id)}}
                 style={styles.boutonSelect}
               >
-                <Text>{d.id}</Text>
+                <Text style={styles.textButton}>{d.id}</Text>
               </TouchableOpacity>
             </View>
           ))}
@@ -84,6 +84,7 @@ export default SelectScreen;
 
 const styles = StyleSheet.create({
   container: { marginTop: 50, marginLeft: 50, marginRight: 50 },
+  title: {fontSize: 32, fontWeight: "bold"},
   containerHeaderBoutton: {
     flexDirection: "row",
     alignItems: "center",
@@ -96,29 +97,25 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "center",
+    alignContent:"center",
     height: "90%",
     width: "80%",
-    borderWidth: 5,
-    borderColor: "red",
   },
   boutonSelect: {
+    alignItems:"center",
+    justifyContent:"center",
     borderRadius: 10,
     borderWidth: 3,
     height: 150,
     width: 150,
     margin: 20,
   },
-  button: {
-    borderRadius: 10,
-    height: 60,
-    width: 225,
+  textButton: {
+    fontSize: 32
   },
   item: {
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
   },
 });
