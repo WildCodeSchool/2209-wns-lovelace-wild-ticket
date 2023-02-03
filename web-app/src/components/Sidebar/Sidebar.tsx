@@ -2,10 +2,15 @@ import { gql, useMutation } from "@apollo/client";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import {
+  MINI_LOGO_PARAMS,
+  ROLE_ADMIN,
+  ROLE_RESTAURANT,
+} from "../../constants/Constants";
 import { UserContext } from "../../context/UserContext";
 import { SignOutMutation, SignOutMutationVariables } from "../../gql/graphql";
 import { HOME_PATH } from "../../pages/paths";
-import SVGIconTable from "../SVG/SVGIconeTable/SVGIconTable";
+import SVGIconTable from "../SVG/SVGIconTable/SVGIconTable";
 import SVGIconExit from "../SVG/SVGIconExit/SVGIconExit";
 import SVGIconHome from "../SVG/SVGIconHome/SVGIconHome";
 import SVGIconOptions from "../SVG/SVGIconOptions/SVGIconOptions";
@@ -15,7 +20,7 @@ import SVGIconStats from "../SVG/SVGIconStats/SVGIconStats";
 import SVGIconTicket from "../SVG/SVGIconTicket/SVGIconTicket";
 import SVGIconUser from "../SVG/SVGIconUser/SVGIconUser";
 import SVGLogoMini from "../SVG/SVGLogoMini/SVGLogoMini";
-import { MAX_ICON_PARAMS, MIN_ICON_PARAMS } from "../utils";
+import { MAX_ICON_PARAMS, MIN_ICON_PARAMS } from "../../constants/Constants";
 import "./Sidebar.scss";
 
 const SIGN_OUT = gql`
@@ -57,38 +62,38 @@ export default function SideBar() {
   return (
     <aside className="SideBar">
       <div className="SideBarIconsContainer">
-        <SVGLogoMini logoWidth="55" logoFill="#f3f4f8" />
+        <SVGLogoMini logoParams={MINI_LOGO_PARAMS} />
       </div>
       <div className="SideBarIconsContainer">
         <SVGIconHome
           iconMaxParams={MAX_ICON_PARAMS}
           iconMinParams={MIN_ICON_PARAMS}
         />
-        {userRole === "ROLE_ADMIN" && (
+        {userRole === ROLE_ADMIN && (
           <SVGIconRestaurant
             iconMaxParams={MAX_ICON_PARAMS}
             iconMinParams={MIN_ICON_PARAMS}
           />
         )}
-        {userRole === "ROLE_ADMIN" && (
+        {userRole === ROLE_ADMIN && (
           <SVGIconPole
             iconMaxParams={MAX_ICON_PARAMS}
             iconMinParams={MIN_ICON_PARAMS}
           />
         )}
-        {userRole === "ROLE_ADMIN" && (
+        {userRole === ROLE_ADMIN && (
           <SVGIconUser
             iconMaxParams={MAX_ICON_PARAMS}
             iconMinParams={MIN_ICON_PARAMS}
           />
         )}
-        {userRole === "ROLE_RESTAURANT" && (
+        {userRole === ROLE_RESTAURANT && (
           <SVGIconTicket
             iconMaxParams={MAX_ICON_PARAMS}
             iconMinParams={MIN_ICON_PARAMS}
           />
         )}
-        {userRole === "ROLE_RESTAURANT" && (
+        {userRole === ROLE_RESTAURANT && (
           <SVGIconTable
             iconMaxParams={MAX_ICON_PARAMS}
             iconMinParams={MIN_ICON_PARAMS}
