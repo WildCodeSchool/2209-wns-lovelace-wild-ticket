@@ -6,15 +6,6 @@ import { getErrorMessage } from "../../utils";
 import { HOME_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
 
-const SIGN_IN = gql`
-  mutation SignIn($email: String!, $password: String!, $rememberMe: Boolean!) {
-    signIn(email: $email, password: $password, rememberMe: $rememberMe) {
-      id
-      email
-    }
-  }
-`;
-
 const SEND_RESET_PASSWORD_EMAIL = gql`
   mutation SendResetPasswordEmail($email: String!) {
     sendResetPasswordEmail(email: $email)
