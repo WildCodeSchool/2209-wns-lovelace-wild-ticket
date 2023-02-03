@@ -22,6 +22,9 @@ export default class EmailService {
     const crypto = require("crypto");
     const token = crypto.randomBytes(32).toString("hex");
 
+    // Save token in database
+    await AppUserRepository.updateUserToken(user.id, token);
+
     // Send email
     const link = `http://localhost:3000/reset-password/${token}`;
     const subject = "Réinitialisation de votre mot de passe";

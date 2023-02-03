@@ -173,6 +173,26 @@ export default class AppUserRepository extends AppUserDb {
     });
   }
 
+  static async updateUserToken(
+    id: string,
+    resetPasswordToken: string,
+  ): Promise<AppUser> {
+    const userToUpdate = await this.getUserById(id);
+
+    if (!userToUpdate) {
+      throw new Error("Aucun utilisateur ne correspond à cet ID.");
+    }
+
+    // Token expiration date set to 30 minutes
+    const resetPasswordTokenExpiration = new Date(Date.now() + 1000 * 60 * 30);
+
+    return this.repository.save({
+      id: id,
+      resetPasswordToken: resetPasswordToken,
+      resetPasswordTokenExpiration: resetPasswordTokenExpiration,
+    });
+  }
+
   static async deleteUser(id: string): Promise<AppUser> {
     const user = await this.getUserById(id);
 
