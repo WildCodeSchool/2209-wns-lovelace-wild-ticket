@@ -30,6 +30,8 @@ import DashboardTicket from "../pages/Dashboard/DashboardTicket/DashboardTicket"
 import DashboardTable from "../pages/Dashboard/DashboardTable/DashboardTable";
 import DashboardStats from "../pages/Dashboard/DashboardStats/DashboardStats";
 import DashboardOptions from "../pages/Dashboard/DashboardOptions/DashboardOptions";
+import ProtectedAdmin from "../components/Protected/ProtectedAdmin/ProtectedAdmin";
+import ProtectedRestaurant from "../components/Protected/ProtectedRestaurant/ProtectedRestaurant";
 
 /* COMPONENTS */
 import SideBar from "../components/Sidebar/Sidebar";
@@ -58,41 +60,41 @@ function App() {
             <Route
               path={DASHBOARD_RESTAURANT}
               element={
-                <Protected>
+                <ProtectedAdmin>
                   <DashboardRestaurant />
-                </Protected>
+                </ProtectedAdmin>
               }
             />
             <Route
               path={DASHBOARD_POLE}
               element={
-                <Protected>
+                <ProtectedAdmin>
                   <DashboardPole />
-                </Protected>
+                </ProtectedAdmin>
               }
             />
             <Route
               path={DASHBOARD_USER}
               element={
-                <Protected>
+                <ProtectedAdmin>
                   <DashboardUser />
-                </Protected>
+                </ProtectedAdmin>
               }
             />
             <Route
               path={DASHBOARD_TICKET}
               element={
-                <Protected>
+                <ProtectedRestaurant>
                   <DashboardTicket />
-                </Protected>
+                </ProtectedRestaurant>
               }
             />
             <Route
               path={DASHBOARD_TABLE}
               element={
-                <Protected>
+                <ProtectedRestaurant>
                   <DashboardTable />
-                </Protected>
+                </ProtectedRestaurant>
               }
             />
             <Route
