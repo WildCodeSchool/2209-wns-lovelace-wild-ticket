@@ -5,11 +5,11 @@ import { HOME_PATH } from "../paths";
 import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
 import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
+import { BIG_LOGO_DEFAULT_SIZE } from "../../constants/Constants";
 
 const NotFound = () => {
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
-  const logoSize = "500";
 
   const handleRedirect = () => {
     navigate(HOME_PATH);
@@ -19,8 +19,8 @@ const NotFound = () => {
     <div className="NotFoundMain">
       <div className="NotFoundContent">
         <SVGLogo
-          logoWidth={logoSize}
-          logoHeight={logoSize}
+          logoWidth={BIG_LOGO_DEFAULT_SIZE}
+          logoHeight={BIG_LOGO_DEFAULT_SIZE}
           logoFill={userContext?.userSVGColorScheme}
         />
         <p className="NotFound404Text">404</p>

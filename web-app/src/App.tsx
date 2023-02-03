@@ -2,11 +2,11 @@ import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer, Flip } from "react-toastify";
 
-import Home from "../pages/Home/Home";
-import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
-import NotFound from "../pages/NotFound/NotFound";
-import SignIn from "../pages/SignIn/SignIn";
-import Protected from "../components/Protected/Protected";
+import Home from "./pages/Home/Home";
+import DashboardHome from "./pages/Dashboard/DashboardHome/DashboardHome";
+import NotFound from "./pages/NotFound/NotFound";
+import SignIn from "./pages/SignIn/SignIn";
+import Protected from "./components/Protected/Protected";
 
 import {
   DASHBOARD_HOME,
@@ -19,16 +19,16 @@ import {
   DASHBOARD_USER,
   HOME_PATH,
   SIGN_IN_PATH,
-} from "../pages/paths";
-import SideBar from "../components/Sidebar/Sidebar";
-import DashboardRestaurant from "../pages/Dashboard/DashboardRestaurant/DashboardRestaurant";
-import DashboardPole from "../pages/Dashboard/DashboardPole/DashboardPole";
-import DashboardUser from "../pages/Dashboard/DashboardUser/DashboardUser";
-import DashboardTicket from "../pages/Dashboard/DashboardTicket/DashboardTicket";
-import DashboardTable from "../pages/Dashboard/DashboardTable/DashboardTable";
-import DashboardStats from "../pages/Dashboard/DashboardStats/DashboardStats";
-import DashboardOptions from "../pages/Dashboard/DashboardOptions/DashboardOptions";
-import DashBoardHeader from "../components/Dashboard/DashboardHeader/DashboardHeader";
+} from "./pages/paths";
+import SideBar from "./components/Sidebar/Sidebar";
+import DashboardRestaurant from "./pages/Dashboard/DashboardRestaurant/DashboardRestaurant";
+import DashboardPole from "./pages/Dashboard/DashboardPole/DashboardPole";
+import DashboardUser from "./pages/Dashboard/DashboardUser/DashboardUser";
+import DashboardTicket from "./pages/Dashboard/DashboardTicket/DashboardTicket";
+import DashboardTable from "./pages/Dashboard/DashboardTable/DashboardTable";
+import DashboardStats from "./pages/Dashboard/DashboardStats/DashboardStats";
+import DashboardOptions from "./pages/Dashboard/DashboardOptions/DashboardOptions";
+import DashBoardHeader from "./components/Dashboard/DashboardHeader/DashboardHeader";
 
 function App() {
   const location = useLocation();
