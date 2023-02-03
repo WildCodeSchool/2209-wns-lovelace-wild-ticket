@@ -7,6 +7,7 @@ import {
   HOME_PATH,
   SIGN_IN_PATH,
   FORGOT_PASSWORD_PATH,
+  UPDATE_PASSWORD_PATH,
   DASHBOARD_HOME,
   DASHBOARD_OPTIONS,
   DASHBOARD_POLE,
@@ -22,6 +23,7 @@ import Home from "../pages/Home/Home";
 import NotFound from "../pages/NotFound/NotFound";
 import SignIn from "../pages/SignIn/SignIn";
 import ForgotPassword from "../pages/SignIn/ForgotPassword";
+import UpdatePassword from "../pages/SignIn/UpdatePassword";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import DashboardRestaurant from "../pages/Dashboard/DashboardRestaurant/DashboardRestaurant";
 import DashboardPole from "../pages/Dashboard/DashboardPole/DashboardPole";
@@ -49,6 +51,7 @@ function App() {
             <Route path={HOME_PATH} element={<Home />} />
             <Route path={SIGN_IN_PATH} element={<SignIn />} />
             <Route path={FORGOT_PASSWORD_PATH} element={<ForgotPassword />} />
+            <Route path={UPDATE_PASSWORD_PATH} element={<UpdatePassword />} />
             <Route
               path={DASHBOARD_HOME}
               element={
