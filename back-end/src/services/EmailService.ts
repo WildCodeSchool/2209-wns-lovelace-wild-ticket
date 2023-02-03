@@ -11,13 +11,18 @@ export default class EmailService {
   private static senderName = "R-Ticket";
 
   static async sendResetPasswordEmail(email: string) {
+    // Check if email exists in database
     const user = await AppUserRepository.getUserByEmailAddress(email);
     if (!user) {
       throw new Error("Aucun utilisateur ne correspond à cet email.");
     }
+
+    // Generate token
     const recipientName = user.login;
-    // const token = user.generateResetPasswordToken();
-    const token = "faketoken66466125t35dhy453t5j4hfy65j4ty";
+    const crypto = require("crypto");
+    const token = crypto.randomBytes(32).toString("hex");
+
+    // Send email
     const link = `http://localhost:3000/reset-password/${token}`;
     const subject = "Réinitialisation de votre mot de passe";
     const text = `Bonjour ${recipientName},\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.\n\n${link}`;
