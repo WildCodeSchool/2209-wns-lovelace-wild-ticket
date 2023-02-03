@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Flip } from "react-toastify";
 
 import Home from "../pages/Home/Home";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
@@ -110,7 +110,19 @@ function App() {
           </Routes>
         </>
       </main>
-      <ToastContainer />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Flip}
+      />
     </>
   );
 }
