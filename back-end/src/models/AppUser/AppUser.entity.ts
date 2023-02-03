@@ -95,7 +95,7 @@ export default class AppUser {
   @Field({ nullable: true })
   updatedAt?: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "varchar", length: 255 })
   @Field({ nullable: true })
   resetPasswordToken?: string;
 
