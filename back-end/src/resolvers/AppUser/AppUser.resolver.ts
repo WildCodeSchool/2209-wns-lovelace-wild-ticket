@@ -15,6 +15,7 @@ import {
   UserUpdateArgs,
   updateUserPasswordArgs,
   sendResetPasswordEmailArgs,
+  updateUserPasswordWithTokenArgs,
 } from "./AppUser.input";
 import { setSessionIdInCookie } from "../../http-utils";
 import { GlobalContext } from "../..";
@@ -93,6 +94,14 @@ export default class AppUserResolver {
     @Args() { id, password }: updateUserPasswordArgs
   ): Promise<AppUser> {
     return AppUserRepository.updateUserPassword(id, password);
+  }
+
+  @Mutation(() => Boolean)
+  async updateUserPasswordWithToken(
+    @Args() { token, password }: updateUserPasswordWithTokenArgs
+  ): Promise<boolean> {
+    await AppUserRepository.updateUserPasswordWithToken(token, password);
+    return true;
   }
 
   @Mutation(() => Boolean)

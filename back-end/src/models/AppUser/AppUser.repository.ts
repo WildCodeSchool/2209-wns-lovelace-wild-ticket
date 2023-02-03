@@ -66,6 +66,16 @@ export default class AppUserRepository extends AppUserDb {
     return user;
   }
 
+  static getUserByToken(resetPasswordToken: string): Promise<AppUser | null> {
+    const user = this.findOneByResetPasswordToken(resetPasswordToken);
+
+    if (!user) {
+      throw new Error("Aucun utilisateur ne correspond à ce token.");
+    }
+
+    return user;
+  }
+
   static getUserByEmailAddress(email: string): Promise<AppUser | null> {
     const user = this.findByEmailAddress(email);
 
@@ -173,9 +183,44 @@ export default class AppUserRepository extends AppUserDb {
     });
   }
 
+  static async updateUserPasswordWithToken(
+    token: string,
+    password: string
+  ): Promise<AppUser> {
+    // Check if token is valid
+    const userToUpdate = await this.getUserByToken(token);
+    if (!userToUpdate) {
+      throw new Error("Aucun utilisateur ne correspond à ce token.");
+    }
+
+    // Check if token is expired
+    const resetPasswordTokenExpiration =
+      userToUpdate.resetPasswordTokenExpiration;
+    if (!resetPasswordTokenExpiration) {
+      throw new Error("Ce token n'est pas valide.");
+    }
+    if (resetPasswordTokenExpiration < new Date()) {
+      throw new Error("Ce token a expiré.");
+    }
+
+    // Reset expiration date
+    const newResetPasswordTokenExpiration = new Date();
+
+    // Update user updatedAt
+    const updatedAt = new Date();
+
+    // Save user
+    return this.repository.save({
+      id: userToUpdate.id,
+      hashedPassword: hashSync(password),
+      updatedAt: updatedAt,
+      resetPasswordTokenExpiration: newResetPasswordTokenExpiration,
+    });
+  }
+
   static async updateUserToken(
     id: string,
-    resetPasswordToken: string,
+    resetPasswordToken: string
   ): Promise<AppUser> {
     const userToUpdate = await this.getUserById(id);
 
