@@ -5,7 +5,6 @@ import { RootStackScreenProps } from '../types'
 const HomeScreen = ({ navigation }: RootStackScreenProps<"Home">) => {
   return (
     <View style ={styles.container}>
-      <Text>HomeScreen</Text>
       <Pressable onPress={() => navigation.navigate("Select")} style= {styles.button}>
         <Text style={styles.text}>Appuyez pour continuer</Text>
       </Pressable>

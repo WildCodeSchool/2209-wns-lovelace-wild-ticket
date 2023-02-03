@@ -17,3 +17,11 @@ export const GET_RESTAURANT_BY_ID = gql`
     }
   }
 `;
+
+export const CREATE_TICKET = gql`
+  mutation CreateTicket($name: String!, $seats: Float!, $restaurant: String!) {
+    createTicket(name: $name, seats: $seats, restaurant: $restaurant) {
+      name
+    }
+  }
+`;
