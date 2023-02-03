@@ -6,10 +6,12 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { RootStackScreenProps } from "../types";
+import { TicketContext } from "../context/TicketContext";
 
 const CreateTicketScreen = ({ navigation, route }: RootStackScreenProps<"Ticket">) => {
+  const ticketContext = useContext(TicketContext);
   const { resto } = route.params;
   const [firstName, onChangeFirstName] = React.useState("");
   const [email, onChangeEmail] = React.useState("");
@@ -24,7 +26,7 @@ const CreateTicketScreen = ({ navigation, route }: RootStackScreenProps<"Ticket"
       <View>
         <Text>Infos restaurant</Text>
         <Text>Restaurant : {resto.name}  </Text>
-        <Text>Nombre de couverts :</Text>
+        <Text>Nombre de couverts : {ticketContext?.selectedId}</Text>
         <Text>Temps d’attente estimé :</Text>
       </View>
       <View>

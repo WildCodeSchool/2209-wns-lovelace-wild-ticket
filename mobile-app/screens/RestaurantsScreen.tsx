@@ -11,7 +11,7 @@ import { GetRestaurantsQuery } from "../gql/graphql";
 import {useQuery } from "@apollo/client";
 import Restaurant from "../components/Restaurant";
 import { RootStackScreenProps } from "../types";
-import { GET_RESTAURANT_BY_ID, GET_RESTAURANTS } from "../gql/queries";
+import { GET_RESTAURANTS } from "../gql/queries";
 
 const RestaurantsScreen = ({
   navigation,
