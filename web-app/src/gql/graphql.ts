@@ -23,6 +23,8 @@ export type AppUser = {
   id: Scalars['ID'];
   login: Scalars['String'];
   poles?: Maybe<Array<Pole>>;
+  resetPasswordToken?: Maybe<Scalars['String']>;
+  resetPasswordTokenExpiration?: Maybe<Scalars['DateTime']>;
   restaurant?: Maybe<Restaurant>;
   role: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
