@@ -1,34 +1,30 @@
 import {
   Button,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
-import { GetRestaurantsQuery } from "../gql/graphql";
+import React, { useContext, useState } from "react";
 import { useQuery } from "@apollo/client";
-import Restaurant from "../components/Restaurant";
 import { RootStackScreenProps } from "../types";
+import { GetRestaurantsQuery } from "../gql/graphql";
 import { GET_RESTAURANTS } from "../gql/queries";
+import { TicketContext } from "../context/TicketContext";
+import Restaurant from "../components/Restaurant";
 
 const RestaurantsScreen = ({
   navigation,
 }: RootStackScreenProps<"Restaurants">) => {
   const { data } = useQuery<GetRestaurantsQuery>(GET_RESTAURANTS);
+  const [resto, setResto] = useState<any | null>("");
+  const ticketContext = useContext(TicketContext);
 
-  const [resto, setRestoId] = useState<any | null>("");
-  console.log(resto);
-  // const [queryById, { loading, error }] = useLazyQuery<GetRestaurantByIdQuery, GetRestaurantByIdQueryVariables>(GET_RESTAURANT_BY_ID);
-  // const GetResto = async (getRestaurantByIdId: string) => {
-  //   try { await queryById({
-  //     variables: { getRestaurantByIdId },
-  //   }); } catch (error) {
-
-  //   }
-  // }
+  const handleClick = (id: any) => {
+    setResto(id)
+    ticketContext?.setIsDisabled(false)
+  }
 
   return (
     <View style={styles.container}>
@@ -36,7 +32,7 @@ const RestaurantsScreen = ({
         <Button title="Retour" onPress={() => navigation.navigate("Select")} />
         <Button
           title="Continuer"
-          onPress={() => navigation.navigate("Ticket", { resto })}
+          onPress={() => navigation.navigate("Ticket", { resto })}  disabled={ticketContext?.isDisabled}
         />
       </View>
       <SafeAreaView style={styles.mainContainer}>
@@ -44,7 +40,7 @@ const RestaurantsScreen = ({
         <View style={styles.restaurantList}>
           {data?.getRestaurants.map((restaurant) => (
             <View key={restaurant.id}>
-              <TouchableOpacity onPress={() => setRestoId(restaurant)} style={styles.boutonSelect}>
+              <TouchableOpacity onPress={() => handleClick(restaurant)} style={styles.boutonSelect}>
                 <Restaurant {...restaurant} />
               </TouchableOpacity>
             </View>
