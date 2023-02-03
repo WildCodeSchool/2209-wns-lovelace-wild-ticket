@@ -1,5 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
 import { createContext, useState } from "react";
+import {
+  BIG_LOGO_DARK_THEME,
+  BIG_LOGO_LIGHT_THEME,
+} from "../constants/Constants";
 import { MyProfileQuery } from "../gql/graphql";
 
 const MY_PROFILE = gql`
@@ -35,8 +39,8 @@ export function ContextProvider({ children }: any) {
   const [userData, setUserData] = useState({});
   const userSVGColorScheme = window.matchMedia("(prefers-color-scheme: light)")
     .matches
-    ? "#333333"
-    : "#f3f4f6";
+    ? BIG_LOGO_LIGHT_THEME
+    : BIG_LOGO_DARK_THEME;
 
   const { loading, refetch } = useQuery<MyProfileQuery>(MY_PROFILE, {
     notifyOnNetworkStatusChange: true,
