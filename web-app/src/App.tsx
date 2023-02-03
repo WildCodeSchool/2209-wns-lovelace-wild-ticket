@@ -1,12 +1,12 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Flip } from "react-toastify";
 
-import Home from "../pages/Home/Home";
-import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
-import NotFound from "../pages/NotFound/NotFound";
-import SignIn from "../pages/SignIn/SignIn";
-import Protected from "../components/Protected/Protected";
+import Home from "./pages/Home/Home";
+import DashboardHome from "./pages/Dashboard/DashboardHome/DashboardHome";
+import NotFound from "./pages/NotFound/NotFound";
+import SignIn from "./pages/SignIn/SignIn";
+import Protected from "./components/Protected/Protected";
 
 import {
   DASHBOARD_HOME,
@@ -19,17 +19,18 @@ import {
   DASHBOARD_USER,
   HOME_PATH,
   SIGN_IN_PATH,
-} from "../pages/paths";
-import SideBar from "../components/Sidebar/Sidebar";
-import DashboardRestaurant from "../pages/Dashboard/DashboardRestaurant/DashboardRestaurant";
-import DashboardPole from "../pages/Dashboard/DashboardPole/DashboardPole";
-import DashboardUser from "../pages/Dashboard/DashboardUser/DashboardUser";
-import DashboardTicket from "../pages/Dashboard/DashboardTicket/DashboardTicket";
-import DashboardTable from "../pages/Dashboard/DashboardTable/DashboardTable";
-import DashboardStats from "../pages/Dashboard/DashboardStats/DashboardStats";
-import DashboardOptions from "../pages/Dashboard/DashboardOptions/DashboardOptions";
-import ProtectedAdmin from "../components/Protected/ProtectedAdmin/ProtectedAdmin";
-import ProtectedRestaurant from "../components/Protected/ProtectedRestaurant/ProtectedRestaurant";
+} from "./pages/paths";
+import SideBar from "./components/Sidebar/Sidebar";
+import DashboardRestaurant from "./pages/Dashboard/DashboardRestaurant/DashboardRestaurant";
+import DashboardPole from "./pages/Dashboard/DashboardPole/DashboardPole";
+import DashboardUser from "./pages/Dashboard/DashboardUser/DashboardUser";
+import DashboardTicket from "./pages/Dashboard/DashboardTicket/DashboardTicket";
+import DashboardTable from "./pages/Dashboard/DashboardTable/DashboardTable";
+import DashboardStats from "./pages/Dashboard/DashboardStats/DashboardStats";
+import DashboardOptions from "./pages/Dashboard/DashboardOptions/DashboardOptions";
+import ProtectedAdmin from "./components/Protected/ProtectedAdmin/ProtectedAdmin";
+import ProtectedRestaurant from "./components/Protected/ProtectedRestaurant/ProtectedRestaurant";
+import DashBoardHeader from "./components/Dashboard/DashboardHeader/DashboardHeader";
 
 function App() {
   const location = useLocation();
@@ -39,6 +40,7 @@ function App() {
       <main>
         {location.pathname.includes(DASHBOARD_HOME) && <SideBar />}
         <>
+          {location.pathname.includes(DASHBOARD_HOME) && <DashBoardHeader />}
           <Routes>
             <Route path={HOME_PATH} element={<Home />} />
             <Route path={SIGN_IN_PATH} element={<SignIn />} />
@@ -110,7 +112,19 @@ function App() {
           </Routes>
         </>
       </main>
-      <ToastContainer />
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Flip}
+      />
     </>
   );
 }
