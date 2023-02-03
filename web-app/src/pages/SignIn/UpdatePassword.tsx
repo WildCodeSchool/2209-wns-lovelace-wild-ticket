@@ -1,27 +1,46 @@
 import { gql, useMutation } from "@apollo/client";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../utils";
-import { HOME_PATH } from "../paths";
+import { SIGN_IN_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
 
-const SEND_RESET_PASSWORD_EMAIL = gql`
-  mutation SendResetPasswordEmail($email: String!) {
-    sendResetPasswordEmail(email: $email)
+const UPDATE_USER_PASSWORD_WITH_TOKEN = gql`
+  mutation updateUserPasswordWithToken($token: String!, $password: String!) {
+    updateUserPasswordWithToken(token: $token, password: $password)
   }
 `;
 
-const ForgotPassword = () => {
+const UpdatePassword = () => {
   const navigate = useNavigate();
-  const [email, setemail] = useState("");
-  const [sendResetPasswordEmail] = useMutation(SEND_RESET_PASSWORD_EMAIL);
+
+  const [updateUserPasswordWithToken] = useMutation(
+    UPDATE_USER_PASSWORD_WITH_TOKEN
+  );
+
+  // Get token from url
+  const location = useLocation();
+  const urlParams = new URLSearchParams(location.search);
+  const token = urlParams.get("token");
+
+  // State
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordCheck, setNewPasswordCheck] = useState("");
 
   const submit = async () => {
     try {
-      await sendResetPasswordEmail({ variables: { email } });
-      toast.success(`Un mail vient de vous être envoyé à l'adresse ${email}.`);
-      navigate(HOME_PATH);
+      if (newPassword !== newPasswordCheck) {
+        toast.error(`Les mots de passe ne correspondent pas.`);
+        return;
+      }
+      await updateUserPasswordWithToken({
+        variables: { token: token, password: newPassword },
+      });
+      toast.success(
+        `Votre mot de passe a été changé veuillez vous reconnecter avec votre identifiant et votre nouveau mot de passe.`
+      );
+      navigate(SIGN_IN_PATH);
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -30,7 +49,7 @@ const ForgotPassword = () => {
   return (
     <>
       <div className="signin-form-container">
-        <h1>Nouveau mot de passe</h1>
+        <h1>Réinitialisation de votre mot de passe</h1>
         <form
           onSubmit={async (event) => {
             event.preventDefault();
@@ -38,16 +57,28 @@ const ForgotPassword = () => {
           }}
         >
           <div className="signin-form-input">
-            <label>Adresse email</label>
+            <label>Nouveau mot de passe</label>
             <input
-              type="email"
+              type="password"
               required
-              autoComplete="email"
-              id="email"
+              id="new-password"
               name="email"
-              value={email}
+              value={newPassword}
               onChange={(event) => {
-                setemail(event.target.value);
+                setNewPassword(event.target.value);
+              }}
+            />
+          </div>
+          <div className="signin-form-input">
+            <label>Vérification du mot de passe</label>
+            <input
+              type="password"
+              required
+              id="new-password-check"
+              name="email"
+              value={newPasswordCheck}
+              onChange={(event) => {
+                setNewPasswordCheck(event.target.value);
               }}
             />
           </div>
@@ -58,4 +89,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default UpdatePassword;
