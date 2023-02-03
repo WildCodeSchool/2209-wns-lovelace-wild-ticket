@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { MAX_ICON_PARAMS_TYPE, MIN_ICON_PARAMS_TYPE } from "../../utils";
-import '../SVGIcon.scss';
+import {
+  MAX_ICON_PARAMS_TYPE,
+  MIN_ICON_PARAMS_TYPE,
+} from "../../../constants/Constants";
+import "../SVGIcon.scss";
 
 export default function SVGIconExit({
   iconMaxParams,

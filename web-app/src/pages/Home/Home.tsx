@@ -4,11 +4,11 @@ import "./Home.scss";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
+import { BIG_LOGO_DEFAULT_SIZE } from "../../constants/Constants";
 
 const Home = () => {
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
-  const logoSize = "500";
 
   const handleButton = (): void => {
     if (userContext?.isAuthenticated) {
@@ -23,8 +23,8 @@ const Home = () => {
     <div className="HomePage">
       <div className="HomePageButtonContainer">
         <SVGLogo
-          logoWidth={logoSize}
-          logoHeight={logoSize}
+          logoWidth={BIG_LOGO_DEFAULT_SIZE}
+          logoHeight={BIG_LOGO_DEFAULT_SIZE}
           logoFill={userContext?.userSVGColorScheme}
         />
         <button className="HomePageButton" onClick={handleButton}>
