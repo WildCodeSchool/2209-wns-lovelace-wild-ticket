@@ -26,7 +26,7 @@ export default class EmailService {
     await AppUserRepository.updateUserToken(user.id, token);
 
     // Send email
-    const link = `http://localhost:3000/reset-password/${token}`;
+    const link = `http://localhost:3000/update-password/?token=${token}`;
     const subject = "Réinitialisation de votre mot de passe";
     const text = `Bonjour ${recipientName},\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.\n\n${link}`;
     const html = `<p>Bonjour ${recipientName},<br /><br />Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.<br /><br /><a href="${link}">${link}</a></a></p>`;
