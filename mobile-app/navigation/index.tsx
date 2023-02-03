@@ -14,7 +14,7 @@ import HomeScreen from "../screens/HomeScreen";
 import SelectScreen from "../screens/SelectScreen";
 import RestaurantsScreen from "../screens/RestaurantsScreen";
 import CreateTicketScreen from "../screens/CreateTicketScreen";
-import Restaurant from "../components/Restaurant";
+import { ContextProvider } from "../context/TicketContext";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -35,28 +35,30 @@ export default function Navigation({
 
 function RootNavigator() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Select"
-        component={SelectScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Restaurants"
-        component={RestaurantsScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="Ticket" component={CreateTicketScreen}/>
-      <Stack.Screen
-        name="NotFound"
-        component={NotFoundScreen}
-        options={{ title: "Oops!" }}
-      />
-    </Stack.Navigator>
+    <ContextProvider>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Select"
+          component={SelectScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Restaurants"
+          component={RestaurantsScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Ticket" component={CreateTicketScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="NotFound"
+          component={NotFoundScreen}
+          options={{ title: "Oops!" }}
+        />
+      </Stack.Navigator>
+    </ContextProvider>
   );
 }

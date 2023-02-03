@@ -3,18 +3,14 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
-  SafeAreaView, Button
+  SafeAreaView,
+  Button,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { RootStackScreenProps } from "../types";
+import { TicketContext } from "../context/TicketContext";
 
-type ItemData = {
-  id: string;
-  title: string;
-};
-
-const DATA: ItemData[] = [
+const DATA = [
   {
     id: "1",
     title: "1",
@@ -49,61 +45,32 @@ const DATA: ItemData[] = [
   },
 ];
 
-type ItemProps = {
-  item: ItemData;
-  onPress: () => void;
-  backgroundColor: string;
-  textColor: string;
-};
-
-const Item = ({ item, onPress, backgroundColor, textColor }: ItemProps) => (
-  <TouchableOpacity
-    onPress={onPress}
-    style={[styles.item, { backgroundColor }]}
-  >
-    <Text style={[styles.title, { color: textColor }]}>{item.title}</Text>
-  </TouchableOpacity>
-);
-
 const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
-  const [selectedId, setSelectedId] = useState<string>();
-
-  const renderItem = ({ item }: { item: ItemData }) => {
-    const backgroundColor = item.id === selectedId ? "red" : "#f9c2ff";
-    const color = item.id === selectedId ? "white" : "black";
-
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        backgroundColor={backgroundColor}
-        textColor={color}
-      />
-    );
-  };
+  const ticketContext = useContext(TicketContext);
 
   return (
     <View style={styles.container}>
       <View style={styles.containerHeaderBoutton}>
-        <Button
-          title="Retour"
-          onPress={() => navigation.navigate("Home")}
-        />
+        <Button title="Retour" onPress={() => navigation.navigate("Home")} />
         <Button
           title="Continuer"
           onPress={() => navigation.navigate("Restaurants")}
         />
       </View>
-      <SafeAreaView style={styles.container}  >
+      <SafeAreaView style={styles.mainContainer}>
         <Text>Sélectionnez le nombre de couverts</Text>
-        <FlatList
-          data={DATA}
-          numColumns={4}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-          style= {styles.containerSelectBouton}
-        />
+        <View style={styles.containerButton}>
+          {DATA.map((d) => (
+            <View key={d.id}>
+              <TouchableOpacity
+                onPress={() => {ticketContext?.setSelectedId(d.id)}}
+                style={styles.boutonSelect}
+              >
+                <Text>{d.id}</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
         <Text>
           Pour plus de 8 couverts, merci de vous renseigner directement auprès
           du restaurant souhaité.
@@ -122,19 +89,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  containerButton: {
-    alignItems: "center",
-    justifyContent: "flex-start",
-    height: "auto",
-    width: "100%",
-    borderWidth: 5,
-    borderColor: "red",
+  mainContainer: {
+    alignItems: 'center',
   },
-  containerSelectBouton: {
+  containerButton: {
+    flexWrap: "wrap",
+    flexDirection: "row",
+    justifyContent: "center",
+    height: "90%",
+    width: "80%",
     borderWidth: 5,
     borderColor: "red",
-    height: "75%",
-    width: "55%",
   },
   boutonSelect: {
     borderRadius: 10,
