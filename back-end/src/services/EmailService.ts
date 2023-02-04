@@ -1,14 +1,16 @@
 import Mailjet from "node-mailjet";
-import AppUserRepository from "../models/AppUser/AppUser.repository";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default class EmailService {
   private static mailjet = Mailjet.apiConnect(
-    "a080499f7f3eb1e0fd5c9d97a4b1802c",
-    "210d2eda51630bbaaf4efdeca357f500"
+    process.env.MJ_APIKEY_PUBLIC || "",
+    process.env.MJ_APIKEY_PRIVATE || ""
   );
 
-  private static senderEmail = "contact@r-ticket.agtn.fr";
-  private static senderName = "R-Ticket";
+  private static senderEmail = process.env.MJ_SENDER_EMAIL;
+  private static senderName = process.env.MJ_SENDER_NAME;
 
   static async sendEmail(
     recipientEmail: string,
