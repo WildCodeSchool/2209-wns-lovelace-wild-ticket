@@ -9,6 +9,7 @@ import PoleRepository from "../Pole/Pole.repository";
 import Pole from "../Pole/Pole.entity";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import Restaurant from "../Restaurant/Restaurant.entity";
+import EmailService from "../../services/EmailService";
 
 export const INVALID_CREDENTIALS_ERROR_MESSAGE = "Identifiants incorrects.";
 
@@ -285,5 +286,28 @@ export default class AppUserRepository extends AppUserDb {
     }
 
     return session.user;
+  }
+
+  static async sendResetPasswordEmail(email: string): Promise<void> {
+    // Check if email exists in database
+    const user = await this.getUserByEmailAddress(email);
+    if (!user) {
+      throw new Error("Aucun utilisateur ne correspond à cet email.");
+    }
+
+    // Generate token
+    const crypto = require("crypto");
+    const token = crypto.randomBytes(32).toString("hex");
+    // Save token in database
+    await this.updateUserToken(user.id, token);
+
+    // Construct email
+    const recipientName = user.login;
+    const subject = "Réinitialisation de votre mot de passe";
+    const link = `http://localhost:3000/update-password/?token=${token}`;
+    const text = `Bonjour ${recipientName},\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.\n\n${link}`;
+    const html = `<p>Bonjour ${recipientName},<br /><br />Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.<br /><br /><a href="${link}">${link}</a></a></p>`;
+    // Send email
+    await EmailService.sendEmail(email, recipientName, subject, text, html);
   }
 }

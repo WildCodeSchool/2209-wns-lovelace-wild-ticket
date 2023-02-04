@@ -10,27 +10,13 @@ export default class EmailService {
   private static senderEmail = "contact@r-ticket.agtn.fr";
   private static senderName = "R-Ticket";
 
-  static async sendResetPasswordEmail(email: string) {
-    // Check if email exists in database
-    const user = await AppUserRepository.getUserByEmailAddress(email);
-    if (!user) {
-      throw new Error("Aucun utilisateur ne correspond à cet email.");
-    }
-
-    // Generate token
-    const recipientName = user.login;
-    const crypto = require("crypto");
-    const token = crypto.randomBytes(32).toString("hex");
-
-    // Save token in database
-    await AppUserRepository.updateUserToken(user.id, token);
-
-    // Send email
-    const link = `http://localhost:3000/update-password/?token=${token}`;
-    const subject = "Réinitialisation de votre mot de passe";
-    const text = `Bonjour ${recipientName},\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.\n\n${link}`;
-    const html = `<p>Bonjour ${recipientName},<br /><br />Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.<br /><br /><a href="${link}">${link}</a></a></p>`;
-
+  static async sendEmail(
+    recipientEmail: string,
+    recipientName: string,
+    subject: string,
+    text: string,
+    html: string
+  ) {
     await this.mailjet.post("send", { version: "v3.1" }).request({
       Messages: [
         {
@@ -40,7 +26,7 @@ export default class EmailService {
           },
           To: [
             {
-              Email: email,
+              Email: recipientEmail,
               Name: recipientName,
             },
           ],
