@@ -114,7 +114,8 @@ export default class TicketFixtures {
     }
 
     // Today's waiting tickets
-    let numberOfWaitingTickets = Math.floor(Math.random() * 5) + 1;
+    let numberOfWaitingTickets = Math.floor(Math.random() * 10) + 1;
+    let minutesToSubstract = Math.floor(Math.random() * 35) + 1;
 
     for (
       let waitingTicket = 1;
@@ -122,7 +123,6 @@ export default class TicketFixtures {
       waitingTicket++
     ) {
       let lastName = faker.name.lastName();
-      let minutesToSubstract = Math.floor(Math.random() * 10) + 1;
       let table = Math.floor(Math.random() * 15 + 1);
 
       ticketsFixtures.push({
@@ -146,6 +146,7 @@ export default class TicketFixtures {
         ),
       });
       ticketNumber++;
+      minutesToSubstract -= Math.floor(Math.random() * 10) + 1;
     }
 
     return ticketsFixtures;

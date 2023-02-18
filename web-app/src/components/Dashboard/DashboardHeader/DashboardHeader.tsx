@@ -7,7 +7,7 @@ import {
   ROLE_ADMIN,
   ROLE_RESTAURANT,
 } from "../../../constants/Constants";
-import convertDate from "../../../services/DateService";
+import { convertDate }  from "../../../services/DateService";
 import SVGMiniIconUser from "../../SVG/SVGMiniIconUser/SVGMiniIconUser";
 import { headerLocation } from "./utils";
 import "./DashboardHeader.scss";
