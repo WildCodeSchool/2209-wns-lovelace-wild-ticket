@@ -3,9 +3,11 @@ import { GET_TICKETS_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
 import "./DashboardTicketListTab.scss";
 
 export default function DashboardTicketListTab({
+  dataHead,
   dataTickets,
   isLoading,
 }: {
+  dataHead: string[];
   dataTickets: GET_TICKETS_BY_RESTAURANT_TYPES;
   isLoading: any;
 }) {
@@ -15,12 +17,9 @@ export default function DashboardTicketListTab({
     <table className="ListTab">
       <thead className="ListTabHeader">
         <tr className="ListTabHeaderRow">
-          <th>N° Ticket</th>
-          <th>Nom</th>
-          <th>Couverts</th>
-          <th>Temps d'attente</th>
-          <th>Statut</th>
-          <th>Notification</th>
+          {dataHead.map((headContent) => (
+            <th key={ headContent }>{ headContent }</th>
+          ))}
         </tr>
       </thead>
       <tbody className="ListTabBody">
@@ -32,7 +31,7 @@ export default function DashboardTicketListTab({
                 <td>{ticket.number}</td>
                 <td>{ticket.name}</td>
                 <td>{ticket.seats}</td>
-                <td>{waitingTime(ticket.deliveredAt)}</td>
+                <td>{waitingTime(ticket.createdAt)}</td>
                 <td>TO DO</td>
                 <td>TO DO</td>
               </tr>

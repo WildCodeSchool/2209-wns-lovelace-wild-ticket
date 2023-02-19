@@ -3,6 +3,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import DashboardTicketListTab from "../../../components/Dashboard/DashboardTicketListTab/DashboardTicketListTab";
 import { UserContext } from "../../../context/UserContext";
+import { TicketsHeadTabContent } from "../../../data/DashboardHeadTabDatas";
 import {
   TicketsByRestaurantQuery,
   TicketsByRestaurantQueryVariables,
@@ -33,7 +34,7 @@ const GET_TICKETS_BY_RESTAURANT = gql`
 const DashboardTicket = () => {
   const [tickets, setTickets] = useState<GET_TICKETS_BY_RESTAURANT_TYPES>(null);
   const restaurantId = useContext(UserContext)?.userData.restaurant.id;
-
+  console.log(restaurantId);
   const { loading, refetch } = useQuery<TicketsByRestaurantQuery, TicketsByRestaurantQueryVariables>(GET_TICKETS_BY_RESTAURANT, {
     notifyOnNetworkStatusChange: true,
     variables: { ticketsByRestaurantId: restaurantId },
@@ -47,7 +48,7 @@ const DashboardTicket = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       refetch();
-    }, 10 * 1000);
+    }, 60 * 1000);
 
     return () => {
       clearInterval(intervalId);
@@ -62,7 +63,7 @@ const DashboardTicket = () => {
         <p className="DashboardText">Under Construction...</p>
       </header>
       <main className="DashboardMainList">
-        <DashboardTicketListTab dataTickets={tickets} isLoading={loading} />
+        <DashboardTicketListTab dataHead={TicketsHeadTabContent} dataTickets={tickets} isLoading={loading} />
       </main>
       <footer className="DashboardMainFooter">
         <h1>PAGINATION</h1>

@@ -26,8 +26,10 @@ export const convertDate = (dateNow: Date) => {
 /**
  * Function used to show the waiting time of a new ticket
  */
-export const waitingTime = (deliveredAt: Date) => {
+export const waitingTime = (createdAt: Date) => {
   const dateNow = new Date();
-  //TODO: modifier date dans backend
-  return dateNow.getMinutes() + 60 - new Date(deliveredAt).getMinutes();
+  const dateDeliveredAt = new Date(createdAt);
+  const diffInMs = dateNow.getTime() - dateDeliveredAt.getTime();
+
+  return Math.ceil(diffInMs / (1000 * 60));
 };
