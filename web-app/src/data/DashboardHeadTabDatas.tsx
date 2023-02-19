@@ -4,5 +4,5 @@ export const TicketsHeadTabContent: string[] = [
   "Couverts",
   "Temps d'attente",
   "Statut",
-  "Notification",
+  "Actions",
 ]
