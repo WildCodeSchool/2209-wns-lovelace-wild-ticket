@@ -5,10 +5,12 @@ import DashboardTicketListTab from "../../../components/Dashboard/DashboardTicke
 import { UserContext } from "../../../context/UserContext";
 import { TicketsHeadTabContent } from "../../../data/DashboardHeadTabDatas";
 import {
+  TablesByRestaurantQuery,
+  TablesByRestaurantQueryVariables,
   TicketsByRestaurantQuery,
   TicketsByRestaurantQueryVariables,
 } from "../../../gql/graphql";
-import { GET_TICKETS_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
+import { GET_TABLES_BY_RESTAURANT_TYPES, GET_TICKETS_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
 import "../DashboardMain.scss";
 
 const GET_TICKETS_BY_RESTAURANT = gql`
@@ -31,11 +33,22 @@ const GET_TICKETS_BY_RESTAURANT = gql`
   }
 `;
 
+const GET_TABLES_BY_RESTAURANT = gql`
+  query TablesByRestaurant($tablesByRestaurantId: String!) {
+    TablesByRestaurant(id: $tablesByRestaurantId) {
+      id
+      number
+      capacity
+    }
+  }
+`;
+
 const DashboardTicket = () => {
   const [tickets, setTickets] = useState<GET_TICKETS_BY_RESTAURANT_TYPES>(null);
+  const [tables, setTables ] = useState<GET_TABLES_BY_RESTAURANT_TYPES>(null);
   const restaurantId = useContext(UserContext)?.userData.restaurant.id;
   console.log(restaurantId);
-  const { loading, refetch } = useQuery<TicketsByRestaurantQuery, TicketsByRestaurantQueryVariables>(GET_TICKETS_BY_RESTAURANT, {
+  const { loading, refetch: ticketsRefetch } = useQuery<TicketsByRestaurantQuery, TicketsByRestaurantQueryVariables>(GET_TICKETS_BY_RESTAURANT, {
     notifyOnNetworkStatusChange: true,
     variables: { ticketsByRestaurantId: restaurantId },
     onCompleted: (data) => {
@@ -45,9 +58,20 @@ const DashboardTicket = () => {
     },
   });
 
+  const { refetch: tablesRefetch } = useQuery<TablesByRestaurantQuery, TablesByRestaurantQueryVariables>(GET_TABLES_BY_RESTAURANT, {
+    notifyOnNetworkStatusChange: true,
+    variables: { tablesByRestaurantId: restaurantId },
+    onCompleted: (data) => {
+      if (data.TablesByRestaurant) {
+        setTables(data.TablesByRestaurant);
+      }
+    },
+  });
+
   useEffect(() => {
     const intervalId = setInterval(() => {
-      refetch();
+      ticketsRefetch();
+      tablesRefetch();
     }, 60 * 1000);
 
     return () => {
@@ -63,7 +87,7 @@ const DashboardTicket = () => {
         <p className="DashboardText">Under Construction...</p>
       </header>
       <main className="DashboardMainList">
-        <DashboardTicketListTab dataHead={TicketsHeadTabContent} dataTickets={tickets} isLoading={loading} />
+        <DashboardTicketListTab dataHead={TicketsHeadTabContent} dataTickets={tickets} dataTables={tables} isLoading={loading} />
       </main>
       <footer className="DashboardMainFooter">
         <h1>PAGINATION</h1>

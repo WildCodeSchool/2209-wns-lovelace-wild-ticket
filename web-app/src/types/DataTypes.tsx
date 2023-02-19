@@ -15,3 +15,10 @@ export type GET_TICKETS_BY_RESTAURANT_TYPES = Array<{
     number: number;
   } | null;
 }> | null;
+
+export type GET_TABLES_BY_RESTAURANT_TYPES = Array<{
+  __typename?: "Table";
+  id: string;
+  number: number;
+  capacity: number;
+}> | null;
