@@ -19,10 +19,10 @@ export default class TicketRepository extends TicketDb {
         await TicketFixtures.getRandomTickets();
       await Promise.all(
         ticketsFixtures.map(async (ticket) => {
-          const table = (await TableRepository.getTableByNumber(
+          const table = ticket.table ? (await TableRepository.getTableByNumber(
             ticket.table,
             restaurant
-          )) as Table;
+          )) as Table : undefined;
 
           const newTicket = new Ticket(
             ticket.number,

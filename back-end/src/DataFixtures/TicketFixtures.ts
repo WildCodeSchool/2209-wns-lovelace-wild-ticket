@@ -9,7 +9,7 @@ export type TicketFixturesType = {
   phoneNumber: string;
   createdAt: Date;
   deliveredAt?: Date;
-  table: number;
+  table?: number;
   placedAt?: Date;
   closedAt?: Date;
 };
@@ -109,13 +109,17 @@ export default class TicketFixtures {
           dateNow,
           minutesToSubstract
         ),
+        closedAt: DateUpdates.addMinutesToDate(
+          dateNow,
+          180,
+        )
       });
       ticketNumber++;
     }
 
     // Today's waiting tickets
-    let numberOfWaitingTickets = Math.floor(Math.random() * 10) + 1;
-    let minutesToSubstract = Math.floor(Math.random() * 35) + 1;
+    let numberOfWaitingTickets = Math.floor(Math.random() * 7) + 1;
+    let minutesToSubstract = numberOfWaitingTickets * 5;
 
     for (
       let waitingTicket = 1;
@@ -123,26 +127,16 @@ export default class TicketFixtures {
       waitingTicket++
     ) {
       let lastName = faker.name.lastName();
-      let table = Math.floor(Math.random() * 15 + 1);
 
       ticketsFixtures.push({
         number: ticketNumber,
         name: lastName,
-        seats: this.getSeatsFromTable(table),
+        seats: Math.floor(Math.random() * 8) + 1,
         email: faker.internet.email(faker.name.firstName(), lastName),
         phoneNumber: faker.phone.number("06########"),
         createdAt: DateUpdates.substractMinutesToDate(
           dateNow,
           minutesToSubstract
-        ),
-        deliveredAt: DateUpdates.substractMinutesToDate(
-          dateNow,
-          minutesToSubstract
-        ),
-        table: table,
-        closedAt: DateUpdates.addMinutesToDate(
-          DateUpdates.substractMinutesToDate(dateNow, minutesToSubstract),
-          15
         ),
       });
       ticketNumber++;
