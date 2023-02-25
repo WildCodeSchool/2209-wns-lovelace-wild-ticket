@@ -29,7 +29,14 @@ export default function DashboardTicketListTab({
         </tr>
       </thead>
       <tbody className="ListTabBody">
-      <tr><td colSpan={6} style={{textAlign: "center", backgroundColor: "lightgrey"}}>Tickets en attente</td></tr>
+        <tr>
+          <td
+            colSpan={6}
+            style={{ textAlign: "center", backgroundColor: "lightgrey" }}
+          >
+            Tickets non placés
+          </td>
+        </tr>
         {dataTickets &&
           dataTickets
             .filter((ticket) => ticket.placedAt === null)
@@ -41,12 +48,22 @@ export default function DashboardTicketListTab({
                 <td>{ticket.seats}</td>
                 <td>{waitingTime(ticket.createdAt)}</td>
                 <td>
-                  <DashboardTicketListStatus dataTickets={ticket} tables={dataTables}/>
+                  <DashboardTicketListStatus
+                    dataTickets={ticket}
+                    tables={dataTables}
+                  />
                 </td>
                 <td>TO DO</td>
               </tr>
             ))}
-        <tr><td colSpan={6} style={{textAlign: "center", backgroundColor: "lightgrey"}}>Tickets Placés</td></tr>
+        <tr>
+          <td
+            colSpan={6}
+            style={{ textAlign: "center", backgroundColor: "lightgrey" }}
+          >
+            Tickets Placés
+          </td>
+        </tr>
         {dataTickets &&
           dataTickets
             .filter(
@@ -62,7 +79,10 @@ export default function DashboardTicketListTab({
                 <td>{ticket.seats}</td>
                 <td>-</td>
                 <td>
-                  <DashboardTicketListStatus dataTickets={ticket} tables={dataTables} />
+                  <DashboardTicketListStatus
+                    dataTickets={ticket}
+                    tables={dataTables}
+                  />
                 </td>
                 <td>Cloture</td>
               </tr>

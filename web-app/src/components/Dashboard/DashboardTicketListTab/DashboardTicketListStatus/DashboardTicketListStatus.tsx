@@ -33,11 +33,7 @@ export default function DashboardTicketListStatus({
   const filteredTables = tables?.filter(
     (table) => table.capacity === dataTickets?.seats
   );
-  if (
-    dataTickets?.deliveredAt !== null &&
-    dataTickets?.placedAt === null &&
-    filteredTables
-  ) {
+  if (dataTickets?.placedAt === null && filteredTables?.length !== 0) {
     return (
       <>
         <div className="DashboardTicketListStatusContainer">
