@@ -17,7 +17,6 @@ export default function DashboardTicketListTab({
   dataTables: GET_TABLES_BY_RESTAURANT_TYPES;
   isLoading: any;
 }) {
-  console.log(dataTables);
   return isLoading ? (
     <div>Loading...</div>
   ) : (
@@ -30,6 +29,7 @@ export default function DashboardTicketListTab({
         </tr>
       </thead>
       <tbody className="ListTabBody">
+      <tr><td colSpan={6} style={{textAlign: "center", backgroundColor: "lightgrey"}}>Tickets en attente</td></tr>
         {dataTickets &&
           dataTickets
             .filter((ticket) => ticket.placedAt === null)
@@ -41,12 +41,12 @@ export default function DashboardTicketListTab({
                 <td>{ticket.seats}</td>
                 <td>{waitingTime(ticket.createdAt)}</td>
                 <td>
-                  <DashboardTicketListStatus dataDate={ticket.placedAt} />
+                  <DashboardTicketListStatus dataTickets={ticket} tables={dataTables}/>
                 </td>
                 <td>TO DO</td>
               </tr>
             ))}
-        <tr><td colSpan={6} style={{textAlign: "center"}}>Tickets Placés</td></tr>
+        <tr><td colSpan={6} style={{textAlign: "center", backgroundColor: "lightgrey"}}>Tickets Placés</td></tr>
         {dataTickets &&
           dataTickets
             .filter(
@@ -62,9 +62,9 @@ export default function DashboardTicketListTab({
                 <td>{ticket.seats}</td>
                 <td>-</td>
                 <td>
-                  <DashboardTicketListStatus dataDate={ticket.closedAt} />
+                  <DashboardTicketListStatus dataTickets={ticket} tables={dataTables} />
                 </td>
-                <td>TO DO</td>
+                <td>Cloture</td>
               </tr>
             ))}
       </tbody>
