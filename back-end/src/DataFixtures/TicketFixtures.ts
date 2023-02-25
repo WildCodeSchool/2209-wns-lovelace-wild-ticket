@@ -119,7 +119,7 @@ export default class TicketFixtures {
 
     // Today's waiting tickets
     let numberOfWaitingTickets = Math.floor(Math.random() * 7) + 1;
-    let minutesToSubstract = numberOfWaitingTickets * 5;
+    let minutesToSubstract = numberOfWaitingTickets * 4;
 
     for (
       let waitingTicket = 1;
@@ -127,11 +127,12 @@ export default class TicketFixtures {
       waitingTicket++
     ) {
       let lastName = faker.name.lastName();
+      let seats = Math.floor(Math.random() * 8) + 1;
 
       ticketsFixtures.push({
         number: ticketNumber,
         name: lastName,
-        seats: Math.floor(Math.random() * 8) + 1,
+        seats: (seats % 2) ? seats + 1 : seats,
         email: faker.internet.email(faker.name.firstName(), lastName),
         phoneNumber: faker.phone.number("06########"),
         createdAt: DateUpdates.substractMinutesToDate(
