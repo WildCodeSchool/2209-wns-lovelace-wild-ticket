@@ -46,8 +46,9 @@ const GET_TABLES_BY_RESTAURANT = gql`
 const DashboardTicket = () => {
   const [tickets, setTickets] = useState<GET_TICKETS_BY_RESTAURANT_TYPES>(null);
   const [tables, setTables ] = useState<GET_TABLES_BY_RESTAURANT_TYPES>(null);
+  const [emptyTables, setEmptyTables] = useState<GET_TABLES_BY_RESTAURANT_TYPES>(null);
   const restaurantId = useContext(UserContext)?.userData.restaurant.id;
-  console.log(restaurantId);
+
   const { loading, refetch: ticketsRefetch } = useQuery<TicketsByRestaurantQuery, TicketsByRestaurantQueryVariables>(GET_TICKETS_BY_RESTAURANT, {
     notifyOnNetworkStatusChange: true,
     variables: { ticketsByRestaurantId: restaurantId },
@@ -68,16 +69,27 @@ const DashboardTicket = () => {
     },
   });
 
+  const getEmptyTables = (tickets: GET_TICKETS_BY_RESTAURANT_TYPES, tables: GET_TABLES_BY_RESTAURANT_TYPES): GET_TABLES_BY_RESTAURANT_TYPES => {
+    const ticketss: any = [];
+    const emptyTables: any = [];
+    tickets?.filter((ticket) => new Date(ticket.closedAt) > new Date()).map((ticket) => ticketss.push(ticket.table?.number));
+    tables?.filter((table) => !ticketss?.includes(table.number)).map((table) => emptyTables.push(table));
+    console.log(emptyTables);
+    return emptyTables;
+  }
+
   useEffect(() => {
+    setEmptyTables(getEmptyTables(tickets, tables));
     const intervalId = setInterval(() => {
       ticketsRefetch();
       tablesRefetch();
-    }, 60 * 1000);
+      setEmptyTables(getEmptyTables(tickets, tables));
+    }, 600 * 1000);
 
     return () => {
       clearInterval(intervalId);
     };
-  });
+  }, [tickets, tables, ticketsRefetch, tablesRefetch]);
 
   return (
     <section className="DashboardMainSection">
@@ -87,7 +99,7 @@ const DashboardTicket = () => {
         <p className="DashboardText">Under Construction...</p>
       </header>
       <main className="DashboardMainList">
-        <DashboardTicketListTab dataHead={TicketsHeadTabContent} dataTickets={tickets} dataTables={tables} isLoading={loading} />
+        <DashboardTicketListTab dataHead={TicketsHeadTabContent} dataTickets={tickets} dataTables={emptyTables} isLoading={loading} />
       </main>
       <footer className="DashboardMainFooter">
         <h1>PAGINATION</h1>
