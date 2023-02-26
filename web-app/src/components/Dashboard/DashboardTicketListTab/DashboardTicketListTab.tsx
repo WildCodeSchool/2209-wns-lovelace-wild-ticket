@@ -8,14 +8,14 @@ import "./DashboardTicketListTab.scss";
 
 export default function DashboardTicketListTab({
   dataHead,
-  dataTickets,
-  dataTables,
+  tickets,
+  tables,
   isLoading,
 }: {
   dataHead: string[];
-  dataTickets: GET_TICKETS_BY_RESTAURANT_TYPES;
-  dataTables: GET_TABLES_BY_RESTAURANT_TYPES;
-  isLoading: any;
+  tickets: GET_TICKETS_BY_RESTAURANT_TYPES;
+  tables: GET_TABLES_BY_RESTAURANT_TYPES;
+  isLoading: boolean;
 }) {
   return isLoading ? (
     <div>Loading...</div>
@@ -37,8 +37,8 @@ export default function DashboardTicketListTab({
             Tickets non placés
           </td>
         </tr>
-        {dataTickets &&
-          dataTickets
+        {tickets &&
+          tickets
             .filter(
               (ticket) =>
                 ticket.placedAt === null &&
@@ -55,8 +55,8 @@ export default function DashboardTicketListTab({
                 <td>{waitingTime(ticket.createdAt)}</td>
                 <td>
                   <DashboardTicketListStatus
-                    dataTickets={ticket}
-                    tables={dataTables}
+                    ticket={ticket}
+                    tables={tables}
                   />
                 </td>
                 <td>TO DO</td>
@@ -70,8 +70,8 @@ export default function DashboardTicketListTab({
             Tickets Placés
           </td>
         </tr>
-        {dataTickets &&
-          dataTickets
+        {tickets &&
+          tickets
             .filter(
               (ticket) =>
                 ticket.deliveredAt !== null &&
@@ -87,8 +87,8 @@ export default function DashboardTicketListTab({
                 <td>-</td>
                 <td>
                   <DashboardTicketListStatus
-                    dataTickets={ticket}
-                    tables={dataTables}
+                    ticket={ticket}
+                    tables={tables}
                   />
                 </td>
                 <td>Cloture</td>

@@ -74,7 +74,7 @@ const DashboardTicket = () => {
     const emptyTables: any = [];
     tickets?.filter((ticket) => new Date(ticket.closedAt) > new Date()).map((ticket) => ticketss.push(ticket.table?.number));
     tables?.filter((table) => !ticketss?.includes(table.number)).map((table) => emptyTables.push(table));
-    console.log(emptyTables);
+    console.log({emptyTables: emptyTables});
     return emptyTables;
   }
 
@@ -99,7 +99,7 @@ const DashboardTicket = () => {
         <p className="DashboardText">Under Construction...</p>
       </header>
       <main className="DashboardMainList">
-        <DashboardTicketListTab dataHead={TicketsHeadTabContent} dataTickets={tickets} dataTables={emptyTables} isLoading={loading} />
+        <DashboardTicketListTab dataHead={TicketsHeadTabContent} tickets={tickets} tables={emptyTables} isLoading={loading} />
       </main>
       <footer className="DashboardMainFooter">
         <h1>PAGINATION</h1>
