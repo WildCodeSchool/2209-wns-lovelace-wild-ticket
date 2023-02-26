@@ -82,9 +82,9 @@ export default class TicketFixtures {
       });
       ticketNumber++;
     }
-
+ 
     // Today's placed tickets
-    let nowTablesFull = Math.floor(Math.random() * 5) + 10;
+    let nowTablesFull = Math.ceil(Math.random() * 4) + 10;
 
     for (let table = 1; table <= nowTablesFull; table++) {
       let lastName = faker.name.lastName();
@@ -118,16 +118,42 @@ export default class TicketFixtures {
     }
 
     // Today's waiting tickets
-    let numberOfWaitingTickets = Math.floor(Math.random() * 7) + 1;
-    let minutesToSubstract = numberOfWaitingTickets * 4;
+    let numberOfWaitingTickets = Math.ceil(Math.random() * 6) + 1;
+    let minutesToSubstract = numberOfWaitingTickets * 5;
 
     for (
       let waitingTicket = 1;
-      waitingTicket < numberOfWaitingTickets;
+      waitingTicket <= numberOfWaitingTickets;
       waitingTicket++
     ) {
       let lastName = faker.name.lastName();
       let seats = Math.floor(Math.random() * 8) + 1;
+
+      if (waitingTicket === 1) {
+        ticketsFixtures.push({
+          number: ticketNumber,
+          name: lastName,
+          seats: 8,
+          email: faker.internet.email(faker.name.firstName(), lastName),
+          phoneNumber: faker.phone.number("06########"),
+          table: 15,
+          createdAt: DateUpdates.substractMinutesToDate(
+            dateNow,
+            minutesToSubstract
+          ),
+          deliveredAt: DateUpdates.substractMinutesToDate(
+            dateNow,
+            4
+          ),
+          closedAt: DateUpdates.addMinutesToDate(
+            dateNow,
+            1
+          ),
+        });
+        ticketNumber++;
+        minutesToSubstract -= Math.floor(Math.random() * 10) + 1;
+        continue;
+      }
 
       ticketsFixtures.push({
         number: ticketNumber,

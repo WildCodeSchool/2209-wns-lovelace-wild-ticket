@@ -33,3 +33,15 @@ export const waitingTime = (createdAt: Date) => {
 
   return Math.ceil(diffInMs / (1000 * 60));
 };
+
+export const addMinutesToDate = (dateNow: Date, minutesToAdd: number): Date => {
+  let ticketsDay = new Date(dateNow);
+  ticketsDay.setMinutes(ticketsDay.getMinutes() + minutesToAdd);
+  return ticketsDay;
+}
+
+export const substractMinutesToDate = (dateNow: Date, minutesToSubstract: number): Date => {
+  let ticketsDay = new Date(dateNow);
+  ticketsDay.setMinutes(ticketsDay.getMinutes() - minutesToSubstract);
+  return ticketsDay;
+}

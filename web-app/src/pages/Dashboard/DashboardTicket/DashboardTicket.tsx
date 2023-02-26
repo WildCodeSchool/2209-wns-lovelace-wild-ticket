@@ -84,7 +84,7 @@ const DashboardTicket = () => {
       ticketsRefetch();
       tablesRefetch();
       setEmptyTables(getEmptyTables(tickets, tables));
-    }, 600 * 1000);
+    }, 60 * 1000);
 
     return () => {
       clearInterval(intervalId);
