@@ -1,5 +1,5 @@
 import { addMinutesToDate } from "../../../../services/DateService";
-import { GET_TABLES_BY_RESTAURANT_TYPES } from "../../../../types/DataTypes";
+import { GET_TABLES_BY_RESTAURANT_TYPES, GET_TICKET_BY_RESTAURANT_TYPES } from "../../../../types/DataTypes";
 import SVGIconAlertTicket from "../../../SVG/SVGIconAlertTicket/SVGIconAlertTicket";
 import SVGIconDeliveredTicket from "../../../SVG/SVGIconDeliveredTicket/SvgIconDeliveredTicket";
 import SVGIconPlacedTicket from "../../../SVG/SVGIconPlacedTicket/SVGIconPlacedTicket";
@@ -7,77 +7,58 @@ import SVGIconWaitingTicket from "../../../SVG/SVGIconWaitingTicket/SVGIconWaiti
 import "./DashboardTicketListStatus.scss";
 
 export default function DashboardTicketListStatus({
-  dataTickets,
+  ticket,
   tables,
 }: {
-  dataTickets: {
-    __typename?: "Ticket" | undefined;
-    id: string;
-    number: number;
-    name: string;
-    seats: number;
-    email: string;
-    phoneNumber?: string | null | undefined;
-    createdAt: any;
-    deliveredAt?: any | null;
-    placedAt?: any | null;
-    closedAt?: any | null;
-    table?:
-      | {
-          __typename?: "Table" | undefined;
-          number: number;
-        }
-      | null
-      | undefined;
-  } | null;
+  ticket: GET_TICKET_BY_RESTAURANT_TYPES;
   tables: GET_TABLES_BY_RESTAURANT_TYPES;
 }) {
   const filteredTables = tables?.filter(
-    (table) => table.capacity === dataTickets?.seats
+    (table) => table.capacity === ticket?.seats
   );
 
   if (
-    dataTickets?.deliveredAt !== null &&
-    dataTickets?.placedAt !== null &&
-    new Date(dataTickets?.closedAt) > addMinutesToDate(new Date(), 5) &&
-    new Date(dataTickets?.closedAt) > new Date()
+    ticket?.deliveredAt !== null &&
+    ticket?.placedAt !== null &&
+    new Date(ticket?.closedAt) > addMinutesToDate(new Date(), 5) &&
+    new Date(ticket?.closedAt) > new Date()
   ) {
     return (
       <div className="DashboardTicketListStatusContainer">
         <SVGIconPlacedTicket />
-        <p className="DashboardTicketListStatusText">Table {dataTickets?.table?.number}</p>
+        <p className="DashboardTicketListStatusText">Table {ticket?.table?.number}</p>
       </div>
     );
   }
 
   if (
-    dataTickets?.deliveredAt !== null &&
-    new Date(dataTickets?.closedAt) > new Date()
+    ticket?.deliveredAt !== null &&
+    new Date(ticket?.closedAt) > new Date()
   ) {
     return (
       <div className="DashboardTicketListStatusContainer">
         <SVGIconDeliveredTicket />
-        <p className="DashboardTicketListStatusText">Attendu table {dataTickets?.table?.number}</p>
+        <p className="DashboardTicketListStatusText">Attendu table {ticket?.table?.number}</p>
       </div>
     );
   }
 
   if (
-    dataTickets?.deliveredAt !== null &&
-    addMinutesToDate(new Date(dataTickets?.closedAt), 1) > new Date()
+    ticket?.deliveredAt !== null &&
+    addMinutesToDate(new Date(ticket?.closedAt), 1) > new Date()
   ) {
     return (
       <div className="DashboardTicketListStatusContainer">
         <SVGIconAlertTicket />
-        <p className="DashboardTicketListStatusText">Table {dataTickets?.table?.number} libérée</p>
+        <p className="DashboardTicketListStatusText">Table {ticket?.table?.number} libérée</p>
       </div>
     );
   }
 
   //TODO: Delete this when we automaticly give a table to a ticket
   if (
-    dataTickets?.placedAt === null &&
-    dataTickets?.closedAt === null &&
+    ticket?.placedAt === null &&
+    ticket?.closedAt === null &&
     filteredTables?.length !== 0
   ) {
     return (
