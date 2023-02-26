@@ -1,4 +1,4 @@
-import { waitingTime } from "../../../services/DateService";
+import { addMinutesToDate, waitingTime } from "../../../services/DateService";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
@@ -39,7 +39,13 @@ export default function DashboardTicketListTab({
         </tr>
         {dataTickets &&
           dataTickets
-            .filter((ticket) => ticket.placedAt === null)
+            .filter(
+              (ticket) =>
+                ticket.placedAt === null &&
+                ((ticket.deliveredAt !== null &&
+                  addMinutesToDate(new Date(ticket.closedAt), 1) > new Date())
+                  || ticket.closedAt === null)
+            )
             .sort((a, b) => a.number - b.number)
             .map((ticket) => (
               <tr key={ticket.number} className="ListTabBodyRow">
@@ -68,8 +74,9 @@ export default function DashboardTicketListTab({
           dataTickets
             .filter(
               (ticket) =>
-                ticket.closedAt !== null &&
-                new Date(ticket.closedAt) > new Date()
+                ticket.deliveredAt !== null &&
+                ticket.placedAt !== null &&
+                new Date(ticket.closedAt) > addMinutesToDate(new Date(), 5)
             )
             .sort((a, b) => a.number - b.number)
             .map((ticket) => (

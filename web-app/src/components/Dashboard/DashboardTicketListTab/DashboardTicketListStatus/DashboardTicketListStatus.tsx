@@ -1,5 +1,7 @@
+import { addMinutesToDate } from "../../../../services/DateService";
 import { GET_TABLES_BY_RESTAURANT_TYPES } from "../../../../types/DataTypes";
 import SVGIconAlertTicket from "../../../SVG/SVGIconAlertTicket/SVGIconAlertTicket";
+import SVGIconDeliveredTicket from "../../../SVG/SVGIconDeliveredTicket/SvgIconDeliveredTicket";
 import SVGIconPlacedTicket from "../../../SVG/SVGIconPlacedTicket/SVGIconPlacedTicket";
 import SVGIconWaitingTicket from "../../../SVG/SVGIconWaitingTicket/SVGIconWaitingTicket";
 import "./DashboardTicketListStatus.scss";
@@ -33,7 +35,51 @@ export default function DashboardTicketListStatus({
   const filteredTables = tables?.filter(
     (table) => table.capacity === dataTickets?.seats
   );
-  if (dataTickets?.placedAt === null && filteredTables?.length !== 0) {
+
+  if (
+    dataTickets?.deliveredAt !== null &&
+    dataTickets?.placedAt !== null &&
+    new Date(dataTickets?.closedAt) > addMinutesToDate(new Date(), 5) &&
+    new Date(dataTickets?.closedAt) > new Date()
+  ) {
+    return (
+      <div className="DashboardTicketListStatusContainer">
+        <SVGIconPlacedTicket />
+        <p className="DashboardTicketListStatusText">Table {dataTickets?.table?.number}</p>
+      </div>
+    );
+  }
+
+  if (
+    dataTickets?.deliveredAt !== null &&
+    new Date(dataTickets?.closedAt) > new Date()
+  ) {
+    return (
+      <div className="DashboardTicketListStatusContainer">
+        <SVGIconDeliveredTicket />
+        <p className="DashboardTicketListStatusText">Attendu table {dataTickets?.table?.number}</p>
+      </div>
+    );
+  }
+
+  if (
+    dataTickets?.deliveredAt !== null &&
+    addMinutesToDate(new Date(dataTickets?.closedAt), 1) > new Date()
+  ) {
+    return (
+      <div className="DashboardTicketListStatusContainer">
+        <SVGIconAlertTicket />
+        <p className="DashboardTicketListStatusText">Table {dataTickets?.table?.number} libérée</p>
+      </div>
+    );
+  }
+
+  //TODO: Delete this when we automaticly give a table to a ticket
+  if (
+    dataTickets?.placedAt === null &&
+    dataTickets?.closedAt === null &&
+    filteredTables?.length !== 0
+  ) {
     return (
       <>
         <div className="DashboardTicketListStatusContainer">
@@ -43,18 +89,11 @@ export default function DashboardTicketListStatus({
       </>
     );
   }
-  if (dataTickets?.deliveredAt === null) {
-    return (
-      <div className="DashboardTicketListStatusContainer">
-        <SVGIconWaitingTicket />
-        <p className="DashboardTicketListStatusText">En attente</p>
-      </div>
-    );
-  }
+
   return (
     <div className="DashboardTicketListStatusContainer">
-      <SVGIconPlacedTicket />
-      <p className="DashboardTicketListStatusText">À table</p>
+      <SVGIconWaitingTicket />
+      <p className="DashboardTicketListStatusText">En attente</p>
     </div>
   );
 }
