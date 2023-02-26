@@ -6,22 +6,22 @@ export default function DashboardEmptyListTab() {
     <table className="ListTab">
       <thead className="ListTabHeader">
         <tr className="ListTabHeaderRow">
-          <th>N° Ticket</th>
-          <th>Nom</th>
-          <th>Couverts</th>
-          <th>Temps d'attente</th>
-          <th>Statut</th>
-          <th>Notification</th>
+          <th>Option 1</th>
+          <th>Option 2</th>
+          <th>Option 3</th>
+          <th>Option 4</th>
+          <th>Option 5</th>
+          <th>Option 6</th>
         </tr>
       </thead>
       <tbody className="ListTabBody">
         <tr className="ListTabBodyRow">
-          <td>Nom</td>
-          <td>N° Ticket</td>
-          <td>Couverts</td>
-          <td>Temps d'attente</td>
-          <td>aa</td>
-          <td>aaa</td>
+          <td>Résultat 1</td>
+          <td>Résultat 2</td>
+          <td>Résultat 3</td>
+          <td>Résultat 4</td>
+          <td>Résultat 5</td>
+          <td>Résultat 6</td>
         </tr>
       </tbody>
     </table>
