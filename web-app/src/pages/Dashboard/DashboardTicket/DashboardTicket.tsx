@@ -1,6 +1,7 @@
 // TODO: Quand toutes les pages seront créées, modifier l'import sur toutes les autres pages dashboard comme suit.
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import DashboardTicketListTab from "../../../components/Dashboard/DashboardTicketListTab/DashboardTicketListTab";
 import { UserContext } from "../../../context/UserContext";
 import { TicketsHeadTabContent } from "../../../data/DashboardHeadTabDatas";
@@ -9,6 +10,8 @@ import {
   TablesByRestaurantQueryVariables,
   TicketsByRestaurantQuery,
   TicketsByRestaurantQueryVariables,
+  UpdateClosedAtMutation,
+  UpdateClosedAtMutationVariables,
 } from "../../../gql/graphql";
 import { GET_TABLES_BY_RESTAURANT_TYPES, GET_TICKETS_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
 import "../DashboardMain.scss";
@@ -27,6 +30,7 @@ const GET_TICKETS_BY_RESTAURANT = gql`
       placedAt
       closedAt
       table {
+        id
         number
       }
     }
@@ -43,11 +47,22 @@ const GET_TABLES_BY_RESTAURANT = gql`
   }
 `;
 
+const CLOSE_TICKET = gql`
+mutation UpdateClosedAt($updateClosedAtId: String!) {
+  updateClosedAt(id: $updateClosedAtId) {
+    id
+    closedAt
+  }
+}
+`;
+
 const DashboardTicket = () => {
   const [tickets, setTickets] = useState<GET_TICKETS_BY_RESTAURANT_TYPES>(null);
   const [tables, setTables ] = useState<GET_TABLES_BY_RESTAURANT_TYPES>(null);
   const [emptyTables, setEmptyTables] = useState<GET_TABLES_BY_RESTAURANT_TYPES>(null);
+  const [closedTicketId, setClosedTicketId] = useState<string>("");
   const restaurantId = useContext(UserContext)?.userData.restaurant.id;
+  console.log(restaurantId);
 
   const { loading, refetch: ticketsRefetch } = useQuery<TicketsByRestaurantQuery, TicketsByRestaurantQueryVariables>(GET_TICKETS_BY_RESTAURANT, {
     notifyOnNetworkStatusChange: true,
@@ -69,6 +84,13 @@ const DashboardTicket = () => {
     },
   });
 
+  const [updateClosedAtTicket] = useMutation<UpdateClosedAtMutation, UpdateClosedAtMutationVariables>(CLOSE_TICKET, {
+    notifyOnNetworkStatusChange: true,
+    variables: {
+      updateClosedAtId: closedTicketId,
+    }
+  })
+
   const getEmptyTables = (tickets: GET_TICKETS_BY_RESTAURANT_TYPES, tables: GET_TABLES_BY_RESTAURANT_TYPES): GET_TABLES_BY_RESTAURANT_TYPES => {
     const ticketss: any = [];
     const emptyTables: any = [];
@@ -76,6 +98,23 @@ const DashboardTicket = () => {
     tables?.filter((table) => !ticketss?.includes(table.number)).map((table) => emptyTables.push(table));
     console.log({emptyTables: emptyTables});
     return emptyTables;
+  }
+
+  const setTicketToDelete = async (ticketId: string | undefined) => {
+    setClosedTicketId(ticketId as string);
+  }
+
+  const onDelete = async (ticketId: string | undefined) => {
+    try {
+      await setTicketToDelete(ticketId);
+      console.log({closedTicketId});
+      await updateClosedAtTicket();
+      ticketsRefetch();
+      tablesRefetch();
+      toast.success('Le ticket a bien été clôturé.');
+    } catch (e) {
+      toast.error('Un problème est survenu. Renouvelez la clôture du ticket.');
+    }
   }
 
   useEffect(() => {
@@ -99,7 +138,7 @@ const DashboardTicket = () => {
         <p className="DashboardText">Under Construction...</p>
       </header>
       <main className="DashboardMainList">
-        <DashboardTicketListTab dataHead={TicketsHeadTabContent} tickets={tickets} tables={emptyTables} isLoading={loading} />
+        <DashboardTicketListTab dataHead={TicketsHeadTabContent} tickets={tickets} tables={emptyTables} isLoading={loading} handleDelete={onDelete}/>
       </main>
       <footer className="DashboardMainFooter">
         <h1>PAGINATION</h1>
