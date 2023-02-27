@@ -1,5 +1,46 @@
 @import '../../../index.scss';
 
+.closedAtTicketModal {
+  background-color: $modal-background-color;
+  position: fixed;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 430px;
+  height: 150px;
+  border-radius: 10px;
+  top: 300px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+
+  .closedAtTicketModalTitle {
+    margin: 10px 0;
+  }
+
+  .closedAtTicketModalButtonContainer {
+    display: flex;
+    gap: 40px;
+
+    .closedAtTicketModalButton {
+      margin-top: 25px;
+      width: 100px;
+      height: 40px;
+      border: none;
+      border-radius: 5px;
+      background-color: $modal-button-background-color;
+      color: $white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $modal-button-hover-background-color;
+      }
+    }
+  }
+}
+
 .ListTab {
   width: 100%;
   border-collapse: collapse;
@@ -29,4 +70,8 @@
 
 .ListTabBodyRow:nth-child(even) {
   background-color: $gray100;
+}
+
+.closedAtTicketModalDisplayNone {
+  display: none;
 }

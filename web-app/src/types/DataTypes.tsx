@@ -12,6 +12,7 @@ export type GET_TICKETS_BY_RESTAURANT_TYPES = Array<{
   closedAt?: any | null;
   table?: {
     __typename?: "Table";
+    id: string;
     number: number;
   } | null;
 }> | null;
@@ -31,6 +32,7 @@ export type GET_TICKET_BY_RESTAURANT_TYPES = {
   table?:
     | {
         __typename?: "Table" | undefined;
+        id: string;
         number: number;
       }
     | null
