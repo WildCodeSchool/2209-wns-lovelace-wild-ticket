@@ -5,6 +5,10 @@ import { toast } from "react-toastify";
 import { getErrorMessage } from "../../utils";
 import { SIGN_IN_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  UpdateUserPasswordWithTokenMutation,
+  UpdateUserPasswordWithTokenMutationVariables,
+} from "../../gql/graphql";
 
 const UPDATE_USER_PASSWORD_WITH_TOKEN = gql`
   mutation updateUserPasswordWithToken($token: String!, $password: String!) {
@@ -15,14 +19,15 @@ const UPDATE_USER_PASSWORD_WITH_TOKEN = gql`
 const UpdatePassword = () => {
   const navigate = useNavigate();
 
-  const [updateUserPasswordWithToken] = useMutation(
-    UPDATE_USER_PASSWORD_WITH_TOKEN
-  );
+  const [updateUserPasswordWithToken] = useMutation<
+    UpdateUserPasswordWithTokenMutation,
+    UpdateUserPasswordWithTokenMutationVariables
+  >(UPDATE_USER_PASSWORD_WITH_TOKEN);
 
   // Get token from url
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
-  const token = urlParams.get("token");
+  const token = urlParams.get("token") || "";
 
   // State
   const [newPassword, setNewPassword] = useState("");

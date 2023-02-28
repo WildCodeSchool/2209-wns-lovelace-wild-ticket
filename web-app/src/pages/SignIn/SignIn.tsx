@@ -18,16 +18,15 @@ const SIGN_IN = gql`
 `;
 
 const SignIn = () => {
-  const [email, setemail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
   const userContext = useContext(UserContext);
 
-  const [signIn, { loading }] = useMutation<
-    SignInMutation,
-    SignInMutationVariables
-  >(SIGN_IN);
+  const [signIn] = useMutation<SignInMutation, SignInMutationVariables>(
+    SIGN_IN
+  );
   const navigate = useNavigate();
 
   const submit = async () => {
@@ -63,7 +62,7 @@ const SignIn = () => {
               name="email"
               value={email}
               onChange={(event) => {
-                setemail(event.target.value);
+                setEmail(event.target.value);
               }}
             />
           </div>

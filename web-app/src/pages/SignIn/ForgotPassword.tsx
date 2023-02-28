@@ -5,6 +5,10 @@ import { toast } from "react-toastify";
 import { getErrorMessage } from "../../utils";
 import { HOME_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  SendResetPasswordEmailMutation,
+  SendResetPasswordEmailMutationVariables,
+} from "../../gql/graphql";
 
 const SEND_RESET_PASSWORD_EMAIL = gql`
   mutation SendResetPasswordEmail($email: String!) {
@@ -14,8 +18,11 @@ const SEND_RESET_PASSWORD_EMAIL = gql`
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [email, setemail] = useState("");
-  const [sendResetPasswordEmail] = useMutation(SEND_RESET_PASSWORD_EMAIL);
+  const [email, setEmail] = useState("");
+  const [sendResetPasswordEmail] = useMutation<
+    SendResetPasswordEmailMutation,
+    SendResetPasswordEmailMutationVariables
+  >(SEND_RESET_PASSWORD_EMAIL);
 
   const submit = async () => {
     try {
@@ -47,7 +54,7 @@ const ForgotPassword = () => {
               name="email"
               value={email}
               onChange={(event) => {
-                setemail(event.target.value);
+                setEmail(event.target.value);
               }}
             />
           </div>
