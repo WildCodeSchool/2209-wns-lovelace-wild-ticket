@@ -1,0 +1,19 @@
+@import '../../index.scss';
+
+.SideBar {
+  position: absolute;
+  background-color: $gray800;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 65px;
+  height: 100vh;
+  box-shadow: 2px 0 3px 2px rgba(0, 0, 0, 0.2);
+
+  .SideBarIconsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+}

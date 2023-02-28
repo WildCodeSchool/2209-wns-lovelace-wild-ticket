@@ -1,4 +1,14 @@
-import { IsUUID, MinLength, IsEmail, Matches, MaxLength } from "class-validator";
+import {
+  IsUUID,
+  MinLength,
+  IsEmail,
+  Matches,
+  MaxLength,
+  IsInt,
+  Min,
+  Max,
+  ValidateIf,
+} from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
 const regexPhoneNumber = new RegExp("^(06|07)[0-9]{8}$");
@@ -7,19 +17,33 @@ const regexPhoneNumber = new RegExp("^(06|07)[0-9]{8}$");
 class CreateTicketArgs {
   @Field()
   @MinLength(1, {
-    message: "Le prénom doit faire au moins un caractère de long.",
+    message: "Le nom doit faire au moins un caractère de long.",
   })
   @MaxLength(255, {
     message: "Le nom doit faire au maximum 255 caractères de long.",
   })
   name: string;
 
+  @Field()
+  @IsInt({
+    message:
+      "Vous devez impérativement rentrer le nombre de couverts souhaités",
+  })
+  @Min(1, { message: "Vous ne pouvez pas choisir moins de 1 couvert." })
+  @Max(8, { message: "Vous ne pouvez pas choisir plus de 8 couverts." })
+  seats: number;
+
   @Field({ nullable: true })
-  @IsEmail()
+  @IsEmail({ message: "L'email rentré n'est pas au bon format." })
+  @ValidateIf((value) => value == null)
   email?: string;
 
   @Field({ nullable: true })
-  @Matches(regexPhoneNumber)
+  @Matches(regexPhoneNumber, {
+    message:
+      "Le numéro de téléphone doit être au format: 06######## ou 07########",
+  })
+  @ValidateIf((value) => value == null)
   phoneNumber?: string;
 
   @Field()

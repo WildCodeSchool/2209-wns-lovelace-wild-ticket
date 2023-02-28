@@ -12,11 +12,17 @@ export default class AppUserDb {
     return this.repository.save(user);
   }
 
+  protected static findOneByResetPasswordToken(
+    resetPasswordToken: string
+  ): Promise<AppUser | null> {
+    return this.repository.findOneBy({ resetPasswordToken });
+  }
+
   protected static findByEmailAddress(email: string): Promise<AppUser | null> {
     return this.repository.findOneBy({ email });
   }
 
   static async clearRepository(): Promise<void> {
-    this.repository.delete({});
+    await this.repository.delete({});
   }
 }

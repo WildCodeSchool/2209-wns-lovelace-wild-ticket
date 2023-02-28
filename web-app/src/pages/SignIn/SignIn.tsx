@@ -1,12 +1,12 @@
 import { gql, useMutation } from "@apollo/client";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Loader from "../../components/Loader/Loader";
 import { SignInMutation, SignInMutationVariables } from "../../gql/graphql";
 import { getErrorMessage } from "../../utils";
-import { HOME_PATH } from "../paths";
+import { DASHBOARD_HOME, FORGOT_PASSWORD_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
+import { UserContext } from "../../context/UserContext";
 
 const SIGN_IN = gql`
   mutation SignIn($email: String!, $password: String!, $rememberMe: Boolean!) {
@@ -17,15 +17,16 @@ const SIGN_IN = gql`
   }
 `;
 
-const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
-  const [email, setemail] = useState("");
+const SignIn = () => {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const [signIn, { loading }] = useMutation<
-    SignInMutation,
-    SignInMutationVariables
-  >(SIGN_IN);
+  const userContext = useContext(UserContext);
+
+  const [signIn] = useMutation<SignInMutation, SignInMutationVariables>(
+    SIGN_IN
+  );
   const navigate = useNavigate();
 
   const submit = async () => {
@@ -34,8 +35,8 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
         variables: { email, password, rememberMe: Boolean(rememberMe) },
       });
       toast.success(`Vous vous êtes connecté avec succès.`);
-      onSuccess();
-      navigate(HOME_PATH);
+      userContext?.refetch();
+      navigate(DASHBOARD_HOME);
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -48,8 +49,6 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
         <form
           onSubmit={async (event) => {
             event.preventDefault();
-            console.log(email);
-            console.log(password);
             await submit();
           }}
         >
@@ -63,7 +62,7 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
               name="email"
               value={email}
               onChange={(event) => {
-                setemail(event.target.value);
+                setEmail(event.target.value);
               }}
             />
           </div>
@@ -94,9 +93,9 @@ const SignIn = ({ onSuccess }: { onSuccess: () => {} }) => {
               />
               <label>Se souvenir de moi</label>
             </div>
-            <a href="#">Mot de passe oublié ?</a>
+            <Link to={FORGOT_PASSWORD_PATH}>Mot de passe oublié ?</Link>
           </div>
-          <button disabled={loading}>{loading ? <Loader /> : "Valider"}</button>
+          <button>Valider</button>
         </form>
       </div>
     </>

@@ -1,4 +1,4 @@
-import { Arg, Args, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Args, Authorized, Mutation, Query, Resolver } from "type-graphql";
 
 import Restaurant from "../../models/Restaurant/Restaurant.entity";
 import RestaurantRepository from "../../models/Restaurant/Restaurant.repository";
@@ -20,6 +20,7 @@ export default class RestaurantResolver {
     return RestaurantRepository.getRestaurantById(id);
   }
 
+  @Authorized("ROLE_ADMIN")
   @Mutation(() => Restaurant)
   createRestaurant(
     @Args() { name, pole }: CreateRestaurantArgs
@@ -27,13 +28,15 @@ export default class RestaurantResolver {
     return RestaurantRepository.createRestaurant(name, pole);
   }
 
+  @Authorized()
   @Mutation(() => Restaurant)
   updateRestaurant(
-    @Args() { id, name, pole }: UpdateRestaurantArgs
+    @Args() { id, name }: UpdateRestaurantArgs
   ): Promise<Restaurant> {
-    return RestaurantRepository.updateRestaurantName(id, name, pole);
+    return RestaurantRepository.updateRestaurant(id, name);
   }
 
+  @Authorized("ROLE_RESTAURANT")
   @Mutation(() => Restaurant)
   updateRestaurantOpeningTime(
     @Args()
@@ -54,6 +57,7 @@ export default class RestaurantResolver {
     );
   }
 
+  @Authorized("ROLE_ADMIN")
   @Mutation(() => Restaurant)
   deleteRestaurant(@Arg("id") id: string): Promise<Restaurant> {
     return RestaurantRepository.deleteRestaurant(id);

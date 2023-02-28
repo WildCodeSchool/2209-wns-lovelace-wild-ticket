@@ -30,7 +30,9 @@ export default class Pole {
     this.city = city;
     this.email = email;
     this.createdAt = createdAt;
-    this.appUser = appUser;
+    if (appUser) {
+      this.appUser = appUser;
+    }
     if (updatedAt) {
       this.updatedAt = updatedAt;
     }
@@ -61,8 +63,9 @@ export default class Pole {
   @IsEmail()
   email: string;
 
-  @ManyToMany(() => AppUser, (appUser) => appUser.poles, {onDelete: "CASCADE"})
-  @JoinTable()
+  @ManyToMany(() => AppUser, (appUser) => appUser.poles, {
+    onDelete: "CASCADE",
+  })
   @Field(() => AppUser, { nullable: true })
   appUser?: AppUser;
 

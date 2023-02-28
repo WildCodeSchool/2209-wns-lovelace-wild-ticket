@@ -2,6 +2,16 @@
 
 ## Getting started
 
+### Create .env file
+
+```
+cp back-end/.env.example back-end/.env
+```
+
+and fill it with your own values.
+
+For using Mailjet, you need to create an account on https://www.mailjet.com/ and get your own API keys.
+
 ### Run server in dev mode
 
 Docker and Docker Compose are required on host system.
@@ -10,6 +20,23 @@ Docker and Docker Compose are required on host system.
 ./build-start.dev.sh
 ```
 
+## Development mode
+
+### Back-end tests
+
+When you develop some tests with Jest, and have some underlines problems with VsCode :
+
+1. Build your app
+2. Go to back-end > tsconfig.ts
+3. Comment these lines
+
+```
+"exclude": ["**/*.test.ts", "**/*.spec.ts"]
+```
+
+4. Do your job nicely.
+5. If you have to rebuild Docker during tests or if your test development is done, just uncomment those lines before.
+
 ## Run Integration testing with test-database (back-end)
 
 Use this command in the root of the project, when the server is running.
@@ -17,6 +44,7 @@ Use this command in the root of the project, when the server is running.
 ```
 docker compose -f docker-compose.dev.yml exec back-end npm run test:watch
 ```
+
 ## Update the library on the client side (web-app)
 
 When modifying the schema on the backend side, use the following command to update the library on the client side.
@@ -24,11 +52,12 @@ When modifying the schema on the backend side, use the following command to upda
 ```
 npm run gql-codegen
 ```
+
 ## Stack technique
 
 ### Back-end
 
-Node.js: 
+Node.js:
 https://nodejs.org/fr/
 
 Apollo:
@@ -40,15 +69,15 @@ https://graphql.org/
 TypeGraphQL
 https://typegraphql.com/
 
-TypeORM: 
+TypeORM:
 https://typeorm.io/
 
-PostgreSQL: 
+PostgreSQL:
 https://www.postgresql.org/
 
 ### Front-end
 
-React: 
+React:
 https://fr.reactjs.org/
 
 ## Author

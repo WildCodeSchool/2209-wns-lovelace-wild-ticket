@@ -6,10 +6,11 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:password@database:5432/postgres
       TEST_DATABASE_URL: postgres://postgres:password@test-database:5432/postgres
+      #NODE_ENV: development
     ports:
       - 4000:4000
     volumes:
-      - ./back-end/src:/app/src
+      - ./back-end:/app
       - /app/node_modules
     depends_on:
       - database
@@ -19,7 +20,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./web-app/src:/app/src
+      - ./web-app:/app
       - /app/node_modules
     depends_on:
       - back-end

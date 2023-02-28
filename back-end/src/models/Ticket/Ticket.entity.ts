@@ -1,10 +1,5 @@
 import { Field, ID, ObjectType } from "type-graphql";
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import Restaurant from "../Restaurant/Restaurant.entity";
 import Table from "../Table/Table.entity";
 
@@ -13,26 +8,40 @@ import Table from "../Table/Table.entity";
 export default class Ticket {
   constructor(
     number: number,
-    name : string,
-    createdAt : Date,
-    restaurant : Restaurant,
+    name: string,
+    seats: number,
+    createdAt: Date,
+    restaurant: Restaurant,
     email?: string,
     phoneNumber?: string,
     table?: Table,
     deliveredAt?: Date,
     placedAt?: Date,
     closedAt?: Date
-    ) {
+  ) {
     this.number = number;
     this.name = name;
+    this.seats = seats;
     this.restaurant = restaurant;
-    this.email = email;
-    this.phoneNumber = phoneNumber;
-    this.table = table;
     this.createdAt = createdAt;
-    this.deliveredAt = deliveredAt;
-    this.placedAt = placedAt;
-    this.closedAt = closedAt;
+    if (email) {
+      this.email = email;
+    }
+    if (phoneNumber) {
+      this.phoneNumber = phoneNumber;
+    }
+    if (table) {
+      this.table = table;
+    }
+    if (deliveredAt) {
+      this.deliveredAt = deliveredAt;
+    }
+    if (placedAt) {
+      this.placedAt = placedAt;
+    }
+    if (closedAt) {
+      this.closedAt = closedAt;
+    }
   }
 
   @PrimaryGeneratedColumn("uuid")
@@ -47,11 +56,15 @@ export default class Ticket {
   @Field()
   name: string;
 
-  @Column({nullable: true})
+  @Column()
+  @Field()
+  seats: number;
+
+  @Column({ nullable: true })
   @Field()
   email?: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   @Field({ nullable: true })
   phoneNumber?: string;
 
@@ -59,23 +72,29 @@ export default class Ticket {
   @Field()
   createdAt: Date;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   @Field({ nullable: true })
   deliveredAt?: Date;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   @Field({ nullable: true })
   placedAt?: Date;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   @Field({ nullable: true })
   closedAt?: Date;
 
-  @ManyToOne(() => Table, (table: any) => table.tickets,  { eager: true, onDelete: "CASCADE" })
+  @ManyToOne(() => Table, (table: any) => table.tickets, {
+    eager: true,
+    onDelete: "CASCADE",
+  })
   @Field(() => Table, { nullable: true })
   table?: Table;
 
-  @ManyToOne(() => Restaurant, (restaurant: any) => restaurant.tickets,  { eager: true, onDelete: "CASCADE" })
+  @ManyToOne(() => Restaurant, (restaurant: any) => restaurant.tickets, {
+    eager: true,
+    onDelete: "CASCADE",
+  })
   @Field(() => Restaurant)
   restaurant: Restaurant;
 }
