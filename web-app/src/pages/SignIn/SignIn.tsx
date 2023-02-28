@@ -1,11 +1,10 @@
 import { gql, useMutation } from "@apollo/client";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Loader from "../../components/Loader/Loader";
 import { SignInMutation, SignInMutationVariables } from "../../gql/graphql";
 import { getErrorMessage } from "../../utils";
-import { DASHBOARD_HOME } from "../paths";
+import { DASHBOARD_HOME, FORGOT_PASSWORD_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../context/UserContext";
 
@@ -19,16 +18,15 @@ const SIGN_IN = gql`
 `;
 
 const SignIn = () => {
-  const [email, setemail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
   const userContext = useContext(UserContext);
 
-  const [signIn, { loading }] = useMutation<
-    SignInMutation,
-    SignInMutationVariables
-  >(SIGN_IN);
+  const [signIn] = useMutation<SignInMutation, SignInMutationVariables>(
+    SIGN_IN
+  );
   const navigate = useNavigate();
 
   const submit = async () => {
@@ -64,7 +62,7 @@ const SignIn = () => {
               name="email"
               value={email}
               onChange={(event) => {
-                setemail(event.target.value);
+                setEmail(event.target.value);
               }}
             />
           </div>
@@ -95,9 +93,9 @@ const SignIn = () => {
               />
               <label>Se souvenir de moi</label>
             </div>
-            <a href="#">Mot de passe oublié ?</a>
+            <Link to={FORGOT_PASSWORD_PATH}>Mot de passe oublié ?</Link>
           </div>
-          <button disabled={loading}>{loading ? <Loader /> : "Valider"}</button>
+          <button>Valider</button>
         </form>
       </div>
     </>
