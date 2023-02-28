@@ -10,6 +10,7 @@ import Pole from "../Pole/Pole.entity";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import Restaurant from "../Restaurant/Restaurant.entity";
 import EmailService from "../../services/EmailService";
+import DateUpdates from "../../services/DateUpdates";
 
 export const INVALID_CREDENTIALS_ERROR_MESSAGE = "Identifiants incorrects.";
 
@@ -57,8 +58,8 @@ export default class AppUserRepository extends AppUserDb {
     return this.repository.find();
   }
 
-  static getUserById(id: string): Promise<AppUser | null> {
-    const user = this.repository.findOneBy({ id });
+  static async getUserById(id: string): Promise<AppUser | null> {
+    const user = await this.repository.findOneBy({ id });
 
     if (!user) {
       throw new Error("Aucun utilisateur ne correspond à cet id.");
@@ -67,8 +68,10 @@ export default class AppUserRepository extends AppUserDb {
     return user;
   }
 
-  static getUserByToken(resetPasswordToken: string): Promise<AppUser | null> {
-    const user = this.findOneByResetPasswordToken(resetPasswordToken);
+  static async getUserByToken(
+    resetPasswordToken: string
+  ): Promise<AppUser | null> {
+    const user = await this.findOneByResetPasswordToken(resetPasswordToken);
 
     if (!user) {
       throw new Error("Aucun utilisateur ne correspond à ce token.");
@@ -77,8 +80,8 @@ export default class AppUserRepository extends AppUserDb {
     return user;
   }
 
-  static getUserByEmailAddress(email: string): Promise<AppUser | null> {
-    const user = this.findByEmailAddress(email);
+  static async getUserByEmailAddress(email: string): Promise<AppUser | null> {
+    const user = await this.findByEmailAddress(email);
 
     if (!user) {
       throw new Error("Aucun utilisateur correspond à cet email.");
@@ -134,10 +137,6 @@ export default class AppUserRepository extends AppUserDb {
   ): Promise<AppUser> {
     const userToUpdate = await this.getUserById(id);
 
-    if (!userToUpdate) {
-      throw new Error("Aucun utilisateur ne correspond à cet ID.");
-    }
-
     const updatedAt = new Date();
     let appUserPoles = [];
     let appUserRestaurant = undefined;
@@ -171,10 +170,6 @@ export default class AppUserRepository extends AppUserDb {
   ): Promise<AppUser> {
     const userToUpdate = await this.getUserById(id);
 
-    if (!userToUpdate) {
-      throw new Error("Aucun utilisateur ne correspond à cet ID.");
-    }
-
     const updatedAt = new Date();
 
     return this.repository.save({
@@ -188,15 +183,17 @@ export default class AppUserRepository extends AppUserDb {
     token: string,
     password: string
   ): Promise<AppUser> {
-    // Check if token is valid
+    // Check if token is valid and get user
     const userToUpdate = await this.getUserByToken(token);
-    if (!userToUpdate) {
-      throw new Error("Aucun utilisateur ne correspond à ce token.");
+
+    let userId = "";
+    let resetPasswordTokenExpiration = null;
+    if (userToUpdate) {
+      userId = userToUpdate.id;
+      resetPasswordTokenExpiration = userToUpdate.resetPasswordTokenExpiration;
     }
 
     // Check if token is expired
-    const resetPasswordTokenExpiration =
-      userToUpdate.resetPasswordTokenExpiration;
     if (!resetPasswordTokenExpiration) {
       throw new Error("Ce token n'est pas valide.");
     }
@@ -212,7 +209,7 @@ export default class AppUserRepository extends AppUserDb {
 
     // Save user
     return this.repository.save({
-      id: userToUpdate.id,
+      id: userId,
       hashedPassword: hashSync(password),
       updatedAt: updatedAt,
       resetPasswordTokenExpiration: newResetPasswordTokenExpiration,
@@ -225,12 +222,11 @@ export default class AppUserRepository extends AppUserDb {
   ): Promise<AppUser> {
     const userToUpdate = await this.getUserById(id);
 
-    if (!userToUpdate) {
-      throw new Error("Aucun utilisateur ne correspond à cet ID.");
-    }
-
     // Token expiration date set to 30 minutes
-    const resetPasswordTokenExpiration = new Date(Date.now() + 1000 * 60 * 30);
+    const resetPasswordTokenExpiration = DateUpdates.addMinutesToDate(
+      new Date(),
+      30
+    );
 
     return this.repository.save({
       id: id,
@@ -239,16 +235,14 @@ export default class AppUserRepository extends AppUserDb {
     });
   }
 
-  static async deleteUser(id: string): Promise<AppUser> {
+  static async deleteUser(id: string): Promise<AppUser | null> {
     const user = await this.getUserById(id);
 
-    if (!user) {
-      throw new Error("Aucun utilisateur ne correspond à cet ID.");
+    if (user) {
+      await this.repository.remove(user);
+      return user;
     }
-
-    await this.repository.remove(user);
-
-    return user;
+    return null;
   }
 
   static async signIn(
@@ -266,16 +260,14 @@ export default class AppUserRepository extends AppUserDb {
     return { user, session };
   }
 
-  static async signOut(id: string): Promise<AppUser> {
+  static async signOut(id: string): Promise<AppUser | null> {
     const user = await this.getUserById(id);
 
-    if (!user) {
-      throw new Error("Aucun utilisateur ne correspond à cet id.");
+    if (user) {
+      await SessionRepository.deleteSession(user);
+      return user;
     }
-
-    await SessionRepository.deleteSession(user);
-
-    return user;
+    return null;
   }
 
   static async findBySessionId(sessionId: string): Promise<AppUser | null> {
@@ -291,18 +283,22 @@ export default class AppUserRepository extends AppUserDb {
   static async sendResetPasswordEmail(email: string): Promise<void> {
     // Check if email exists in database
     const user = await this.getUserByEmailAddress(email);
-    if (!user) {
-      throw new Error("Aucun utilisateur ne correspond à cet email.");
+
+    let userId = "";
+    let userLogin = "";
+    if (user) {
+      userId = user.id;
+      userLogin = user.login;
     }
 
     // Generate token
     const crypto = require("crypto");
     const token = crypto.randomBytes(32).toString("hex");
     // Save token in database
-    await this.updateUserToken(user.id, token);
+    await this.updateUserToken(userId, token);
 
     // Construct email
-    const recipientName = user.login;
+    const recipientName = userLogin;
     const subject = "Réinitialisation de votre mot de passe";
     const link = `http://localhost:3000/update-password/?token=${token}`;
     const text = `Bonjour ${recipientName},\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.\n\n${link}`;
