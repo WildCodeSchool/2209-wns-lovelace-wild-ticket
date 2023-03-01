@@ -25,16 +25,16 @@ import "./Sidebar.scss";
 import { SIGN_OUT } from "../../queries/Queries";
 
 export default function SideBar() {
-  const userContext = useContext(AppContext);
+  const appContext = useContext(AppContext);
   const navigate = useNavigate();
-  const userRole = userContext?.userData.role;
+  const userRole = appContext?.userData.role;
 
   const [signOut] = useMutation<SignOutMutation, SignOutMutationVariables>(
     SIGN_OUT,
     {
       onCompleted: () => {
         toast.success("Vous êtes déconnecté.");
-        userContext?.refetch();
+        appContext?.refetch();
         //TODO: Voir pour supprimer les cookies dans le navigateur.
         navigate(HOME_PATH);
       },
@@ -47,7 +47,7 @@ export default function SideBar() {
   const userDisconnect = async () => {
     signOut({
       variables: {
-        signOutId: userContext?.userData.id,
+        signOutId: appContext?.userData.id,
       },
     });
   };

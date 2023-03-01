@@ -9,7 +9,7 @@ import { BIG_LOGO_DEFAULT_SIZE } from "../../constants/Constants";
 
 const NotFound = () => {
   const navigate = useNavigate();
-  const userContext = useContext(AppContext);
+  const appContext = useContext(AppContext);
 
   const handleRedirect = () => {
     navigate(HOME_PATH);
@@ -21,7 +21,7 @@ const NotFound = () => {
         <SVGLogo
           logoWidth={BIG_LOGO_DEFAULT_SIZE}
           logoHeight={BIG_LOGO_DEFAULT_SIZE}
-          logoFill={userContext?.userSVGColorScheme}
+          logoFill={appContext?.userSVGColorScheme}
         />
         <p className="NotFound404Text">404</p>
         <p className="NotFoundText">La page recherchée n'existe pas.</p>

@@ -18,7 +18,7 @@ export default function DashBoardHeader() {
   const [dateNow, setDateNow] = useState<{ date: string; time: string }>();
   const [dashboardLocation, setDashboardLocation] = useState<string>("Accueil");
   const location = useLocation().pathname;
-  const userContext = useContext(AppContext);
+  const appContext = useContext(AppContext);
 
   useEffect(() => {
     setDashboardLocation(headerLocation(location));
@@ -43,7 +43,7 @@ export default function DashBoardHeader() {
 
       {
         //TODO: Insérer les vraies données de file d'attente
-        userContext?.userData.role === ROLE_RESTAURANT && (
+        appContext?.userData.role === ROLE_RESTAURANT && (
           <div className="DashboardHeaderStatsContainer">
             <div className="HeaderStatsTextContainer">
               <SVGMiniIconUser iconParams={HEADER_ICON_PARAMS} />
@@ -59,7 +59,7 @@ export default function DashBoardHeader() {
 
       {
         //TODO: A voir si on rajoute des stats pour les admins
-        userContext?.userData.role === ROLE_ADMIN && (
+        appContext?.userData.role === ROLE_ADMIN && (
           <div className="DashboardHeaderStatsContainer">
             <div className="HeaderStatsTextContainer"></div>
             <div className="HeaderStatsTextContainer"></div>
