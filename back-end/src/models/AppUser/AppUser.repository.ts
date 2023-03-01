@@ -62,7 +62,7 @@ export default class AppUserRepository extends AppUserDb {
     const user = await this.repository.findOneBy({ id });
 
     if (!user) {
-      throw new Error("Aucun utilisateur ne correspond à cet id.");
+      throw new Error("Aucun utilisateur ne correspond à cet ID.");
     }
 
     return user;
