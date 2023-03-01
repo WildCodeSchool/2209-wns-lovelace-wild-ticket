@@ -85,6 +85,7 @@ const CreateTicketScreen = ({
   const onSubmit = async (data: any) => {
     await createTicket();
     console.log('test submit')
+    navigation.navigate("Home")
   };
 
   return (
