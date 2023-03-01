@@ -1,0 +1,11 @@
+@import '../../../../index.scss';
+
+.DashboardTicketListStatusContainer {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+
+  .DashboardTicketListStatusText {
+    color: $black;
+  }
+}
