@@ -67,7 +67,7 @@ export default class AppUserResolver {
 
   @Authorized("ROLE_ADMIN")
   @Mutation(() => AppUser)
-  deleteUser(@Arg("id") id: string): Promise<AppUser> {
+  deleteUser(@Arg("id") id: string): Promise<AppUser | null> {
     return AppUserRepository.deleteUser(id);
   }
 
@@ -83,7 +83,7 @@ export default class AppUserResolver {
 
   @Authorized()
   @Mutation(() => AppUser)
-  async signOut(@Arg("id") id: string): Promise<AppUser> {
+  async signOut(@Arg("id") id: string): Promise<AppUser | null> {
     return AppUserRepository.signOut(id);
   }
 
