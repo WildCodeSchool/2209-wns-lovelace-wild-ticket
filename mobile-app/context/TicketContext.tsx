@@ -10,7 +10,7 @@ type TicketContextType = {
 export const TicketContext = createContext<TicketContextType | null>(null);
 
 export function ContextProvider({ children }: any) {
-  const [selectedId, setSelectedId] = useState<string>();
+  const [selectedId, setSelectedId] = useState<number>();
   const [isDisabled, setIsDisabled] = useState(true);
   
  return (
