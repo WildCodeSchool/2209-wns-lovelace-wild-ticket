@@ -260,14 +260,13 @@ export default class AppUserRepository extends AppUserDb {
     return { user, session };
   }
 
-  static async signOut(id: string): Promise<AppUser | null> {
+  static async signOut(id: string): Promise<AppUser> {
     const user = await this.getUserById(id);
 
     if (user) {
       await SessionRepository.deleteSession(user);
-      return user;
     }
-    return null;
+    return user as AppUser;
   }
 
   static async findBySessionId(sessionId: string): Promise<AppUser | null> {
