@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -6,28 +6,21 @@ import { SignInMutation, SignInMutationVariables } from "../../gql/graphql";
 import { getErrorMessage } from "../../utils";
 import { DASHBOARD_HOME, FORGOT_PASSWORD_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
-import { UserContext } from "../../context/UserContext";
+import { AppContext } from "../../context/AppContext";
 import { InfinitySpin } from "react-loader-spinner";
-
-const SIGN_IN = gql`
-  mutation SignIn($email: String!, $password: String!, $rememberMe: Boolean!) {
-    signIn(email: $email, password: $password, rememberMe: $rememberMe) {
-      id
-      email
-    }
-  }
-`;
+import { SIGN_IN } from "../../queries/Queries";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const userContext = useContext(UserContext);
+  const userContext = useContext(AppContext);
 
-  const [signIn, {loading}] = useMutation<SignInMutation, SignInMutationVariables>(
-    SIGN_IN
-  );
+  const [signIn, { loading }] = useMutation<
+    SignInMutation,
+    SignInMutationVariables
+  >(SIGN_IN);
   const navigate = useNavigate();
 
   const submit = async () => {

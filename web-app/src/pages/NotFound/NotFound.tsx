@@ -3,13 +3,13 @@ import "./NotFound.scss";
 import { useNavigate } from "react-router-dom";
 import { HOME_PATH } from "../paths";
 import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
-import { UserContext } from "../../context/UserContext";
+import { AppContext } from "../../context/AppContext";
 import { useContext } from "react";
 import { BIG_LOGO_DEFAULT_SIZE } from "../../constants/Constants";
 
 const NotFound = () => {
   const navigate = useNavigate();
-  const userContext = useContext(UserContext);
+  const userContext = useContext(AppContext);
 
   const handleRedirect = () => {
     navigate(HOME_PATH);

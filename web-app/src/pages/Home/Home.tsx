@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { DASHBOARD_HOME, SIGN_IN_PATH } from "../paths";
 import "./Home.scss";
 import { useContext } from "react";
-import { UserContext } from "../../context/UserContext";
+import { AppContext } from "../../context/AppContext";
 import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
 import { BIG_LOGO_DEFAULT_SIZE } from "../../constants/Constants";
 
 const Home = () => {
-  const userContext = useContext(UserContext);
+  const userContext = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleButton = (): void => {

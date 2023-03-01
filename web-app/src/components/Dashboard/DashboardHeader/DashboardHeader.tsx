@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { UserContext } from "../../../context/UserContext";
+import { AppContext } from "../../../context/AppContext";
 
 import {
   HEADER_ICON_PARAMS,
   ROLE_ADMIN,
   ROLE_RESTAURANT,
 } from "../../../constants/Constants";
-import { convertDate }  from "../../../services/DateService";
+import { convertDate } from "../../../services/DateService";
 import SVGMiniIconUser from "../../SVG/SVGMiniIconUser/SVGMiniIconUser";
 import { headerLocation } from "./utils";
 import "./DashboardHeader.scss";
@@ -18,7 +18,7 @@ export default function DashBoardHeader() {
   const [dateNow, setDateNow] = useState<{ date: string; time: string }>();
   const [dashboardLocation, setDashboardLocation] = useState<string>("Accueil");
   const location = useLocation().pathname;
-  const userContext = useContext(UserContext);
+  const userContext = useContext(AppContext);
 
   useEffect(() => {
     setDashboardLocation(headerLocation(location));

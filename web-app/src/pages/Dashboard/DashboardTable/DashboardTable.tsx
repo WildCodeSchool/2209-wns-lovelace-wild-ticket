@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import "../DashboardTemp.scss";
-import { UserContext } from "../../../context/UserContext";
+import { AppContext } from "../../../context/AppContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
 
 const DashboardTable = () => {
-  const userContext = useContext(UserContext);
+  const userContext = useContext(AppContext);
 
   return (
     <div className="DashboardMain">
