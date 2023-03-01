@@ -1,30 +1,77 @@
 @import '../../../index.scss';
 
-.closedAtTicketModal {
+.loadingSpinContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 50%;
+
+  .loadingSpin {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-25%, -50%);
+  }
+}
+
+
+
+.dashboardTicketListModal {
   background-color: $modal-background-color;
   position: fixed;
   display: flex !important;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 430px;
-  height: 150px;
+  gap: 30px;
+  width: 450px;
+  height: auto;
+  padding: 25px;
   border-radius: 10px;
-  top: 300px;
+  top: 220px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 
-  .closedAtTicketModalTitle {
+  .dashboardTicketListModalTitle {
     margin: 10px 0;
   }
 
-  .closedAtTicketModalButtonContainer {
+  .dashboardTicketListModalTablesContainer {
+    background-color: $gray100;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 5px;
+    width: 100%;
+    border-radius: 10px;
+
+    .dashboardTicketListModalButton {
+      margin: 10px;
+      width: 120px;
+      height: 70px;
+      border: none;
+      border-radius: 5px;
+      background-color: $gray400;
+      color: $white;
+      font-size: 20px;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $modal-button-background-color;
+      }
+    }
+  }
+
+  .dashboardTicketListModalButtonContainer {
     display: flex;
     gap: 40px;
 
-    .closedAtTicketModalButton {
+    .dashboardTicketListModalButton {
       margin-top: 25px;
-      width: 100px;
+      width: 120px;
       height: 40px;
       border: none;
       border-radius: 5px;
@@ -35,6 +82,10 @@
       cursor: pointer;
 
       &:hover {
+        background-color: $modal-button-hover-background-color;
+      }
+
+      &:active {
         background-color: $modal-button-hover-background-color;
       }
     }
@@ -57,9 +108,25 @@
 
   .ListTabBody {
 
+    .ListTabBodyTitleRow {
+      text-align: center;
+      background-color: rgb(205, 205, 205);
+    }
+
     .ListTabBodyRow {
       text-align: center;
-      height: 50px;
+      height: 55px;
+
+      .ListTabBodyActions {
+        display: flex;
+        justify-content: center;
+
+        .ListTabBodyRowActionsButtonContainer {
+          display: flex;
+          justify-content: flex-end;
+          width: 100px;
+        }
+      }
     }
   }
 }
@@ -72,6 +139,10 @@
   background-color: $gray100;
 }
 
-.closedAtTicketModalDisplayNone {
+.dashboardTicketListModalHidden {
   display: none;
+}
+
+.dashboardTicketListModalButtonActive {
+  background-color: $modal-button-hover-background-color !important;
 }
