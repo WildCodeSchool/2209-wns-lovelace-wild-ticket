@@ -19,10 +19,10 @@ export default class TicketRepository extends TicketDb {
         await TicketFixtures.getRandomTickets();
       await Promise.all(
         ticketsFixtures.map(async (ticket) => {
-          const table = (await TableRepository.getTableByNumber(
+          const table = ticket.table ? (await TableRepository.getTableByNumber(
             ticket.table,
             restaurant
-          )) as Table;
+          )) as Table : undefined;
 
           const newTicket = new Ticket(
             ticket.number,
@@ -62,8 +62,8 @@ export default class TicketRepository extends TicketDb {
     return this.repository.findOneBy({ id });
   }
 
-  static async getLastTicket(): Promise<Ticket | null> {
-    return this.repository.findOne({ where: {}, order: { createdAt: "DESC" } });
+  static async getLastTicket(restaurant: Restaurant): Promise<Ticket | null> {
+    return this.repository.findOne({ where: {restaurant: restaurant}, order: { createdAt: "DESC" } });
   }
 
   static async createTicket(
@@ -86,7 +86,7 @@ export default class TicketRepository extends TicketDb {
     if (!restaurant)
       throw new Error("Aucun restaurant ne correspond à cet ID.");
 
-    const lastTicket = await this.getLastTicket();
+    const lastTicket = await this.getLastTicket(restaurant);
     let ticketNumber = 1;
 
     lastTicket && lastTicket.number < 1000
@@ -174,7 +174,7 @@ export default class TicketRepository extends TicketDb {
 
     const closedAt = new Date();
 
-    return this.repository.save({
+    return await this.repository.save({
       id,
       closedAt,
     });

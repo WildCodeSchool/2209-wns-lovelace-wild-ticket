@@ -1,27 +1,28 @@
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { UserContext } from "../../../context/UserContext";
+import { ROLE_ADMIN } from "../../../constants/Constants";
+import { AppContext } from "../../../context/AppContext";
 import { DASHBOARD_HOME, SIGN_IN_PATH } from "../../../pages/paths";
 
 const ProtectedAdmin = ({ children }: { children: any }) => {
-  const userContext = useContext(UserContext);
+  const appContext = useContext(AppContext);
 
-  if (userContext?.loading) {
+  if (appContext?.loading) {
     return <div>Loading...</div>;
   }
 
-  if (!userContext?.isAuthenticated) {
+  if (!appContext?.isAuthenticated) {
     toast.error(
       "Vous ne pouvez pas accéder à cette page. Merci de vous connecter."
     );
-    userContext?.refetch();
+    appContext?.refetch();
     return <Navigate to={SIGN_IN_PATH} />;
   }
 
-  if (userContext?.userData.role !== "ROLE_ADMIN") {
+  if (appContext?.userData.role !== ROLE_ADMIN) {
     toast.error("Vous n'êtes pas autorisé à vous rendre sur cette page.");
-    userContext?.refetch();
+    appContext?.refetch();
     return <Navigate to={DASHBOARD_HOME} />;
   }
 
