@@ -1,6 +1,8 @@
 name: build-and-test
 
-on: push
+on:
+  push:
+  pull_request:
 
 jobs:
   back-end:
