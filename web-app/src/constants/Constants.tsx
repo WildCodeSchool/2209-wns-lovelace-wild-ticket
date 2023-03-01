@@ -51,3 +51,10 @@ export const HEADER_ICON_PARAMS = { width: "20", fill: "#164e63" };
  */
 export const ROLE_ADMIN: string = "ROLE_ADMIN";
 export const ROLE_RESTAURANT: string = "ROLE_RESTAURANT";
+
+/**
+ * Tickets display delay
+ */
+export const BUTTON_DISAPPEAR_DELAY = 1;
+export const TICKET_DISAPPEAR_DELAY = 1;
+export const MAX_DELIVERED_TICKET_DELAY = 5;

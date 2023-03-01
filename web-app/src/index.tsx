@@ -6,7 +6,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { ContextProvider } from "./context/UserContext";
+import { AppContextProvider } from "./context/AppContext";
 
 const client = new ApolloClient({
   uri: "/",
@@ -19,11 +19,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <ContextProvider>
+      <AppContextProvider>
         <BrowserRouter>
           <App />
         </BrowserRouter>
-      </ContextProvider>
+      </AppContextProvider>
     </ApolloProvider>
   </React.StrictMode>
 );

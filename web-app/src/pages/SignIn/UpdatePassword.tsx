@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,12 +9,7 @@ import {
   UpdateUserPasswordWithTokenMutation,
   UpdateUserPasswordWithTokenMutationVariables,
 } from "../../gql/graphql";
-
-const UPDATE_USER_PASSWORD_WITH_TOKEN = gql`
-  mutation updateUserPasswordWithToken($token: String!, $password: String!) {
-    updateUserPasswordWithToken(token: $token, password: $password)
-  }
-`;
+import { UPDATE_USER_PASSWORD_WITH_TOKEN } from "../../queries/Queries";
 
 const UpdatePassword = () => {
   const navigate = useNavigate();

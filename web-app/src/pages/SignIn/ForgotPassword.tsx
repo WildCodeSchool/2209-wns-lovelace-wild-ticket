@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,12 +9,7 @@ import {
   SendResetPasswordEmailMutation,
   SendResetPasswordEmailMutationVariables,
 } from "../../gql/graphql";
-
-const SEND_RESET_PASSWORD_EMAIL = gql`
-  mutation SendResetPasswordEmail($email: String!) {
-    sendResetPasswordEmail(email: $email)
-  }
-`;
+import { SEND_RESET_PASSWORD_EMAIL } from "../../queries/Queries";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
