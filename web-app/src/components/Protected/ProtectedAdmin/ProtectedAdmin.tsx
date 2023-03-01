@@ -2,11 +2,11 @@ import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ROLE_ADMIN } from "../../../constants/Constants";
-import { UserContext } from "../../../context/UserContext";
+import { AppContext } from "../../../context/AppContext";
 import { DASHBOARD_HOME, SIGN_IN_PATH } from "../../../pages/paths";
 
 const ProtectedAdmin = ({ children }: { children: any }) => {
-  const userContext = useContext(UserContext);
+  const userContext = useContext(AppContext);
 
   if (userContext?.loading) {
     return <div>Loading...</div>;

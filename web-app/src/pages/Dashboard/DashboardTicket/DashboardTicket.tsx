@@ -1,15 +1,11 @@
 // TODO: Quand toutes les pages seront créées, modifier l'import sur toutes les autres pages dashboard comme suit.
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import DashboardTicketListTab from "../../../components/Dashboard/DashboardTicketListTab/DashboardTicketListTab";
-import { UserContext } from "../../../context/UserContext";
+import { AppContext } from "../../../context/AppContext";
 import { TicketsHeadTabContent } from "../../../data/DashboardHeadTabDatas";
 import {
-  TablesByRestaurantQuery,
-  TablesByRestaurantQueryVariables,
-  TicketsByRestaurantQuery,
-  TicketsByRestaurantQueryVariables,
   UpdateClosedAtMutation,
   UpdateClosedAtMutationVariables,
   UpdateDeliveredAtMutation,
@@ -18,8 +14,6 @@ import {
   UpdatePlacedAtMutationVariables,
 } from "../../../gql/graphql";
 import {
-  GET_TABLES_BY_RESTAURANT,
-  GET_TICKETS_BY_RESTAURANT,
   UPDATE_CLOSED_AT,
   UPDATE_DELIVERED_AT,
   UPDATE_PLACED_AT,
@@ -31,39 +25,13 @@ import {
 import "../DashboardMain.scss";
 
 const DashboardTicket = () => {
-  const restaurantId: string = useContext(UserContext)?.userData.restaurant.id;
-
-  // GET TICKETS BY RESTAURANT FUNCTIONNALITY
-  const [tickets, setTickets] = useState<GET_TICKETS_BY_RESTAURANT_TYPES>(null);
-
-  const { loading, refetch: ticketsRefetch } = useQuery<
-    TicketsByRestaurantQuery,
-    TicketsByRestaurantQueryVariables
-  >(GET_TICKETS_BY_RESTAURANT, {
-    notifyOnNetworkStatusChange: true,
-    variables: { ticketsByRestaurantId: restaurantId },
-    onCompleted: (data) => {
-      if (data.TicketsByRestaurant) {
-        setTickets(data.TicketsByRestaurant);
-      }
-    },
-  });
-
-  // GET TABLES BY RESTAURANT FUNCTIONNALITY
-  const [tables, setTables] = useState<GET_TABLES_BY_RESTAURANT_TYPES>(null);
-
-  const { refetch: tablesRefetch } = useQuery<
-    TablesByRestaurantQuery,
-    TablesByRestaurantQueryVariables
-  >(GET_TABLES_BY_RESTAURANT, {
-    notifyOnNetworkStatusChange: true,
-    variables: { tablesByRestaurantId: restaurantId },
-    onCompleted: (data) => {
-      if (data.TablesByRestaurant) {
-        setTables(data.TablesByRestaurant);
-      }
-    },
-  });
+  const tickets = useContext(AppContext)
+    ?.tickets as GET_TICKETS_BY_RESTAURANT_TYPES;
+  const tables = useContext(AppContext)
+    ?.tables as GET_TABLES_BY_RESTAURANT_TYPES;
+  const ticketsLoading = useContext(AppContext)?.ticketsLoading as boolean;
+  const ticketsRefetch = useContext(AppContext)?.ticketsRefetch as () => {};
+  const tablesRefetch = useContext(AppContext)?.ticketsRefetch as () => {};
 
   // GET EMPTY TABLES FUNCTIONNALITY
   const [emptyTables, setEmptyTables] =
@@ -208,7 +176,7 @@ const DashboardTicket = () => {
           dataHead={TicketsHeadTabContent}
           tickets={tickets}
           tables={emptyTables}
-          isLoading={loading}
+          isLoading={ticketsLoading}
           handleDelete={onDelete}
           handleDeliver={onDeliver}
           handlePlace={onPlace}

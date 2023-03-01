@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -7,7 +7,7 @@ import {
   ROLE_ADMIN,
   ROLE_RESTAURANT,
 } from "../../constants/Constants";
-import { UserContext } from "../../context/UserContext";
+import { AppContext } from "../../context/AppContext";
 import { SignOutMutation, SignOutMutationVariables } from "../../gql/graphql";
 import { HOME_PATH } from "../../pages/paths";
 import SVGIconTable from "../SVG/SVGIconTable/SVGIconTable";
@@ -22,17 +22,10 @@ import SVGIconUser from "../SVG/SVGIconUser/SVGIconUser";
 import SVGLogoMini from "../SVG/SVGLogoMini/SVGLogoMini";
 import { MAX_ICON_PARAMS, MIN_ICON_PARAMS } from "../../constants/Constants";
 import "./Sidebar.scss";
-
-const SIGN_OUT = gql`
-  mutation SignOut($signOutId: String!) {
-    signOut(id: $signOutId) {
-      id
-    }
-  }
-`;
+import { SIGN_OUT } from "../../queries/Queries";
 
 export default function SideBar() {
-  const userContext = useContext(UserContext);
+  const userContext = useContext(AppContext);
   const navigate = useNavigate();
   const userRole = userContext?.userData.role;
 

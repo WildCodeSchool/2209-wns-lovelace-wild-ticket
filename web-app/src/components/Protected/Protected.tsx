@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { UserContext } from "../../context/UserContext";
+import { AppContext } from "../../context/AppContext";
 import { SIGN_IN_PATH } from "../../pages/paths";
 
 const Protected = ({ children }: { children: any }) => {
-  const userContext = useContext(UserContext);
+  const userContext = useContext(AppContext);
 
   if (userContext?.loading) {
     return <div>Loading...</div>;
