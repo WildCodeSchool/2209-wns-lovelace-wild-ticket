@@ -2,12 +2,12 @@ import { gql, useMutation } from "@apollo/client";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Loader from "../../components/Loader/Loader";
 import { SignInMutation, SignInMutationVariables } from "../../gql/graphql";
 import { getErrorMessage } from "../../utils";
 import { DASHBOARD_HOME } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
 import { UserContext } from "../../context/UserContext";
+import { InfinitySpin } from "react-loader-spinner";
 
 const SIGN_IN = gql`
   mutation SignIn($email: String!, $password: String!, $rememberMe: Boolean!) {
@@ -97,7 +97,15 @@ const SignIn = () => {
             </div>
             <a href="#">Mot de passe oublié ?</a>
           </div>
-          <button disabled={loading}>{loading ? <Loader /> : "Valider"}</button>
+          <button disabled={loading}>
+            {loading ? (
+              <div className="loadingSpinner">
+                <InfinitySpin width="100" color="#d1d5db" />
+              </div>
+            ) : (
+              "Valider"
+            )}
+          </button>
         </form>
       </div>
     </>
