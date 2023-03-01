@@ -5,7 +5,7 @@ import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
 
 const DashboardUser = () => {
-  const userContext = useContext(AppContext);
+  const appContext = useContext(AppContext);
 
   return (
     <div className="DashboardMain">
@@ -13,11 +13,11 @@ const DashboardUser = () => {
         <SVGLogo
           logoWidth={BIG_LOGO_DASHBOARD_SIZE}
           logoHeight={BIG_LOGO_DASHBOARD_SIZE}
-          logoFill={userContext?.userSVGColorScheme}
+          logoFill={appContext?.userSVGColorScheme}
         />
         <h1>DASHBOARD USER</h1>
         <p className="DashboardText">Page Under Construction...</p>
-        <p>Connecté avec l'adresse email : {userContext?.userData.email}</p>
+        <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
       </div>
     </div>
   );

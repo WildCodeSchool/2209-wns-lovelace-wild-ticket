@@ -7,11 +7,11 @@ import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
 import { BIG_LOGO_DEFAULT_SIZE } from "../../constants/Constants";
 
 const Home = () => {
-  const userContext = useContext(AppContext);
+  const appContext = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleButton = (): void => {
-    if (userContext?.isAuthenticated) {
+    if (appContext?.isAuthenticated) {
       navigate(DASHBOARD_HOME);
     } else {
       navigate(SIGN_IN_PATH);
@@ -25,7 +25,7 @@ const Home = () => {
         <SVGLogo
           logoWidth={BIG_LOGO_DEFAULT_SIZE}
           logoHeight={BIG_LOGO_DEFAULT_SIZE}
-          logoFill={userContext?.userSVGColorScheme}
+          logoFill={appContext?.userSVGColorScheme}
         />
         <button className="HomePageButton" onClick={handleButton}>
           Accès au dashboard R'Ticket

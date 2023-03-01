@@ -15,7 +15,7 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const userContext = useContext(AppContext);
+  const appContext = useContext(AppContext);
 
   const [signIn, { loading }] = useMutation<
     SignInMutation,
@@ -29,7 +29,7 @@ const SignIn = () => {
         variables: { email, password, rememberMe: Boolean(rememberMe) },
       });
       toast.success(`Vous vous êtes connecté avec succès.`);
-      userContext?.refetch();
+      appContext?.refetch();
       navigate(DASHBOARD_HOME);
     } catch (error) {
       toast.error(getErrorMessage(error));
