@@ -13,8 +13,7 @@ const NotFoundScreen = ({ navigation }: RootStackScreenProps<'NotFound'>) => {
   )
 }
 
-export default NotFoundScreen
-
+export default NotFoundScreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -12,7 +12,7 @@ const HomeScreen = ({ navigation }: RootStackScreenProps<"Home">) => {
   )
 }
 
-export default HomeScreen
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: { flex: 1, alignItems: "center", justifyContent: "center" },
