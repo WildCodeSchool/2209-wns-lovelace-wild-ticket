@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { RootStackScreenProps } from "../types";
 import { GetRestaurantsQuery } from "../gql/graphql";
-import { GET_RESTAURANTS } from "../gql/queries";
+import { GET_RESTAURANTS } from "../query/queries";
 import { TicketContext } from "../context/TicketContext";
 import Restaurant from "../components/Restaurant";
 
@@ -22,9 +22,16 @@ const RestaurantsScreen = ({
   const ticketContext = useContext(TicketContext);
 
   const handleClick = (id: any) => {
-    setResto(id)
-    ticketContext?.setIsDisabled(false)
-  }
+    setResto(id);
+    ticketContext?.setIsDisabled(false);
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      ticketContext?.setIsDisabled(true);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -32,7 +39,8 @@ const RestaurantsScreen = ({
         <Button title="Retour" onPress={() => navigation.navigate("Select")} />
         <Button
           title="Continuer"
-          onPress={() => navigation.navigate("Ticket", { resto })}  disabled={ticketContext?.isDisabled}
+          onPress={() => navigation.navigate("Ticket", { resto })}
+          disabled={ticketContext?.isDisabled}
         />
       </View>
       <SafeAreaView style={styles.mainContainer}>
@@ -40,7 +48,10 @@ const RestaurantsScreen = ({
         <View style={styles.restaurantList}>
           {data?.getRestaurants.map((restaurant) => (
             <View key={restaurant.id}>
-              <TouchableOpacity onPress={() => handleClick(restaurant)} style={styles.boutonSelect}>
+              <TouchableOpacity
+                onPress={() => handleClick(restaurant)}
+                style={styles.boutonSelect}
+              >
                 <Restaurant {...restaurant} />
               </TouchableOpacity>
             </View>
@@ -62,19 +73,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   mainContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   restaurantList: {
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "center",
-    alignContent:"center",
+    alignContent: "center",
     height: "90%",
     width: "80%",
   },
   boutonSelect: {
-    alignItems:"center",
-    justifyContent:"center",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 10,
     borderWidth: 3,
     height: 200,

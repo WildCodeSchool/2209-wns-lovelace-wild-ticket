@@ -1,21 +1,28 @@
-import { createContext, SetStateAction, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useState } from "react";
 
 type TicketContextType = {
-  selectedId: any
-  setSelectedId: any
-  isDisabled: any;
-  setIsDisabled: any;
+  selectedId: number,
+  setSelectedId: Dispatch<SetStateAction<number>>,
+  isDisabled: boolean,
+  setIsDisabled: Dispatch<SetStateAction<boolean>>,
+  initialState: () => void
 };
 
 export const TicketContext = createContext<TicketContextType | null>(null);
 
 export function ContextProvider({ children }: any) {
-  const [selectedId, setSelectedId] = useState<number>();
+  const [selectedId, setSelectedId] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
   
+  const initialState = () => {
+    setSelectedId(0)
+    setIsDisabled(true)
+    console.log(setSelectedId)
+  }
+
  return (
     <TicketContext.Provider
-      value={{ selectedId, setSelectedId, isDisabled, setIsDisabled}}
+      value={{ selectedId, setSelectedId, isDisabled, setIsDisabled, initialState}}
     >
       {children}
     </TicketContext.Provider>

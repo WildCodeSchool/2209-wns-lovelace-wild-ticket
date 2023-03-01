@@ -50,7 +50,6 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
   const handleClick = (id: any) => {
     ticketContext?.setSelectedId(id)
     ticketContext?.setIsDisabled(false)
-    console.log('test1')
   }
 
   return (
