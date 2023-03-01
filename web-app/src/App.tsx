@@ -2,13 +2,12 @@ import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer, Flip } from "react-toastify";
 
-import Home from "./pages/Home/Home";
-import DashboardHome from "./pages/Dashboard/DashboardHome/DashboardHome";
-import NotFound from "./pages/NotFound/NotFound";
-import SignIn from "./pages/SignIn/SignIn";
-import Protected from "./components/Protected/Protected";
-
+/* PATHS */
 import {
+  HOME_PATH,
+  SIGN_IN_PATH,
+  FORGOT_PASSWORD_PATH,
+  UPDATE_PASSWORD_PATH,
   DASHBOARD_HOME,
   DASHBOARD_OPTIONS,
   DASHBOARD_POLE,
@@ -17,10 +16,15 @@ import {
   DASHBOARD_TABLE,
   DASHBOARD_TICKET,
   DASHBOARD_USER,
-  HOME_PATH,
-  SIGN_IN_PATH,
 } from "./pages/paths";
-import SideBar from "./components/Sidebar/Sidebar";
+
+/* PAGES */
+import Home from "./pages/Home/Home";
+import NotFound from "./pages/NotFound/NotFound";
+import SignIn from "./pages/SignIn/SignIn";
+import ForgotPassword from "./pages/SignIn/ForgotPassword";
+import UpdatePassword from "./pages/SignIn/UpdatePassword";
+import DashboardHome from "./pages/Dashboard/DashboardHome/DashboardHome";
 import DashboardRestaurant from "./pages/Dashboard/DashboardRestaurant/DashboardRestaurant";
 import DashboardPole from "./pages/Dashboard/DashboardPole/DashboardPole";
 import DashboardUser from "./pages/Dashboard/DashboardUser/DashboardUser";
@@ -28,9 +32,13 @@ import DashboardTicket from "./pages/Dashboard/DashboardTicket/DashboardTicket";
 import DashboardTable from "./pages/Dashboard/DashboardTable/DashboardTable";
 import DashboardStats from "./pages/Dashboard/DashboardStats/DashboardStats";
 import DashboardOptions from "./pages/Dashboard/DashboardOptions/DashboardOptions";
+
+/* COMPONENTS */
+import Protected from "./components/Protected/Protected";
 import ProtectedAdmin from "./components/Protected/ProtectedAdmin/ProtectedAdmin";
 import ProtectedRestaurant from "./components/Protected/ProtectedRestaurant/ProtectedRestaurant";
 import DashBoardHeader from "./components/Dashboard/DashboardHeader/DashboardHeader";
+import SideBar from "./components/Sidebar/Sidebar";
 
 function App() {
   const location = useLocation();
@@ -44,6 +52,8 @@ function App() {
           <Routes>
             <Route path={HOME_PATH} element={<Home />} />
             <Route path={SIGN_IN_PATH} element={<SignIn />} />
+            <Route path={FORGOT_PASSWORD_PATH} element={<ForgotPassword />} />
+            <Route path={UPDATE_PASSWORD_PATH} element={<UpdatePassword />} />
             <Route
               path={DASHBOARD_HOME}
               element={
