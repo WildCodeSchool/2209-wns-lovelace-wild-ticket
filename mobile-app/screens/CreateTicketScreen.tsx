@@ -1,6 +1,5 @@
 import {
   Button,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -11,34 +10,12 @@ import { useForm, Controller } from "react-hook-form";
 import React, { useContext } from "react";
 import { RootStackScreenProps } from "../types";
 import { TicketContext } from "../context/TicketContext";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import {
   CreateTicketMutation,
   CreateTicketMutationVariables,
 } from "../gql/graphql";
-
-const CREATE_TICKET = gql`
-  mutation CreateTicket(
-    $name: String!
-    $seats: Float!
-    $restaurant: String!
-    $email: String
-    $phoneNumber: String
-  ) {
-    createTicket(
-      name: $name
-      seats: $seats
-      restaurant: $restaurant
-      email: $email
-      phoneNumber: $phoneNumber
-    ) {
-      id
-      number
-      seats
-      createdAt
-    }
-  }
-`;
+import { CREATE_TICKET } from "../query/queries";
 
 const CreateTicketScreen = ({
   navigation,
@@ -67,25 +44,26 @@ const CreateTicketScreen = ({
   >(CREATE_TICKET, {
     variables: {
       name: firstName,
-      seats: ticketContext?.selectedId,
+      seats: ticketContext?.selectedId as number,
       restaurant: resto.id,
       email: email,
       phoneNumber: phoneNumber,
     },
     onCompleted: (data) => {
-      setTicketNumber(data.createTicket.number)
-      ToastAndroid.show('Request sent successfully!', ToastAndroid.SHORT);
+      setTicketNumber(data.createTicket.number);
+      ToastAndroid.show("Request sent successfully!", ToastAndroid.SHORT);
+      ticketContext?.initialState();
+      navigation.navigate("Home");
     },
-    onError :(error) => {
-      ToastAndroid.show('Error!', ToastAndroid.SHORT);
-      console.log(error.graphQLErrors)
+    onError: (error) => {
+      ToastAndroid.show("Error!", ToastAndroid.SHORT);
+      console.log(error.graphQLErrors);
     },
   });
 
   const onSubmit = async (data: any) => {
     await createTicket();
-    console.log('test submit')
-    navigation.navigate("Home")
+    console.log("test submit");
   };
 
   return (
