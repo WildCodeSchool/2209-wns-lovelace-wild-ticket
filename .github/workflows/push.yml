@@ -1,0 +1,20 @@
+name: build-and-test
+
+on: push
+
+jobs:
+  back-end:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Build and test back end
+        run: docker compose -f docker-compose.ci.back-end.yml up --build --exit-code-from back-end
+
+  web-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Build and test web app
+        run: docker compose -f docker-compose.ci.web-app.yml up --build --exit-code-from web-app
