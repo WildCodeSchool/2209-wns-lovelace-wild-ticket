@@ -14,6 +14,8 @@ import {
   UserCreationArgs,
   UserUpdateArgs,
   updateUserPasswordArgs,
+  sendResetPasswordEmailArgs,
+  updateUserPasswordWithTokenArgs,
 } from "./AppUser.input";
 import { setSessionIdInCookie } from "../../http-utils";
 import { GlobalContext } from "../..";
@@ -65,7 +67,7 @@ export default class AppUserResolver {
 
   @Authorized("ROLE_ADMIN")
   @Mutation(() => AppUser)
-  deleteUser(@Arg("id") id: string): Promise<AppUser> {
+  deleteUser(@Arg("id") id: string): Promise<AppUser | null> {
     return AppUserRepository.deleteUser(id);
   }
 
@@ -81,7 +83,7 @@ export default class AppUserResolver {
 
   @Authorized()
   @Mutation(() => AppUser)
-  async signOut(@Arg("id") id: string): Promise<AppUser> {
+  async signOut(@Arg("id") id: string): Promise<AppUser | null> {
     return AppUserRepository.signOut(id);
   }
 
@@ -91,6 +93,22 @@ export default class AppUserResolver {
     @Args() { id, password }: updateUserPasswordArgs
   ): Promise<AppUser> {
     return AppUserRepository.updateUserPassword(id, password);
+  }
+
+  @Mutation(() => Boolean)
+  async updateUserPasswordWithToken(
+    @Args() { token, password }: updateUserPasswordWithTokenArgs
+  ): Promise<boolean> {
+    await AppUserRepository.updateUserPasswordWithToken(token, password);
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async sendResetPasswordEmail(
+    @Args() { email }: sendResetPasswordEmailArgs
+  ): Promise<boolean> {
+    await AppUserRepository.sendResetPasswordEmail(email);
+    return true;
   }
 
   @Authorized()
