@@ -9,41 +9,8 @@ import {
 import React, { useContext } from "react";
 import { RootStackScreenProps } from "../types";
 import { TicketContext } from "../context/TicketContext";
+import { DATA } from "../data/dataSelect";
 
-const DATA = [
-  {
-    id: 1,
-    title: "1",
-  },
-  {
-    id: 2,
-    title: "2",
-  },
-  {
-    id: 3,
-    title: "3",
-  },
-  {
-    id: 4,
-    title: "4",
-  },
-  {
-    id: 5,
-    title: "5",
-  },
-  {
-    id: 6,
-    title: "6",
-  },
-  {
-    id: 7,
-    title: "7",
-  },
-  {
-    id: 8,
-    title: "8",
-  },
-];
 
 const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
   const ticketContext = useContext(TicketContext);
