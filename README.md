@@ -67,8 +67,15 @@ Expo installation on devices.
 
 Starting the development server:
 
-1. cd mobile-app
-2. npx expo start
+1. Navigate to the project directory
+```
+cd mobile-app
+```
+
+2. Run the server
+```
+npx expo start
+```
 
 ## Stack technique
 
