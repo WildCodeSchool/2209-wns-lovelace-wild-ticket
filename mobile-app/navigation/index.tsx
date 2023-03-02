@@ -18,6 +18,7 @@ import { ContextProvider } from "../context/TicketContext";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+
 export default function Navigation({
   colorScheme,
 }: {
