@@ -6,7 +6,7 @@ export default class SessionRepository extends SessionDb {
   static createSession(user: AppUser): Promise<Session> {
     const createdAt = new Date();
     const session = new Session(user, createdAt);
-    
+
     return this.saveSession(session);
   }
 

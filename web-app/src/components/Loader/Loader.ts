@@ -4,7 +4,7 @@ export default styled.span`
   width: 48px;
   height: 48px;
   border: 5px solid #fff;
-  border-bottom-color: '#F76C6C';
+  border-bottom-color: "#F76C6C";
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;

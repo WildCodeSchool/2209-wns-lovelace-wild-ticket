@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   back-end:
@@ -39,7 +39,7 @@ services:
       - database-content:/var/lib/postgresql/data
     expose:
       - 5432
-  
+
   test-database:
     image: postgres:14.5-alpine
     environment:
