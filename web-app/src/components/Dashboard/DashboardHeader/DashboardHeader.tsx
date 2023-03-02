@@ -67,7 +67,6 @@ export default function DashBoardHeader() {
     return emptyTables.length;
   };
 
-  console.log(occupiedTables);
 
   useEffect(() => {
     setDashboardLocation(headerLocation(location));
