@@ -1,0 +1,53 @@
+@import '../../../index.scss';
+
+.DashboardHeader {
+  background-color: $gray200;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: auto;
+  height: 8%;
+  margin-left: 65px;
+  padding: 0 15px;
+  box-shadow: 2px 0 3px 2px rgba(0, 0, 0, 0.2);
+
+  .DashboardHeaderLocationContainer {
+    width: 450px;
+
+    .HeaderLocation {
+      font-size: 22px;
+      font-weight: 600;
+    }
+  }
+
+  .DashboardHeaderDateContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+
+    .HeaderDate {
+      margin: 0;
+    }
+
+    .HeaderTime {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+  }
+
+  .DashboardHeaderStatsContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 50px;
+    width: 450px;
+
+    .HeaderStatsTextContainer {
+      display: flex;
+      gap: 5px;
+    }
+  }
+}

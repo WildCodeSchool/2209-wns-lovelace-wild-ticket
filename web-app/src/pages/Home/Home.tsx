@@ -2,16 +2,16 @@ import { useNavigate } from "react-router-dom";
 import { DASHBOARD_HOME, SIGN_IN_PATH } from "../paths";
 import "./Home.scss";
 import { useContext } from "react";
-import { UserContext } from "../../context/UserContext";
-import SVGLogo from "../../components/SVGLogo/SVGLogo";
+import { AppContext } from "../../context/AppContext";
+import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
+import { BIG_LOGO_DEFAULT_SIZE } from "../../constants/Constants";
 
 const Home = () => {
-  const userContext = useContext(UserContext);
+  const appContext = useContext(AppContext);
   const navigate = useNavigate();
-  const logoSize = "500";
 
   const handleButton = (): void => {
-    if (userContext?.isAuthenticated) {
+    if (appContext?.isAuthenticated) {
       navigate(DASHBOARD_HOME);
     } else {
       navigate(SIGN_IN_PATH);
@@ -22,7 +22,11 @@ const Home = () => {
   return (
     <div className="HomePage">
       <div className="HomePageButtonContainer">
-      <SVGLogo logoWidth={logoSize} logoHeight={logoSize} />
+        <SVGLogo
+          logoWidth={BIG_LOGO_DEFAULT_SIZE}
+          logoHeight={BIG_LOGO_DEFAULT_SIZE}
+          logoFill={appContext?.userSVGColorScheme}
+        />
         <button className="HomePageButton" onClick={handleButton}>
           Accès au dashboard R'Ticket
         </button>

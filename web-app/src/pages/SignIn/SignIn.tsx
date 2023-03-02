@@ -1,29 +1,21 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Loader from "../../components/Loader/Loader";
 import { SignInMutation, SignInMutationVariables } from "../../gql/graphql";
 import { getErrorMessage } from "../../utils";
-import { DASHBOARD_HOME } from "../paths";
+import { DASHBOARD_HOME, FORGOT_PASSWORD_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
-import { UserContext } from "../../context/UserContext";
-
-const SIGN_IN = gql`
-  mutation SignIn($email: String!, $password: String!, $rememberMe: Boolean!) {
-    signIn(email: $email, password: $password, rememberMe: $rememberMe) {
-      id
-      email
-    }
-  }
-`;
+import { AppContext } from "../../context/AppContext";
+import { InfinitySpin } from "react-loader-spinner";
+import { SIGN_IN } from "../../queries/Queries";
 
 const SignIn = () => {
-  const [email, setemail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const userContext = useContext(UserContext);
+  const appContext = useContext(AppContext);
 
   const [signIn, { loading }] = useMutation<
     SignInMutation,
@@ -37,7 +29,7 @@ const SignIn = () => {
         variables: { email, password, rememberMe: Boolean(rememberMe) },
       });
       toast.success(`Vous vous êtes connecté avec succès.`);
-      userContext?.refetch();
+      appContext?.refetch();
       navigate(DASHBOARD_HOME);
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -64,7 +56,7 @@ const SignIn = () => {
               name="email"
               value={email}
               onChange={(event) => {
-                setemail(event.target.value);
+                setEmail(event.target.value);
               }}
             />
           </div>
@@ -95,9 +87,17 @@ const SignIn = () => {
               />
               <label>Se souvenir de moi</label>
             </div>
-            <a href="#">Mot de passe oublié ?</a>
+            <Link to={FORGOT_PASSWORD_PATH}>Mot de passe oublié ?</Link>
           </div>
-          <button disabled={loading}>{loading ? <Loader /> : "Valider"}</button>
+          <button disabled={loading}>
+            {loading ? (
+              <div className="loadingSpinner">
+                <InfinitySpin width="100" color="#d1d5db" />
+              </div>
+            ) : (
+              "Valider"
+            )}
+          </button>
         </form>
       </div>
     </>
