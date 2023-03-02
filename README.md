@@ -73,6 +73,7 @@ cd mobile-app
 ```
 
 2. Run the server
+
 ```
 npx expo start
 ```
