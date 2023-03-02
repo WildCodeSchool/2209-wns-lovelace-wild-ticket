@@ -21,7 +21,8 @@ export default function DashboardTicketListStatus({
   tables: GET_TABLES_BY_RESTAURANT_TYPES;
 }) {
   const ticketSeats = ticket?.seats as number;
-  const convertedSeatsToCapacity = (ticketSeats % 2 === 0) ? ticketSeats : ticketSeats + 1;
+  const convertedSeatsToCapacity =
+    ticketSeats % 2 === 0 ? ticketSeats : ticketSeats + 1;
   const filteredTables: GET_TABLES_BY_RESTAURANT_TYPES | undefined =
     tables?.filter((table) => table.capacity === convertedSeatsToCapacity);
 
