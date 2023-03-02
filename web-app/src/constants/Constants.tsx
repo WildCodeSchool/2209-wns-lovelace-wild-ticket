@@ -7,7 +7,7 @@ export const BIG_LOGO_DASHBOARD_SIZE: string = "400";
 /**
  * Big Logo Color Theme
  */
-export const BIG_LOGO_DARK_THEME: string = "#f3f4f6";
+export const BIG_LOGO_DARK_THEME: string = "#333333";
 export const BIG_LOGO_LIGHT_THEME: string = "#333333";
 
 /**
