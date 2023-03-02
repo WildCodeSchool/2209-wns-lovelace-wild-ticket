@@ -22,6 +22,14 @@ export class UserCreationArgs {
   })
   login: string;
 
+
+
+
+
+
+
+
+  
   @Field()
   @IsEmail({ message: "L'email rentré n'est pas au bon format." })
   @MaxLength(255, {

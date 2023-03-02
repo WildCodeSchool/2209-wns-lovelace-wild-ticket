@@ -21,6 +21,7 @@ jobs:
 
   back-end-for-push:
     runs-on: ubuntu-latest
+    needs: fix-formatting-for-push
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -29,6 +30,7 @@ jobs:
 
   web-app-for-push:
     runs-on: ubuntu-latest
+    needs: fix-formatting-for-push
     steps:
       - name: Check out code
         uses: actions/checkout@v3
