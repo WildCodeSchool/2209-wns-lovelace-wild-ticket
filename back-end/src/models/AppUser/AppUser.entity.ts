@@ -77,7 +77,10 @@ export default class AppUser {
   @Field()
   role: string;
 
-  @OneToOne(() => Restaurant, (restaurant) => restaurant.appUser, { eager: true, onDelete: "CASCADE" })
+  @OneToOne(() => Restaurant, (restaurant) => restaurant.appUser, {
+    eager: true,
+    onDelete: "CASCADE",
+  })
   @JoinColumn()
   @Field({ nullable: true })
   restaurant?: Restaurant;
