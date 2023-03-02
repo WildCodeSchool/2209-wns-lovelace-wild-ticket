@@ -4,18 +4,21 @@ on:
   pull_request:
 
 jobs:
-  fix-formatting:
+  prettier:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check out code
+      - name: Checkout
         uses: actions/checkout@v3
-      - name: Format TS and TSX files with Prettier
-        run: |
-          git pull origin ${{ github.head_ref }} --no-rebase
-          npm i
-          npm run format:fix
-          git add .
-          git config user.name "GitHub Actions"
-          git config user.email "<>"
-          git commit -m "[auto] Format TS and TSX files with Prettier" || true
-          git push origin HEAD:${{ github.head_ref }}
+        with:
+          # Make sure the actual branch is checked out when running on pull requests
+          ref: ${{ github.head_ref }}
+          # This is important to fetch the changes to the previous commit
+          fetch-depth: 0
+
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.2
+        with:
+          # This part is also where you can pass other options, for example:
+          prettier_options: --write **/*.{ts,tsx}
+          only_changed: True
