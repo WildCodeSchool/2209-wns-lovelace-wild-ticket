@@ -1,4 +1,4 @@
-@import '../../../index.scss';
+@import "../../../index.scss";
 
 .loadingSpinContainer {
   display: flex;
@@ -15,8 +15,6 @@
     transform: translate(-25%, -50%);
   }
 }
-
-
 
 .dashboardTicketListModal {
   background-color: $modal-background-color;
@@ -97,7 +95,6 @@
   border-collapse: collapse;
 
   .ListTabHeader {
-
     .ListTabHeaderRow {
       background-color: $gray200;
       position: sticky;
@@ -107,7 +104,6 @@
   }
 
   .ListTabBody {
-
     .ListTabBodyTitleRow {
       text-align: center;
       background-color: rgb(205, 205, 205);
