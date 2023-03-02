@@ -4,7 +4,8 @@
   "description": "Wild Ticket",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format:fix": "prettier --write \"**/*.{ts,tsx}\""
   },
   "repository": {
     "type": "git",
