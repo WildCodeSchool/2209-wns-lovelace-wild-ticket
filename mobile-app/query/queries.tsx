@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_RESTAURANTS = gql`
-  query GetRestaurants {
+  query Restaurants {
     getRestaurants {
       id
       name
@@ -10,25 +10,24 @@ export const GET_RESTAURANTS = gql`
 `;
 
 export const CREATE_TICKET = gql`
-mutation CreateTicket(
-  $name: String!
-  $seats: Float!
-  $restaurant: String!
-  $email: String
-  $phoneNumber: String
-) {
-  createTicket(
-    name: $name
-    seats: $seats
-    restaurant: $restaurant
-    email: $email
-    phoneNumber: $phoneNumber
+  mutation CreateTicket(
+    $name: String!
+    $seats: Float!
+    $restaurant: String!
+    $email: String
+    $phoneNumber: String
   ) {
-    id
-    number
-    seats
-    createdAt
+    createTicket(
+      name: $name
+      seats: $seats
+      restaurant: $restaurant
+      email: $email
+      phoneNumber: $phoneNumber
+    ) {
+      id
+      number
+      seats
+      createdAt
+    }
   }
-}
 `;
-
