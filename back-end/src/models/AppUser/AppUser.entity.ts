@@ -24,7 +24,9 @@ export default class AppUser {
     createdAt: Date,
     restaurant?: Restaurant,
     poles?: Pole[],
-    updatedAt?: Date
+    updatedAt?: Date,
+    resetPasswordToken?: string,
+    resetPasswordTokenExpiration?: Date
   ) {
     this.login = login;
     this.email = email;
@@ -39,6 +41,12 @@ export default class AppUser {
     }
     if (updatedAt) {
       this.updatedAt = updatedAt;
+    }
+    if (resetPasswordToken) {
+      this.resetPasswordToken = resetPasswordToken;
+    }
+    if (resetPasswordTokenExpiration) {
+      this.resetPasswordTokenExpiration = resetPasswordTokenExpiration;
     }
   }
 
@@ -86,4 +94,12 @@ export default class AppUser {
   @Column({ nullable: true })
   @Field({ nullable: true })
   updatedAt?: Date;
+
+  @Column({ nullable: true, type: "varchar", length: 255 })
+  @Field({ nullable: true })
+  resetPasswordToken?: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  resetPasswordTokenExpiration?: Date;
 }

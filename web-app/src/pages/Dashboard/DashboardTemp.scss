@@ -3,8 +3,9 @@
 .DashboardMain {
   display: flex;
   justify-content: center;
-  width: 100vw;
-  height: 100vh;
+  width: auto;
+  height: auto;
+  margin-left: 65px;
 
   .DashboardContent {
     display: flex;
@@ -16,7 +17,7 @@
     .DashboardText {
       color: $black;
       font-size: 16px;
-      margin-bottom: 60px;
+      margin-bottom: 40px;
     }
 
     .DashboardButton {

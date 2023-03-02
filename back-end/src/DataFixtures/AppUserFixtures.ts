@@ -11,7 +11,7 @@ export type AppUserFixtures = {
 export const AppUserFixtures: AppUserFixtures[] = [
   {
     login: "Vincent",
-    email: "vincent@r-ticket.com",
+    email: "vincent@r-ticket.agtn.fr",
     password: "Vincent69!",
     role: "ROLE_ADMIN",
     createdAt: "2022-12-20T11:00:00",
@@ -19,7 +19,7 @@ export const AppUserFixtures: AppUserFixtures[] = [
   },
   {
     login: "Estelle",
-    email: "estelle@r-ticket.com",
+    email: "estelle@r-ticket.agtn.fr",
     password: "Estelle69!",
     role: "ROLE_RESTAURANT",
     createdAt: "2022-12-20T11:00:00",
@@ -27,7 +27,7 @@ export const AppUserFixtures: AppUserFixtures[] = [
   },
   {
     login: "Anthony",
-    email: "anthony@r-ticket.com",
+    email: "anthony@r-ticket.agtn.fr",
     password: "Anthony69!",
     role: "ROLE_RESTAURANT",
     createdAt: "2022-12-20T11:00:00",
@@ -35,7 +35,7 @@ export const AppUserFixtures: AppUserFixtures[] = [
   },
   {
     login: "Michel",
-    email: "michel@lardonnaise.com",
+    email: "michel.lardonnaise@r-ticket.agtn.fr",
     password: "Michel69!",
     role: "ROLE_RESTAURANT",
     createdAt: "2022-12-20T11:00:00",
