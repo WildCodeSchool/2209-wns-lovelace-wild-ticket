@@ -20,7 +20,9 @@ describe("home", () => {
 
   it("should render a button used to go to Sign-In page", () => {
     renderHome();
-    expect(screen.getByRole('button', {name: "Accès au dashboard R'Ticket"})).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Accès au dashboard R'Ticket" })
+    ).toBeInTheDocument();
 
     describe("on button click", () => {
       describe("if user's logged in", () => {
