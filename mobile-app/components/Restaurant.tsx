@@ -1,13 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const Restaurant = ({
-  id,
-  name,
-}: {
-  id: string;
-  name: string;
-}) => {
+const Restaurant = ({ id, name }: { id: string; name: string }) => {
   return <Text style={styles.restaurantCard}>{name}</Text>;
 };
 

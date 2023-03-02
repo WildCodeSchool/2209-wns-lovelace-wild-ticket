@@ -59,15 +59,14 @@ Expo installation on computer.
 
 1. Follow the link: https://docs.expo.dev/get-started/installation/
 
-
 Expo installation on devices.
 
 1. Follow the link: https://expo.dev/client
 
-
 Starting the development server:
 
 1. Navigate to the project directory
+
 ```
 cd mobile-app
 ```
@@ -112,7 +111,6 @@ https://reactnative.dev/
 
 Expo:
 https://expo.dev/
-
 
 ## Author
 

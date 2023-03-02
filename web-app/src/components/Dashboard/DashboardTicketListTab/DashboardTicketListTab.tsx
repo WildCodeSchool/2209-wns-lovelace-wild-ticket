@@ -55,9 +55,12 @@ export default function DashboardTicketListTab({
     tables: GET_TABLES_BY_RESTAURANT_TYPES,
     seatsTicket: number
   ) => {
-    const convertedSeatsToTableCapacity = (seatsTicket % 2 === 0) ? seatsTicket : seatsTicket++;
+    const convertedSeatsToTableCapacity =
+      seatsTicket % 2 === 0 ? seatsTicket : seatsTicket++;
     const availableTables: GET_TABLES_BY_RESTAURANT_TYPES | undefined =
-      tables?.filter((table) => table.capacity === convertedSeatsToTableCapacity);
+      tables?.filter(
+        (table) => table.capacity === convertedSeatsToTableCapacity
+      );
 
     return availableTables && availableTables.length !== 0 ? true : false;
   };

@@ -18,7 +18,6 @@ import { ContextProvider } from "../context/TicketContext";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-
 export default function Navigation({
   colorScheme,
 }: {
@@ -53,7 +52,11 @@ function RootNavigator() {
           component={RestaurantsScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Ticket" component={CreateTicketScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Ticket"
+          component={CreateTicketScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="NotFound"
           component={NotFoundScreen}

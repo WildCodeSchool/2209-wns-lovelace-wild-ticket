@@ -67,7 +67,6 @@ export default function DashBoardHeader() {
     return emptyTables.length;
   };
 
-
   useEffect(() => {
     setDashboardLocation(headerLocation(location));
     setWaitingTickets(getCountOfWaitingTickets(tickets) as number);

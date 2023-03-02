@@ -11,13 +11,12 @@ import { RootStackScreenProps } from "../types";
 import { TicketContext } from "../context/TicketContext";
 import { DATA } from "../data/dataSelect";
 
-
 const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
   const ticketContext = useContext(TicketContext);
   const handleClick = (id: any) => {
-    ticketContext?.setSelectedId(id)
-    ticketContext?.setIsDisabled(false)
-  }
+    ticketContext?.setSelectedId(id);
+    ticketContext?.setIsDisabled(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -25,7 +24,8 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
         <Button title="Retour" onPress={() => navigation.navigate("Home")} />
         <Button
           title="Continuer"
-          onPress={() => navigation.navigate("Restaurants")} disabled={ticketContext?.isDisabled}
+          onPress={() => navigation.navigate("Restaurants")}
+          disabled={ticketContext?.isDisabled}
         />
       </View>
       <SafeAreaView style={styles.mainContainer}>
@@ -55,26 +55,26 @@ export default SelectScreen;
 
 const styles = StyleSheet.create({
   container: { marginTop: 50, marginLeft: 50, marginRight: 50 },
-  title: {fontSize: 32, fontWeight: "bold"},
+  title: { fontSize: 32, fontWeight: "bold" },
   containerHeaderBoutton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
   mainContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   containerButton: {
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "center",
-    alignContent:"center",
+    alignContent: "center",
     height: "90%",
     width: "80%",
   },
   boutonSelect: {
-    alignItems:"center",
-    justifyContent:"center",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 10,
     borderWidth: 3,
     height: 150,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   textButton: {
-    fontSize: 32
+    fontSize: 32,
   },
   item: {
     padding: 20,
