@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   back-end:
-    build: ./back-end
+    build:
+      context: ./back-end
+      target: dev
     environment:
       DATABASE_URL: postgres://postgres:password@database:5432/postgres
       TEST_DATABASE_URL: postgres://postgres:password@test-database:5432/postgres
@@ -16,7 +18,9 @@ services:
       - database
 
   web-app:
-    build: ./web-app
+    build:
+      context: ./web-app
+      target: dev
     ports:
       - 3000:3000
     volumes:
