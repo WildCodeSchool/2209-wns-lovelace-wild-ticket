@@ -57,13 +57,11 @@ const CreateTicketScreen = ({
     },
     onError: (error) => {
       ToastAndroid.show("Error!", ToastAndroid.SHORT);
-      console.log(error.graphQLErrors);
     },
   });
 
   const onSubmit = async (data: any) => {
     await createTicket();
-    console.log("test submit");
   };
 
   return (
