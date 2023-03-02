@@ -23,6 +23,8 @@ export type AppUser = {
   id: Scalars['ID'];
   login: Scalars['String'];
   poles?: Maybe<Array<Pole>>;
+  resetPasswordToken?: Maybe<Scalars['String']>;
+  resetPasswordTokenExpiration?: Maybe<Scalars['DateTime']>;
   restaurant?: Maybe<Restaurant>;
   role: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -39,6 +41,7 @@ export type Mutation = {
   deleteRestaurant: Restaurant;
   deleteTable: Table;
   deleteUser: AppUser;
+  sendResetPasswordEmail: Scalars['Boolean'];
   signIn: AppUser;
   signOut: AppUser;
   updateClosedAt: Ticket;
@@ -50,6 +53,7 @@ export type Mutation = {
   updateTable: Table;
   updateUser: AppUser;
   updateUserPassword: AppUser;
+  updateUserPasswordWithToken: Scalars['Boolean'];
 };
 
 
@@ -111,6 +115,11 @@ export type MutationDeleteTableArgs = {
 
 export type MutationDeleteUserArgs = {
   id: Scalars['String'];
+};
+
+
+export type MutationSendResetPasswordEmailArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -187,6 +196,12 @@ export type MutationUpdateUserArgs = {
 export type MutationUpdateUserPasswordArgs = {
   id: Scalars['ID'];
   password: Scalars['String'];
+};
+
+
+export type MutationUpdateUserPasswordWithTokenArgs = {
+  password: Scalars['String'];
+  token: Scalars['String'];
 };
 
 export type Pole = {
@@ -293,10 +308,10 @@ export type Ticket = {
   table?: Maybe<Table>;
 };
 
-export type GetRestaurantsQueryVariables = Exact<{ [key: string]: never; }>;
+export type RestaurantsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetRestaurantsQuery = { __typename?: 'Query', getRestaurants: Array<{ __typename?: 'Restaurant', id: string, name: string }> };
+export type RestaurantsQuery = { __typename?: 'Query', getRestaurants: Array<{ __typename?: 'Restaurant', id: string, name: string }> };
 
 export type CreateTicketMutationVariables = Exact<{
   name: Scalars['String'];
@@ -310,5 +325,5 @@ export type CreateTicketMutationVariables = Exact<{
 export type CreateTicketMutation = { __typename?: 'Mutation', createTicket: { __typename?: 'Ticket', id: string, number: number, seats: number, createdAt: any } };
 
 
-export const GetRestaurantsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetRestaurants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getRestaurants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetRestaurantsQuery, GetRestaurantsQueryVariables>;
+export const RestaurantsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Restaurants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getRestaurants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<RestaurantsQuery, RestaurantsQueryVariables>;
 export const CreateTicketDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateTicket"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"seats"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"restaurant"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"phoneNumber"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createTicket"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"Argument","name":{"kind":"Name","value":"seats"},"value":{"kind":"Variable","name":{"kind":"Name","value":"seats"}}},{"kind":"Argument","name":{"kind":"Name","value":"restaurant"},"value":{"kind":"Variable","name":{"kind":"Name","value":"restaurant"}}},{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"phoneNumber"},"value":{"kind":"Variable","name":{"kind":"Name","value":"phoneNumber"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"number"}},{"kind":"Field","name":{"kind":"Name","value":"seats"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<CreateTicketMutation, CreateTicketMutationVariables>;
