@@ -13,16 +13,15 @@ export const TicketContext = createContext<TicketContextType | null>(null);
 export function ContextProvider({ children }: any) {
   const [selectedId, setSelectedId] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
-  
+
   const initialState = () => {
     setSelectedId(0)
     setIsDisabled(true)
-    console.log(setSelectedId)
   }
 
- return (
+  return (
     <TicketContext.Provider
-      value={{ selectedId, setSelectedId, isDisabled, setIsDisabled, initialState}}
+      value={{ selectedId, setSelectedId, isDisabled, setIsDisabled, initialState }}
     >
       {children}
     </TicketContext.Provider>
