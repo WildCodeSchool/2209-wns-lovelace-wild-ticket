@@ -1,5 +1,6 @@
 import {
   Button,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -24,11 +25,13 @@ const RestaurantsScreen = ({
   const handleClick = (id: any) => {
     setResto(id);
     ticketContext?.setIsDisabled(false);
+    ticketContext?.setIsActive(id);
   };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       ticketContext?.setIsDisabled(true);
+      ticketContext?.setIsActive(0);
     });
     return unsubscribe;
   }, [navigation]);
@@ -36,12 +39,15 @@ const RestaurantsScreen = ({
   return (
     <View style={styles.container}>
       <View style={styles.containerHeaderBoutton}>
-        <Button title="Retour" onPress={() => navigation.navigate("Select")} />
-        <Button
-          title="Continuer"
-          onPress={() => navigation.navigate("Ticket", { resto })}
+       <Pressable style={styles.navButton} onPress={() => navigation.navigate("Select")}>
+          <Text style={styles.navButtonText}>Retour</Text>
+        </Pressable>
+        <Pressable style={ticketContext?.isDisabled ? styles.navButtonDisable : styles.navButton}
+          onPress={() => navigation.navigate("Ticket" , { resto })}
           disabled={ticketContext?.isDisabled}
-        />
+        >
+          <Text style={styles.navButtonText}>Continuer</Text>
+        </Pressable>
       </View>
       <SafeAreaView style={styles.mainContainer}>
         <Text style={styles.title}>Selectionnez votre restaurant</Text>
@@ -50,7 +56,7 @@ const RestaurantsScreen = ({
             <View key={restaurant.id}>
               <TouchableOpacity
                 onPress={() => handleClick(restaurant)}
-                style={styles.boutonSelect}
+                style={ ticketContext?.isActive === restaurant ? styles.boutonSelectActive : styles.boutonSelect }
               >
                 <Restaurant {...restaurant} />
               </TouchableOpacity>
@@ -71,6 +77,36 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  navButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'black',
+    width: 150,
+    height: 70,
+  },
+  navButtonDisable: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'grey',
+    width: 150,
+    height: 70,
+  },
+  navButtonText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
   },
   mainContainer: {
     alignItems: "center",
@@ -80,12 +116,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignContent: "center",
-    height: "90%",
+    height: "85%",
     width: "80%",
+    margin: 5
   },
   boutonSelect: {
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 10,
+    borderWidth: 3,
+    height: 200,
+    width: 250,
+    margin: 20,
+  },
+  boutonSelectActive: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: 'pink',
     borderRadius: 10,
     borderWidth: 3,
     height: 200,
