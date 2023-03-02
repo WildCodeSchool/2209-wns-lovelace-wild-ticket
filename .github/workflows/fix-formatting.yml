@@ -17,4 +17,4 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "<>"
           git commit -m "[auto] Format TS and TSX files with Prettier" || true
-          git push
+          git push origin HEAD:${{ github.head_ref }}
