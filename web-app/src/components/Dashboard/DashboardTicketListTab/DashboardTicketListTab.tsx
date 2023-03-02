@@ -63,7 +63,8 @@ export default function DashboardTicketListTab({
   };
 
   const confirmDeliver = async (ticket: GET_TICKET_BY_RESTAURANT_TYPES) => {
-    setAvailableTables(ticket?.seats as number);
+    const ticketSeats = ticket?.seats as number;
+    setAvailableTables((ticketSeats % 2 === 0) ? ticketSeats : ticketSeats + 1);
     setTicketId(ticket?.id as string);
     setOpenConfirmDeliveredAtModal(true);
     setIsClickable(false);
