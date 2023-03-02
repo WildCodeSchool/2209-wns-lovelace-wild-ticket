@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/WildCodeSchool/2209-wns-lovelace-wild-ticket/issues"
   },
-  "homepage": "https://github.com/WildCodeSchool/2209-wns-lovelace-wild-ticket#readme"
+  "homepage": "https://github.com/WildCodeSchool/2209-wns-lovelace-wild-ticket#readme",
+  "devDependencies": {
+    "prettier": "2.8.4"
+  }
 }
