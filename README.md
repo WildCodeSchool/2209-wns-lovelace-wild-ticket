@@ -45,6 +45,14 @@ Use this command in the root of the project, when the server is running.
 docker compose -f docker-compose.dev.yml exec back-end npm run test:watch
 ```
 
+## Run Web-app's Integration testing (web-app)
+
+Use this command in the root of the project, when the server is running.
+
+```
+docker compose -f docker-compose.dev.yml exec web-app npm run test
+```
+
 ## Update the library on the client side (web-app)
 
 When modifying the schema on the backend side, use the following command to update the library on the client side.
