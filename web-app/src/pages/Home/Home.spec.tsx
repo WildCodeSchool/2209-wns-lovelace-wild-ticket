@@ -18,10 +18,12 @@ describe("home", () => {
     it("should render the page itself", () => {
       renderHome();
     });
-  
+
     it("should render a button used to access the dashboard", () => {
       renderHome();
-      expect(screen.getByRole('button', { name: "Accès au dashboard R'Ticket" })).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Accès au dashboard R'Ticket" })
+      ).toBeInTheDocument();
     });
   });
 });
