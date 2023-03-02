@@ -9,7 +9,7 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { RootStackScreenProps } from "../types";
-import { GetRestaurantsQuery } from "../gql/graphql";
+import { RestaurantsQuery } from "../gql/graphql";
 import { GET_RESTAURANTS } from "../query/queries";
 import { TicketContext } from "../context/TicketContext";
 import Restaurant from "../components/Restaurant";
@@ -17,7 +17,7 @@ import Restaurant from "../components/Restaurant";
 const RestaurantsScreen = ({
   navigation,
 }: RootStackScreenProps<"Restaurants">) => {
-  const { data } = useQuery<GetRestaurantsQuery>(GET_RESTAURANTS);
+  const { data } = useQuery<RestaurantsQuery>(GET_RESTAURANTS);
   const [resto, setResto] = useState<any | null>("");
   const ticketContext = useContext(TicketContext);
 
