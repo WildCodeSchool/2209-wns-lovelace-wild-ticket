@@ -13,5 +13,6 @@ export default class RestaurantDb {
   }
 
   static async clearRepository(): Promise<void> {
-    await this.repository.delete({});  }
+    await this.repository.delete({});
+  }
 }

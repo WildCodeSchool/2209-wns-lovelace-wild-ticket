@@ -55,14 +55,19 @@ export default function DashboardTicketListTab({
     tables: GET_TABLES_BY_RESTAURANT_TYPES,
     seatsTicket: number
   ) => {
+    const convertedSeatsToTableCapacity =
+      seatsTicket % 2 === 0 ? seatsTicket : seatsTicket + 1;
     const availableTables: GET_TABLES_BY_RESTAURANT_TYPES | undefined =
-      tables?.filter((table) => table.capacity === seatsTicket);
+      tables?.filter(
+        (table) => table.capacity === convertedSeatsToTableCapacity
+      );
 
     return availableTables && availableTables.length !== 0 ? true : false;
   };
 
   const confirmDeliver = async (ticket: GET_TICKET_BY_RESTAURANT_TYPES) => {
-    setAvailableTables(ticket?.seats as number);
+    const ticketSeats = ticket?.seats as number;
+    setAvailableTables(ticketSeats % 2 === 0 ? ticketSeats : ticketSeats + 1);
     setTicketId(ticket?.id as string);
     setOpenConfirmDeliveredAtModal(true);
     setIsClickable(false);

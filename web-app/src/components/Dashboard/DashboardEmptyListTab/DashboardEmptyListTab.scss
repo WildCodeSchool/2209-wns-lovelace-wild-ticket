@@ -1,4 +1,4 @@
-@import '../../../index.scss';
+@import "../../../index.scss";
 
 .ListTab {
   width: 100%;
@@ -6,7 +6,6 @@
   border-collapse: collapse;
 
   .ListTabHeader {
-
     .ListTabHeaderRow {
       background-color: $gray200;
       position: sticky;
@@ -16,11 +15,9 @@
   }
 
   .ListTabBody {
-
     .ListTabBodyRow {
       text-align: center;
       height: 50px;
-
     }
   }
 }

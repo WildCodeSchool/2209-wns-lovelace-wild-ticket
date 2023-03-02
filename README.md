@@ -61,6 +61,30 @@ When modifying the schema on the backend side, use the following command to upda
 npm run gql-codegen
 ```
 
+## Running the mobile-app
+
+Expo installation on computer.
+
+1. Follow the link: https://docs.expo.dev/get-started/installation/
+
+Expo installation on devices.
+
+1. Follow the link: https://expo.dev/client
+
+Starting the development server:
+
+1. Navigate to the project directory
+
+```
+cd mobile-app
+```
+
+2. Run the server
+
+```
+npx expo start
+```
+
 ## Stack technique
 
 ### Back-end
@@ -87,6 +111,14 @@ https://www.postgresql.org/
 
 React:
 https://fr.reactjs.org/
+
+### Mobile-app
+
+React native:
+https://reactnative.dev/
+
+Expo:
+https://expo.dev/
 
 ## Author
 
