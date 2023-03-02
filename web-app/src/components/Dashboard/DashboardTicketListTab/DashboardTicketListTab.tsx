@@ -55,7 +55,8 @@ export default function DashboardTicketListTab({
     tables: GET_TABLES_BY_RESTAURANT_TYPES,
     seatsTicket: number
   ) => {
-    const convertedSeatsToTableCapacity = (seatsTicket % 2 === 0) ? seatsTicket : seatsTicket + 1;
+    const convertedSeatsToTableCapacity =
+      seatsTicket % 2 === 0 ? seatsTicket : seatsTicket + 1;
     const availableTables: GET_TABLES_BY_RESTAURANT_TYPES | undefined =
       tables?.filter(
         (table) => table.capacity === convertedSeatsToTableCapacity
@@ -66,7 +67,7 @@ export default function DashboardTicketListTab({
 
   const confirmDeliver = async (ticket: GET_TICKET_BY_RESTAURANT_TYPES) => {
     const ticketSeats = ticket?.seats as number;
-    setAvailableTables((ticketSeats % 2 === 0) ? ticketSeats : ticketSeats + 1);
+    setAvailableTables(ticketSeats % 2 === 0 ? ticketSeats : ticketSeats + 1);
     setTicketId(ticket?.id as string);
     setOpenConfirmDeliveredAtModal(true);
     setIsClickable(false);
