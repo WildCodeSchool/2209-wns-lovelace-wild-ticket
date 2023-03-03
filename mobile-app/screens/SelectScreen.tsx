@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   boutonSelectActive: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: 'pink',
+    backgroundColor: 'lightblue',
     borderRadius: 10,
     borderWidth: 3,
     height: 150,

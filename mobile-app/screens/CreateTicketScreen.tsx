@@ -116,7 +116,7 @@ const CreateTicketScreen = ({
       <View style={styles.containerHeaderButton}>
         <Pressable
           style={styles.navButton}
-          onPress={() => navigation.navigate("Select")}
+          onPress={() => navigation.navigate("Restaurants")}
         >
           <Text style={styles.navButtonText}>Retour</Text>
         </Pressable>
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     height: 70,
     width: 500,
     marginBottom: 30,
-    borderWidth: 1,
+    borderWidth: 3,
     padding: 10,
   },
   inputFocus: {
