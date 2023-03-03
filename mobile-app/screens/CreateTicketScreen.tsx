@@ -32,6 +32,7 @@ const CreateTicketScreen = ({
   const [email, onChangeEmail] = React.useState("");
   const [phoneNumber, onChangePhoneNumber] = React.useState("");
   const [ticketNumber, setTicketNumber] = React.useState(0);
+  const [focus, setFocus] = React.useState(false);
   const {
     control,
     handleSubmit,
@@ -96,8 +97,8 @@ const CreateTicketScreen = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={styles.input}
-                    onBlur={onBlur}
+                    style={focus ? styles.inputFocus : styles.input}
+                    // onFocus={() => setFocus(true)}
                     onChangeText={onChangeFirstName}
                     value={firstName}
                     placeholder="Nom et prénom"
@@ -110,7 +111,8 @@ const CreateTicketScreen = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={styles.input}
+                    style={focus ? styles.inputFocus : styles.input}
+                    // onFocus={() => setFocus(true)}
                     onChangeText={onChangeEmail}
                     value={email}
                     placeholder="Email"
@@ -123,7 +125,8 @@ const CreateTicketScreen = ({
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    style={styles.input}
+                    style={focus ? styles.inputFocus : styles.input}
+                    // onFocus={() => setFocus(true)}
                     onChangeText={onChangePhoneNumber}
                     value={phoneNumber}
                     placeholder="N° de téléphone"
@@ -183,9 +186,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+    borderWidth: 1,
+    height: "90%",
   },
   form: {
     borderWidth: 1,
+    alignSelf: "center",
   },
   input: {
     borderRadius: 5,
@@ -193,6 +199,15 @@ const styles = StyleSheet.create({
     width: 500,
     marginBottom: 30,
     borderWidth: 1,
+    padding: 10,
+  },
+  inputFocus: {
+    borderRadius: 5,
+    height: 70,
+    width: 500,
+    marginBottom: 30,
+    borderWidth: 2,
+    borderColor: "red",
     padding: 10,
   },
   formButton: {
