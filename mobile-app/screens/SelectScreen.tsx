@@ -18,16 +18,24 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
   const handleClick = (id: any) => {
     ticketContext?.setSelectedId(id);
     ticketContext?.setIsDisabled(false);
-    ticketContext?.setIsActive(id)
+    ticketContext?.setIsActive(id);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.containerHeaderBoutton}>
-        <Pressable style={styles.navButton} onPress={() => navigation.navigate("Home")}>
+        <Pressable
+          style={styles.navButton}
+          onPress={() => navigation.navigate("Home")}
+        >
           <Text style={styles.navButtonText}>Retour</Text>
         </Pressable>
-        <Pressable style={ticketContext?.isDisabled ? styles.navButtonDisable : styles.navButton}
+        <Pressable
+          style={
+            ticketContext?.isDisabled
+              ? styles.navButtonDisable
+              : styles.navButton
+          }
           onPress={() => navigation.navigate("Restaurants")}
           disabled={ticketContext?.isDisabled}
         >
@@ -41,7 +49,11 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
             <View key={d.id}>
               <TouchableOpacity
                 onPress={() => handleClick(d.id)}
-                style={ ticketContext?.isActive === d.id ? styles.boutonSelectActive : styles.boutonSelect }
+                style={
+                  ticketContext?.isActive === d.id
+                    ? styles.boutonSelectActive
+                    : styles.boutonSelect
+                }
               >
                 <Text style={styles.textButton}>{d.id}</Text>
               </TouchableOpacity>
@@ -69,33 +81,33 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   navButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'black',
+    backgroundColor: "black",
     width: 150,
     height: 70,
   },
   navButtonDisable: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'grey',
+    backgroundColor: "grey",
     width: 150,
     height: 70,
   },
   navButtonText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     letterSpacing: 0.25,
-    color: 'white',
+    color: "white",
   },
   mainContainer: {
     alignItems: "center",
@@ -107,7 +119,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     height: "75%",
     width: "80%",
-    margin: 10
+    margin: 10,
   },
   boutonSelect: {
     alignItems: "center",
@@ -121,7 +133,7 @@ const styles = StyleSheet.create({
   boutonSelectActive: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: 'lightblue',
+    backgroundColor: "lightblue",
     borderRadius: 10,
     borderWidth: 3,
     height: 150,

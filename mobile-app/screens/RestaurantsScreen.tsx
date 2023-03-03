@@ -38,11 +38,19 @@ const RestaurantsScreen = ({
   return (
     <View style={styles.container}>
       <View style={styles.containerHeaderButton}>
-       <Pressable style={styles.navButton} onPress={() => navigation.navigate("Select")}>
+        <Pressable
+          style={styles.navButton}
+          onPress={() => navigation.navigate("Select")}
+        >
           <Text style={styles.navButtonText}>Retour</Text>
         </Pressable>
-        <Pressable style={ticketContext?.isDisabled ? styles.navButtonDisable : styles.navButton}
-          onPress={() => navigation.navigate("Ticket" , { resto })}
+        <Pressable
+          style={
+            ticketContext?.isDisabled
+              ? styles.navButtonDisable
+              : styles.navButton
+          }
+          onPress={() => navigation.navigate("Ticket", { resto })}
           disabled={ticketContext?.isDisabled}
         >
           <Text style={styles.navButtonText}>Continuer</Text>
@@ -55,7 +63,11 @@ const RestaurantsScreen = ({
             <View key={restaurant.id}>
               <TouchableOpacity
                 onPress={() => handleClick(restaurant)}
-                style={ ticketContext?.isActive === restaurant ? styles.boutonSelectActive : styles.boutonSelect }
+                style={
+                  ticketContext?.isActive === restaurant
+                    ? styles.boutonSelectActive
+                    : styles.boutonSelect
+                }
               >
                 <Restaurant {...restaurant} />
               </TouchableOpacity>
@@ -79,33 +91,33 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   navButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'black',
+    backgroundColor: "black",
     width: 150,
     height: 70,
   },
   navButtonDisable: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'grey',
+    backgroundColor: "grey",
     width: 150,
     height: 70,
   },
   navButtonText: {
     fontSize: 16,
     lineHeight: 21,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     letterSpacing: 0.25,
-    color: 'white',
+    color: "white",
   },
   mainContainer: {
     alignItems: "center",
@@ -117,7 +129,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     height: "85%",
     width: "80%",
-    margin: 5
+    margin: 5,
   },
   boutonSelect: {
     alignItems: "center",
@@ -131,7 +143,7 @@ const styles = StyleSheet.create({
   boutonSelectActive: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: 'lightblue',
+    backgroundColor: "lightblue",
     borderRadius: 10,
     borderWidth: 3,
     height: 200,

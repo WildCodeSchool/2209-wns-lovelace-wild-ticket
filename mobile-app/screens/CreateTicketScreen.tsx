@@ -34,7 +34,8 @@ const CreateTicketScreen = ({
   const [ticketNumber, setTicketNumber] = React.useState(0);
   const [focus, setFocus] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [modalVisibleValidation, setModalVisibleValidation] = React.useState(false);
+  const [modalVisibleValidation, setModalVisibleValidation] =
+    React.useState(false);
   const {
     control,
     handleSubmit,
@@ -85,7 +86,10 @@ const CreateTicketScreen = ({
             Voulez-vous annuler votre demande et retourner à l'accueil ?
           </Text>
           <View style={styles.modalButton}>
-            <Pressable style={styles.modalButtons} onPress={() => setModalVisible(false) }>
+            <Pressable
+              style={styles.modalButtons}
+              onPress={() => setModalVisible(false)}
+            >
               <Text style={styles.navButtonText}>Non</Text>
             </Pressable>
             <Pressable style={styles.modalButtons}>
@@ -102,11 +106,17 @@ const CreateTicketScreen = ({
             Voulez-vous confirmez-vous votre demande de table ?
           </Text>
           <View style={styles.modalButton}>
-            <Pressable style={styles.modalButtonsValidation} onPress={() => setModalVisibleValidation(false) }>
+            <Pressable
+              style={styles.modalButtonsValidation}
+              onPress={() => setModalVisibleValidation(false)}
+            >
               <Text style={styles.navButtonText}>Annuler</Text>
             </Pressable>
             <Pressable style={styles.modalButtonsValidation}>
-              <Text style={styles.navButtonText} onPress={handleSubmit(onSubmit)}>
+              <Text
+                style={styles.navButtonText}
+                onPress={handleSubmit(onSubmit)}
+              >
                 Confirmer
               </Text>
             </Pressable>
@@ -314,7 +324,7 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 28,
     alignSelf: "center",
-    textAlign:"center",
+    textAlign: "center",
   },
   modalButtons: {
     alignItems: "center",

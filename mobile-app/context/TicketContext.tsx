@@ -20,7 +20,7 @@ export function ContextProvider({ children }: any) {
   const initialState = () => {
     setSelectedId(0);
     setIsDisabled(true);
-    setIsActive(0)
+    setIsActive(0);
   };
 
   return (
@@ -32,7 +32,7 @@ export function ContextProvider({ children }: any) {
         setIsDisabled,
         initialState,
         isActive,
-        setIsActive
+        setIsActive,
       }}
     >
       {children}
