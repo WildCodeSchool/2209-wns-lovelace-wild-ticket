@@ -1,0 +1,41 @@
+name: fix-formatting-and-build-and-test-for-push-on-main-and-dev
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  fix-formatting-for-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Format TS and TSX files with Prettier
+        run: |
+          npm i
+          npm run format:fix
+          git add .
+          git config user.name "GitHub Actions"
+          git config user.email "<>"
+          git commit -m "[auto] Format TS and TSX files with Prettier" || true
+          git push
+
+  back-end-for-push:
+    runs-on: ubuntu-latest
+    needs: fix-formatting-for-push
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Build and test back end
+        run: docker compose -f docker-compose.ci.back-end.yml up --build --exit-code-from back-end
+
+  web-app-for-push:
+    runs-on: ubuntu-latest
+    needs: fix-formatting-for-push
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Build and test web app
+        run: docker compose -f docker-compose.ci.web-app.yml up --build --exit-code-from web-app
