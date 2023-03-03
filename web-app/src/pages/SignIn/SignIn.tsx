@@ -47,7 +47,7 @@ const SignIn = () => {
           }}
         >
           <div className="signin-form-input">
-            <label>Adresse email</label>
+            <label htmlFor="email">Adresse email</label>
             <input
               type="email"
               required
@@ -61,8 +61,9 @@ const SignIn = () => {
             />
           </div>
           <div className="signin-form-input">
-            <label>Mot de passe</label>
+            <label htmlFor="password">Mot de passe</label>
             <input
+              data-testid="password"
               type="password"
               required
               autoComplete="current-password"
