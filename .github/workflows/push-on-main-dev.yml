@@ -7,7 +7,7 @@ on:
       - dev
 
 jobs:
-  fix-formatting-for-push:
+  fix-formatting-for-push-on-main-and-dev:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -22,18 +22,18 @@ jobs:
           git commit -m "[auto] Format TS and TSX files with Prettier" || true
           git push
 
-  back-end-for-push:
+  back-end-for-push-on-main-and-dev:
     runs-on: ubuntu-latest
-    needs: fix-formatting-for-push
+    needs: fix-formatting-for-push-on-main-and-dev
     steps:
       - name: Check out code
         uses: actions/checkout@v3
       - name: Build and test back end
         run: docker compose -f docker-compose.ci.back-end.yml up --build --exit-code-from back-end
 
-  web-app-for-push:
+  web-app-for-push-on-main-and-dev:
     runs-on: ubuntu-latest
-    needs: fix-formatting-for-push
+    needs: fix-formatting-for-push-on-main-and-dev
     steps:
       - name: Check out code
         uses: actions/checkout@v3
