@@ -1,9 +1,14 @@
 import {
-  Button,
+  Keyboard,
+  KeyboardAvoidingView,
+  Pressable,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   ToastAndroid,
+  TouchableWithoutFeedback,
+  TouchableWithoutFeedbackComponent,
   View,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
@@ -64,60 +69,84 @@ const CreateTicketScreen = ({
     await createTicket();
   };
 
+  const cancel = () => {
+    ticketContext?.initialState();
+    navigation.navigate("Home");
+  };
+
   return (
-    <View>
-      <Button
-        title="Retour"
-        onPress={() => navigation.navigate("Restaurants")}
-      />
-      <View style={styles.mainContainer}>
-        <Text style={styles.title}>{resto.name} </Text>
-        <Text>Nombre de couverts : {ticketContext?.selectedId}</Text>
-        <Text>Temps d’attente estimé :</Text>
+    <View style={styles.container}>
+      <View style={styles.containerHeaderBoutton}>
+        <Pressable
+          style={styles.navButton}
+          onPress={() => navigation.navigate("Select")}
+        >
+          <Text style={styles.navButtonText}>Retour</Text>
+        </Pressable>
       </View>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeFirstName}
-            value={firstName}
-            placeholder="Nom et prénom"
-          />
-        )}
-        name="firstName"
-      />
-      {errors.firstName && <Text>This is required.</Text>}
-
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeEmail}
-            value={email}
-            placeholder="Email"
-            keyboardType="email-address"
-          />
-        )}
-        name="email"
-      />
-
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangePhoneNumber}
-            value={phoneNumber}
-            placeholder="N° de téléphone"
-            keyboardType="phone-pad"
-          />
-        )}
-        name="phoneNumber"
-      />
-
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <KeyboardAvoidingView>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.mainContainer}>
+            <View>
+              <Text style={styles.title}>{resto.name} </Text>
+              <Text>Nombre de couverts : {ticketContext?.selectedId}</Text>
+            </View>
+            <View style={styles.form}>
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={onChangeFirstName}
+                    value={firstName}
+                    placeholder="Nom et prénom"
+                  />
+                )}
+                name="firstName"
+              />
+              {errors.firstName && <Text>This is required.</Text>}
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={onChangeEmail}
+                    value={email}
+                    placeholder="Email"
+                    keyboardType="email-address"
+                  />
+                )}
+                name="email"
+              />
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={onChangePhoneNumber}
+                    value={phoneNumber}
+                    placeholder="N° de téléphone"
+                    keyboardType="phone-pad"
+                  />
+                )}
+                name="phoneNumber"
+              />
+              <View style={styles.formButton}>
+                <Pressable style={styles.navButton} onPress={cancel}>
+                  <Text style={styles.navButtonText}>Annuler</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.navButton}
+                  onPress={handleSubmit(onSubmit)}
+                >
+                  <Text style={styles.navButtonText}>Valider</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -127,18 +156,47 @@ export default CreateTicketScreen;
 const styles = StyleSheet.create({
   container: { marginTop: 50, marginLeft: 50, marginRight: 50 },
   title: { fontSize: 32, fontWeight: "bold" },
-  mainContainer: {
-    alignItems: "center",
-  },
   containerHeaderBoutton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
   },
+  navButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: "black",
+    width: 150,
+    height: 70,
+  },
+  navButtonText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "white",
+  },
+  mainContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  form: {
+    borderWidth: 1,
+  },
   input: {
-    height: 40,
-    margin: 12,
+    borderRadius: 5,
+    height: 70,
+    width: 500,
+    marginBottom: 30,
     borderWidth: 1,
     padding: 10,
+  },
+  formButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
