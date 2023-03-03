@@ -37,7 +37,7 @@ const RestaurantsScreen = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerHeaderBoutton}>
+      <View style={styles.containerHeaderButton}>
        <Pressable style={styles.navButton} onPress={() => navigation.navigate("Select")}>
           <Text style={styles.navButtonText}>Retour</Text>
         </Pressable>
@@ -72,7 +72,7 @@ export default RestaurantsScreen;
 const styles = StyleSheet.create({
   container: { marginTop: 50, marginLeft: 50, marginRight: 50 },
   title: { fontSize: 32, fontWeight: "bold" },
-  containerHeaderBoutton: {
+  containerHeaderButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

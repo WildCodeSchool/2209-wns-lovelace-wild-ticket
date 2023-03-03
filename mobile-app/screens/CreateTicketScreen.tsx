@@ -8,7 +8,6 @@ import {
   TextInput,
   ToastAndroid,
   TouchableWithoutFeedback,
-  TouchableWithoutFeedbackComponent,
   View,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
@@ -16,6 +15,7 @@ import React, { useContext } from "react";
 import { RootStackScreenProps } from "../types";
 import { TicketContext } from "../context/TicketContext";
 import { useMutation } from "@apollo/client";
+import Modal from "react-native-modal";
 import {
   CreateTicketMutation,
   CreateTicketMutationVariables,
@@ -33,6 +33,7 @@ const CreateTicketScreen = ({
   const [phoneNumber, onChangePhoneNumber] = React.useState("");
   const [ticketNumber, setTicketNumber] = React.useState(0);
   const [focus, setFocus] = React.useState(false);
+  const [modalVisible, setModalVisible] = React.useState(false);
   const {
     control,
     handleSubmit,
@@ -77,7 +78,24 @@ const CreateTicketScreen = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.containerHeaderBoutton}>
+      <Modal backdropOpacity={0.7} isVisible={modalVisible}>
+        <View style={styles.modalView}>
+          <Text style={styles.modalText}>
+            Voulez-vous annuler votre demande et retourner à l'accueil ?
+          </Text>
+          <View style={styles.modalButton}>
+            <Pressable style={styles.modalButtons} onPress={() => setModalVisible(false) }>
+              <Text style={styles.navButtonText}>Non</Text>
+            </Pressable>
+            <Pressable style={styles.modalButtons}>
+              <Text style={styles.navButtonText} onPress={cancel}>
+                Oui
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      <View style={styles.containerHeaderButton}>
         <Pressable
           style={styles.navButton}
           onPress={() => navigation.navigate("Select")}
@@ -90,8 +108,13 @@ const CreateTicketScreen = ({
           <View style={styles.mainContainer}>
             <View style={styles.infoPart}>
               <Text style={styles.title}>{resto.name} </Text>
-              <Text style={styles.text}>Nombre de couverts : {ticketContext?.selectedId}</Text>
-              <Text style={styles.text}>Pour valider votre demande, merci de renseigner votre adresse e-mail et/ou votre numéro de téléphone.</Text>
+              <Text style={styles.text}>
+                Nombre de couverts : {ticketContext?.selectedId}
+              </Text>
+              <Text style={styles.text}>
+                Pour valider votre demande, merci de renseigner votre adresse
+                e-mail et/ou votre numéro de téléphone.
+              </Text>
             </View>
             <View>
               <Controller
@@ -137,7 +160,10 @@ const CreateTicketScreen = ({
                 name="phoneNumber"
               />
               <View style={styles.formButton}>
-                <Pressable style={styles.cancelButton} onPress={cancel}>
+                <Pressable
+                  style={styles.cancelButton}
+                  onPress={() => setModalVisible(true)}
+                >
                   <Text style={styles.cancelButtonText}>Annuler</Text>
                 </Pressable>
                 <Pressable
@@ -160,8 +186,8 @@ export default CreateTicketScreen;
 const styles = StyleSheet.create({
   container: { marginTop: 50, marginLeft: 50, marginRight: 50 },
   title: { fontSize: 32, fontWeight: "bold" },
-  text: { fontSize: 16, marginTop: 13},
-  containerHeaderBoutton: {
+  text: { fontSize: 16, marginTop: 13 },
+  containerHeaderButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
@@ -234,7 +260,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
-    // elevation: 3,
     borderWidth: 2,
     borderColor: "darkblue",
     width: 150,
@@ -246,5 +271,43 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "darkblue",
-  }
+  },
+  modalView: {
+    width: "50%",
+    height: "50%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 35,
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    marginTop: 50,
+  },
+  modalText: {
+    fontSize: 28,
+    alignSelf: "center",
+    textAlign:"center",
+  },
+  modalButtons: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: "black",
+    width: 100,
+    height: 70,
+  },
 });
