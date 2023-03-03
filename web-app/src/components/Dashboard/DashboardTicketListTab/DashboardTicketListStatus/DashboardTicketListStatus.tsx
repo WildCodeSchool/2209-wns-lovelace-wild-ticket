@@ -30,8 +30,7 @@ export default function DashboardTicketListStatus({
     ticket?.deliveredAt !== null &&
     ticket?.placedAt !== null &&
     new Date(ticket?.closedAt) >
-      addMinutesToDate(new Date(), MAX_DELIVERED_TICKET_DELAY) &&
-    new Date(ticket?.closedAt) > new Date()
+      addMinutesToDate(new Date(), MAX_DELIVERED_TICKET_DELAY)
   ) {
     return (
       <div className="DashboardTicketListStatusContainer">
