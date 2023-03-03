@@ -88,11 +88,12 @@ const CreateTicketScreen = ({
       <KeyboardAvoidingView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.mainContainer}>
-            <View>
+            <View style={styles.infoPart}>
               <Text style={styles.title}>{resto.name} </Text>
-              <Text>Nombre de couverts : {ticketContext?.selectedId}</Text>
+              <Text style={styles.text}>Nombre de couverts : {ticketContext?.selectedId}</Text>
+              <Text style={styles.text}>Pour valider votre demande, merci de renseigner votre adresse e-mail et/ou votre numéro de téléphone.</Text>
             </View>
-            <View style={styles.form}>
+            <View>
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -136,11 +137,11 @@ const CreateTicketScreen = ({
                 name="phoneNumber"
               />
               <View style={styles.formButton}>
-                <Pressable style={styles.navButton} onPress={cancel}>
-                  <Text style={styles.navButtonText}>Annuler</Text>
+                <Pressable style={styles.cancelButton} onPress={cancel}>
+                  <Text style={styles.cancelButtonText}>Annuler</Text>
                 </Pressable>
                 <Pressable
-                  style={styles.navButton}
+                  style={styles.submitButton}
                   onPress={handleSubmit(onSubmit)}
                 >
                   <Text style={styles.navButtonText}>Valider</Text>
@@ -159,6 +160,7 @@ export default CreateTicketScreen;
 const styles = StyleSheet.create({
   container: { marginTop: 50, marginLeft: 50, marginRight: 50 },
   title: { fontSize: 32, fontWeight: "bold" },
+  text: { fontSize: 16, marginTop: 13},
   containerHeaderBoutton: {
     flexDirection: "row",
     alignItems: "center",
@@ -186,12 +188,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    borderWidth: 1,
     height: "90%",
   },
-  form: {
-    borderWidth: 1,
-    alignSelf: "center",
+  infoPart: {
+    // borderWidth: 1,
+    width: 350,
+    height: "65%",
+    flexDirection: "column",
   },
   input: {
     borderRadius: 5,
@@ -214,4 +217,34 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  submitButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: "darkblue",
+    width: 150,
+    height: 70,
+  },
+  cancelButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    // elevation: 3,
+    borderWidth: 2,
+    borderColor: "darkblue",
+    width: 150,
+    height: 70,
+  },
+  cancelButtonText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "darkblue",
+  }
 });

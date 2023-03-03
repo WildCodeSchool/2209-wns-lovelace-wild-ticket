@@ -1,5 +1,4 @@
 import {
-  Button,
   Pressable,
   SafeAreaView,
   StyleSheet,
