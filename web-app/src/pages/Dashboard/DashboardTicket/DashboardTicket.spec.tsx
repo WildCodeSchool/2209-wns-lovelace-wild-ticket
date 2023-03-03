@@ -13,7 +13,6 @@ import {
 
 import { MemoryRouter } from "react-router-dom";
 
-
 const renderDashboardTicket = (mock?: any) => {
   render(
     <MockedProvider mocks={mock}>
