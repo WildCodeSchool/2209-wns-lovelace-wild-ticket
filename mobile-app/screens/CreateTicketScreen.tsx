@@ -34,6 +34,7 @@ const CreateTicketScreen = ({
   const [ticketNumber, setTicketNumber] = React.useState(0);
   const [focus, setFocus] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [modalVisibleValidation, setModalVisibleValidation] = React.useState(false);
   const {
     control,
     handleSubmit,
@@ -90,6 +91,23 @@ const CreateTicketScreen = ({
             <Pressable style={styles.modalButtons}>
               <Text style={styles.navButtonText} onPress={cancel}>
                 Oui
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      <Modal backdropOpacity={0.7} isVisible={modalVisibleValidation}>
+        <View style={styles.modalView}>
+          <Text style={styles.modalText}>
+            Voulez-vous confirmez-vous votre demande de table ?
+          </Text>
+          <View style={styles.modalButton}>
+            <Pressable style={styles.modalButtonsValidation} onPress={() => setModalVisibleValidation(false) }>
+              <Text style={styles.navButtonText}>Annuler</Text>
+            </Pressable>
+            <Pressable style={styles.modalButtonsValidation}>
+              <Text style={styles.navButtonText} onPress={handleSubmit(onSubmit)}>
+                Confirmer
               </Text>
             </Pressable>
           </View>
@@ -168,7 +186,7 @@ const CreateTicketScreen = ({
                 </Pressable>
                 <Pressable
                   style={styles.submitButton}
-                  onPress={handleSubmit(onSubmit)}
+                  onPress={() => setModalVisibleValidation(true)}
                 >
                   <Text style={styles.navButtonText}>Valider</Text>
                 </Pressable>
@@ -217,7 +235,6 @@ const styles = StyleSheet.create({
     height: "90%",
   },
   infoPart: {
-    // borderWidth: 1,
     width: 350,
     height: "65%",
     flexDirection: "column",
@@ -308,6 +325,17 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "black",
     width: 100,
+    height: 70,
+  },
+  modalButtonsValidation: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: "black",
+    width: 150,
     height: 70,
   },
 });
