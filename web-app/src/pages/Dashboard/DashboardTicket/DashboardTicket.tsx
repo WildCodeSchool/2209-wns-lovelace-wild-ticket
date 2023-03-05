@@ -183,8 +183,6 @@ const DashboardTicket = () => {
         />
       </main>
       <footer className="DashboardMainFooter">
-        <h1>PAGINATION</h1>
-        <p className="DashboardText">Under Construction...</p>
       </footer>
     </section>
   );
