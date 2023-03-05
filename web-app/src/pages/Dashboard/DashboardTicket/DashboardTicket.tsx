@@ -182,8 +182,7 @@ const DashboardTicket = () => {
           handlePlace={onPlace}
         />
       </main>
-      <footer className="DashboardMainFooter">
-      </footer>
+      <footer className="DashboardMainFooter"></footer>
     </section>
   );
 };

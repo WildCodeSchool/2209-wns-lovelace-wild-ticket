@@ -22,7 +22,11 @@ export default function SVGIconAlertTicket() {
         strokeLinejoin="round"
         strokeWidth="32"
       />
-      <path fill="#ffa500" stroke="currentColor" d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z" />
+      <path
+        fill="#ffa500"
+        stroke="currentColor"
+        d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"
+      />
     </svg>
   );
 }
