@@ -4,7 +4,10 @@ import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import DashboardTicketListTab from "../../../components/Dashboard/DashboardTicketListTab/DashboardTicketListTab";
 import { AppContext } from "../../../context/AppContext";
-import { TicketsHeadTabContent } from "../../../data/DashboardHeadTabDatas";
+import {
+  TicketsFilterTabContent,
+  TicketsHeadTabContent,
+} from "../../../data/DashboardTicketDatas";
 import {
   UpdateClosedAtMutation,
   UpdateClosedAtMutationVariables,
@@ -22,7 +25,7 @@ import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
 } from "../../../types/DataTypes";
-import "../DashboardMain.scss";
+import "./DashboardTicketMain.scss";
 
 const DashboardTicket = () => {
   const tickets = useContext(AppContext)
@@ -53,6 +56,15 @@ const DashboardTicket = () => {
       .map((table) => emptyTables.push(table));
 
     return emptyTables;
+  };
+
+  // GET TABLES BY SEATS
+  const [activeFilterButton, setActiveFilterButton] = useState(0);
+
+  const handleFilterButtonClick = async (ticketSeats: number) => {
+    setActiveFilterButton(ticketSeats);
+    if (ticketSeats === 0) return ticketsRefetch();
+    console.log("aaa");
   };
 
   // UPDATE DELIVERED AT FUNCTIONNALITY
@@ -165,10 +177,27 @@ const DashboardTicket = () => {
   }, [tickets, tables, ticketsRefetch, tablesRefetch]);
 
   return (
-    <section className="DashboardMainSection">
-      <header className="DashboardMainHeader">
+    <section className="DashboardTicketMainSection">
+      <header className="DashboardTicketMainHeader">
+        <div className="DashboardTicketMainHeaderButtonContainer">
+          {TicketsFilterTabContent.map((ticketContent, index) => (
+            <button
+              className={
+                activeFilterButton === ticketContent.seats
+                  ? "DashboardTicketMainHeaderButton DashboardTicketMainHeaderButtonActive"
+                  : "DashboardTicketMainHeaderButton"
+              }
+              key={index}
+              onClick={() => {
+                handleFilterButtonClick(ticketContent.seats);
+              }}
+            >
+              {ticketContent.buttonContent}
+            </button>
+          ))}
+        </div>
       </header>
-      <main className="DashboardMainList">
+      <main className="DashboardTicketMainList">
         <DashboardTicketListTab
           dataHead={TicketsHeadTabContent}
           tickets={tickets}
@@ -179,7 +208,7 @@ const DashboardTicket = () => {
           handlePlace={onPlace}
         />
       </main>
-      <footer className="DashboardMainFooter"></footer>
+      <footer className="DashboardTicketMainFooter"></footer>
     </section>
   );
 };
