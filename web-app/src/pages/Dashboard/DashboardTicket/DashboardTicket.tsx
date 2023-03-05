@@ -166,10 +166,7 @@ const DashboardTicket = () => {
 
   return (
     <section className="DashboardMainSection">
-      {/* TODO: Le header sera utilisé pour les filtres, bouton d'ajout etc. (cf. maquette) */}
       <header className="DashboardMainHeader">
-        <h1>FILTRES ET BOUTONS</h1>
-        <p className="DashboardText">Under Construction...</p>
       </header>
       <main className="DashboardMainList">
         <DashboardTicketListTab
