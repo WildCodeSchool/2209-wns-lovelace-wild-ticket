@@ -30,4 +30,8 @@ export default class DateUpdates {
     const day = today.getDate();
     return new Date(year, month, day, hours, minutes);
   }
+
+  static newDateAtMidnight() {
+    return new Date(new Date().setHours(0, 0, 0, 0));
+  }
 }

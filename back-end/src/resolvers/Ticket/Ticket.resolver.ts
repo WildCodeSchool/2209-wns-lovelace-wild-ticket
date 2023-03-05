@@ -1,7 +1,11 @@
 import { Arg, Args, Authorized, Mutation, Query, Resolver } from "type-graphql";
 import Ticket from "../../models/Ticket/Ticket.entity";
 import TicketRepository from "../../models/Ticket/Ticket.repository";
-import { CreateTicketArgs, UpdateTicketArgs } from "./Ticket.input";
+import {
+  CreateTicketArgs,
+  GetTicketsBySeatsArgs,
+  UpdateTicketArgs,
+} from "./Ticket.input";
 
 @Resolver(Ticket)
 export default class TicketResolver {
@@ -15,6 +19,13 @@ export default class TicketResolver {
   @Query(() => [Ticket])
   TicketsByRestaurant(@Arg("id") id: string): Promise<Ticket[] | null> {
     return TicketRepository.getTicketsByRestaurant(id);
+  }
+
+  @Query(() => [Ticket])
+  TicketsBySeats(
+    @Args() { restaurantId, seats }: GetTicketsBySeatsArgs
+  ): Promise<Ticket[] | null> {
+    return TicketRepository.getTicketsBySeats(restaurantId, seats);
   }
 
   @Authorized("ROLE_RESTAURANT")

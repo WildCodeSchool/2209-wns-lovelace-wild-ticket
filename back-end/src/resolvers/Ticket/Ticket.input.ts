@@ -8,6 +8,7 @@ import {
   Min,
   Max,
   ValidateIf,
+  IsNumber,
 } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
@@ -62,4 +63,15 @@ class UpdateTicketArgs {
   table: string;
 }
 
-export { CreateTicketArgs, UpdateTicketArgs };
+@ArgsType()
+class GetTicketsBySeatsArgs {
+  @Field(() => ID)
+  @IsUUID()
+  restaurantId: string;
+
+  @Field()
+  @IsNumber()
+  seats: number;
+}
+
+export { CreateTicketArgs, UpdateTicketArgs, GetTicketsBySeatsArgs };

@@ -1,3 +1,4 @@
+import { Between, MoreThan } from "typeorm";
 import TicketFixtures, {
   TicketFixturesType,
 } from "../../DataFixtures/TicketFixtures";
@@ -58,6 +59,21 @@ export default class TicketRepository extends TicketDb {
     const restaurant = await RestaurantRepository.getRestaurantById(id);
     if (!restaurant) throw new Error();
     return await this.repository.findBy({ restaurant });
+  }
+
+  static async getTicketsBySeats(
+    restaurantId: string,
+    seats: number
+  ): Promise<Ticket[] | null> {
+    const restaurant = await RestaurantRepository.getRestaurantById(
+      restaurantId
+    );
+    if (!restaurant) throw new Error();
+    return await this.repository.findBy({
+      restaurant,
+      seats: Between(seats - 1, seats),
+      createdAt: MoreThan(DateUpdates.newDateAtMidnight()),
+    });
   }
 
   static async getTicketById(id: string): Promise<Ticket | null> {
