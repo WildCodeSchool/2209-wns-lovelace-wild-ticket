@@ -87,7 +87,7 @@ const DashboardTicket = () => {
     onCompleted: () => {
       ticketsRefetch();
       tablesRefetch();
-      toast.success("La table a bien été délivrée");
+      toast.success("La table a bien été délivrée. Une notification a été envoyée au client.");
     },
     onError: () => {
       toast.error("Un problème est survenu. Renouvelez l'opération.");

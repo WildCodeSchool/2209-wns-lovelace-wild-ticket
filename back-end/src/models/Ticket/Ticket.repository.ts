@@ -3,6 +3,7 @@ import TicketFixtures, {
   TicketFixturesType,
 } from "../../DataFixtures/TicketFixtures";
 import DateUpdates from "../../services/DateUpdates";
+import EmailService from "../../services/EmailService";
 import Restaurant from "../Restaurant/Restaurant.entity";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import Table from "../Table/Table.entity";
@@ -171,12 +172,18 @@ export default class TicketRepository extends TicketDb {
     const deliveredAt = new Date();
     const closedAt = DateUpdates.addMinutesToDate(deliveredAt, 15);
 
-    return this.repository.save({
+    const deliveredTicket = await this.repository.save({
       id,
       table,
       deliveredAt,
       closedAt,
     });
+
+    if (deliveredTicket) {
+      EmailService.sendDeliveredTicketEmail(existingTicket, table);
+    }
+
+    return deliveredTicket;
   }
 
   static async updatePlacedAt(id: string): Promise<
