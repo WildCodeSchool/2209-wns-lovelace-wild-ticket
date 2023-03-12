@@ -44,6 +44,6 @@ export const TicketsFilterTabContent = [
   },
   {
     buttonContent: "Tous les tickets",
-    seats: 0,
+    seats: null,
   },
 ];
