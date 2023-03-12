@@ -3,7 +3,7 @@ import Ticket from "../../models/Ticket/Ticket.entity";
 import TicketRepository from "../../models/Ticket/Ticket.repository";
 import {
   CreateTicketArgs,
-  GetTicketsBySeatsArgs,
+  GetTicketsByRestaurantArgs,
   UpdateTicketArgs,
 } from "./Ticket.input";
 
@@ -17,15 +17,10 @@ export default class TicketResolver {
 
   @Authorized("ROLE_RESTAURANT")
   @Query(() => [Ticket])
-  TicketsByRestaurant(@Arg("id") id: string): Promise<Ticket[] | null> {
-    return TicketRepository.getTicketsByRestaurant(id);
-  }
-
-  @Query(() => [Ticket])
-  TicketsBySeats(
-    @Args() { restaurantId, seats }: GetTicketsBySeatsArgs
+  TicketsByRestaurant(
+    @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs
   ): Promise<Ticket[] | null> {
-    return TicketRepository.getTicketsBySeats(restaurantId, seats);
+    return TicketRepository.getTicketsByRestaurant(restaurantId, seats);
   }
 
   @Authorized("ROLE_RESTAURANT")

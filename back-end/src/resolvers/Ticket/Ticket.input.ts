@@ -64,14 +64,15 @@ class UpdateTicketArgs {
 }
 
 @ArgsType()
-class GetTicketsBySeatsArgs {
+class GetTicketsByRestaurantArgs {
   @Field(() => ID)
   @IsUUID()
   restaurantId: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsNumber()
+  @ValidateIf((value) => value === null)
   seats: number;
 }
 
-export { CreateTicketArgs, UpdateTicketArgs, GetTicketsBySeatsArgs };
+export { CreateTicketArgs, UpdateTicketArgs, GetTicketsByRestaurantArgs };
