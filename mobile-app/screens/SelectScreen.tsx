@@ -25,7 +25,7 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
     ticketContext?.setIsActive(id);
   };
 
-    const cancel = () => {
+  const cancel = () => {
     ticketContext?.initialState();
     navigation.navigate("Home");
   };
@@ -34,10 +34,7 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
     <ImageBackground source={background} style={styles.background}>
       <View style={styles.container}>
         <View style={styles.containerHeaderBoutton}>
-          <Pressable
-            style={styles.navButton}
-            onPress={() => cancel()}
-          >
+          <Pressable style={styles.navButton} onPress={() => cancel()}>
             <Text style={styles.navButtonText}>Retour</Text>
           </Pressable>
           <Pressable
@@ -99,7 +96,12 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
   },
-  container: { marginTop: 28, marginLeft: 50, marginRight: 50, alignItems: "center" },
+  container: {
+    marginTop: 28,
+    marginLeft: 50,
+    marginRight: 50,
+    alignItems: "center",
+  },
   containerHeaderBoutton: {
     width: "95%",
     flexDirection: "row",
@@ -158,7 +160,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     height: "75%",
     width: "80%",
-
   },
   boutonSelect: {
     alignItems: "center",
