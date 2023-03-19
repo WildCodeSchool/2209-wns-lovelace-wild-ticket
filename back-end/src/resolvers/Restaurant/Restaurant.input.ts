@@ -1,5 +1,17 @@
-import { IsUUID, MinLength, MaxLength, IsInt } from "class-validator";
+import { IsUUID, MinLength, MaxLength, IsInt, IsPositive, IsNumber, IsString } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
+
+@ArgsType()
+class GetPaginateRestaurantsByPole {
+  @Field()
+  @IsString()
+  pole: string;
+
+  @Field()
+  @IsNumber()
+  @IsPositive()
+  pageNumber: number;
+}
 
 @ArgsType()
 class CreateRestaurantArgs {
@@ -57,6 +69,7 @@ class UpdateRestaurantOpeningTime {
 }
 
 export {
+  GetPaginateRestaurantsByPole,
   CreateRestaurantArgs,
   UpdateRestaurantArgs,
   UpdateRestaurantOpeningTime,

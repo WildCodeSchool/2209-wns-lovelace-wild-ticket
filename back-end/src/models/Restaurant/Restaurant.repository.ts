@@ -35,6 +35,24 @@ export default class RestaurantRepository extends RestaurantDb {
     return this.repository.find();
   }
 
+  static async getPaginateRestaurantsByPole(
+    poleName: string,
+    pageSize: number,
+    pageNumber: number
+  ): Promise<Restaurant[]> {
+    const pole = (await PoleRepository.getPoleByName(poleName)) as Pole;
+
+    if (!pole) {
+      throw new Error("Aucun pôle ne correspond à ce nom.");
+    }
+
+    return this.repository.find({
+      where: { pole: pole },
+      take: pageSize,
+      skip: (pageNumber - 1) * pageSize,
+    });
+  }
+
   static async getRestaurantById(id: string): Promise<Restaurant | null> {
     return this.repository.findOneBy({ id: id });
   }
