@@ -1,16 +1,20 @@
 import {
+  ImageBackground,
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  Button,
   Pressable,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { RootStackScreenProps } from "../types";
 import { TicketContext } from "../context/TicketContext";
 import { DATA } from "../data/dataSelect";
+
+const background = {
+  uri: "https://i.ibb.co/YdC5MQR/RTicket-Wallpaper-2.png",
+};
 
 const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
   const ticketContext = useContext(TicketContext);
@@ -21,60 +25,83 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
     ticketContext?.setIsActive(id);
   };
 
+    const cancel = () => {
+    ticketContext?.initialState();
+    navigation.navigate("Home");
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.containerHeaderBoutton}>
-        <Pressable
-          style={styles.navButton}
-          onPress={() => navigation.navigate("Home")}
-        >
-          <Text style={styles.navButtonText}>Retour</Text>
-        </Pressable>
-        <Pressable
-          style={
-            ticketContext?.isDisabled
-              ? styles.navButtonDisable
-              : styles.navButton
-          }
-          onPress={() => navigation.navigate("Restaurants")}
-          disabled={ticketContext?.isDisabled}
-        >
-          <Text style={styles.navButtonText}>Continuer</Text>
-        </Pressable>
-      </View>
-      <SafeAreaView style={styles.mainContainer}>
-        <Text style={styles.title}>Sélectionnez le nombre de couverts</Text>
-        <View style={styles.containerButton}>
-          {DATA.map((d) => (
-            <View key={d.id}>
-              <TouchableOpacity
-                onPress={() => handleClick(d.id)}
-                style={
-                  ticketContext?.isActive === d.id
-                    ? styles.boutonSelectActive
-                    : styles.boutonSelect
-                }
-              >
-                <Text style={styles.textButton}>{d.id}</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+    <ImageBackground source={background} style={styles.background}>
+      <View style={styles.container}>
+        <View style={styles.containerHeaderBoutton}>
+          <Pressable
+            style={styles.navButton}
+            onPress={() => cancel()}
+          >
+            <Text style={styles.navButtonText}>Retour</Text>
+          </Pressable>
+          <Pressable
+            style={
+              ticketContext?.isDisabled
+                ? styles.navButtonDisable
+                : styles.navButton
+            }
+            onPress={() => navigation.navigate("Restaurants")}
+            disabled={ticketContext?.isDisabled}
+          >
+            <Text
+              style={
+                ticketContext?.isDisabled
+                  ? styles.navButtonTextDisabled
+                  : styles.navButtonText
+              }
+            >
+              Continuer
+            </Text>
+          </Pressable>
         </View>
-        <Text>
-          Pour plus de 8 couverts, merci de vous renseigner directement auprès
-          du restaurant souhaité.
-        </Text>
-      </SafeAreaView>
-    </View>
+        <SafeAreaView style={styles.mainContainer}>
+          <Text style={styles.title}>Sélectionnez le nombre de couverts</Text>
+          <View style={styles.containerButton}>
+            {DATA.map((d) => (
+              <View key={d.id}>
+                <TouchableOpacity
+                  onPress={() => handleClick(d.id)}
+                  style={
+                    ticketContext?.isActive === d.id
+                      ? styles.boutonSelectActive
+                      : styles.boutonSelect
+                  }
+                >
+                  <Text style={styles.textButton}>{d.id}</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+          <Text style={styles.textBottom}>
+            Pour plus de 8 couverts, merci de vous renseigner directement auprès
+            du restaurant souhaité.
+          </Text>
+        </SafeAreaView>
+      </View>
+    </ImageBackground>
   );
 };
 
 export default SelectScreen;
 
 const styles = StyleSheet.create({
-  container: { marginTop: 50, marginLeft: 50, marginRight: 50 },
-  title: { fontSize: 32, fontWeight: "bold" },
+  background: {
+    flex: 1,
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+  },
+  container: { marginTop: 28, marginLeft: 50, marginRight: 50, alignItems: "center" },
   containerHeaderBoutton: {
+    width: "95%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -86,10 +113,24 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
-    elevation: 3,
-    backgroundColor: "black",
-    width: 150,
+    elevation: 8,
+    backgroundColor: "#F4F2EA",
+    width: 180,
     height: 70,
+  },
+  navButtonText: {
+    fontSize: 24,
+    lineHeight: 30,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "#424242",
+  },
+  navButtonTextDisabled: {
+    fontSize: 24,
+    lineHeight: 30,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "lightgrey",
   },
   navButtonDisable: {
     alignItems: "center",
@@ -97,21 +138,19 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
-    elevation: 3,
-    backgroundColor: "grey",
-    width: 150,
+    elevation: 8,
+    backgroundColor: "#F4F2EA",
+    width: 180,
     height: 70,
   },
-  navButtonText: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "white",
-  },
   mainContainer: {
+    width: "85%",
     alignItems: "center",
+    justifyContent: "space-around",
+    marginTop: 50,
+    padding: 15,
   },
+  title: { fontSize: 32, fontWeight: "bold" },
   containerButton: {
     flexWrap: "wrap",
     flexDirection: "row",
@@ -119,13 +158,14 @@ const styles = StyleSheet.create({
     alignContent: "center",
     height: "75%",
     width: "80%",
-    margin: 10,
+
   },
   boutonSelect: {
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#F4F2EA",
+    elevation: 3,
     borderRadius: 10,
-    borderWidth: 3,
     height: 150,
     width: 150,
     margin: 20,
@@ -133,9 +173,10 @@ const styles = StyleSheet.create({
   boutonSelectActive: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "lightblue",
+    backgroundColor: "#F4F2EA",
     borderRadius: 10,
-    borderWidth: 3,
+    borderWidth: 4,
+    borderColor: "#02C900",
     height: 150,
     width: 150,
     margin: 20,
@@ -143,9 +184,8 @@ const styles = StyleSheet.create({
   textButton: {
     fontSize: 32,
   },
-  item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+  textBottom: {
+    fontSize: 17,
+    fontWeight: "bold",
   },
 });
