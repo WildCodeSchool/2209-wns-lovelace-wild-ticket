@@ -2,6 +2,7 @@ import Restaurant from "./Restaurant.entity";
 import Pole from "../Pole/Pole.entity";
 import PoleRepository from "../Pole/Pole.repository";
 import RestaurantDb from "./Restaurant.db";
+import PageOfRestaurants from "../../resolvers/Restaurant/PageOfRestaurant";
 import RestaurantFixtures, {
   RestaurantFixturesType,
 } from "../../DataFixtures/RestaurantFixtures";
@@ -39,18 +40,26 @@ export default class RestaurantRepository extends RestaurantDb {
     poleName: string,
     pageSize: number,
     pageNumber: number
-  ): Promise<Restaurant[]> {
+  ): Promise<PageOfRestaurants> {
     const pole = (await PoleRepository.getPoleByName(poleName)) as Pole;
 
     if (!pole) {
       throw new Error("Aucun pôle ne correspond à ce nom.");
     }
 
-    return this.repository.find({
+    const [restaurants, totalCount] = await this.repository.findAndCount({
       where: { pole: pole },
       take: pageSize,
       skip: (pageNumber - 1) * pageSize,
     });
+
+    const numberOfRemainingItems = totalCount - pageSize * pageNumber;
+
+    return {
+      totalCount,
+      nextPageNumber: numberOfRemainingItems > 0 ? pageNumber + 1 : null,
+      restaurants,
+    };
   }
 
   static async getRestaurantById(id: string): Promise<Restaurant | null> {

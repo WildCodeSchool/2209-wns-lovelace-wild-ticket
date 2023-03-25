@@ -9,6 +9,21 @@ export const GET_RESTAURANTS = gql`
   }
 `;
 
+export const GET_PAGINATED_RESTAURANTS_BY_POLE = gql`
+  query GetPaginateRestaurantsByPole($pole: String!, $pageNumber: Float!) {
+    getPaginateRestaurantsByPole(pole: $pole, pageNumber: $pageNumber) {
+      restaurants {
+        id
+        name
+        openAt
+        closeAt
+      }
+      nextPageNumber
+      totalCount
+    }
+  }
+`;
+
 export const CREATE_TICKET = gql`
   mutation CreateTicket(
     $name: String!

@@ -1,7 +1,8 @@
-import { Arg, Args, Authorized, Int, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Args, Authorized, Mutation, Query, Resolver } from "type-graphql";
 
 import Restaurant from "../../models/Restaurant/Restaurant.entity";
 import RestaurantRepository from "../../models/Restaurant/Restaurant.repository";
+import PageOfRestaurants from "./PageOfRestaurant";
 import {
   CreateRestaurantArgs,
   GetPaginateRestaurantsByPole,
@@ -18,9 +19,15 @@ export default class RestaurantResolver {
     return RestaurantRepository.getRestaurants();
   }
 
-  @Query(() => [Restaurant])
-  getPaginateRestaurantsByPole(@Args() {pole, pageNumber}: GetPaginateRestaurantsByPole): Promise<Restaurant[]> {
-    return RestaurantRepository.getPaginateRestaurantsByPole(pole, PAGE_SIZE, pageNumber);
+  @Query(() => PageOfRestaurants)
+  getPaginateRestaurantsByPole(
+    @Args() { pole, pageNumber }: GetPaginateRestaurantsByPole
+  ): Promise<PageOfRestaurants> {
+    return RestaurantRepository.getPaginateRestaurantsByPole(
+      pole,
+      PAGE_SIZE,
+      pageNumber
+    );
   }
 
   @Query(() => Restaurant)
