@@ -1,4 +1,12 @@
-import { IsUUID, MinLength, MaxLength, IsInt, IsPositive, IsNumber, IsString } from "class-validator";
+import {
+  IsUUID,
+  MinLength,
+  MaxLength,
+  IsInt,
+  IsPositive,
+  IsNumber,
+  IsString,
+} from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
 @ArgsType()
