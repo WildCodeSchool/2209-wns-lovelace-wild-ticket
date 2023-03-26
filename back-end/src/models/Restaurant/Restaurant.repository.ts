@@ -24,7 +24,8 @@ export default class RestaurantRepository extends RestaurantDb {
           restaurant.createdAt,
           undefined,
           restaurant.openAt,
-          restaurant.closeAt
+          restaurant.closeAt,
+          restaurant.picture
         );
 
         await this.repository.save(newRestaurant);

@@ -103,14 +103,27 @@ const RestaurantsScreen = ({
                 (restaurant) => (
                   <View key={restaurant.id}>
                     <TouchableOpacity
-                      onPress={() => handleClick(restaurant)}
-                      style={
-                        ticketContext?.isActive === restaurant
-                          ? styles.boutonSelectActive
-                          : styles.boutonSelect
+                      disabled={
+                        new Date(restaurant.openAt) > new Date() ||
+                        new Date(restaurant.closeAt) < new Date()
+                          ? true
+                          : false
                       }
+                      onPress={() => handleClick(restaurant)}
+                      style={[
+                        new Date(restaurant.openAt) > new Date() ||
+                        new Date(restaurant.closeAt) < new Date()
+                          ? styles.buttonDisabled
+                          : ticketContext?.isActive === restaurant
+                          ? styles.boutonSelectActive
+                          : styles.boutonSelect,
+                      ]}
                     >
                       <Restaurant {...restaurant} />
+                      {new Date(restaurant.openAt) > new Date() ||
+                      new Date(restaurant.closeAt) < new Date() ? (
+                        <Text style={styles.closedText}>RESTAURANT FERMÉ</Text>
+                      ) : null}
                     </TouchableOpacity>
                   </View>
                 )
@@ -220,6 +233,16 @@ const styles = StyleSheet.create({
     width: "80%",
     //margin: 5,
   },
+  buttonDisabled: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F4F2EA",
+    elevation: 3,
+    borderRadius: 10,
+    height: 230,
+    width: 300,
+    margin: 10,
+  },
   boutonSelect: {
     alignItems: "center",
     justifyContent: "center",
@@ -240,6 +263,20 @@ const styles = StyleSheet.create({
     height: 230,
     width: 300,
     margin: 10,
+  },
+  closedText: {
+    textAlignVertical: "center",
+    textAlign: "center",
+    width: 280,
+    height: 50,
+    backgroundColor: "rgba(255,255,255,0.9)",
+    borderStyle: "solid",
+    borderWidth: 3,
+    borderColor: "black",
+    position: "absolute",
+    color: "red",
+    fontSize: 24,
+    fontWeight: "bold",
   },
   pagination: {
     flexWrap: "wrap",

@@ -13,9 +13,11 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel-plugin for production.
  */
 const documents = {
-    "\n  query Restaurants {\n    getRestaurants {\n      id\n      name\n    }\n  }\n": types.RestaurantsDocument,
-    "\n  query GetPaginateRestaurantsByPole($pole: String!, $pageNumber: Float!) {\n    getPaginateRestaurantsByPole(pole: $pole, pageNumber: $pageNumber) {\n      restaurants {\n        id\n        name\n        openAt\n        closeAt\n      }\n      nextPageNumber\n      totalCount\n    }\n  }\n": types.GetPaginateRestaurantsByPoleDocument,
+    "\n  query Restaurants {\n    getRestaurants {\n      id\n      name\n      openAt\n      closeAt\n      picture\n    }\n  }\n": types.RestaurantsDocument,
+    "\n  query GetPaginateRestaurantsByPole($pole: String!, $pageNumber: Float!) {\n    getPaginateRestaurantsByPole(pole: $pole, pageNumber: $pageNumber) {\n      restaurants {\n        id\n        name\n        openAt\n        closeAt\n        picture\n      }\n      nextPageNumber\n      totalCount\n    }\n  }\n": types.GetPaginateRestaurantsByPoleDocument,
     "\n  mutation CreateTicket(\n    $name: String!\n    $seats: Float!\n    $restaurant: String!\n    $email: String\n    $phoneNumber: String\n  ) {\n    createTicket(\n      name: $name\n      seats: $seats\n      restaurant: $restaurant\n      email: $email\n      phoneNumber: $phoneNumber\n    ) {\n      id\n      number\n      seats\n      createdAt\n    }\n  }\n": types.CreateTicketDocument,
+    "\n  query TicketsByRestaurant($ticketsByRestaurantId: String!) {\n    TicketsByRestaurant(id: $ticketsByRestaurantId) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n": types.TicketsByRestaurantDocument,
+    "\n  query TablesByRestaurant($tablesByRestaurantId: String!) {\n    TablesByRestaurant(id: $tablesByRestaurantId) {\n      id\n      number\n      capacity\n    }\n  }\n": types.TablesByRestaurantDocument,
 };
 
 /**
@@ -35,15 +37,23 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query Restaurants {\n    getRestaurants {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  query Restaurants {\n    getRestaurants {\n      id\n      name\n    }\n  }\n"];
+export function graphql(source: "\n  query Restaurants {\n    getRestaurants {\n      id\n      name\n      openAt\n      closeAt\n      picture\n    }\n  }\n"): (typeof documents)["\n  query Restaurants {\n    getRestaurants {\n      id\n      name\n      openAt\n      closeAt\n      picture\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetPaginateRestaurantsByPole($pole: String!, $pageNumber: Float!) {\n    getPaginateRestaurantsByPole(pole: $pole, pageNumber: $pageNumber) {\n      restaurants {\n        id\n        name\n        openAt\n        closeAt\n      }\n      nextPageNumber\n      totalCount\n    }\n  }\n"): (typeof documents)["\n  query GetPaginateRestaurantsByPole($pole: String!, $pageNumber: Float!) {\n    getPaginateRestaurantsByPole(pole: $pole, pageNumber: $pageNumber) {\n      restaurants {\n        id\n        name\n        openAt\n        closeAt\n      }\n      nextPageNumber\n      totalCount\n    }\n  }\n"];
+export function graphql(source: "\n  query GetPaginateRestaurantsByPole($pole: String!, $pageNumber: Float!) {\n    getPaginateRestaurantsByPole(pole: $pole, pageNumber: $pageNumber) {\n      restaurants {\n        id\n        name\n        openAt\n        closeAt\n        picture\n      }\n      nextPageNumber\n      totalCount\n    }\n  }\n"): (typeof documents)["\n  query GetPaginateRestaurantsByPole($pole: String!, $pageNumber: Float!) {\n    getPaginateRestaurantsByPole(pole: $pole, pageNumber: $pageNumber) {\n      restaurants {\n        id\n        name\n        openAt\n        closeAt\n        picture\n      }\n      nextPageNumber\n      totalCount\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation CreateTicket(\n    $name: String!\n    $seats: Float!\n    $restaurant: String!\n    $email: String\n    $phoneNumber: String\n  ) {\n    createTicket(\n      name: $name\n      seats: $seats\n      restaurant: $restaurant\n      email: $email\n      phoneNumber: $phoneNumber\n    ) {\n      id\n      number\n      seats\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  mutation CreateTicket(\n    $name: String!\n    $seats: Float!\n    $restaurant: String!\n    $email: String\n    $phoneNumber: String\n  ) {\n    createTicket(\n      name: $name\n      seats: $seats\n      restaurant: $restaurant\n      email: $email\n      phoneNumber: $phoneNumber\n    ) {\n      id\n      number\n      seats\n      createdAt\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query TicketsByRestaurant($ticketsByRestaurantId: String!) {\n    TicketsByRestaurant(id: $ticketsByRestaurantId) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n"): (typeof documents)["\n  query TicketsByRestaurant($ticketsByRestaurantId: String!) {\n    TicketsByRestaurant(id: $ticketsByRestaurantId) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query TablesByRestaurant($tablesByRestaurantId: String!) {\n    TablesByRestaurant(id: $tablesByRestaurantId) {\n      id\n      number\n      capacity\n    }\n  }\n"): (typeof documents)["\n  query TablesByRestaurant($tablesByRestaurantId: String!) {\n    TablesByRestaurant(id: $tablesByRestaurantId) {\n      id\n      number\n      capacity\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

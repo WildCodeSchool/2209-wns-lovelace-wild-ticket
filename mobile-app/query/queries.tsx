@@ -5,6 +5,9 @@ export const GET_RESTAURANTS = gql`
     getRestaurants {
       id
       name
+      openAt
+      closeAt
+      picture
     }
   }
 `;
@@ -17,6 +20,7 @@ export const GET_PAGINATED_RESTAURANTS_BY_POLE = gql`
         name
         openAt
         closeAt
+        picture
       }
       nextPageNumber
       totalCount
@@ -43,6 +47,37 @@ export const CREATE_TICKET = gql`
       number
       seats
       createdAt
+    }
+  }
+`;
+
+export const GET_TICKETS_BY_RESTAURANT = gql`
+  query TicketsByRestaurant($ticketsByRestaurantId: String!) {
+    TicketsByRestaurant(id: $ticketsByRestaurantId) {
+      id
+      number
+      name
+      seats
+      email
+      phoneNumber
+      createdAt
+      deliveredAt
+      placedAt
+      closedAt
+      table {
+        id
+        number
+      }
+    }
+  }
+`;
+
+export const GET_TABLES_BY_RESTAURANT = gql`
+  query TablesByRestaurant($tablesByRestaurantId: String!) {
+    TablesByRestaurant(id: $tablesByRestaurantId) {
+      id
+      number
+      capacity
     }
   }
 `;
