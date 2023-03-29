@@ -22,6 +22,7 @@ import PoleResolver from "./resolvers/Pole/Pole.resolver";
 import RestaurantResolver from "./resolvers/Restaurant/Restaurant.resolver";
 import { AppUserFixtures } from "./DataFixtures/AppUserFixtures";
 import { TableFixtures } from "./DataFixtures/TableFixtures";
+import { IS_PRODUCTION } from "./config";
 
 export type GlobalContext = ExpressContext & {
   user: AppUser | null;
@@ -68,15 +69,17 @@ const startServer = async () => {
   await initializeDatabaseRepositories();
   console.log("🚀  Database init : OK  🚀");
 
-  await clearAllRepositories();
-  console.log("🚀  Data truncate : OK  🚀");
+  if (!IS_PRODUCTION) {
+    await clearAllRepositories();
+    console.log("🚀  Data truncate : OK  🚀");
 
-  await PoleRepository.initializePoles();
-  await RestaurantRepository.initializeRestaurants();
-  await AppUserRepository.initializeAppUsers(AppUserFixtures);
-  await TableRepository.initializeTables(TableFixtures);
-  await TicketRepository.initializeTickets();
-  console.log("🚀  Data init : OK  🚀");
+    await PoleRepository.initializePoles();
+    await RestaurantRepository.initializeRestaurants();
+    await AppUserRepository.initializeAppUsers(AppUserFixtures);
+    await TableRepository.initializeTables(TableFixtures);
+    await TicketRepository.initializeTickets();
+    console.log("🚀  Data init : OK  🚀");
+  }
 
   console.log(`🚀  Server ready at ${url}  🚀`);
 };
