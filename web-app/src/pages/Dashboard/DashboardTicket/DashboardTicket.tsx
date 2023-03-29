@@ -4,7 +4,10 @@ import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import DashboardTicketListTab from "../../../components/Dashboard/DashboardTicketListTab/DashboardTicketListTab";
 import { AppContext } from "../../../context/AppContext";
-import { TicketsHeadTabContent } from "../../../data/DashboardHeadTabDatas";
+import {
+  TicketsFilterTabContent,
+  TicketsHeadTabContent,
+} from "../../../data/DashboardTicketDatas";
 import {
   UpdateClosedAtMutation,
   UpdateClosedAtMutationVariables,
@@ -22,10 +25,13 @@ import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
 } from "../../../types/DataTypes";
-import "../DashboardMain.scss";
+import "./DashboardTicket.scss";
 
 const DashboardTicket = () => {
-  const tickets = useContext(AppContext)
+  const setSeats = useContext(AppContext)?.setSeats as React.Dispatch<
+    React.SetStateAction<number | null>
+  >;
+  let tickets = useContext(AppContext)
     ?.tickets as GET_TICKETS_BY_RESTAURANT_TYPES;
   const tables = useContext(AppContext)
     ?.tables as GET_TABLES_BY_RESTAURANT_TYPES;
@@ -55,6 +61,16 @@ const DashboardTicket = () => {
     return emptyTables;
   };
 
+  // GET TABLES BY SEATS
+  const [activeFilterButton, setActiveFilterButton] = useState<number | null>(
+    null
+  );
+
+  const handleFilterButtonClick = async (ticketSeats: number | null) => {
+    setActiveFilterButton(ticketSeats);
+    setSeats(ticketSeats);
+  };
+
   // UPDATE DELIVERED AT FUNCTIONNALITY
   const [freeTableToDeliver, setFreeTableToDeliver] = useState<string>("");
   const [freeTicketToDeliver, setFreeTicketToDeliver] = useState<string>("");
@@ -71,7 +87,9 @@ const DashboardTicket = () => {
     onCompleted: () => {
       ticketsRefetch();
       tablesRefetch();
-      toast.success("La table a bien été délivrée");
+      toast.success(
+        "La table a bien été délivrée. Une notification a été envoyée au client."
+      );
     },
     onError: () => {
       toast.error("Un problème est survenu. Renouvelez l'opération.");
@@ -165,13 +183,27 @@ const DashboardTicket = () => {
   }, [tickets, tables, ticketsRefetch, tablesRefetch]);
 
   return (
-    <section className="DashboardMainSection">
-      {/* TODO: Le header sera utilisé pour les filtres, bouton d'ajout etc. (cf. maquette) */}
-      <header className="DashboardMainHeader">
-        <h1>FILTRES ET BOUTONS</h1>
-        <p className="DashboardText">Under Construction...</p>
+    <section className="DashboardTicketSection">
+      <header className="DashboardTicketHeader">
+        <div className="DashboardTicketHeaderButtonContainer">
+          {TicketsFilterTabContent.map((ticketContent, index) => (
+            <button
+              className={
+                activeFilterButton === ticketContent.seats
+                  ? "DashboardTicketHeaderButton DashboardTicketHeaderButtonActive"
+                  : "DashboardTicketHeaderButton"
+              }
+              key={index}
+              onClick={() => {
+                handleFilterButtonClick(ticketContent.seats);
+              }}
+            >
+              {ticketContent.buttonContent}
+            </button>
+          ))}
+        </div>
       </header>
-      <main className="DashboardMainList">
+      <main className="DashboardTicketList">
         <DashboardTicketListTab
           dataHead={TicketsHeadTabContent}
           tickets={tickets}
@@ -182,10 +214,7 @@ const DashboardTicket = () => {
           handlePlace={onPlace}
         />
       </main>
-      <footer className="DashboardMainFooter">
-        <h1>PAGINATION</h1>
-        <p className="DashboardText">Under Construction...</p>
-      </footer>
+      <footer className="DashboardTicketFooter"></footer>
     </section>
   );
 };
