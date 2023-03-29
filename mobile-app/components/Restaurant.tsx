@@ -9,9 +9,19 @@ const Restaurant = ({
   closeAt,
   picture,
 }: RESTAURANT_TYPE) => {
+  const isRestaurantClosed = (openAt: any, closeAt: any) => {
+    return new Date(openAt) > new Date() || new Date(closeAt) < new Date()
+      ? true
+      : false;
+  };
+
   return picture ? (
     <>
-      <Image style={styles.picture} source={{ uri: picture }} />
+      <Image
+        style={styles.picture}
+        source={{ uri: picture }}
+        blurRadius={isRestaurantClosed(openAt, closeAt) ? 10 : 0}
+      />
     </>
   ) : (
     <>

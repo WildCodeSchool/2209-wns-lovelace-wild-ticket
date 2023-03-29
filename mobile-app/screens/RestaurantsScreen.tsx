@@ -219,10 +219,10 @@ const styles = StyleSheet.create({
   title: { fontSize: 32, fontWeight: "bold", marginBottom: 20 },
   restaurantList: {
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "flex-end",
     alignItems: "flex-start",
     height: "79%",
-    width: "90%",
+    width: "100%",
   },
   restaurants: {
     flexWrap: "wrap",
@@ -230,8 +230,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-start",
     height: "auto",
-    width: "80%",
-    //margin: 5,
+    width: "76%",
   },
   buttonDisabled: {
     alignItems: "center",
@@ -283,7 +282,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignContent: "flex-start",
     height: "auto",
-    width: "20%",
     margin: 5,
   },
   paginationButton: {
