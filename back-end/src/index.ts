@@ -72,7 +72,7 @@ const startServer = async () => {
   if (!IS_PRODUCTION) {
     await clearAllRepositories();
     console.log("🚀  Data truncate : OK  🚀");
-  
+
     await PoleRepository.initializePoles();
     await RestaurantRepository.initializeRestaurants();
     await AppUserRepository.initializeAppUsers(AppUserFixtures);
