@@ -69,17 +69,15 @@ const startServer = async () => {
   await initializeDatabaseRepositories();
   console.log("🚀  Database init : OK  🚀");
 
-  if (!IS_PRODUCTION) {
-    await clearAllRepositories();
-    console.log("🚀  Data truncate : OK  🚀");
+  await clearAllRepositories();
+  console.log("🚀  Data truncate : OK  🚀");
 
-    await PoleRepository.initializePoles();
-    await RestaurantRepository.initializeRestaurants();
-    await AppUserRepository.initializeAppUsers(AppUserFixtures);
-    await TableRepository.initializeTables(TableFixtures);
-    await TicketRepository.initializeTickets();
-    console.log("🚀  Data init : OK  🚀");
-  }
+  await PoleRepository.initializePoles();
+  await RestaurantRepository.initializeRestaurants();
+  await AppUserRepository.initializeAppUsers(AppUserFixtures);
+  await TableRepository.initializeTables(TableFixtures);
+  await TicketRepository.initializeTickets();
+  console.log("🚀  Data init : OK  🚀");
 
   console.log(`🚀  Server ready at ${url}  🚀`);
 };
