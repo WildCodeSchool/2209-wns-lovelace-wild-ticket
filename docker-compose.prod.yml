@@ -6,8 +6,8 @@ services:
       context: ./back-end
       target: prod
     environment:
-      DATABASE_URL: postgres://postgres:password@database:5432/postgres
       NODE_ENV: production
+      DATABASE_URL: postgres://postgres:password@database:5432/postgres
     expose:
       - 4000
     restart: always
@@ -34,13 +34,13 @@ services:
   gateway:
     image: nginx
     ports:
-      - ${GATEWAY_PROD}:80
+      - ${GATEWAY_PORT}:80
     depends_on:
       - back-end
       - web-app
     volumes:
-    - ./gateway/nginx.conf:/etc/nginx/nginx.conf
-    - web-app-build:/web-app-build
+      - ./gateway/nginx.conf:/etc/nginx/nginx.conf
+      - web-app-build:/web-app-build
     restart: always
 
 volumes:
