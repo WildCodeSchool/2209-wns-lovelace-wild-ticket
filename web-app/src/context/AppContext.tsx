@@ -27,6 +27,7 @@ type AppContextType = {
   isAuthenticated: boolean;
   loading: boolean;
   refetch: () => {};
+  setSeats: React.Dispatch<React.SetStateAction<number | null>>;
   tickets: GET_TICKETS_BY_RESTAURANT_TYPES;
   ticketsLoading: boolean;
   ticketsRefetch: () => {};
@@ -39,7 +40,10 @@ export const AppContext = createContext<AppContextType | null>(null);
 export function AppContextProvider({ children }: any) {
   const [isAuthenticated, setIsUserAuthenticated] = useState(false);
   const [userData, setUserData] = useState({});
-  const [restaurantId, setRestaurantId] = useState("");
+  const [restaurantId, setRestaurantId] = useState<string | undefined>(
+    undefined
+  );
+  const [seats, setSeats] = useState<number | null>(null);
 
   const userSVGColorScheme = window.matchMedia("(prefers-color-scheme: light)")
     .matches
@@ -72,8 +76,9 @@ export function AppContextProvider({ children }: any) {
     TicketsByRestaurantQuery,
     TicketsByRestaurantQueryVariables
   >(GET_TICKETS_BY_RESTAURANT, {
+    skip: restaurantId === undefined,
     notifyOnNetworkStatusChange: true,
-    variables: { ticketsByRestaurantId: restaurantId },
+    variables: { restaurantId: restaurantId as string, seats: seats },
     onCompleted: (data) => {
       if (data.TicketsByRestaurant) {
         setTickets(data.TicketsByRestaurant);
@@ -90,8 +95,9 @@ export function AppContextProvider({ children }: any) {
     TablesByRestaurantQuery,
     TablesByRestaurantQueryVariables
   >(GET_TABLES_BY_RESTAURANT, {
+    skip: restaurantId === undefined,
     notifyOnNetworkStatusChange: true,
-    variables: { tablesByRestaurantId: restaurantId },
+    variables: { restaurantId: restaurantId as string, capacity: seats },
     onCompleted: (data) => {
       if (data.TablesByRestaurant) {
         setTables(data.TablesByRestaurant);
@@ -107,6 +113,7 @@ export function AppContextProvider({ children }: any) {
         isAuthenticated,
         loading,
         refetch,
+        setSeats,
         tickets,
         ticketsLoading,
         ticketsRefetch,

@@ -1,7 +1,11 @@
 import { Arg, Args, Authorized, Mutation, Query, Resolver } from "type-graphql";
 import Table from "../../models/Table/Table.entity";
 import TableRepository from "../../models/Table/Table.repository";
-import { CreateTableArgs, UpdateTableArgs } from "./Table.input";
+import {
+  CreateTableArgs,
+  GetTablesByRestaurantArgs,
+  UpdateTableArgs,
+} from "./Table.input";
 
 @Resolver(Table)
 export default class TableResolver {
@@ -19,8 +23,10 @@ export default class TableResolver {
 
   @Authorized("ROLE_RESTAURANT")
   @Query(() => [Table])
-  TablesByRestaurant(@Arg("id") id: string): Promise<Table[] | null> {
-    return TableRepository.getTablesByRestaurant(id);
+  TablesByRestaurant(
+    @Args() { restaurantId, capacity }: GetTablesByRestaurantArgs
+  ): Promise<Table[] | null> {
+    return TableRepository.getTablesByRestaurant(restaurantId, capacity);
   }
 
   @Authorized("ROLE_RESTAURANT")

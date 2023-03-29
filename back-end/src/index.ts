@@ -22,6 +22,7 @@ import PoleResolver from "./resolvers/Pole/Pole.resolver";
 import RestaurantResolver from "./resolvers/Restaurant/Restaurant.resolver";
 import { AppUserFixtures } from "./DataFixtures/AppUserFixtures";
 import { TableFixtures } from "./DataFixtures/TableFixtures";
+import { IS_PRODUCTION } from "./config";
 
 export type GlobalContext = ExpressContext & {
   user: AppUser | null;
