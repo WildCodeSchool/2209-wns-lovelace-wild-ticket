@@ -2,13 +2,13 @@ export default class DateUpdates {
   static convertGMTtoCET(date: any) {
     // Conversion en temps local (UTC)
     var localDate = new Date(date);
-    
+
     // Calcul du décalage horaire en minutes entre CET et UTC
     var offset = 120;
-    
+
     // Ajout du décalage horaire en minutes
     localDate.setMinutes(localDate.getMinutes() - offset);
-    
+
     return localDate;
   }
 
