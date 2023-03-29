@@ -39,7 +39,9 @@ export const AppContext = createContext<AppContextType | null>(null);
 export function AppContextProvider({ children }: any) {
   const [isAuthenticated, setIsUserAuthenticated] = useState(false);
   const [userData, setUserData] = useState({});
-  const [restaurantId, setRestaurantId] = useState("");
+  const [restaurantId, setRestaurantId] = useState<string | undefined>(
+    undefined
+  );
 
   const userSVGColorScheme = window.matchMedia("(prefers-color-scheme: light)")
     .matches
@@ -72,8 +74,9 @@ export function AppContextProvider({ children }: any) {
     TicketsByRestaurantQuery,
     TicketsByRestaurantQueryVariables
   >(GET_TICKETS_BY_RESTAURANT, {
+    skip: restaurantId === undefined,
     notifyOnNetworkStatusChange: true,
-    variables: { ticketsByRestaurantId: restaurantId },
+    variables: { ticketsByRestaurantId: restaurantId as string },
     onCompleted: (data) => {
       if (data.TicketsByRestaurant) {
         setTickets(data.TicketsByRestaurant);
@@ -90,8 +93,9 @@ export function AppContextProvider({ children }: any) {
     TablesByRestaurantQuery,
     TablesByRestaurantQueryVariables
   >(GET_TABLES_BY_RESTAURANT, {
+    skip: restaurantId === undefined,
     notifyOnNetworkStatusChange: true,
-    variables: { tablesByRestaurantId: restaurantId },
+    variables: { tablesByRestaurantId: restaurantId as string },
     onCompleted: (data) => {
       if (data.TablesByRestaurant) {
         setTables(data.TablesByRestaurant);
