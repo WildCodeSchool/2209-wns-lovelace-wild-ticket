@@ -85,6 +85,7 @@ export function AppContextProvider({ children }: any) {
       }
     },
   });
+  console.log(tickets);
 
   /**
    * ***************** TABLES BY RESTAURANT *********************

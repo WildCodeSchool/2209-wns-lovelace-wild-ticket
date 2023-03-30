@@ -4,7 +4,7 @@ export type GET_TICKETS_BY_RESTAURANT_TYPES = Array<{
   number: number;
   name: string;
   seats: number;
-  email: string;
+  email?: string | null;
   phoneNumber?: string | null;
   createdAt: any;
   deliveredAt?: any | null;
@@ -23,7 +23,7 @@ export type GET_TICKET_BY_RESTAURANT_TYPES = {
   number: number;
   name: string;
   seats: number;
-  email: string;
+  email?: string | null;
   phoneNumber?: string | null | undefined;
   createdAt: any;
   deliveredAt?: any | null;
