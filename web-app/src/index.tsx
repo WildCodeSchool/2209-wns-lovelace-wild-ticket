@@ -9,7 +9,7 @@ import reportWebVitals from "./reportWebVitals";
 import { AppContextProvider } from "./context/AppContext";
 
 const client = new ApolloClient({
-  uri: "/",
+  uri: "/api",
   cache: new InMemoryCache(),
 });
 

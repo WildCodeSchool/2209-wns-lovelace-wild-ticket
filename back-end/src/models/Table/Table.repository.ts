@@ -30,10 +30,26 @@ export default class TableRepository extends TableDb {
     return this.repository.findOneBy({ number, restaurant });
   }
 
-  static async getTablesByRestaurant(id: string): Promise<Table[] | null> {
-    const restaurant = await RestaurantRepository.getRestaurantById(id);
+  static async getTablesByRestaurant(
+    restaurantId: string,
+    capacity: number
+  ): Promise<Table[] | null> {
+    const restaurant = await RestaurantRepository.getRestaurantById(
+      restaurantId
+    );
     if (!restaurant) throw new Error();
-    return await this.repository.findBy({ restaurant });
+    let query = this.repository
+      .createQueryBuilder("table")
+      .leftJoinAndSelect("table.restaurant", "restaurant")
+      .where("table.restaurant.id = :restaurantId", {
+        restaurantId: restaurantId,
+      });
+    if (capacity as number) {
+      query.andWhere("table.capacity = :tableCapacity", {
+        tableCapacity: capacity,
+      });
+    }
+    return await query.getMany();
   }
 
   static async getTableById(id: string): Promise<Table | null> {
