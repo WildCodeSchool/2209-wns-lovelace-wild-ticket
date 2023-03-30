@@ -10,7 +10,23 @@ cp back-end/.env.example back-end/.env
 
 and fill it with your own values.
 
+### Mailjet
+
 For using Mailjet, you need to create an account on https://www.mailjet.com/ and get your own API keys.
+
+You need to create some transactionnal templates :
+
+1. Go to https://app.mailjet.com/templates/transactional.
+2. Click on "Create a new template" button
+3. Choose "By coding it in HTML"
+4. Click on "Import HTML from file" button
+5. Choose a name for the template (ex: R'Ticket Delivered Template)
+6. Import the html file located in the back-end/email-templates folder of this repository
+7. Copy the Template ID that appears on the top of the next page, and paste it in your .env file (MJ_DELIVERED_TEMPLATE_ID)
+8. Click on "Save & Publish" button
+9. Enter a Subject and a Name (Mandatory but not used in our project) and save your template
+10. Click a second time on "Save & Publish" button
+10. Don't forget to put your email address in the .env file (MJ_AVAILABLE_EMAIL)
 
 ### Run server in dev mode
 

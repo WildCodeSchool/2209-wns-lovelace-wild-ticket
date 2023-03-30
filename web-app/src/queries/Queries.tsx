@@ -54,8 +54,8 @@ export const MY_PROFILE = gql`
  * **************** TICKET QUERIES ***********************
  */
 export const GET_TICKETS_BY_RESTAURANT = gql`
-  query TicketsByRestaurant($ticketsByRestaurantId: String!) {
-    TicketsByRestaurant(id: $ticketsByRestaurantId) {
+  query TicketsByRestaurant($restaurantId: ID!, $seats: Float) {
+    TicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {
       id
       number
       name
@@ -106,8 +106,8 @@ export const UPDATE_CLOSED_AT = gql`
  * *************** TABLE QUERIES **********************
  */
 export const GET_TABLES_BY_RESTAURANT = gql`
-  query TablesByRestaurant($tablesByRestaurantId: String!) {
-    TablesByRestaurant(id: $tablesByRestaurantId) {
+  query TablesByRestaurant($restaurantId: ID!, $capacity: Float) {
+    TablesByRestaurant(restaurantId: $restaurantId, capacity: $capacity) {
       id
       number
       capacity

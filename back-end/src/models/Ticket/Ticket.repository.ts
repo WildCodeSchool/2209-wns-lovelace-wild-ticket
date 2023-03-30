@@ -1,7 +1,9 @@
+import { Between, MoreThan } from "typeorm";
 import TicketFixtures, {
   TicketFixturesType,
 } from "../../DataFixtures/TicketFixtures";
 import DateUpdates from "../../services/DateUpdates";
+import EmailService from "../../services/EmailService";
 import Restaurant from "../Restaurant/Restaurant.entity";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import Table from "../Table/Table.entity";
@@ -54,10 +56,43 @@ export default class TicketRepository extends TicketDb {
     return this.repository.findOneBy({ number: number });
   }
 
-  static async getTicketsByRestaurant(id: string): Promise<Ticket[] | null> {
-    const restaurant = await RestaurantRepository.getRestaurantById(id);
+  static async getTicketsByRestaurant(
+    restaurantId: string,
+    seats: number
+  ): Promise<Ticket[] | null> {
+    const restaurant = await RestaurantRepository.getRestaurantById(
+      restaurantId
+    );
     if (!restaurant) throw new Error();
-    return await this.repository.findBy({ restaurant });
+    let query = this.repository
+      .createQueryBuilder("ticket")
+      .leftJoinAndSelect("ticket.restaurant", "restaurant")
+      .leftJoinAndSelect("ticket.table", "userTable")
+      .where("ticket.restaurant.id = :restaurantId", {
+        restaurantId: restaurantId,
+      });
+    if (seats as number) {
+      query.andWhere("ticket.seats BETWEEN :seatsMin AND :seatsMax", {
+        seatsMin: seats - 1,
+        seatsMax: seats,
+      });
+    }
+    return await query.getMany();
+  }
+
+  static async getTicketsBySeats(
+    restaurantId: string,
+    seats: number
+  ): Promise<Ticket[] | null> {
+    const restaurant = await RestaurantRepository.getRestaurantById(
+      restaurantId
+    );
+    if (!restaurant) throw new Error();
+    return await this.repository.findBy({
+      restaurant,
+      seats: Between(seats - 1, seats),
+      createdAt: MoreThan(DateUpdates.newDateAtMidnight()),
+    });
   }
 
   static async getTicketById(id: string): Promise<Ticket | null> {
@@ -137,12 +172,18 @@ export default class TicketRepository extends TicketDb {
     const deliveredAt = new Date();
     const closedAt = DateUpdates.addMinutesToDate(deliveredAt, 15);
 
-    return this.repository.save({
+    const deliveredTicket = await this.repository.save({
       id,
       table,
       deliveredAt,
       closedAt,
     });
+
+    if (deliveredTicket) {
+      EmailService.sendDeliveredTicketEmail(existingTicket, table);
+    }
+
+    return deliveredTicket;
   }
 
   static async updatePlacedAt(id: string): Promise<
