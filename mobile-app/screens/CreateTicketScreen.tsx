@@ -72,6 +72,7 @@ const CreateTicketScreen = ({
       navigation.navigate("Home");
     },
     onError: (error) => {
+      console.log(error.message);
       ToastAndroid.show("Error!", ToastAndroid.SHORT);
     },
   });
