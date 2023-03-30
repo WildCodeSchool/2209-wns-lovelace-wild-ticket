@@ -3,6 +3,7 @@ import "../DashboardTemp.scss";
 import { AppContext } from "../../../context/AppContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
+import MainMenu from "../../../components/MainMenu/MainMenu";
 
 const DashboardHome = () => {
   const appContext = useContext(AppContext);
@@ -15,8 +16,8 @@ const DashboardHome = () => {
           logoHeight={BIG_LOGO_DASHBOARD_SIZE}
           logoFill={appContext?.userSVGColorScheme}
         />
-        <h1>DASHBOARD HOME</h1>
-        <p className="DashboardText">Page Under Construction...</p>
+        <h1>DASHBOARD</h1>
+        <MainMenu />
         <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
       </div>
     </div>
