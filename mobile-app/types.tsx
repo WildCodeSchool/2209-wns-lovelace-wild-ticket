@@ -11,6 +11,7 @@ export type RootStackParamList = {
   Select: undefined;
   Restaurants: undefined;
   Ticket: { resto: any };
+  TicketConfirm: { resto: any };
   NotFound: undefined;
 };
 

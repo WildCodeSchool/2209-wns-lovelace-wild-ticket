@@ -7,6 +7,8 @@ type TicketContextType = {
   setIsActive: any;
   isDisabled: boolean;
   setIsDisabled: Dispatch<SetStateAction<boolean>>;
+  ticketNumber: number;
+  setTicketNumber: Dispatch<SetStateAction<number>>;
   initialState: () => void;
 };
 
@@ -16,11 +18,13 @@ export function ContextProvider({ children }: any) {
   const [selectedId, setSelectedId] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isActive, setIsActive] = useState(0);
+  const [ticketNumber, setTicketNumber] = useState(0);
 
   const initialState = () => {
     setSelectedId(0);
     setIsDisabled(true);
     setIsActive(0);
+    setTicketNumber(0);
   };
 
   return (
@@ -33,6 +37,8 @@ export function ContextProvider({ children }: any) {
         initialState,
         isActive,
         setIsActive,
+        ticketNumber,
+        setTicketNumber,
       }}
     >
       {children}

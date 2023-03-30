@@ -24,7 +24,6 @@ import {
   CreateTicketMutationVariables,
 } from "../gql/graphql";
 import { CREATE_TICKET } from "../query/queries";
-import { formValidations } from "../services/FormValidations";
 
 const background = {
   uri: "https://i.ibb.co/YdC5MQR/RTicket-Wallpaper-2.png",
@@ -39,7 +38,6 @@ const CreateTicketScreen = ({
   const [firstName, onChangeFirstName] = React.useState("");
   const [email, onChangeEmail] = React.useState("");
   const [phoneNumber, onChangePhoneNumber] = React.useState("");
-  const [ticketNumber, setTicketNumber] = React.useState(0);
   const [formErrors, setFormErrors] = React.useState<string | null>();
   const [focus, setFocus] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -60,10 +58,16 @@ const CreateTicketScreen = ({
       phoneNumber: "",
     },
   });
+
+  const newTicketNumber = async (newTicketNumber: any) => {
+    ticketContext?.setTicketNumber(newTicketNumber);
+  };
+
   const [createTicket] = useMutation<
     CreateTicketMutation,
     CreateTicketMutationVariables
   >(CREATE_TICKET, {
+    notifyOnNetworkStatusChange: true,
     variables: {
       name: firstName,
       seats: ticketContext?.selectedId as number,
@@ -71,11 +75,8 @@ const CreateTicketScreen = ({
       email: email.toLowerCase(),
       phoneNumber: phoneNumber,
     },
-    onCompleted: (data) => {
-      setTicketNumber(data.createTicket.number);
-      ToastAndroid.show("Request sent successfully!", ToastAndroid.SHORT);
-      ticketContext?.initialState();
-      navigation.navigate("Home");
+    onCompleted: async (data) => {
+      await newTicketNumber(data.createTicket.number);
     },
     onError: (error) => {
       ToastAndroid.show(
@@ -89,12 +90,34 @@ const CreateTicketScreen = ({
   const onSubmit = async (
     firstName: string,
     email: string,
-    phoneNumber: string
+    phoneNumber: string,
+    resto: any
   ) => {
-    await formValidations(firstName, email, phoneNumber, setFormErrors);
-    if (!formErrors) {
-      await createTicket();
+    if (firstName.trim() == "") {
+      setFormErrors("Merci de renseigner votre nom et prénom.");
+      return;
     }
+    if (email.trim() == "" && phoneNumber.trim() == "") {
+      setFormErrors(
+        "Merci de renseigner votre email et/ou numéro de téléphone."
+      );
+      return;
+    } else if (
+      email &&
+      !email.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
+    ) {
+      setFormErrors("Votre adresse email n'est pas au bon format.");
+      return;
+    } else if (phoneNumber && !phoneNumber.match(/^\d{10}$/)) {
+      setFormErrors(
+        "Merci de rentrer votre numéro de téléphone au format : XXXXXXXXXX."
+      );
+      return;
+    }
+    await createTicket();
+    navigation.navigate("TicketConfirm", { resto });
   };
 
   const cancel = () => {
@@ -330,7 +353,7 @@ const CreateTicketScreen = ({
                 <Text
                   style={styles.navButtonText}
                   onPress={() => {
-                    onSubmit(firstName, email, phoneNumber);
+                    onSubmit(firstName, email, phoneNumber, resto);
                     setModalVisibleValidation(false);
                   }}
                 >
@@ -382,7 +405,6 @@ const CreateTicketScreen = ({
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       style={focus ? styles.inputFocus : styles.input}
-                      // onFocus={() => setFocus(true)}
                       onChangeText={onChangeFirstName}
                       value={firstName}
                       placeholder="Nom et prénom"
@@ -396,7 +418,6 @@ const CreateTicketScreen = ({
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       style={focus ? styles.inputFocus : styles.input}
-                      // onFocus={() => setFocus(true)}
                       onChangeText={onChangeEmail}
                       value={email}
                       placeholder="Email"
@@ -410,7 +431,6 @@ const CreateTicketScreen = ({
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       style={focus ? styles.inputFocus : styles.input}
-                      // onFocus={() => setFocus(true)}
                       onChangeText={onChangePhoneNumber}
                       value={phoneNumber}
                       placeholder="N° de téléphone"

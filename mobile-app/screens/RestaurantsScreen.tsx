@@ -1,6 +1,5 @@
 import {
   ImageBackground,
-  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -122,7 +121,9 @@ const RestaurantsScreen = ({
                       <Restaurant {...restaurant} />
                       {new Date(restaurant.openAt) > new Date() ||
                       new Date(restaurant.closeAt) < new Date() ? (
-                        <Text style={styles.closedText}>RESTAURANT FERMÉ</Text>
+                        <Text style={styles.closedText}>
+                          RÉSERVATION IMPOSSIBLE
+                        </Text>
                       ) : null}
                     </TouchableOpacity>
                   </View>
@@ -266,8 +267,8 @@ const styles = StyleSheet.create({
   closedText: {
     textAlignVertical: "center",
     textAlign: "center",
-    width: 280,
-    height: 50,
+    width: 230,
+    height: 70,
     backgroundColor: "rgba(255,255,255,0.9)",
     borderStyle: "solid",
     borderWidth: 3,
