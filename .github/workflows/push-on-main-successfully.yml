@@ -2,7 +2,7 @@ name: Deploy main on staging
 
 on:
   workflow_run:
-    workflows: ["build-and-test-for-pull-request"]
+    workflows: ["fix-formatting-and-build-and-test-for-push-on-main-and-dev"]
     branches: [main]
     types:
       - completed
