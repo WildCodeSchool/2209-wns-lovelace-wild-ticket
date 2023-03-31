@@ -114,14 +114,14 @@ const tables = useContext(AppContext)
           <div className="open">
             <h2>Ouverture de la réservation</h2>
             <div className="buttons">
-              <button>10:00</button>
+              <button className="btn1">10:00</button>
               <button>11:00</button>
             </div>
           </div>
           <div className="close">
             <h2>Fermeture de la réservation</h2>
             <div className="buttons">
-              <button>21:00</button>
+              <button className="btn2">21:00</button>
               <button>23:00</button>
             </div>
           </div>
