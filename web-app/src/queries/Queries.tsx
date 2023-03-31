@@ -114,3 +114,23 @@ export const GET_TABLES_BY_RESTAURANT = gql`
     }
   }
 `;
+
+/**
+ * *************** POLE QUERIES **********************
+ */
+export const GET_POLES = gql`
+  query Poles {
+    poles {
+      id
+      name
+      address
+      zipCode
+      city
+      email
+      restaurant {
+        id
+        name
+      }
+    }
+  }
+`;

@@ -45,3 +45,21 @@ export type GET_TABLES_BY_RESTAURANT_TYPES = Array<{
   number: number;
   capacity: number;
 }> | null;
+
+export type GET_POLES_TYPES = Array<{
+  __typename?: "Pole";
+  id: string;
+  name: string;
+  address: string;
+  zipCode: string;
+  city: string;
+  email: string;
+  restaurant?:
+    | Array<{
+        __typename?: "Restaurant";
+        id: string;
+        name: string;
+      }>
+    | null
+    | undefined;
+}> | null;

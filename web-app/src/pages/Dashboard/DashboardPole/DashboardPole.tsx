@@ -1,25 +1,57 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import "../DashboardTemp.scss";
 import { AppContext } from "../../../context/AppContext";
-import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
-import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
+import "./DashboardPole.scss";
+import { GET_POLES_TYPES } from "../../../types/DataTypes";
+import { useQuery } from "@apollo/client";
+import { PolesQuery } from "../../../gql/graphql";
+import { GET_POLES } from "../../../queries/Queries";
 
 const DashboardPole = () => {
   const appContext = useContext(AppContext);
+  const [poles, setPoles] = useState<GET_POLES_TYPES>(null);
+
+  const { loading, refetch } = useQuery<PolesQuery>(GET_POLES, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data) => {
+      if (data.poles) {
+        setPoles(data.poles);
+      }
+    },
+  });
 
   return (
-    <div className="DashboardMain">
-      <div className="DashboardContent">
-        <SVGLogo
-          logoWidth={BIG_LOGO_DASHBOARD_SIZE}
-          logoHeight={BIG_LOGO_DASHBOARD_SIZE}
-          logoFill={appContext?.userSVGColorScheme}
-        />
-        <h1>DASHBOARD POLE</h1>
-        <p className="DashboardText">Page Under Construction...</p>
-        <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
-      </div>
-    </div>
+    <section className="DashboardPoleSection">
+      <header className="DashboardPoleHeader">
+        <h1>Liste des Pôles</h1>
+      </header>
+      <main className="DashboardPoleList">
+        <table className="ListTab">
+          <thead className="ListTabHeader">
+            <tr className="ListTabHeaderRow">
+              <td>Nom</td>
+              <td>Adresse</td>
+              <td>Code Postale</td>
+              <td>Ville</td>
+              <td>Email</td>
+            </tr>
+          </thead>
+          <tbody className="ListTabBody">
+            {poles &&
+              poles.map((pole) => (
+                <tr className="ListTabBodyRow">
+                  <td>{pole.name}</td>
+                  <td>{pole.address}</td>
+                  <td>{pole.zipCode}</td>
+                  <td>{pole.city}</td>
+                  <td>{pole.email}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </main>
+      <footer className="DashboardPoleFooter"></footer>
+    </section>
   );
 };
 
