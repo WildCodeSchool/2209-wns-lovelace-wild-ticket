@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
+import { headerLocation } from "./utils";
 import "./Header.scss";
 import {
   HEADER_ICON_PARAMS,
@@ -10,7 +11,6 @@ import {
 } from "../../constants/Constants";
 import { addMinutesToDate, convertDate } from "../../services/DateService";
 import SVGMiniIconUser from "../SVG/SVGMiniIconUser/SVGMiniIconUser";
-import { headerLocation } from "./utils";
 import SVGMiniIconTable from "../SVG/SVGMiniIconTable/SVGMiniIconTable";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
