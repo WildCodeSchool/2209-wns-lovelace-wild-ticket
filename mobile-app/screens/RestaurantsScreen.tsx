@@ -65,39 +65,40 @@ const RestaurantsScreen = ({
   }, [navigation]);
 
   return (
-    <ImageBackground source={background} style={styles.background}>
-      <View style={styles.container}>
-        <View style={styles.containerHeaderButton}>
+    <ImageBackground source={background} style={styles.imageBackground}>
+      <View style={styles.restaurantScreenContainer}>
+        <View style={styles.restaurantScreenHeader}>
           <TouchableOpacity
-            style={styles.navButton}
+            style={styles.restaurantScreenHeaderButton}
             onPress={() => navigation.navigate("Select")}
           >
-            <Text style={styles.navButtonText}>Retour</Text>
+            <Text style={styles.restaurantScreenHeaderButtonText}>Retour</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={
-              ticketContext?.isDisabled
-                ? styles.navButtonDisable
-                : styles.navButton
-            }
+            style={styles.restaurantScreenHeaderButton}
             onPress={() => navigation.navigate("Ticket", { resto })}
             disabled={ticketContext?.isDisabled}
           >
             <Text
               style={
                 ticketContext?.isDisabled
-                  ? styles.navButtonTextDisabled
-                  : styles.navButtonText
+                  ? [
+                      styles.restaurantScreenHeaderButtonText,
+                      styles.restaurantScreenHeaderButtonTextDisabled,
+                    ]
+                  : styles.restaurantScreenHeaderButtonText
               }
             >
               Continuer
             </Text>
           </TouchableOpacity>
         </View>
-        <SafeAreaView style={styles.mainContainer}>
-          <Text style={styles.title}>Selectionnez votre restaurant</Text>
-          <View style={styles.restaurantList}>
-            <View style={styles.restaurants}>
+        <SafeAreaView style={styles.restaurantScreenMain}>
+          <Text style={styles.restaurantScreenMainTitle}>
+            Selectionnez votre restaurant
+          </Text>
+          <View style={styles.restaurantScreenMainList}>
+            <View style={styles.restaurantScreenMainRestaurants}>
               {data?.getPaginateRestaurantsByPole.restaurants.map(
                 (restaurant) => (
                   <View key={restaurant.id}>
@@ -112,16 +113,23 @@ const RestaurantsScreen = ({
                       style={[
                         new Date(restaurant.openAt) > new Date() ||
                         new Date(restaurant.closeAt) < new Date()
-                          ? styles.buttonDisabled
+                          ? styles.restaurantScreenMainRestaurantButton
                           : ticketContext?.isActive === restaurant
-                          ? styles.boutonSelectActive
-                          : styles.boutonSelect,
+                          ? [
+                              styles.restaurantScreenMainRestaurantButton,
+                              styles.restaurantScreenMainRestaurantActiveButton,
+                            ]
+                          : styles.restaurantScreenMainRestaurantButton,
                       ]}
                     >
                       <Restaurant {...restaurant} />
                       {new Date(restaurant.openAt) > new Date() ||
                       new Date(restaurant.closeAt) < new Date() ? (
-                        <Text style={styles.closedText}>
+                        <Text
+                          style={
+                            styles.restaurantScreenMainRestaurantDisabledButtonText
+                          }
+                        >
                           RÉSERVATION IMPOSSIBLE
                         </Text>
                       ) : null}
@@ -130,18 +138,22 @@ const RestaurantsScreen = ({
                 )
               )}
             </View>
-            <View style={styles.pagination}>
+            <View style={styles.restaurantScreenMainPagination}>
               <TouchableOpacity
-                style={styles.paginationButton}
-                onPress={() => pageUp()}
-              >
-                <Text style={styles.paginationText}>+</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.paginationButton}
+                style={styles.restaurantScreenMainPaginationButton}
                 onPress={() => pageDown()}
               >
-                <Text style={styles.paginationText}>-</Text>
+                <Text style={styles.restaurantScreenMainPaginationButtonText}>
+                  ↑
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.restaurantScreenMainPaginationButton}
+                onPress={() => pageUp()}
+              >
+                <Text style={styles.restaurantScreenMainPaginationButtonText}>
+                  ↓
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -154,7 +166,7 @@ const RestaurantsScreen = ({
 export default RestaurantsScreen;
 
 const styles = StyleSheet.create({
-  background: {
+  imageBackground: {
     flex: 1,
     position: "absolute",
     top: 0,
@@ -162,19 +174,19 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
   },
-  container: {
+  restaurantScreenContainer: {
     marginTop: 35,
     marginLeft: 50,
     marginRight: 50,
     alignItems: "center",
   },
-  containerHeaderButton: {
+  restaurantScreenHeader: {
     width: "95%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
-  navButton: {
+  restaurantScreenHeaderButton: {
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 12,
@@ -185,47 +197,39 @@ const styles = StyleSheet.create({
     width: 180,
     height: 70,
   },
-  navButtonText: {
+  restaurantScreenHeaderButtonText: {
     fontSize: 24,
     lineHeight: 30,
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "#424242",
   },
-  navButtonTextDisabled: {
+  restaurantScreenHeaderButtonTextDisabled: {
     fontSize: 24,
     lineHeight: 30,
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "lightgrey",
   },
-  navButtonDisable: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 8,
-    backgroundColor: "#F4F2EA",
-    width: 180,
-    height: 70,
-  },
-  mainContainer: {
+  restaurantScreenMain: {
     width: "85%",
     alignItems: "center",
     justifyContent: "center",
     marginTop: 40,
-    //padding: 15,
   },
-  title: { fontSize: 32, fontWeight: "bold", marginBottom: 20 },
-  restaurantList: {
+  restaurantScreenMainTitle: {
+    fontSize: 32,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  restaurantScreenMainList: {
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "flex-start",
     height: "79%",
     width: "100%",
   },
-  restaurants: {
+  restaurantScreenMainRestaurants: {
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "center",
@@ -233,7 +237,7 @@ const styles = StyleSheet.create({
     height: "auto",
     width: "76%",
   },
-  buttonDisabled: {
+  restaurantScreenMainRestaurantButton: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F4F2EA",
@@ -243,33 +247,17 @@ const styles = StyleSheet.create({
     width: 300,
     margin: 10,
   },
-  boutonSelect: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#F4F2EA",
-    elevation: 3,
-    borderRadius: 10,
-    height: 230,
-    width: 300,
-    margin: 10,
-  },
-  boutonSelectActive: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#F4F2EA",
-    borderRadius: 10,
+  restaurantScreenMainRestaurantActiveButton: {
     borderWidth: 4,
     borderColor: "#02C900",
-    height: 230,
-    width: 300,
-    margin: 10,
   },
-  closedText: {
+  restaurantScreenMainRestaurantDisabledButtonText: {
     textAlignVertical: "center",
     textAlign: "center",
     width: 230,
     height: 70,
-    backgroundColor: "rgba(255,255,255,0.9)",
+    backgroundColor: "white",
+    opacity: 0.9,
     borderStyle: "solid",
     borderWidth: 3,
     borderColor: "black",
@@ -278,14 +266,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-  pagination: {
+  restaurantScreenMainPagination: {
     flexWrap: "wrap",
     justifyContent: "flex-start",
     alignContent: "flex-start",
     height: "auto",
     margin: 5,
   },
-  paginationButton: {
+  restaurantScreenMainPaginationButton: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F4F2EA",
@@ -295,12 +283,8 @@ const styles = StyleSheet.create({
     width: 100,
     margin: 5,
   },
-  paginationText: {
-    fontSize: 36,
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+  restaurantScreenMainPaginationButtonText: {
+    fontSize: 48,
+    fontWeight: "bold",
   },
 });

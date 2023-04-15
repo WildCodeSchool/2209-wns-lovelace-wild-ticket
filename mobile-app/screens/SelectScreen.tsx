@@ -5,12 +5,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  Pressable,
 } from "react-native";
 import React, { useContext } from "react";
 import { RootStackScreenProps } from "../types";
 import { TicketContext } from "../context/TicketContext";
-import { DATA } from "../data/dataSelect";
+import { DATA as capacities } from "../data/dataSelect";
 
 const background = {
   uri: "https://i.ibb.co/YdC5MQR/RTicket-Wallpaper-2.png",
@@ -31,51 +30,60 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
   };
 
   return (
-    <ImageBackground source={background} style={styles.background}>
-      <View style={styles.container}>
-        <View style={styles.containerHeaderBoutton}>
-          <Pressable style={styles.navButton} onPress={() => cancel()}>
-            <Text style={styles.navButtonText}>Retour</Text>
-          </Pressable>
-          <Pressable
-            style={
-              ticketContext?.isDisabled
-                ? styles.navButtonDisable
-                : styles.navButton
-            }
+    <ImageBackground source={background} style={styles.imageBackground}>
+      <View style={styles.selectScreenContainer}>
+        <View style={styles.selectScreenHeader}>
+          <TouchableOpacity
+            style={styles.selectScreenHeaderButton}
+            onPress={() => cancel()}
+          >
+            <Text style={styles.selectScreenHeaderButtonText}>Retour</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.selectScreenHeaderButton}
             onPress={() => navigation.navigate("Restaurants")}
             disabled={ticketContext?.isDisabled}
           >
             <Text
               style={
                 ticketContext?.isDisabled
-                  ? styles.navButtonTextDisabled
-                  : styles.navButtonText
+                  ? [
+                      styles.selectScreenHeaderButtonText,
+                      styles.selectScreenHeaderButtonDisabledText,
+                    ]
+                  : styles.selectScreenHeaderButtonText
               }
             >
               Continuer
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
-        <SafeAreaView style={styles.mainContainer}>
-          <Text style={styles.title}>Sélectionnez le nombre de couverts</Text>
-          <View style={styles.containerButton}>
-            {DATA.map((d) => (
-              <View key={d.id}>
+        <SafeAreaView style={styles.selectScreenMain}>
+          <Text style={styles.selectScreenMainTitle}>
+            Sélectionnez le nombre de couverts
+          </Text>
+          <View style={styles.selectScreenMainButtonContainer}>
+            {capacities.map((capacity) => (
+              <View key={capacity.id}>
                 <TouchableOpacity
-                  onPress={() => handleClick(d.id)}
+                  onPress={() => handleClick(capacity.id)}
                   style={
-                    ticketContext?.isActive === d.id
-                      ? styles.boutonSelectActive
-                      : styles.boutonSelect
+                    ticketContext?.isActive === capacity.id
+                      ? [
+                          styles.selectScreenMainButton,
+                          styles.selectScreenMainActiveButton,
+                        ]
+                      : styles.selectScreenMainButton
                   }
                 >
-                  <Text style={styles.textButton}>{d.id}</Text>
+                  <Text style={styles.selectScreenMainButtonText}>
+                    {capacity.id}
+                  </Text>
                 </TouchableOpacity>
               </View>
             ))}
           </View>
-          <Text style={styles.textBottom}>
+          <Text style={styles.selectScreenFooterText}>
             Pour plus de 8 couverts, merci de vous renseigner directement auprès
             du restaurant souhaité.
           </Text>
@@ -88,7 +96,7 @@ const SelectScreen = ({ navigation }: RootStackScreenProps<"Select">) => {
 export default SelectScreen;
 
 const styles = StyleSheet.create({
-  background: {
+  imageBackground: {
     flex: 1,
     position: "absolute",
     top: 0,
@@ -96,20 +104,20 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
   },
-  container: {
+  selectScreenContainer: {
     marginTop: 28,
     marginLeft: 50,
     marginRight: 50,
     alignItems: "center",
   },
-  containerHeaderBoutton: {
+  selectScreenHeader: {
     width: "95%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
   },
-  navButton: {
+  selectScreenHeaderButton: {
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 12,
@@ -120,40 +128,28 @@ const styles = StyleSheet.create({
     width: 180,
     height: 70,
   },
-  navButtonText: {
+  selectScreenHeaderButtonText: {
     fontSize: 24,
     lineHeight: 30,
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "#424242",
   },
-  navButtonTextDisabled: {
-    fontSize: 24,
-    lineHeight: 30,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
+  selectScreenHeaderButtonDisabledText: {
     color: "lightgrey",
   },
-  navButtonDisable: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 8,
-    backgroundColor: "#F4F2EA",
-    width: 180,
-    height: 70,
-  },
-  mainContainer: {
+  selectScreenMain: {
     width: "85%",
     alignItems: "center",
     justifyContent: "space-around",
     marginTop: 50,
     padding: 15,
   },
-  title: { fontSize: 32, fontWeight: "bold" },
-  containerButton: {
+  selectScreenMainTitle: {
+    fontSize: 32,
+    fontWeight: "bold",
+  },
+  selectScreenMainButtonContainer: {
     flexWrap: "wrap",
     flexDirection: "row",
     justifyContent: "center",
@@ -161,7 +157,7 @@ const styles = StyleSheet.create({
     height: "75%",
     width: "80%",
   },
-  boutonSelect: {
+  selectScreenMainButton: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#F4F2EA",
@@ -171,21 +167,14 @@ const styles = StyleSheet.create({
     width: 150,
     margin: 20,
   },
-  boutonSelectActive: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#F4F2EA",
-    borderRadius: 10,
+  selectScreenMainActiveButton: {
     borderWidth: 4,
     borderColor: "#02C900",
-    height: 150,
-    width: 150,
-    margin: 20,
   },
-  textButton: {
+  selectScreenMainButtonText: {
     fontSize: 32,
   },
-  textBottom: {
+  selectScreenFooterText: {
     fontSize: 17,
     fontWeight: "bold",
   },

@@ -17,14 +17,16 @@ const HomeScreen = ({ navigation }: RootStackScreenProps<"Home">) => {
     <ImageBackground
       source={background}
       resizeMode="stretch"
-      style={styles.background}
+      style={styles.imageBackground}
     >
-      <View style={styles.container}>
+      <View style={styles.homeScreenContainer}>
         <Pressable
           onPress={() => navigation.navigate("Select")}
-          style={styles.button}
+          style={styles.homeScreenButton}
         >
-          <Text style={styles.text}>Appuyez pour continuer</Text>
+          <Text style={styles.homeScreenButtonText}>
+            Appuyez pour continuer
+          </Text>
         </Pressable>
       </View>
     </ImageBackground>
@@ -34,12 +36,18 @@ const HomeScreen = ({ navigation }: RootStackScreenProps<"Home">) => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  background: {
+  imageBackground: {
     flex: 1,
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    height: "100%",
     justifyContent: "center",
   },
-  button: {
+  homeScreenContainer: {
+    flex: 1,
+  },
+  homeScreenButton: {
     position: "absolute",
     bottom: 160,
     right: 260,
@@ -52,7 +60,7 @@ const styles = StyleSheet.create({
     height: 90,
     width: 300,
   },
-  text: {
+  homeScreenButtonText: {
     fontSize: 24,
     lineHeight: 21,
     fontWeight: "bold",
