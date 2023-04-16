@@ -20,7 +20,6 @@ const TicketConfirmationScreen = ({
 }: RootStackScreenProps<"TicketConfirm">) => {
   const { resto } = route.params;
   const ticketContext = useContext(TicketContext);
-  console.log(ticketContext?.ticketNumber);
 
   const returnHome = () => {
     ticketContext?.initialState();

@@ -8,22 +8,26 @@ export type RESTAURANT_TYPE = {
 };
 
 export type GET_TICKETS_BY_RESTAURANT_TYPES = Array<{
-  __typename?: "Ticket";
+  __typename?: "Ticket" | undefined;
   id: string;
   number: number;
   name: string;
   seats: number;
-  email: string;
-  phoneNumber?: string | null;
+  email?: string | null;
+  phoneNumber?: string | null | undefined;
   createdAt: any;
   deliveredAt?: any | null;
   placedAt?: any | null;
   closedAt?: any | null;
-  table?: {
-    __typename?: "Table";
-    id: string;
-    number: number;
-  } | null;
+  table?:
+    | {
+        __typename?: "Table" | undefined;
+        id: string;
+        number: number;
+      }
+    | null
+    | null
+    | undefined;
 }> | null;
 
 export type GET_TABLES_BY_RESTAURANT_TYPES = Array<{
