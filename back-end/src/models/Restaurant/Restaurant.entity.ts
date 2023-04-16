@@ -53,8 +53,8 @@ export default class Restaurant {
   @Field()
   name: string;
 
-  @Column()
-  @Field()
+  @Column({ nullable: true })
+  @Field({ nullable: true })
   picture?: string;
 
   @Column()

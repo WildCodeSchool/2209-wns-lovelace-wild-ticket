@@ -73,6 +73,7 @@ export default class RestaurantRepository extends RestaurantDb {
 
   static async createRestaurant(
     name: string,
+    picture: string | undefined,
     idPole: string
   ): Promise<Restaurant> {
     const pole = (await PoleRepository.getPoleById(idPole)) as Pole;
@@ -92,7 +93,8 @@ export default class RestaurantRepository extends RestaurantDb {
       createdAt,
       undefined,
       openAt,
-      closeAt
+      closeAt,
+      picture
     );
     await this.repository.save(newRestaurant);
     return newRestaurant;
@@ -100,7 +102,8 @@ export default class RestaurantRepository extends RestaurantDb {
 
   static async updateRestaurant(
     id: string,
-    name: string
+    name: string,
+    picture: string | undefined
   ): Promise<
     {
       id: string;
@@ -119,6 +122,7 @@ export default class RestaurantRepository extends RestaurantDb {
       id,
       name,
       updatedAt: updatedAt,
+      picture,
     });
   }
 

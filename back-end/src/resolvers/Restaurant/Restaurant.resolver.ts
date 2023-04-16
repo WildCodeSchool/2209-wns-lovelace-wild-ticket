@@ -38,17 +38,17 @@ export default class RestaurantResolver {
   @Authorized("ROLE_ADMIN")
   @Mutation(() => Restaurant)
   createRestaurant(
-    @Args() { name, pole }: CreateRestaurantArgs
+    @Args() { name, picture, pole }: CreateRestaurantArgs
   ): Promise<Restaurant> {
-    return RestaurantRepository.createRestaurant(name, pole);
+    return RestaurantRepository.createRestaurant(name, picture, pole);
   }
 
   @Authorized()
   @Mutation(() => Restaurant)
   updateRestaurant(
-    @Args() { id, name }: UpdateRestaurantArgs
+    @Args() { id, name, picture }: UpdateRestaurantArgs
   ): Promise<Restaurant> {
-    return RestaurantRepository.updateRestaurant(id, name);
+    return RestaurantRepository.updateRestaurant(id, name, picture);
   }
 
   @Authorized("ROLE_RESTAURANT")

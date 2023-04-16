@@ -6,6 +6,7 @@ import {
   IsPositive,
   IsNumber,
   IsString,
+  ValidateIf,
 } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
@@ -32,6 +33,10 @@ class CreateRestaurantArgs {
   })
   name: string;
 
+  @Field({ nullable: true })
+  @ValidateIf((value) => value === null)
+  picture: string;
+
   @Field(() => ID)
   @IsUUID()
   pole: string;
@@ -51,6 +56,10 @@ class UpdateRestaurantArgs {
     message: "Le nom doit faire au maximum 255 caractères de long.",
   })
   name: string;
+
+  @Field({ nullable: true })
+  @ValidateIf((value) => value === null)
+  picture: string;
 }
 
 @ArgsType()
