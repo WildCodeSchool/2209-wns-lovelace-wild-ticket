@@ -145,10 +145,10 @@ const Restaurant = ({
           </>
         ) : (
           <>
-          Ticket
-          {waitingTickets && waitingTickets > 1 ? "s" : null} en attente :
-          <Text style={styles.redText}> {waitingTickets}</Text>
-        </>
+            Ticket
+            {waitingTickets && waitingTickets > 1 ? "s" : null} en attente :
+            <Text style={styles.redText}> {waitingTickets}</Text>
+          </>
         )}
       </Text>
     </>
