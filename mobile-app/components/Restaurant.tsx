@@ -141,7 +141,7 @@ const Restaurant = ({
           </>
         ) : waitingTickets === 0 ? (
           <>
-            <Text style={styles.text}>Table prochainement libérée</Text>
+            <Text style={styles.greenText}>Table prochainement libérée</Text>
           </>
         ) : (
           <>
