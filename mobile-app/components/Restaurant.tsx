@@ -121,7 +121,7 @@ const Restaurant = ({
     setEmptyTables(getEmptyTables(tickets, tables));
     setwaitingTickets(getWaitingTickets(tickets, tables));
   }, [tickets, tables]);
-
+  console.log(waitingTickets);
   return picture ? (
     <>
       <Image
@@ -139,12 +139,16 @@ const Restaurant = ({
             {emptyTables && emptyTables > 1 ? "s" : null} :
             <Text style={styles.greenText}> {emptyTables}</Text>
           </>
+        ) : waitingTickets === 0 ? (
+          <>
+            <Text style={styles.text}>Table prochainement libérée</Text>
+          </>
         ) : (
           <>
-            Ticket
-            {waitingTickets && waitingTickets > 1 ? "s" : null} en attente :
-            <Text style={styles.redText}> {waitingTickets}</Text>
-          </>
+          Ticket
+          {waitingTickets && waitingTickets > 1 ? "s" : null} en attente :
+          <Text style={styles.redText}> {waitingTickets}</Text>
+        </>
         )}
       </Text>
     </>
