@@ -48,3 +48,7 @@ export const substractMinutesToDate = (
   ticketsDay.setMinutes(ticketsDay.getMinutes() - minutesToSubstract);
   return ticketsDay;
 };
+
+export const newDateAtMidnight = () => {
+  return new Date(new Date().setHours(0, 0, 0, 0));
+}

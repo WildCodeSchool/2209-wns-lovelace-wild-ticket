@@ -32,7 +32,7 @@ export default class TicketFixtures {
     const dateNow = new Date();
 
     // Tickets from day -29 to day 0
-    for (let dateDay = 1; dateDay < 29; dateDay++) {
+    for (let dateDay = 1; dateDay < 30; dateDay++) {
       let ticketsPerDay = Math.floor(Math.random() * 50) + 40;
       let ticketsDate = DateUpdates.substractDaysToDate(dateNow, dateDay);
 

@@ -1,14 +1,18 @@
 import { useContext } from "react";
-import "../DashboardTemp.scss";
+import "./DashboardStats.scss";
 import { AppContext } from "../../../context/AppContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
+import DashboardStatsGraph from "../../../components/Dashboard/DashboardStatsGraph/DashboardStatsGraph";
+import DashboardStatsList from "../../../components/Dashboard/DashboardStatsList/DashboardStatsList";
+import { GET_TICKETS_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
 
 const DashboardStats = () => {
   const appContext = useContext(AppContext);
+  const tickets = appContext?.tickets as GET_TICKETS_BY_RESTAURANT_TYPES;
 
-  return (
-    <div className="DashboardMain">
+  return appContext?.userData.role === "ROLE_ADMIN" ? (
+    <section className="DashboardStatsSection">
       <div className="DashboardContent">
         <SVGLogo
           logoWidth={BIG_LOGO_DASHBOARD_SIZE}
@@ -19,7 +23,14 @@ const DashboardStats = () => {
         <p className="DashboardText">Page Under Construction...</p>
         <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
       </div>
-    </div>
+    </section>
+  ) : (
+    <section className="DashboardStatsSection">
+        <DashboardStatsGraph data={tickets} />
+      <div>
+        <DashboardStatsList />
+      </div>
+    </section>
   );
 };
 
