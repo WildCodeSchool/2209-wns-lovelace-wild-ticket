@@ -12,7 +12,10 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { GET_TICKETS_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
-import { countTodaysTicketsBySeat, lastThirtyDays } from "../../../services/StatsService";
+import {
+  countTodaysTicketsBySeat,
+  lastThirtyDays,
+} from "../../../services/StatsService";
 
 ChartJS.register(
   CategoryScale,
@@ -23,9 +26,14 @@ ChartJS.register(
   Legend
 );
 
-const DashboardStatsGraph = ({data}: {data: GET_TICKETS_BY_RESTAURANT_TYPES}) => {
+const DashboardStatsGraph = ({
+  data,
+}: {
+  data: GET_TICKETS_BY_RESTAURANT_TYPES;
+}) => {
   // Statistiques pour le nombre de tickets du jour par capacité de table.
-  const arrayOfCountTodaysTicketsBySeat: number[] = countTodaysTicketsBySeat(data);
+  const arrayOfCountTodaysTicketsBySeat: number[] =
+    countTodaysTicketsBySeat(data);
 
   const countTodaysTicketsBySeatOptions = {
     responsive: true,
@@ -35,12 +43,12 @@ const DashboardStatsGraph = ({data}: {data: GET_TICKETS_BY_RESTAURANT_TYPES}) =>
       },
       title: {
         display: true,
-        text: 'Tickets du jour par capacité de table',
+        text: "Tickets du jour par capacité de table",
       },
     },
   };
-  
-  let labels = ["Table de 2", "Table de 4", "Table de 6", "Table de 8"];
+
+  let labels = ["T2", "T4", "T6", "T8"];
 
   const countTodaysTicketsBySeatDatas = {
     labels,
@@ -59,8 +67,46 @@ const DashboardStatsGraph = ({data}: {data: GET_TICKETS_BY_RESTAURANT_TYPES}) =>
   console.log(arrayOfLastThirtyDays);
 
   return (
-    <div style={{display: "flex", justifyContent: "center", gap: "50px",height: "200px", width: "80%"}}>
-      <Bar options={countTodaysTicketsBySeatOptions} data={countTodaysTicketsBySeatDatas} height={200} width={400} />
+    <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "50px"}}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+          width: "45%",
+        }}
+      >
+        <Bar
+          options={countTodaysTicketsBySeatOptions}
+          data={countTodaysTicketsBySeatDatas}
+        />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+          width: "45%",
+        }}
+      >
+        <Bar
+          options={countTodaysTicketsBySeatOptions}
+          data={countTodaysTicketsBySeatDatas}
+        />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+          width: "45%",
+        }}
+      >
+        <Bar
+          options={countTodaysTicketsBySeatOptions}
+          data={countTodaysTicketsBySeatDatas}
+        />
+      </div>
     </div>
   );
 };
