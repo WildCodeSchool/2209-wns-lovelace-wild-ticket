@@ -10,9 +10,11 @@ import {
   Legend,
   BarElement,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import { GET_TICKETS_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
 import {
+  countCurrentWeekTickets,
+  countLastThirtyDaysTickets,
   countTodaysTicketsBySeat,
   lastThirtyDays,
 } from "../../../services/StatsService";
@@ -20,6 +22,8 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  PointElement,
+  LineElement,
   BarElement,
   Title,
   Tooltip,
@@ -31,6 +35,7 @@ const DashboardStatsGraph = ({
 }: {
   data: GET_TICKETS_BY_RESTAURANT_TYPES;
 }) => {
+  let labels = [];
   // Statistiques pour le nombre de tickets du jour par capacité de table.
   const arrayOfCountTodaysTicketsBySeat: number[] =
     countTodaysTicketsBySeat(data);
@@ -48,7 +53,7 @@ const DashboardStatsGraph = ({
     },
   };
 
-  let labels = ["T2", "T4", "T6", "T8"];
+  labels = ["2", "4", "6", "8"];
 
   const countTodaysTicketsBySeatDatas = {
     labels,
@@ -56,24 +61,86 @@ const DashboardStatsGraph = ({
       {
         label: "Total des tickets",
         data: arrayOfCountTodaysTicketsBySeat,
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        backgroundColor: "rgba(255, 0, 0, 0.5)",
       },
     ],
   };
 
-  // Statistiques pour le total des tickets par jour des 30 derniers jours.
+  // Statistiques pour le total des tickets par jour de la semaine en cours.
+  const arrayOfCountCurrentWeekTickets = countCurrentWeekTickets(data);
+
+  const countCurrentWeekTicketsOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "bottom" as const,
+      },
+      title: {
+        display: true,
+        text: "Tickets par jour de la semaine en cours",
+      },
+    },
+  };
+
+  labels = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+
+  const countCurrentWeekTicketsDatas = {
+    labels,
+    datasets: [
+      {
+        label: "Total des tickets",
+        data: arrayOfCountCurrentWeekTickets,
+        borderColor: "rgb(39, 97, 245)",
+        backgroundColor: "rgba(39, 97, 245, 0.5)",
+      },
+    ],
+  };
+
+  // Statistiques pour le total des tickets pour les 30 derniers jours.
   const arrayOfLastThirtyDays = lastThirtyDays();
-  console.log(arrayOfLastThirtyDays);
+  const arrayOfCountThirtyDaysTickets = countLastThirtyDaysTickets(data);
+
+  const lastThirtyDaysTicketsOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "bottom" as const,
+      },
+      title: {
+        display: true,
+        text: "Tickets par jour sur les 30 derniers jours",
+      },
+    },
+  };
+
+  labels = arrayOfLastThirtyDays;
+
+  const lastThirtyDaysTicketsDatas = {
+    labels,
+    datasets: [
+      {
+        label: "Total des tickets",
+        data: arrayOfCountThirtyDaysTickets,
+        borderColor: "rgb(0, 205, 0)",
+        backgroundColor: "rgba(0, 205, 0, 0.5)",
+      },
+    ],
+  };
 
   return (
-    <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "50px"}}>
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: "30px",
+      }}
+    >
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "10px",
-          width: "45%",
+          width: "30%",
+          maxHeight: "300px",
         }}
       >
         <Bar
@@ -83,28 +150,24 @@ const DashboardStatsGraph = ({
       </div>
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "10px",
-          width: "45%",
+          width: "30%",
+          maxHeight: "300px",
         }}
       >
-        <Bar
-          options={countTodaysTicketsBySeatOptions}
-          data={countTodaysTicketsBySeatDatas}
+        <Line
+          options={countCurrentWeekTicketsOptions}
+          data={countCurrentWeekTicketsDatas}
         />
       </div>
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "10px",
-          width: "45%",
+          width: "30%",
+          maxHeight: "300px",
         }}
       >
-        <Bar
-          options={countTodaysTicketsBySeatOptions}
-          data={countTodaysTicketsBySeatDatas}
+        <Line
+          options={lastThirtyDaysTicketsOptions}
+          data={lastThirtyDaysTicketsDatas}
         />
       </div>
     </div>
