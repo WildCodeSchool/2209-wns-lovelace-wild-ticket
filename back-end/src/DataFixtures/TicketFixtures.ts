@@ -57,7 +57,7 @@ export default class TicketFixtures {
 
     // Today's closed tickets
     let closedTodaysTickets = Math.floor(Math.random() * 20) + 10;
-    let ticketsDate = DateUpdates.substractHoursToDate(dateNow, 2);
+    let ticketsDate = DateUpdates.substractHoursToDate(dateNow, 3);
     let ticketNumber = 1;
 
     for (
@@ -88,7 +88,7 @@ export default class TicketFixtures {
 
     for (let table = 1; table <= nowTablesFull; table++) {
       let lastName = faker.name.lastName();
-      let minutesToSubstract = Math.floor(Math.random() * 60) + 10;
+      let minutesToSubstract = Math.floor(Math.random() * 90) + 10;
 
       ticketsFixtures.push({
         number: ticketNumber,

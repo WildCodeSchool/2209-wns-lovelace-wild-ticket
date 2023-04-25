@@ -21,7 +21,8 @@ export default class TableResolver {
     return TableRepository.getTables();
   }
 
-  @Authorized("ROLE_RESTAURANT")
+  //TODO: Disable to fetch list in react native. See how to use auth account
+  //@Authorized("ROLE_RESTAURANT")
   @Query(() => [Table])
   TablesByRestaurant(
     @Args() { restaurantId, capacity }: GetTablesByRestaurantArgs

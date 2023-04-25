@@ -61,7 +61,7 @@ export default class Ticket {
   seats: number;
 
   @Column({ nullable: true })
-  @Field()
+  @Field({ nullable: true })
   email?: string;
 
   @Column({ nullable: true })
