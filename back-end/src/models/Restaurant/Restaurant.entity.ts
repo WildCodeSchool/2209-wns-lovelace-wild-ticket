@@ -22,9 +22,13 @@ export default class Restaurant {
     updatedAt?: Date,
     openAt?: Date,
     closeAt?: Date,
+    picture?: string,
     appUser?: AppUser
   ) {
     this.name = name;
+    if (picture) {
+      this.picture = picture;
+    }
     this.pole = pole;
     this.createdAt = createdAt;
     if (updatedAt) {
@@ -48,6 +52,10 @@ export default class Restaurant {
   @Column()
   @Field()
   name: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  picture?: string;
 
   @Column()
   @Field()

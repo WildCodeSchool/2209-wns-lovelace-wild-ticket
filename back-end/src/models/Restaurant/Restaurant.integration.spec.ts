@@ -26,7 +26,11 @@ describe("RestaurantRepository integration", () => {
         let falseUuid = "c1b646ca-926b-4fdc-8571-1423d47c295d";
 
         return expect(() =>
-          RestaurantRepository.createRestaurant("restaurant", falseUuid)
+          RestaurantRepository.createRestaurant(
+            "restaurant",
+            undefined,
+            falseUuid
+          )
         ).rejects.toThrowError("Aucun pôle ne correspond à cet ID.");
       });
     });
@@ -42,6 +46,7 @@ describe("RestaurantRepository integration", () => {
 
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
+          undefined,
           pole.id
         );
 
@@ -56,7 +61,11 @@ describe("RestaurantRepository integration", () => {
         let falseUuid = "c1b646ca-926b-4fdc-8571-1423d47c295d";
 
         return expect(() =>
-          RestaurantRepository.updateRestaurant(falseUuid, "restaurant")
+          RestaurantRepository.updateRestaurant(
+            falseUuid,
+            "restaurant",
+            undefined
+          )
         ).rejects.toThrowError("Aucun restaurant ne correspond à cet ID.");
       });
     });
@@ -72,12 +81,14 @@ describe("RestaurantRepository integration", () => {
 
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
+          undefined,
           pole.id
         );
 
         const updatedRestaurant = await RestaurantRepository.updateRestaurant(
           restaurant.id,
-          "newRestaurant"
+          "newRestaurant",
+          undefined
         );
 
         expect(updatedRestaurant.name).toBe("newRestaurant");
@@ -91,7 +102,11 @@ describe("RestaurantRepository integration", () => {
         let falseUuid = "c1b646ca-926b-4fdc-8571-1423d47c295d";
 
         return expect(() =>
-          RestaurantRepository.updateRestaurant(falseUuid, "restaurant")
+          RestaurantRepository.updateRestaurant(
+            falseUuid,
+            "restaurant",
+            undefined
+          )
         ).rejects.toThrowError("Aucun restaurant ne correspond à cet ID.");
       });
     });
@@ -107,6 +122,7 @@ describe("RestaurantRepository integration", () => {
 
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
+          undefined,
           pole.id
         );
 
@@ -127,7 +143,11 @@ describe("RestaurantRepository integration", () => {
         let falseUuid = "c1b646ca-926b-4fdc-8571-1423d47c295d";
 
         return expect(() =>
-          RestaurantRepository.updateRestaurant(falseUuid, "restaurant")
+          RestaurantRepository.updateRestaurant(
+            falseUuid,
+            "restaurant",
+            undefined
+          )
         ).rejects.toThrowError("Aucun restaurant ne correspond à cet ID.");
       });
     });
@@ -143,6 +163,7 @@ describe("RestaurantRepository integration", () => {
 
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
+          undefined,
           pole.id
         );
 

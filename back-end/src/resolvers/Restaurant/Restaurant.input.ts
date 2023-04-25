@@ -1,5 +1,26 @@
-import { IsUUID, MinLength, MaxLength, IsInt } from "class-validator";
+import {
+  IsUUID,
+  MinLength,
+  MaxLength,
+  IsInt,
+  IsPositive,
+  IsNumber,
+  IsString,
+  ValidateIf,
+} from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
+
+@ArgsType()
+class GetPaginateRestaurantsByPole {
+  @Field()
+  @IsString()
+  pole: string;
+
+  @Field()
+  @IsNumber()
+  @IsPositive()
+  pageNumber: number;
+}
 
 @ArgsType()
 class CreateRestaurantArgs {
@@ -11,6 +32,10 @@ class CreateRestaurantArgs {
     message: "Le nom doit faire au maximum 255 caractères de long.",
   })
   name: string;
+
+  @Field({ nullable: true })
+  @ValidateIf((value) => value === null)
+  picture: string;
 
   @Field(() => ID)
   @IsUUID()
@@ -31,6 +56,10 @@ class UpdateRestaurantArgs {
     message: "Le nom doit faire au maximum 255 caractères de long.",
   })
   name: string;
+
+  @Field({ nullable: true })
+  @ValidateIf((value) => value === null)
+  picture: string;
 }
 
 @ArgsType()
@@ -57,6 +86,7 @@ class UpdateRestaurantOpeningTime {
 }
 
 export {
+  GetPaginateRestaurantsByPole,
   CreateRestaurantArgs,
   UpdateRestaurantArgs,
   UpdateRestaurantOpeningTime,

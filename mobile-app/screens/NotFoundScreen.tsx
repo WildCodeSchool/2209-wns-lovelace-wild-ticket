@@ -4,13 +4,13 @@ import React from "react";
 
 const NotFoundScreen = ({ navigation }: RootStackScreenProps<"NotFound">) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>This screen doesn't exist.</Text>
+    <View style={styles.notFoundScreenContainer}>
+      <Text style={styles.notFoundScreenTitle}>This screen doesn't exist.</Text>
       <TouchableOpacity
         onPress={() => navigation.replace("Home")}
-        style={styles.link}
+        style={styles.notFoundscreenLink}
       >
-        <Text style={styles.linkText}>Go to home screen!</Text>
+        <Text style={styles.notFoundscreenLinkText}>Go to home screen!</Text>
       </TouchableOpacity>
     </View>
   );
@@ -19,21 +19,21 @@ const NotFoundScreen = ({ navigation }: RootStackScreenProps<"NotFound">) => {
 export default NotFoundScreen;
 
 const styles = StyleSheet.create({
-  container: {
+  notFoundScreenContainer: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
   },
-  title: {
+  notFoundScreenTitle: {
     fontSize: 20,
     fontWeight: "bold",
   },
-  link: {
+  notFoundscreenLink: {
     marginTop: 15,
     paddingVertical: 15,
   },
-  linkText: {
+  notFoundscreenLinkText: {
     fontSize: 14,
     color: "#2e78b7",
   },
