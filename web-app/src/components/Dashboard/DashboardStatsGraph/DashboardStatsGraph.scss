@@ -1,0 +1,16 @@
+@import "../../../index.scss";
+
+.dashboardStatsGraphContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: 100%;
+
+  .dashboardStatsGraph {
+    width: 30%;
+    min-width: 290px;
+    max-height: 250px;
+    min-height: 150px;
+  }
+}

@@ -18,6 +18,7 @@ import {
   countTodaysTicketsBySeat,
   lastThirtyDays,
 } from "../../../services/StatsService";
+import "./DashboardStatsGraph.scss";
 
 ChartJS.register(
   CategoryScale,
@@ -128,43 +129,20 @@ const DashboardStatsGraph = ({
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        gap: "30px",
-      }}
-    >
-      <div
-        style={{
-          width: "30%",
-          maxHeight: "300px",
-        }}
-      >
+    <div className="dashboardStatsGraphContainer">
+      <div className="dashboardStatsGraph">
         <Bar
           options={countTodaysTicketsBySeatOptions}
           data={countTodaysTicketsBySeatDatas}
         />
       </div>
-      <div
-        style={{
-          width: "30%",
-          maxHeight: "300px",
-        }}
-      >
+      <div className="dashboardStatsGraph">
         <Line
           options={countCurrentWeekTicketsOptions}
           data={countCurrentWeekTicketsDatas}
         />
       </div>
-      <div
-        style={{
-          width: "30%",
-          maxHeight: "300px",
-        }}
-      >
+      <div className="dashboardStatsGraph">
         <Line
           options={lastThirtyDaysTicketsOptions}
           data={lastThirtyDaysTicketsDatas}
