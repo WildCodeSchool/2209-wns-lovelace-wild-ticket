@@ -28,6 +28,10 @@ export default class DateUpdates {
     const year = today.getFullYear();
     const month = today.getMonth();
     const day = today.getDate();
+
+    //TODO: Voir si possible d'automatiser les changements d'heure...
+    hours = hours - 2;
+
     return new Date(year, month, day, hours, minutes);
   }
 
