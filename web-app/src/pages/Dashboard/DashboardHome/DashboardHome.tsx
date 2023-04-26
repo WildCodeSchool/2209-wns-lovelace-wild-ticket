@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticTimePicker } from "@mui/x-date-pickers/StaticTimePicker";
+import { frFR } from '@mui/x-date-pickers/locales';
 
 const DashboardHome = () => {
   const appContext = useContext(AppContext);
@@ -114,13 +115,13 @@ const DashboardHome = () => {
         <div className="contentBottom">
           <div className="open">
             <h2>Ouverture de la réservation</h2>
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'fr-FR'}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'fr-FR'} localeText={frFR.components.MuiLocalizationProvider.defaultProps.localeText}>
               <StaticTimePicker defaultValue={dayjs("2022-04-17T15:30")} ampm={false}/>
             </LocalizationProvider>
           </div>
           <div className="close">
             <h2>Fermeture de la réservation</h2>
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'fr-FR'}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'fr-FR'} localeText={frFR.components.MuiLocalizationProvider.defaultProps.localeText}>
               <StaticTimePicker defaultValue={dayjs("2022-04-17T15:30")} ampm={false}/>
             </LocalizationProvider>
           </div>
