@@ -114,14 +114,14 @@ const DashboardHome = () => {
         <div className="contentBottom">
           <div className="open">
             <h2>Ouverture de la réservation</h2>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <StaticTimePicker defaultValue={dayjs("2022-04-17T15:30")} />
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'fr-FR'}>
+              <StaticTimePicker defaultValue={dayjs("2022-04-17T15:30")} ampm={false}/>
             </LocalizationProvider>
           </div>
           <div className="close">
             <h2>Fermeture de la réservation</h2>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <StaticTimePicker defaultValue={dayjs("2022-04-17T15:30")} />
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'fr-FR'}>
+              <StaticTimePicker defaultValue={dayjs("2022-04-17T15:30")} ampm={false}/>
             </LocalizationProvider>
           </div>
         </div>
