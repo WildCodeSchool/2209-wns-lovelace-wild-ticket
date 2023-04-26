@@ -121,16 +121,21 @@ export const GET_TABLES_BY_RESTAURANT = gql`
 
 export const UPDATE_RESTAURANTS_TIME = gql`
   mutation UpdateRestaurantOpeningTime(
-    $hourOpenAt: Date!
-    $minutesOpenAt: Date!
-    $hourCloseAt: Date!
-    $minutesCloseAt: Date!
+    $updateRestaurantOpeningTimeId: ID!
+    $hourOpenAt: Float!
+    $minutesOpenAt: Float!
+    $hourCloseAt: Float!
+    $minutesCloseAt: Float!
   ) {
-    updateRestaurantOpeningTime {
-      id,
-      updatedAt: updatedAt,
-      openAt,
-      closeAt,
+    updateRestaurantOpeningTime(
+      id: $updateRestaurantOpeningTimeId
+      hourOpenAt: $hourOpenAt
+      minutesOpenAt: $minutesOpenAt
+      hourCloseAt: $hourCloseAt
+      minutesCloseAt: $minutesCloseAt
+    ) {
+      closeAt
+      openAt
     }
   }
 `;

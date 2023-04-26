@@ -23,6 +23,7 @@ const documents = {
     "\n  mutation UpdatePlacedAt($updatePlacedAtId: String!) {\n    updatePlacedAt(id: $updatePlacedAtId) {\n      id\n      deliveredAt\n      placedAt\n      closedAt\n    }\n  }\n": types.UpdatePlacedAtDocument,
     "\n  mutation UpdateClosedAt($updateClosedAtId: String!) {\n    updateClosedAt(id: $updateClosedAtId) {\n      id\n      closedAt\n    }\n  }\n": types.UpdateClosedAtDocument,
     "\n  query TablesByRestaurant($restaurantId: ID!, $capacity: Float) {\n    TablesByRestaurant(restaurantId: $restaurantId, capacity: $capacity) {\n      id\n      number\n      capacity\n    }\n  }\n": types.TablesByRestaurantDocument,
+    "\n  mutation UpdateRestaurantOpeningTime(\n    $updateRestaurantOpeningTimeId: ID!\n    $hourOpenAt: Float!\n    $minutesOpenAt: Float!\n    $hourCloseAt: Float!\n    $minutesCloseAt: Float!\n  ) {\n    updateRestaurantOpeningTime(\n      id: $updateRestaurantOpeningTimeId\n      hourOpenAt: $hourOpenAt\n      minutesOpenAt: $minutesOpenAt\n      hourCloseAt: $hourCloseAt\n      minutesCloseAt: $minutesCloseAt\n    ) {\n      closeAt\n      openAt\n    }\n  }\n": types.UpdateRestaurantOpeningTimeDocument,
 };
 
 /**
@@ -79,6 +80,10 @@ export function graphql(source: "\n  mutation UpdateClosedAt($updateClosedAtId: 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query TablesByRestaurant($restaurantId: ID!, $capacity: Float) {\n    TablesByRestaurant(restaurantId: $restaurantId, capacity: $capacity) {\n      id\n      number\n      capacity\n    }\n  }\n"): (typeof documents)["\n  query TablesByRestaurant($restaurantId: ID!, $capacity: Float) {\n    TablesByRestaurant(restaurantId: $restaurantId, capacity: $capacity) {\n      id\n      number\n      capacity\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateRestaurantOpeningTime(\n    $updateRestaurantOpeningTimeId: ID!\n    $hourOpenAt: Float!\n    $minutesOpenAt: Float!\n    $hourCloseAt: Float!\n    $minutesCloseAt: Float!\n  ) {\n    updateRestaurantOpeningTime(\n      id: $updateRestaurantOpeningTimeId\n      hourOpenAt: $hourOpenAt\n      minutesOpenAt: $minutesOpenAt\n      hourCloseAt: $hourCloseAt\n      minutesCloseAt: $minutesCloseAt\n    ) {\n      closeAt\n      openAt\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateRestaurantOpeningTime(\n    $updateRestaurantOpeningTimeId: ID!\n    $hourOpenAt: Float!\n    $minutesOpenAt: Float!\n    $hourCloseAt: Float!\n    $minutesCloseAt: Float!\n  ) {\n    updateRestaurantOpeningTime(\n      id: $updateRestaurantOpeningTimeId\n      hourOpenAt: $hourOpenAt\n      minutesOpenAt: $minutesOpenAt\n      hourCloseAt: $hourCloseAt\n      minutesCloseAt: $minutesCloseAt\n    ) {\n      closeAt\n      openAt\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

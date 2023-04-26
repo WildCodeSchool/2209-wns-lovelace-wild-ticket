@@ -116,13 +116,13 @@ const DashboardHome = () => {
           <div className="open">
             <h2>Ouverture de la réservation</h2>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'fr-FR'} localeText={frFR.components.MuiLocalizationProvider.defaultProps.localeText}>
-              <StaticTimePicker defaultValue={dayjs("2022-04-17T15:30")} ampm={false}/>
+              <StaticTimePicker defaultValue={dayjs()} ampm={false} />
             </LocalizationProvider>
           </div>
           <div className="close">
             <h2>Fermeture de la réservation</h2>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'fr-FR'} localeText={frFR.components.MuiLocalizationProvider.defaultProps.localeText}>
-              <StaticTimePicker defaultValue={dayjs("2022-04-17T15:30")} ampm={false}/>
+              <StaticTimePicker defaultValue={dayjs()} ampm={false} />
             </LocalizationProvider>
           </div>
         </div>
