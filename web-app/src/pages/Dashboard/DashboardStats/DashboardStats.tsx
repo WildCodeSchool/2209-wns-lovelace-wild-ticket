@@ -26,9 +26,9 @@ const DashboardStats = () => {
     </section>
   ) : (
     <section className="DashboardStatsSection">
-        <DashboardStatsGraph data={tickets} />
-      <div>
-        <DashboardStatsList />
+      <DashboardStatsGraph data={tickets} />
+      <div className="DashboardStatsSectionTabContainer">
+        <DashboardStatsList data={tickets} />
       </div>
     </section>
   );

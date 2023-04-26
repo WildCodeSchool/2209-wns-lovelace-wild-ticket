@@ -77,6 +77,8 @@ export default class TicketRepository extends TicketDb {
         seatsMax: seats,
       });
     }
+    query.orderBy("ticket.createdAt", "DESC");
+    query.addOrderBy("ticket.number", "DESC");
     return await query.getMany();
   }
 

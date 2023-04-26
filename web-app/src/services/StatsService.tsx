@@ -24,7 +24,6 @@ export const countTodaysTicketsBySeat = (
 ): number[] => {
   const today = newDateAtMidnight().getTime() / 1000;
   const tomorrow = today + 86400;
-  console.log(today, tomorrow);
   const todaysTickets = tickets?.filter(
     (ticket) =>
       new Date(ticket.createdAt).getTime() / 1000 > today &&
@@ -64,7 +63,6 @@ export const countCurrentWeekTickets = (
   const groupTickets: number[] = [];
 
   for (let i = 0; i <= 7; i++) {
-    console.log({ day }, { dayAfter });
     const filteredTickets = tickets?.filter(
       (ticket) =>
         new Date(ticket.createdAt).getTime() / 1000 > day &&
@@ -98,7 +96,6 @@ export const countLastThirtyDaysTickets = (
   const groupTickets: number[] = [];
 
   for (let i = 0; i <= 29; i++) {
-    console.log({ day }, { dayAfter });
     const filteredTickets = tickets?.filter(
       (ticket) =>
         new Date(ticket.createdAt).getTime() / 1000 > day &&
