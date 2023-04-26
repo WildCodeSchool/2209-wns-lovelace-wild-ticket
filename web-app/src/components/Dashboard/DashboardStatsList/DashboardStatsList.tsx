@@ -6,7 +6,9 @@ import { InputText } from "primereact/inputtext";
 import "primereact/resources/themes/nano/theme.css";
 import "primeicons/primeicons.css";
 import "./DashboardStatsList.scss";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../../../context/AppContext";
+import { InfinitySpin } from "react-loader-spinner";
 
 const DashboardStatsList = ({ data }: { data: any }) => {
   const [rows, setRows] = useState(15);
@@ -14,6 +16,7 @@ const DashboardStatsList = ({ data }: { data: any }) => {
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
+  const ticketsLoading = useContext(AppContext)?.ticketsLoading;
 
   const onGlobalFilterChange = (e: any) => {
     const value = e.target.value;
@@ -99,7 +102,13 @@ const DashboardStatsList = ({ data }: { data: any }) => {
     </div>
   );
 
-  return (
+  return ticketsLoading ? (
+    <div className="loadingSpinContainer">
+      <div className="loadingSpin">
+        <InfinitySpin width="200" color="#155e75" />
+      </div>
+    </div>
+  ) : (
     <div className="card DashboardStatsListContainer">
       <DataTable
         header={header}
