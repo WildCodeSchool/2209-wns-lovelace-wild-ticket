@@ -50,6 +50,7 @@ describe("TicketRepository integration", () => {
 
             const restaurant = await RestaurantRepository.createRestaurant(
               "restaurant",
+              undefined,
               pole.id
             );
 
@@ -72,6 +73,7 @@ describe("TicketRepository integration", () => {
 
             const restaurant = await RestaurantRepository.createRestaurant(
               "restaurant",
+              undefined,
               pole.id
             );
 
@@ -105,6 +107,7 @@ describe("TicketRepository integration", () => {
 
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
+          undefined,
           pole.id
         );
 
@@ -129,6 +132,7 @@ describe("TicketRepository integration", () => {
 
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
+          undefined,
           pole.id
         );
 
@@ -157,6 +161,7 @@ describe("TicketRepository integration", () => {
 
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
+          undefined,
           pole.id
         );
 
@@ -207,6 +212,7 @@ describe("TicketRepository integration", () => {
 
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
+          undefined,
           pole.id
         );
 
@@ -261,6 +267,7 @@ describe("TicketRepository integration", () => {
 
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
+          undefined,
           pole.id
         );
 

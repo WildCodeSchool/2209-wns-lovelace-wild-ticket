@@ -23,7 +23,7 @@ export const AppUserFixtures: AppUserFixtures[] = [
     password: "Estelle69!",
     role: "ROLE_RESTAURANT",
     createdAt: "2022-12-20T11:00:00",
-    restaurant: "Le Bouchon Végé",
+    restaurant: "Pura Vegan",
   },
   {
     login: "Anthony",
@@ -31,7 +31,7 @@ export const AppUserFixtures: AppUserFixtures[] = [
     password: "Anthony69!",
     role: "ROLE_RESTAURANT",
     createdAt: "2022-12-20T11:00:00",
-    restaurant: "Lardonnaise",
+    restaurant: "La Suzette",
   },
   {
     login: "Michel",
@@ -39,6 +39,6 @@ export const AppUserFixtures: AppUserFixtures[] = [
     password: "Michel69!",
     role: "ROLE_RESTAURANT",
     createdAt: "2022-12-20T11:00:00",
-    restaurant: "La Galette Flambée",
+    restaurant: "Butcher Shop",
   },
 ];

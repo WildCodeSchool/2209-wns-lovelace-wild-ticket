@@ -2,17 +2,32 @@ import { Arg, Args, Authorized, Mutation, Query, Resolver } from "type-graphql";
 
 import Restaurant from "../../models/Restaurant/Restaurant.entity";
 import RestaurantRepository from "../../models/Restaurant/Restaurant.repository";
+import PageOfRestaurants from "./PageOfRestaurant";
 import {
   CreateRestaurantArgs,
+  GetPaginateRestaurantsByPole,
   UpdateRestaurantArgs,
   UpdateRestaurantOpeningTime,
 } from "./Restaurant.input";
+
+const PAGE_SIZE = 4;
 
 @Resolver(Restaurant)
 export default class RestaurantResolver {
   @Query(() => [Restaurant])
   getRestaurants(): Promise<Restaurant[]> {
     return RestaurantRepository.getRestaurants();
+  }
+
+  @Query(() => PageOfRestaurants)
+  getPaginateRestaurantsByPole(
+    @Args() { pole, pageNumber }: GetPaginateRestaurantsByPole
+  ): Promise<PageOfRestaurants> {
+    return RestaurantRepository.getPaginateRestaurantsByPole(
+      pole,
+      PAGE_SIZE,
+      pageNumber
+    );
   }
 
   @Query(() => Restaurant)
@@ -23,17 +38,17 @@ export default class RestaurantResolver {
   @Authorized("ROLE_ADMIN")
   @Mutation(() => Restaurant)
   createRestaurant(
-    @Args() { name, pole }: CreateRestaurantArgs
+    @Args() { name, picture, pole }: CreateRestaurantArgs
   ): Promise<Restaurant> {
-    return RestaurantRepository.createRestaurant(name, pole);
+    return RestaurantRepository.createRestaurant(name, picture, pole);
   }
 
   @Authorized()
   @Mutation(() => Restaurant)
   updateRestaurant(
-    @Args() { id, name }: UpdateRestaurantArgs
+    @Args() { id, name, picture }: UpdateRestaurantArgs
   ): Promise<Restaurant> {
-    return RestaurantRepository.updateRestaurant(id, name);
+    return RestaurantRepository.updateRestaurant(id, name, picture);
   }
 
   @Authorized("ROLE_RESTAURANT")

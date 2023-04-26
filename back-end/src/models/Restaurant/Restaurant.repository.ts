@@ -2,6 +2,7 @@ import Restaurant from "./Restaurant.entity";
 import Pole from "../Pole/Pole.entity";
 import PoleRepository from "../Pole/Pole.repository";
 import RestaurantDb from "./Restaurant.db";
+import PageOfRestaurants from "../../resolvers/Restaurant/PageOfRestaurant";
 import RestaurantFixtures, {
   RestaurantFixturesType,
 } from "../../DataFixtures/RestaurantFixtures";
@@ -23,7 +24,8 @@ export default class RestaurantRepository extends RestaurantDb {
           restaurant.createdAt,
           undefined,
           restaurant.openAt,
-          restaurant.closeAt
+          restaurant.closeAt,
+          restaurant.picture
         );
 
         await this.repository.save(newRestaurant);
@@ -33,6 +35,32 @@ export default class RestaurantRepository extends RestaurantDb {
 
   static async getRestaurants(): Promise<Restaurant[]> {
     return this.repository.find();
+  }
+
+  static async getPaginateRestaurantsByPole(
+    poleName: string,
+    pageSize: number,
+    pageNumber: number
+  ): Promise<PageOfRestaurants> {
+    const pole = (await PoleRepository.getPoleByName(poleName)) as Pole;
+
+    if (!pole) {
+      throw new Error("Aucun pôle ne correspond à ce nom.");
+    }
+
+    const [restaurants, totalCount] = await this.repository.findAndCount({
+      where: { pole: pole },
+      take: pageSize,
+      skip: (pageNumber - 1) * pageSize,
+    });
+
+    const numberOfRemainingItems = totalCount - pageSize * pageNumber;
+
+    return {
+      totalCount,
+      nextPageNumber: numberOfRemainingItems > 0 ? pageNumber + 1 : null,
+      restaurants,
+    };
   }
 
   static async getRestaurantById(id: string): Promise<Restaurant | null> {
@@ -45,6 +73,7 @@ export default class RestaurantRepository extends RestaurantDb {
 
   static async createRestaurant(
     name: string,
+    picture: string | undefined,
     idPole: string
   ): Promise<Restaurant> {
     const pole = (await PoleRepository.getPoleById(idPole)) as Pole;
@@ -64,7 +93,8 @@ export default class RestaurantRepository extends RestaurantDb {
       createdAt,
       undefined,
       openAt,
-      closeAt
+      closeAt,
+      picture
     );
     await this.repository.save(newRestaurant);
     return newRestaurant;
@@ -72,7 +102,8 @@ export default class RestaurantRepository extends RestaurantDb {
 
   static async updateRestaurant(
     id: string,
-    name: string
+    name: string,
+    picture: string | undefined
   ): Promise<
     {
       id: string;
@@ -91,6 +122,7 @@ export default class RestaurantRepository extends RestaurantDb {
       id,
       name,
       updatedAt: updatedAt,
+      picture,
     });
   }
 
