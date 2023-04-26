@@ -38,4 +38,21 @@ export default class DateUpdates {
   static newDateAtMidnight() {
     return new Date(new Date().setHours(0, 0, 0, 0));
   }
+
+  static lastThirtyDays = () => {
+    const dates = [];
+    const aujourdHui = new Date();
+    for (let i = 0; i < 30; i++) {
+      const date = new Date(
+        aujourdHui.getFullYear(),
+        aujourdHui.getMonth(),
+        aujourdHui.getDate() - i
+      );
+      const jour = date.getDate();
+      const mois = date.getMonth() + 1;
+      const jourMois = jour.toString() + "/" + mois.toString();
+      dates.unshift(jourMois);
+    }
+    return dates;
+  };
 }

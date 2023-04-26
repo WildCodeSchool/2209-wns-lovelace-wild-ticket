@@ -114,3 +114,19 @@ export const GET_TABLES_BY_RESTAURANT = gql`
     }
   }
 `;
+
+/**
+ * *************** STATS QUERIES **********************
+ */
+export const GET_STATS_BY_RESTAURANT = gql`
+  query StatsByRestaurant($restaurantId: String!) {
+    StatsByRestaurant(restaurantId: $restaurantId) {
+      tableCapacity
+      daysOfWeek
+      lastThirtyDays
+      countTicketsBySeat
+      countActualWeekTickets
+      countLastThirtyDaysTickets
+    }
+  }
+`;

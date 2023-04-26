@@ -58,7 +58,7 @@ export default class TicketRepository extends TicketDb {
 
   static async getTicketsByRestaurant(
     restaurantId: string,
-    seats: number
+    seats: number | null
   ): Promise<Ticket[] | null> {
     const restaurant = await RestaurantRepository.getRestaurantById(
       restaurantId
@@ -73,7 +73,7 @@ export default class TicketRepository extends TicketDb {
       });
     if (seats as number) {
       query.andWhere("ticket.seats BETWEEN :seatsMin AND :seatsMax", {
-        seatsMin: seats - 1,
+        seatsMin: (seats as number) - 1,
         seatsMax: seats,
       });
     }

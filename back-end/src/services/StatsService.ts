@@ -1,34 +1,16 @@
-/* eslint-disable no-loop-func */
-import { GET_TICKETS_BY_RESTAURANT_TYPES } from "../types/DataTypes";
-import { newDateAtMidnight } from "./DateService";
+import Ticket from "../models/Ticket/Ticket.entity";
+import DateUpdates from "./DateUpdates";
 
-export const lastThirtyDays = () => {
-  const dates = [];
-  const aujourdHui = new Date();
-  for (let i = 0; i < 30; i++) {
-    const date = new Date(
-      aujourdHui.getFullYear(),
-      aujourdHui.getMonth(),
-      aujourdHui.getDate() - i
-    );
-    const jour = date.getDate();
-    const mois = date.getMonth() + 1;
-    const jourMois = jour.toString() + "/" + mois.toString();
-    dates.unshift(jourMois);
-  }
-  return dates;
-};
-
-export const countTodaysTicketsBySeat = (
-  tickets: GET_TICKETS_BY_RESTAURANT_TYPES
-): number[] => {
-  const today = newDateAtMidnight().getTime() / 1000;
+export const countTodaysTicketsBySeat = async (
+  tickets: Ticket[]
+): Promise<number[]> => {
+  const today = DateUpdates.newDateAtMidnight().getTime() / 1000;
   const tomorrow = today + 86400;
   const todaysTickets = tickets?.filter(
     (ticket) =>
       new Date(ticket.createdAt).getTime() / 1000 > today &&
       new Date(ticket.createdAt).getTime() / 1000 < tomorrow
-  ) as GET_TICKETS_BY_RESTAURANT_TYPES;
+  ) as Ticket[];
   const seats = [2, 4, 6, 8];
   const groupTickets: number[] = [];
   seats.forEach((seat) => {
@@ -42,10 +24,10 @@ export const countTodaysTicketsBySeat = (
   return groupTickets;
 };
 
-export const countCurrentWeekTickets = (
-  tickets: GET_TICKETS_BY_RESTAURANT_TYPES
-): any => {
-  const today = newDateAtMidnight();
+export const countCurrentWeekTickets = async (
+  tickets: Ticket[]
+): Promise<any> => {
+  const today = DateUpdates.newDateAtMidnight();
   const dayToday = today.getDay();
   let firstDayWeek = new Date(
     today.getFullYear(),
@@ -79,10 +61,10 @@ export const countCurrentWeekTickets = (
   return groupTickets;
 };
 
-export const countLastThirtyDaysTickets = (
-  tickets: GET_TICKETS_BY_RESTAURANT_TYPES
-): any => {
-  const today = newDateAtMidnight();
+export const countLastThirtyDaysTickets = async (
+  tickets: Ticket[]
+): Promise<any> => {
+  const today = DateUpdates.newDateAtMidnight();
   let firstDay = new Date(
     today.getFullYear(),
     today.getMonth(),

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,14 +11,14 @@ import {
   BarElement,
 } from "chart.js";
 import { Bar, Line } from "react-chartjs-2";
-import { GET_TICKETS_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
-import {
-  countCurrentWeekTickets,
-  countLastThirtyDaysTickets,
-  countTodaysTicketsBySeat,
-  lastThirtyDays,
-} from "../../../services/StatsService";
 import "./DashboardStatsGraph.scss";
+import { useQuery } from "@apollo/client";
+import { GET_STATS_BY_RESTAURANT } from "../../../queries/Queries";
+import { AppContext } from "../../../context/AppContext";
+import {
+  StatsByRestaurantQuery,
+  StatsByRestaurantQueryVariables,
+} from "../../../gql/graphql";
 
 ChartJS.register(
   CategoryScale,
@@ -31,16 +31,20 @@ ChartJS.register(
   Legend
 );
 
-const DashboardStatsGraph = ({
-  data,
-}: {
-  data: GET_TICKETS_BY_RESTAURANT_TYPES;
-}) => {
-  let labels = [];
-  // Statistiques pour le nombre de tickets du jour par capacité de table.
-  const arrayOfCountTodaysTicketsBySeat: number[] =
-    countTodaysTicketsBySeat(data);
+const DashboardStatsGraph = () => {
+  const restaurantId = useContext(AppContext)?.userData.restaurant.id;
 
+  const { data } = useQuery<
+    StatsByRestaurantQuery,
+    StatsByRestaurantQueryVariables
+  >(GET_STATS_BY_RESTAURANT, {
+    notifyOnNetworkStatusChange: true,
+    variables: { restaurantId: restaurantId as string },
+  });
+  const stats = data?.StatsByRestaurant;
+  let labels = [];
+
+  // Statistiques pour le nombre de tickets du jour par capacité de table.
   const countTodaysTicketsBySeatOptions = {
     responsive: true,
     plugins: {
@@ -54,22 +58,20 @@ const DashboardStatsGraph = ({
     },
   };
 
-  labels = ["2", "4", "6", "8"];
+  labels = stats?.tableCapacity as string[];
 
   const countTodaysTicketsBySeatDatas = {
     labels,
     datasets: [
       {
         label: "Total des tickets",
-        data: arrayOfCountTodaysTicketsBySeat,
+        data: stats?.countTicketsBySeat,
         backgroundColor: "rgba(255, 0, 0, 0.5)",
       },
     ],
   };
 
   // Statistiques pour le total des tickets par jour de la semaine en cours.
-  const arrayOfCountCurrentWeekTickets = countCurrentWeekTickets(data);
-
   const countCurrentWeekTicketsOptions = {
     responsive: true,
     plugins: {
@@ -83,14 +85,14 @@ const DashboardStatsGraph = ({
     },
   };
 
-  labels = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+  labels = stats?.daysOfWeek as string[];
 
   const countCurrentWeekTicketsDatas = {
     labels,
     datasets: [
       {
         label: "Total des tickets",
-        data: arrayOfCountCurrentWeekTickets,
+        data: stats?.countActualWeekTickets,
         borderColor: "rgb(39, 97, 245)",
         backgroundColor: "rgba(39, 97, 245, 0.5)",
       },
@@ -98,9 +100,6 @@ const DashboardStatsGraph = ({
   };
 
   // Statistiques pour le total des tickets pour les 30 derniers jours.
-  const arrayOfLastThirtyDays = lastThirtyDays();
-  const arrayOfCountThirtyDaysTickets = countLastThirtyDaysTickets(data);
-
   const lastThirtyDaysTicketsOptions = {
     responsive: true,
     plugins: {
@@ -114,14 +113,14 @@ const DashboardStatsGraph = ({
     },
   };
 
-  labels = arrayOfLastThirtyDays;
+  labels = stats?.lastThirtyDays as string[];
 
   const lastThirtyDaysTicketsDatas = {
     labels,
     datasets: [
       {
         label: "Total des tickets",
-        data: arrayOfCountThirtyDaysTickets,
+        data: stats?.countLastThirtyDaysTickets,
         borderColor: "rgb(0, 205, 0)",
         backgroundColor: "rgba(0, 205, 0, 0.5)",
       },
