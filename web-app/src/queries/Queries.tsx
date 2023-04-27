@@ -135,6 +135,34 @@ export const GET_POLES = gql`
   }
 `;
 
+export const CREATE_POLE = gql`
+  mutation CreatePole(
+    $name: String!
+    $address: String!
+    $zipCode: String!
+    $city: String!
+    $email: String!
+  ) {
+    createPole(
+      name: $name
+      address: $address
+      zipCode: $zipCode
+      city: $city
+      email: $email
+    ) {
+      id
+    }
+  }
+`;
+
+export const DELETE_POLE = gql`
+  mutation DeletePole($deletePoleId: String!) {
+    deletePole(id: $deletePoleId) {
+      id
+    }
+  }
+`;
+
 /**
  * *************** RESTAURANT QUERIES **********************
  */

@@ -64,6 +64,24 @@ export type GET_POLES_TYPES = Array<{
     | undefined;
 }> | null;
 
+export type GET_POLE_TYPES = {
+  __typename?: "Pole" | undefined;
+  id: string;
+  name: string;
+  address: string;
+  zipCode: string;
+  city: string;
+  email: string;
+  restaurant?:
+    | Array<{
+        __typename?: "Restaurant";
+        id: string;
+        name: string;
+      }>
+    | null
+    | undefined;
+} | null;
+
 export type GET_RESTAURANTS_TYPES = Array<{
   __typename?: "Restaurant";
   id: string;
