@@ -19,6 +19,7 @@ import {
 import { TICKET_DISAPPEAR_DELAY } from "../../../constants/Constants";
 import { DASHBOARD_STATS, DASHBOARD_TICKET } from "../../paths";
 import { UPDATE_RESTAURANTS_TIME } from "../../../queries/Queries";
+import Clock from "../../../components/Clock/Clock";
 
 import "../DashboardTemp.scss";
 import "../DashboardHome/DashboardHome.scss";
@@ -27,8 +28,6 @@ import "../DashboardHome/DashboardHome.scss";
 const DashboardHome = () => {
   const appContext = useContext(AppContext);
   const navigate = useNavigate();
-  const [dateToConvert, setDateToConvert] = useState<Date>(new Date());
-  const [dateNow, setDateNow] = useState<{ date: string; time: string }>();
   const tickets = useContext(AppContext)
     ?.tickets as GET_TICKETS_BY_RESTAURANT_TYPES;
   const tables = useContext(AppContext)
@@ -108,17 +107,10 @@ const DashboardHome = () => {
     onError: () => {},
   });
 
-  // useEffect(() => {
-  //   setWaitingTickets(getCountOfWaitingTickets(tickets) as number);
-  //   setOccupiedTables(getEmptyTables(tickets, tables) as number);
-  //   const setDateEachSecond = setInterval(() => {
-  //     setDateToConvert(new Date());
-  //     setDateNow(convertDate(dateToConvert));
-  //   }, 1000);
-  //   return () => {
-  //     clearInterval(setDateEachSecond);
-  //   };
-  // }, [dateToConvert, tables, tickets]);
+  useEffect(() => {
+    setWaitingTickets(getCountOfWaitingTickets(tickets) as number);
+    setOccupiedTables(getEmptyTables(tickets, tables) as number);
+  }, [tables, tickets]);
 
   const goToStats = () => {
     navigate(DASHBOARD_STATS);
@@ -133,7 +125,7 @@ const DashboardHome = () => {
       <div className="DashboardContent">
         <div className="contentTop">
           <div className="statsTop">
-            <p className="time">{dateNow?.time}</p>
+            <Clock></Clock>
             <button className="btnStats" onClick={goToStats}>
               Statistiques
             </button>
