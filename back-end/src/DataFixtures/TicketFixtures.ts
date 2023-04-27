@@ -88,7 +88,7 @@ export default class TicketFixtures {
 
     for (let table = 1; table <= nowTablesFull; table++) {
       let lastName = faker.name.lastName();
-      let minutesToSubstract = Math.floor(Math.random() * 90) + 10;
+      let minutesToSubstract = Math.floor(Math.random() * 90) + 50;
 
       ticketsFixtures.push({
         number: ticketNumber,

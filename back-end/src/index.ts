@@ -23,7 +23,6 @@ import RestaurantResolver from "./resolvers/Restaurant/Restaurant.resolver";
 import StatsResolver from "./resolvers/Stats/Stats.resolver";
 import { AppUserFixtures } from "./DataFixtures/AppUserFixtures";
 import { TableFixtures } from "./DataFixtures/TableFixtures";
-import { IS_PRODUCTION } from "./config";
 
 export type GlobalContext = ExpressContext & {
   user: AppUser | null;
