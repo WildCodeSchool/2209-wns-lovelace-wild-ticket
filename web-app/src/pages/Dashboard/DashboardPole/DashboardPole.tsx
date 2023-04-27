@@ -17,6 +17,7 @@ import { InfinitySpin } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../../utils";
 import SVGIconDelete from "../../../components/SVG/SVGIconDelete/SVGIconDelete";
+import SVGIconEdit from "../../../components/SVG/SVGIconEdit/SVGIconEdit";
 
 const DashboardPole = () => {
   // Chargement du contexte
@@ -128,6 +129,12 @@ const DashboardPole = () => {
                   <td>{pole.email}</td>
                   <td>
                     <div className="ListTabBodyRowActionsButtonContainer">
+                      <SVGIconEdit
+                        onClick={async () => {
+                          await confirmDelete(pole);
+                        }}
+                        isClickable={isClickable}
+                      />
                       <SVGIconDelete
                         onClick={async () => {
                           await confirmDelete(pole);
