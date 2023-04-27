@@ -9,8 +9,11 @@ import "./DashboardStatsList.scss";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { InfinitySpin } from "react-loader-spinner";
+import DashboardStatsExportModal from "../DashboardStatsExportModal/DashboardStatsExportModal";
 
 const DashboardStatsList = ({ data }: { data: any }) => {
+  const [openExportModal, setOpenExportModal] = useState<boolean>(false);
+  const [exportTypeFile, setExportTypeFile] = useState<string>("");
   const [rows, setRows] = useState(15);
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [filters, setFilters] = useState({
@@ -49,9 +52,9 @@ const DashboardStatsList = ({ data }: { data: any }) => {
       if (width < 768) {
         setRows(6);
       } else if (width < 1200) {
-        setRows(10);
+        setRows(11);
       } else {
-        setRows(15);
+        setRows(16);
       }
     }
 
@@ -63,6 +66,11 @@ const DashboardStatsList = ({ data }: { data: any }) => {
       window.removeEventListener("resize", updateDataTableRows);
     };
   }, []);
+
+  const handleModalExport = (exportType: string) => {
+    setOpenExportModal(true);
+    setExportTypeFile(exportType);
+  };
 
   const header = (
     <div className="DashboardStatsListHeader">
@@ -78,14 +86,16 @@ const DashboardStatsList = ({ data }: { data: any }) => {
         </span>
       </div>
       <div className="DashboardStatsListHeaderExport">
-        <p className="DashboardStatsListHeaderExportText">Exports de données</p>
+        <p className="DashboardStatsListHeaderExportText">Export de données</p>
         <Button
           type="button"
           title="CSV"
           className="DashboardStatsListHeaderExportButton"
           icon="pi pi-file"
           rounded
-          onClick={() => alert("ok")}
+          onClick={() => {
+            handleModalExport("CSV");
+          }}
           data-pr-tooltip="CSV"
         />
         <Button
@@ -95,12 +105,19 @@ const DashboardStatsList = ({ data }: { data: any }) => {
           icon="pi pi-file-excel"
           severity="success"
           rounded
-          onClick={() => alert("ok")}
+          onClick={() => {
+            handleModalExport("XLSX");
+          }}
           data-pr-tooltip="XLS"
         />
       </div>
     </div>
   );
+
+  const handleExport = (value: any) => {
+    console.log(exportTypeFile);
+    setOpenExportModal(false);
+  };
 
   return ticketsLoading ? (
     <div className="loadingSpinContainer">
@@ -109,47 +126,60 @@ const DashboardStatsList = ({ data }: { data: any }) => {
       </div>
     </div>
   ) : (
-    <div className="card DashboardStatsListContainer">
-      <DataTable
-        header={header}
-        value={data}
-        sortMode="multiple"
-        paginator
-        rows={rows}
-        tableStyle={{ minWidth: "100%" }}
-        filters={filters}
-        globalFilterFields={["name"]}
-        emptyMessage="Aucun ticket trouvé."
+    <div>
+      <DashboardStatsExportModal
+        openExportModal={openExportModal}
+        handleExport={handleExport}
+        type={exportTypeFile}
+      />
+      <div
+        className={
+          openExportModal
+            ? "card DashboardStatsListContainer containerDisabled"
+            : "card DashboardStatsListContainer"
+        }
       >
-        <Column field="number" header="Numéro" sortable></Column>
-        <Column field="name" header="Nom" sortable></Column>
-        <Column field="seats" header="Capacité" sortable></Column>
-        <Column
-          field="createdAt"
-          dataType="string"
-          header="Crée le"
-          sortable
-          body={(ticket) => changeDateFormat(ticket.createdAt)}
-        ></Column>
-        <Column
-          field="deliveredAt"
-          header="Délivré le"
-          sortable
-          body={(ticket) => changeDateFormat(ticket.deliveredAt)}
-        ></Column>
-        <Column
-          field="placedAt"
-          header="Placé le"
-          sortable
-          body={(ticket) => changeDateFormat(ticket.placedAt)}
-        ></Column>
-        <Column
-          field="closedAt"
-          header="Clos le"
-          sortable
-          body={(ticket) => changeDateFormat(ticket.closedAt)}
-        ></Column>
-      </DataTable>
+        <DataTable
+          header={header}
+          value={data}
+          sortMode="multiple"
+          paginator
+          rows={rows}
+          tableStyle={{ minWidth: "100%" }}
+          filters={filters}
+          globalFilterFields={["name"]}
+          emptyMessage="Aucun ticket trouvé."
+        >
+          <Column field="number" header="Numéro" sortable></Column>
+          <Column field="name" header="Nom" sortable></Column>
+          <Column field="seats" header="Capacité" sortable></Column>
+          <Column
+            field="createdAt"
+            dataType="string"
+            header="Crée le"
+            sortable
+            body={(ticket) => changeDateFormat(ticket.createdAt)}
+          ></Column>
+          <Column
+            field="deliveredAt"
+            header="Délivré le"
+            sortable
+            body={(ticket) => changeDateFormat(ticket.deliveredAt)}
+          ></Column>
+          <Column
+            field="placedAt"
+            header="Placé le"
+            sortable
+            body={(ticket) => changeDateFormat(ticket.placedAt)}
+          ></Column>
+          <Column
+            field="closedAt"
+            header="Clos le"
+            sortable
+            body={(ticket) => changeDateFormat(ticket.closedAt)}
+          ></Column>
+        </DataTable>
+      </div>
     </div>
   );
 };

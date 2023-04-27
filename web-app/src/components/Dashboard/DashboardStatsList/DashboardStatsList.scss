@@ -75,3 +75,8 @@
 .p-component {
   box-sizing: border-box;
 }
+
+.containerDisabled {
+  pointer-events: none;
+  opacity: 0.8;
+}

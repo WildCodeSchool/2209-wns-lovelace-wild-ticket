@@ -1,0 +1,45 @@
+@import "../../../index.scss";
+
+.DashboardStatsListModalHidden {
+  background-color: $modal-background-color;
+  position: absolute;
+  top: 0;
+  right: -500px;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  width: 360px;
+  height: auto;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  z-index: 2;
+
+  .dashboardStatsListModalTitle {
+    margin-bottom: 0;
+  }
+
+  .DashboardStatsListModalButton {
+    margin: 10px;
+    width: 250px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: $gray400;
+    color: $white;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+
+.DashboardStatsListModal {
+  right: 100px !important;
+}
+
+.DashboardStatsListModalButtonActive {
+  background-color: $modal-button-hover-background-color !important;
+}
