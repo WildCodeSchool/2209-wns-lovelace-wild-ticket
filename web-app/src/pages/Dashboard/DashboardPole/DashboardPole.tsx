@@ -6,7 +6,12 @@ import { AppContext } from "../../../context/AppContext";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../../utils";
 import { GET_POLES_TYPES, GET_POLE_TYPES } from "../../../types/DataTypes";
-import { DELETE_POLE, GET_POLES, CREATE_POLE } from "../../../queries/Queries";
+import {
+  DELETE_POLE,
+  GET_POLES,
+  CREATE_POLE,
+  UPDATE_POLE,
+} from "../../../queries/Queries";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   CreatePoleMutation,
@@ -14,6 +19,8 @@ import {
   DeletePoleMutation,
   DeletePoleMutationVariables,
   PolesQuery,
+  UpdatePoleMutation,
+  UpdatePoleMutationVariables,
 } from "../../../gql/graphql";
 
 const DashboardPole = () => {
@@ -33,7 +40,6 @@ const DashboardPole = () => {
 
   // Création d'un pole
   const [openAddPoleModal, setOpenAddPoleModal] = useState<boolean>(false);
-
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [zipCode, setZipCode] = useState("");
@@ -55,6 +61,55 @@ const DashboardPole = () => {
       setCity("");
       setEmail("");
       toast.success(`Vous avez créé un pôle avec succès.`);
+      refetch();
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  // Modification d'un pole
+  const [openEditPoleModal, setOpenEditPoleModal] = useState<boolean>(false);
+  const [editPoleId, setEditPoleId] = useState<string>("");
+  const [editPoleName, setEditPoleName] = useState<string>("");
+  const [editPoleAddress, setEditPoleAddress] = useState<string>("");
+  const [editPoleZipCode, setEditPoleZipCode] = useState<string>("");
+  const [editPoleCity, setEditPoleCity] = useState<string>("");
+  const [editPoleEmail, setEditPoleEmail] = useState<string>("");
+
+  const [editPole] = useMutation<
+    UpdatePoleMutation,
+    UpdatePoleMutationVariables
+  >(UPDATE_POLE);
+
+  const editPoleForm = async (pole: GET_POLE_TYPES) => {
+    setEditPoleId(pole?.id as string);
+    setEditPoleName(pole?.name as string);
+    setEditPoleAddress(pole?.address as string);
+    setEditPoleZipCode(pole?.zipCode as string);
+    setEditPoleCity(pole?.city as string);
+    setEditPoleEmail(pole?.email as string);
+    setOpenEditPoleModal(true);
+  };
+
+  const submitEditPoleForm = async () => {
+    try {
+      await editPole({
+        variables: {
+          name: editPoleName,
+          address: editPoleAddress,
+          zipCode: editPoleZipCode,
+          city: editPoleCity,
+          email: editPoleEmail,
+          updatePoleId: editPoleId,
+        },
+      });
+      setEditPoleId("");
+      setEditPoleName("");
+      setEditPoleAddress("");
+      setEditPoleZipCode("");
+      setEditPoleCity("");
+      setEditPoleEmail("");
+      toast.success(`Vous avez modifié le pôle "${editPoleName}" avec succès.`);
       refetch();
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -112,6 +167,7 @@ const DashboardPole = () => {
         <DashboardPoleListTab
           poles={poles}
           isClickable={isClickable}
+          editPoleForm={editPoleForm}
           confirmDelete={confirmDelete}
         />
       </main>
@@ -253,6 +309,112 @@ const DashboardPole = () => {
             className="dashboardPoleListModalButton"
             onClick={() => {
               setOpenAddPoleModal(false);
+              setIsClickable(true);
+            }}
+          >
+            Annuler
+          </button>
+        </div>
+      </div>
+
+      {/* Modal d'édition d'un nouveau pole */}
+      <div
+        className={
+          openEditPoleModal
+            ? "dashboardPoleListModal"
+            : "dashboardPoleListModalHidden"
+        }
+      >
+        <h1 className="dashboardPoleListModalTitle">Modification d'un pôle</h1>
+        <div className="dashboardPoleListModalTablesContainer">
+          <form className="add-pole-form">
+            <div className="add-pole-form-input">
+              <label htmlFor="name">Nom</label>
+              <input
+                type="text"
+                required
+                autoComplete="name"
+                id="name"
+                name="name"
+                value={editPoleName}
+                onChange={(event) => {
+                  setEditPoleName(event.target.value);
+                }}
+              />
+            </div>
+            <div className="add-pole-form-input">
+              <label htmlFor="name">Adresse</label>
+              <input
+                type="text"
+                required
+                autoComplete="address"
+                id="address"
+                name="address"
+                value={editPoleAddress}
+                onChange={(event) => {
+                  setEditPoleAddress(event.target.value);
+                }}
+              />
+            </div>
+            <div className="add-pole-form-input">
+              <label htmlFor="zipCode">Code Postal</label>
+              <input
+                type="text"
+                required
+                autoComplete="zipCode"
+                id="zipCode"
+                name="zipCode"
+                value={editPoleZipCode}
+                onChange={(event) => {
+                  setEditPoleZipCode(event.target.value);
+                }}
+              />
+            </div>
+            <div className="add-pole-form-input">
+              <label htmlFor="city">Ville</label>
+              <input
+                type="text"
+                required
+                autoComplete="city"
+                id="city"
+                name="city"
+                value={editPoleCity}
+                onChange={(event) => {
+                  setEditPoleCity(event.target.value);
+                }}
+              />
+            </div>
+            <div className="add-pole-form-input">
+              <label htmlFor="email">Email</label>
+              <input
+                type="text"
+                required
+                autoComplete="email"
+                id="email"
+                name="email"
+                value={editPoleEmail}
+                onChange={(event) => {
+                  setEditPoleEmail(event.target.value);
+                }}
+              />
+            </div>
+          </form>
+        </div>
+        <div className="dashboardPoleListModalButtonContainer">
+          <button
+            className="dashboardPoleListModalButton"
+            onClick={async () => {
+              await submitEditPoleForm();
+              setOpenEditPoleModal(false);
+              setIsClickable(true);
+            }}
+          >
+            Modifier
+          </button>
+          <button
+            className="dashboardPoleListModalButton"
+            onClick={() => {
+              setOpenEditPoleModal(false);
               setIsClickable(true);
             }}
           >

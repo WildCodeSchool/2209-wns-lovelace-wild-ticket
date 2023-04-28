@@ -7,16 +7,23 @@ import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
 export default function DashboardPoleListTab({
   poles,
   isClickable,
+  editPoleForm,
   confirmDelete,
 }: {
   poles: any;
   isClickable: boolean;
+  editPoleForm: any;
   confirmDelete: (pole: GET_POLE_TYPES) => Promise<void>;
 }) {
   const actionButton = (pole: GET_POLE_TYPES) => {
     return (
       <div className="ListTabBodyRowActionsButtonContainer">
-        <SVGIconEdit onClick={async () => {}} isClickable={isClickable} />
+        <SVGIconEdit
+          onClick={async () => {
+            editPoleForm(pole);
+          }}
+          isClickable={isClickable}
+        />
         <SVGIconDelete
           onClick={async () => {
             await confirmDelete(pole);

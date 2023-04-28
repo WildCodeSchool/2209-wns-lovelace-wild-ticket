@@ -155,6 +155,28 @@ export const CREATE_POLE = gql`
   }
 `;
 
+export const UPDATE_POLE = gql`
+  mutation UpdatePole(
+    $name: String!
+    $address: String!
+    $zipCode: String!
+    $city: String!
+    $email: String!
+    $updatePoleId: ID!
+  ) {
+    updatePole(
+      name: $name
+      address: $address
+      zipCode: $zipCode
+      city: $city
+      email: $email
+      id: $updatePoleId
+    ) {
+      id
+    }
+  }
+`;
+
 export const DELETE_POLE = gql`
   mutation DeletePole($deletePoleId: String!) {
     deletePole(id: $deletePoleId) {
