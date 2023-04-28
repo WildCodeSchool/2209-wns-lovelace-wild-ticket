@@ -1,4 +1,5 @@
 .DashboardMain {
+
   // width: 100%;
   .DashboardContent {
     height: 90vh;
@@ -16,14 +17,6 @@
         justify-content: space-between;
         padding: 2rem 2rem 1rem;
 
-        .time {
-          border: 3px solid #164e63;
-          border-radius: 5px;
-          font-size: 3rem;
-          margin: 0;
-          padding: 3rem;
-        }
-
         .btnStats {
           background-color: #164e63;
           border: none;
@@ -33,6 +26,11 @@
           font-size: 1.25rem;
           height: fit-content;
           padding: 2.5rem;
+
+          &:hover {
+            background-color: #1f2937;
+            transition: 0.7s;
+          }
         }
       }
 
@@ -54,63 +52,27 @@
           padding: 1rem;
           width: 250px;
 
+
+          &:active {
+            border: 5px solid #164e63;
+          }
+
           .statsTickets,
           .statsTables {
             color: #164e63;
+
             span {
               font-size: 1.5rem;
               font-weight: 600;
             }
+
             p {
               margin: 0;
             }
           }
+
           .icon {
             font-size: 2.25rem;
-            color: #164e63;
-          }
-        }
-      }
-    }
-
-    .contentBottom {
-      border-top: 3px solid #000;
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-
-      .open,
-      .close {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 2rem;
-        text-align: center;
-        width: 500px;
-
-        h2 {
-          margin: 0 0 2rem;
-        }
-
-        .buttons {
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-
-          button {
-            background-color: #164e63;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 2rem;
-            width: 125px;
-          }
-
-          .btn1:focus, .btn2:focus {
-            border: 3px solid #164e63;
-            background-color: #fff;
             color: #164e63;
           }
         }
@@ -119,11 +81,13 @@
   }
 }
 
-@media only screen and (min-width: 810px){
+@media only screen and (min-width: 810px) {
   .DashboardMain {
     .DashboardContent {
       .contentBottom {
-        .open, .close {
+
+        .open,
+        .close {
           .buttons {
             display: flex;
             justify-content: space-around;
