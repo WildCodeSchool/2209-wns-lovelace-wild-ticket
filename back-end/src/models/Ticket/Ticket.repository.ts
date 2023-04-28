@@ -231,7 +231,7 @@ export default class TicketRepository extends TicketDb {
   static async getExportTicketsByRestaurant(
     restaurantId: string,
     dateMin: Date | null,
-    dateMax: Date | null,
+    dateMax: Date | null
   ): Promise<Ticket[] | null> {
     const restaurant = await RestaurantRepository.getRestaurantById(
       restaurantId
