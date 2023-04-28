@@ -1,4 +1,4 @@
-export default class DateUpdates {
+export default class DateUplastThirtyDays {
   static substractDaysToDate(dateNow: Date, daysToSubstract: number) {
     let ticketsDay = new Date(dateNow);
     ticketsDay.setDate(ticketsDay.getDate() - daysToSubstract);
@@ -40,19 +40,19 @@ export default class DateUpdates {
   }
 
   static lastThirtyDays = () => {
-    const dates = [];
-    const aujourdHui = new Date();
+    const lastThirtyDays = [];
+    const today = new Date();
     for (let i = 0; i < 30; i++) {
       const date = new Date(
-        aujourdHui.getFullYear(),
-        aujourdHui.getMonth(),
-        aujourdHui.getDate() - i
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() - i
       );
-      const jour = date.getDate();
-      const mois = date.getMonth() + 1;
-      const jourMois = jour.toString() + "/" + mois.toString();
-      dates.unshift(jourMois);
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const dayMonth = day.toString() + "/" + month.toString();
+      lastThirtyDays.unshift(dayMonth);
     }
-    return dates;
+    return lastThirtyDays;
   };
 }
