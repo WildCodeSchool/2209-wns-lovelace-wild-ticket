@@ -184,7 +184,7 @@ const DashboardPole = () => {
         }
       >
         <h1 className="dashboardPoleListModalTitle">
-          Voulez-vous clore le pôle "{poleName}" ?
+          Voulez-vous supprimer le pôle "{poleName}" ?
         </h1>
         <div className="dashboardPoleListModalButtonContainer">
           <button
