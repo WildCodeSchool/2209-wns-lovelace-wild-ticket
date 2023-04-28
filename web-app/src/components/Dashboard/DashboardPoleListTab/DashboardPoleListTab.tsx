@@ -41,6 +41,9 @@ export default function DashboardPoleListTab({
         stripedRows
         tableStyle={{ minWidth: "50rem" }}
         size="small"
+        paginator
+        rows={10}
+        rowsPerPageOptions={[5, 10, 20, 50]}
       >
         <Column field="name" header="Nom"></Column>
         <Column field="address" header="Adresse"></Column>
