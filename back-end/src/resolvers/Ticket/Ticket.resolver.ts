@@ -15,7 +15,8 @@ export default class TicketResolver {
     return TicketRepository.getTickets();
   }
 
-  @Authorized("ROLE_RESTAURANT")
+  //TODO: Disable to fetch list in react native. See how to use auth account
+  //@Authorized("ROLE_RESTAURANT")
   @Query(() => [Ticket])
   TicketsByRestaurant(
     @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs

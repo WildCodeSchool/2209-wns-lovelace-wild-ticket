@@ -15,6 +15,7 @@ import SelectScreen from "../screens/SelectScreen";
 import RestaurantsScreen from "../screens/RestaurantsScreen";
 import CreateTicketScreen from "../screens/CreateTicketScreen";
 import { ContextProvider } from "../context/TicketContext";
+import TicketConfirmationScreen from "../screens/TicketConfirmationScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -55,6 +56,11 @@ function RootNavigator() {
         <Stack.Screen
           name="Ticket"
           component={CreateTicketScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TicketConfirm"
+          component={TicketConfirmationScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
