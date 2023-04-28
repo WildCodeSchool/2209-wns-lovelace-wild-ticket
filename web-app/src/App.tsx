@@ -2,6 +2,10 @@ import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer, Flip } from "react-toastify";
 
+/* PRIME REACT */
+import "primereact/resources/themes/lara-light-indigo/theme.css";     
+import "primereact/resources/primereact.min.css";        
+
 /* PATHS */
 import {
   HOME_PATH,

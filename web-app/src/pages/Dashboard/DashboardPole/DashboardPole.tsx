@@ -1,8 +1,12 @@
-import { useContext, useState } from "react";
-import "../DashboardTemp.scss";
-import { AppContext } from "../../../context/AppContext";
 import "./DashboardPole.scss";
+import "../DashboardTemp.scss";
+import DashboardPoleListTab from "../../../components/Dashboard/DashboardPoleListTab/DashboardPoleListTab";
+import { useContext, useState } from "react";
+import { AppContext } from "../../../context/AppContext";
+import { toast } from "react-toastify";
+import { getErrorMessage } from "../../../utils";
 import { GET_POLES_TYPES, GET_POLE_TYPES } from "../../../types/DataTypes";
+import { DELETE_POLE, GET_POLES, CREATE_POLE } from "../../../queries/Queries";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   CreatePoleMutation,
@@ -11,13 +15,6 @@ import {
   DeletePoleMutationVariables,
   PolesQuery,
 } from "../../../gql/graphql";
-import { DELETE_POLE, GET_POLES } from "../../../queries/Queries";
-import { CREATE_POLE } from "../../../queries/Queries";
-import { InfinitySpin } from "react-loader-spinner";
-import { toast } from "react-toastify";
-import { getErrorMessage } from "../../../utils";
-import SVGIconDelete from "../../../components/SVG/SVGIconDelete/SVGIconDelete";
-import SVGIconEdit from "../../../components/SVG/SVGIconEdit/SVGIconEdit";
 
 const DashboardPole = () => {
   // Chargement du contexte
@@ -52,6 +49,11 @@ const DashboardPole = () => {
       await createPole({
         variables: { name, address, zipCode, city, email },
       });
+      setName("");
+      setAddress("");
+      setZipCode("");
+      setCity("");
+      setEmail("");
       toast.success(`Vous avez créé un pôle avec succès.`);
       refetch();
     } catch (error) {
@@ -107,46 +109,11 @@ const DashboardPole = () => {
 
       {/* Main avec tableau des poles */}
       <main className="DashboardPoleList">
-        <table className="ListTab">
-          <thead className="ListTabHeader">
-            <tr className="ListTabHeaderRow">
-              <td>Nom</td>
-              <td>Adresse</td>
-              <td>Code Postale</td>
-              <td>Ville</td>
-              <td>Email</td>
-              <td>Actions</td>
-            </tr>
-          </thead>
-          <tbody className="ListTabBody">
-            {poles &&
-              poles.map((pole) => (
-                <tr className="ListTabBodyRow">
-                  <td>{pole.name}</td>
-                  <td>{pole.address}</td>
-                  <td>{pole.zipCode}</td>
-                  <td>{pole.city}</td>
-                  <td>{pole.email}</td>
-                  <td>
-                    <div className="ListTabBodyRowActionsButtonContainer">
-                      <SVGIconEdit
-                        onClick={async () => {
-                          await confirmDelete(pole);
-                        }}
-                        isClickable={isClickable}
-                      />
-                      <SVGIconDelete
-                        onClick={async () => {
-                          await confirmDelete(pole);
-                        }}
-                        isClickable={isClickable}
-                      />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <DashboardPoleListTab
+          poles={poles}
+          isClickable={isClickable}
+          confirmDelete={confirmDelete}
+        />
       </main>
 
       {/* Footer */}
