@@ -10,20 +10,73 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { InfinitySpin } from "react-loader-spinner";
 import DashboardStatsExportModal from "../DashboardStatsExportModal/DashboardStatsExportModal";
+import { useLazyQuery } from "@apollo/client";
+import {
+  ExportTicketsByRestaurantQuery,
+  ExportTicketsByRestaurantQueryVariables,
+} from "../../../gql/graphql";
+import { EXPORT_TICKETS_BY_RESTAURANT } from "../../../queries/Queries";
+import { exportTickets } from "../../../services/ExportService";
+import { toast } from "react-toastify";
+import { changeDateFormat } from "../../../services/DateService";
 
 const DashboardStatsList = ({ data }: { data: any }) => {
+  const appContext = useContext(AppContext);
+  const ticketsLoading = appContext?.ticketsLoading;
+  const restaurantName = appContext?.userData.restaurant.name;
+  const restaurantId = appContext?.userData.restaurant.id;
+
   const [openExportModal, setOpenExportModal] = useState<boolean>(false);
   const [exportTypeFile, setExportTypeFile] = useState<string>("");
-  const [rows, setRows] = useState(15);
+  const [isPortraitTabletView, setisPortraitTabletView] = useState(false);
   const [globalFilterValue, setGlobalFilterValue] = useState("");
+  const [rows, setRows] = useState(15);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
-  const ticketsLoading = useContext(AppContext)?.ticketsLoading;
+
+  const [getTicketsToExport, { loading: exportLoading }] = useLazyQuery<
+    ExportTicketsByRestaurantQuery,
+    ExportTicketsByRestaurantQueryVariables
+  >(EXPORT_TICKETS_BY_RESTAURANT, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data) => {
+      if (data.ExportTicketsByRestaurant) {
+        exportTickets(
+          data.ExportTicketsByRestaurant,
+          exportTypeFile,
+          restaurantName
+        );
+        toast.success(
+          "Export terminé. Le fichier se trouve dans votre dossier de téléchargement."
+        );
+      }
+    },
+    onError: () => {
+      toast.error("Une erreur est survenue. Merci de renouveler l'opération.");
+    },
+  });
+
+  const handleOpenModalExport = (exportType: string) => {
+    setOpenExportModal(true);
+    setExportTypeFile(exportType);
+  };
+
+  const handleExport = async (value: any) => {
+    const dateMin = value[0];
+    const dateMax = value[1];
+    await getTicketsToExport({
+      variables: {
+        restaurantId: restaurantId as string,
+        dateMin: dateMin,
+        dateMax: dateMax,
+      },
+    });
+    setOpenExportModal(false);
+  };
 
   const onGlobalFilterChange = (e: any) => {
     const value = e.target.value;
-    console.log(filters);
     let _filters = { ...filters };
 
     _filters["global"].value = value;
@@ -32,45 +85,30 @@ const DashboardStatsList = ({ data }: { data: any }) => {
     setGlobalFilterValue(value);
   };
 
-  const changeDateFormat = (date: any) => {
-    if (!date) {
-      return "";
-    }
-    const dateToFormat = new Date(date);
-    const day = dateToFormat.getDate().toString().padStart(2, "0");
-    const month = (dateToFormat.getMonth() + 1).toString().padStart(2, "0");
-    const year = dateToFormat.getFullYear().toString();
-    const hours = dateToFormat.getHours().toString().padStart(2, "0");
-    const minutes = dateToFormat.getMinutes().toString().padStart(2, "0");
-    return `${day}-${month}-${year} ${hours}:${minutes}`;
-  };
-
   useEffect(() => {
-    function updateDataTableRows() {
+    const updateDataTableRows = () => {
       const width = window.innerWidth;
 
       if (width < 768) {
-        setRows(6);
+        setisPortraitTabletView(true);
+        setRows(18);
+      } else if (width < 1100) {
+        setisPortraitTabletView(false);
       } else if (width < 1200) {
         setRows(11);
       } else {
+        setisPortraitTabletView(false);
         setRows(16);
       }
-    }
+    };
 
     updateDataTableRows();
-
     window.addEventListener("resize", updateDataTableRows);
 
     return () => {
       window.removeEventListener("resize", updateDataTableRows);
     };
   }, []);
-
-  const handleModalExport = (exportType: string) => {
-    setOpenExportModal(true);
-    setExportTypeFile(exportType);
-  };
 
   const header = (
     <div className="DashboardStatsListHeader">
@@ -94,7 +132,7 @@ const DashboardStatsList = ({ data }: { data: any }) => {
           icon="pi pi-file"
           rounded
           onClick={() => {
-            handleModalExport("CSV");
+            handleOpenModalExport("csv");
           }}
           data-pr-tooltip="CSV"
         />
@@ -106,18 +144,13 @@ const DashboardStatsList = ({ data }: { data: any }) => {
           severity="success"
           rounded
           onClick={() => {
-            handleModalExport("XLSX");
+            handleOpenModalExport("xlsx");
           }}
           data-pr-tooltip="XLS"
         />
       </div>
     </div>
   );
-
-  const handleExport = (value: any) => {
-    console.log(exportTypeFile);
-    setOpenExportModal(false);
-  };
 
   return ticketsLoading ? (
     <div className="loadingSpinContainer">
@@ -131,6 +164,7 @@ const DashboardStatsList = ({ data }: { data: any }) => {
         openExportModal={openExportModal}
         handleExport={handleExport}
         type={exportTypeFile}
+        loading={exportLoading}
       />
       <div
         className={
@@ -165,18 +199,21 @@ const DashboardStatsList = ({ data }: { data: any }) => {
             header="Délivré le"
             sortable
             body={(ticket) => changeDateFormat(ticket.deliveredAt)}
+            hidden={isPortraitTabletView === true ? true : false}
           ></Column>
           <Column
             field="placedAt"
             header="Placé le"
             sortable
             body={(ticket) => changeDateFormat(ticket.placedAt)}
+            hidden={isPortraitTabletView === true ? true : false}
           ></Column>
           <Column
             field="closedAt"
             header="Clos le"
             sortable
             body={(ticket) => changeDateFormat(ticket.closedAt)}
+            hidden={isPortraitTabletView === true ? true : false}
           ></Column>
         </DataTable>
       </div>

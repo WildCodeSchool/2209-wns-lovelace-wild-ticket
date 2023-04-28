@@ -74,6 +74,30 @@ export const GET_TICKETS_BY_RESTAURANT = gql`
   }
 `;
 
+export const EXPORT_TICKETS_BY_RESTAURANT = gql`
+  query ExportTicketsByRestaurant(
+    $restaurantId: ID!
+    $dateMin: DateTime
+    $dateMax: DateTime
+  ) {
+    ExportTicketsByRestaurant(
+      restaurantId: $restaurantId
+      dateMin: $dateMin
+      dateMax: $dateMax
+    ) {
+      number
+      name
+      email
+      phoneNumber
+      seats
+      createdAt
+      deliveredAt
+      placedAt
+      closedAt
+    }
+  }
+`;
+
 export const UPDATE_DELIVERED_AT = gql`
   mutation UpdateDeliveredAt($updateDeliveredAtId: ID!, $table: String!) {
     updateDeliveredAt(id: $updateDeliveredAtId, table: $table) {

@@ -3,6 +3,7 @@ import Ticket from "../../models/Ticket/Ticket.entity";
 import TicketRepository from "../../models/Ticket/Ticket.repository";
 import {
   CreateTicketArgs,
+  GetExportTicketsByRestaurantArgs,
   GetTicketsByRestaurantArgs,
   UpdateTicketArgs,
 } from "./Ticket.input";
@@ -27,6 +28,18 @@ export default class TicketResolver {
   @Query(() => Ticket)
   Ticket(@Arg("id") id: string): Promise<Ticket | null> {
     return TicketRepository.getTicketById(id);
+  }
+
+  @Query(() => [Ticket])
+  @Authorized("ROLE_RESTAURANT")
+  ExportTicketsByRestaurant(
+    @Args() { restaurantId, dateMin, dateMax }: GetExportTicketsByRestaurantArgs
+  ): Promise<Ticket[] | null> {
+    return TicketRepository.getExportTicketsByRestaurant(
+      restaurantId,
+      dateMin,
+      dateMax
+    );
   }
 
   @Mutation(() => Ticket)

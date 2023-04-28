@@ -4,18 +4,20 @@ import "./DashboardStatsExportModal.scss";
 import "rsuite/dist/rsuite-no-reset.min.css";
 import { useState } from "react";
 import { DateRange, ValueType } from "rsuite/esm/DateRangePicker";
+import { InfinitySpin } from "react-loader-spinner";
 
 const DashboardStatsExportModal = ({
   openExportModal,
   handleExport,
   type,
+  loading,
 }: {
   openExportModal: boolean;
   handleExport: any;
   type: string;
+  loading: boolean;
 }) => {
   const [value, setValue] = useState<ValueType | null>(null);
-  console.log(value);
   return (
     <div
       className={
@@ -44,7 +46,13 @@ const DashboardStatsExportModal = ({
         }
         disabled={value ? false : true}
       >
-        Exporter au format {type}
+        {loading ? (
+          <div className="DashboardStatsListModalLoadingSpinner">
+            <InfinitySpin width="100" color="#d1d5db" />
+          </div>
+        ) : (
+          `Exporter au format ${type.toLocaleUpperCase()}`
+        )}
       </button>
     </div>
   );

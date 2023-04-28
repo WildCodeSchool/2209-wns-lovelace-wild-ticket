@@ -227,4 +227,35 @@ export default class TicketRepository extends TicketDb {
       closedAt,
     });
   }
+
+  static async getExportTicketsByRestaurant(
+    restaurantId: string,
+    dateMin: Date | null,
+    dateMax: Date | null,
+  ): Promise<Ticket[] | null> {
+    const restaurant = await RestaurantRepository.getRestaurantById(
+      restaurantId
+    );
+    if (!restaurant) throw new Error();
+    let query = this.repository
+      .createQueryBuilder("ticket")
+      .leftJoinAndSelect("ticket.restaurant", "restaurant")
+      .leftJoinAndSelect("ticket.table", "userTable")
+      .where("ticket.restaurant.id = :restaurantId", {
+        restaurantId: restaurantId,
+      });
+    if (dateMin as Date) {
+      query.andWhere("ticket.createdAt > :dateMin", {
+        dateMin: dateMin,
+      });
+    }
+    if (dateMin as Date) {
+      query.andWhere("ticket.createdAt < :dateMax", {
+        dateMax: dateMax,
+      });
+    }
+    query.orderBy("ticket.createdAt", "ASC");
+    query.addOrderBy("ticket.number", "ASC");
+    return await query.getMany();
+  }
 }

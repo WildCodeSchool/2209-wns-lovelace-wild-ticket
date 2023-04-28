@@ -25,7 +25,8 @@
     "rsuite": "^5.32.0",
     "styled-components": "^5.3.5",
     "typescript": "^4.8.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",
