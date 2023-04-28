@@ -28,7 +28,7 @@ const DashboardStatsList = ({ data }: { data: any }) => {
 
   const [openExportModal, setOpenExportModal] = useState<boolean>(false);
   const [exportTypeFile, setExportTypeFile] = useState<string>("");
-  const [isPortraitTabletView, setisPortraitTabletView] = useState(false);
+  const [isPortraitTabletView, setIsPortraitTabletView] = useState(false);
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const [rows, setRows] = useState(15);
   const [filters, setFilters] = useState({
@@ -90,14 +90,14 @@ const DashboardStatsList = ({ data }: { data: any }) => {
       const width = window.innerWidth;
 
       if (width < 768) {
-        setisPortraitTabletView(true);
+        setIsPortraitTabletView(true);
         setRows(18);
       } else if (width < 1100) {
-        setisPortraitTabletView(false);
+        setIsPortraitTabletView(false);
       } else if (width < 1200) {
         setRows(11);
       } else {
-        setisPortraitTabletView(false);
+        setIsPortraitTabletView(false);
         setRows(16);
       }
     };
