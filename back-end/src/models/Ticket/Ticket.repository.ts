@@ -10,6 +10,7 @@ import Table from "../Table/Table.entity";
 import TableRepository from "../Table/Table.repository";
 import TicketDb from "./Ticket.db";
 import Ticket from "./Ticket.entity";
+import PageOfTickets from "../../resolvers/Ticket/PageOfTickets";
 
 export default class TicketRepository extends TicketDb {
   static async initializeTickets(): Promise<void> {
@@ -95,6 +96,48 @@ export default class TicketRepository extends TicketDb {
       seats: Between(seats - 1, seats),
       createdAt: MoreThan(DateUpdates.newDateAtMidnight()),
     });
+  }
+
+  static async getPaginatedAndSortedTicketsByRestaurant(
+    restaurantId: string,
+    pageSize: number,
+    pageNumber: number,
+    filter: string | null,
+    sort: string[],
+    order: string[]
+  ): Promise<PageOfTickets> {
+    const restaurant = await RestaurantRepository.getRestaurantById(
+      restaurantId
+    );
+    if (!restaurant) throw new Error();
+
+    const countTotalTickets = await this.repository.count({
+      where: { restaurant },
+    });
+
+    const query = this.repository.createQueryBuilder("ticket").where("1 = 1");
+    if (filter) {
+      query.andWhere("ticket.name LIKE :filter", { filter: `%${filter}%` });
+    }
+    if (sort.length > 0) {
+      sort.forEach((sortField, index) => {
+        query.addOrderBy(`ticket.${sortField}`, order[index] as "ASC" | "DESC");
+      });
+    } else {
+      query.addOrderBy("ticket.createdAt", "DESC");
+      query.addOrderBy("ticket.number", "DESC");
+    }
+    query.take(pageSize).skip((pageNumber - 1) * pageSize);
+
+    const tickets = await query.getMany();
+
+    const numberOfRemainingItems = countTotalTickets - pageSize * pageNumber;
+
+    return {
+      totalCount: countTotalTickets,
+      nextPageNumber: numberOfRemainingItems > 0 ? pageNumber + 1 : null,
+      tickets,
+    };
   }
 
   static async getTicketById(id: string): Promise<Ticket | null> {

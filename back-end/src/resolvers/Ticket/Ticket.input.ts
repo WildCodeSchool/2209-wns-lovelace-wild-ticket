@@ -10,6 +10,7 @@ import {
   ValidateIf,
   IsNumber,
   IsDate,
+  IsString,
 } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
@@ -98,9 +99,38 @@ class GetExportTicketsByRestaurantArgs {
   dateMax: Date;
 }
 
+@ArgsType()
+class getPaginatedAndSortedTicketsArgs {
+  @Field(() => ID)
+  @IsUUID()
+  restaurantId: string;
+
+  @Field()
+  @IsInt()
+  pageSize: number;
+
+  @Field()
+  @IsInt()
+  pageNumber: number;
+
+  @Field({ nullable: true })
+  @IsString()
+  @ValidateIf((value) => value === null)
+  filter: string;
+
+  @Field(() => [String], { nullable: true })
+  @ValidateIf((value) => value === null)
+  sort: string[];
+
+  @Field(() => [String], { nullable: true })
+  @ValidateIf((value) => value === null)
+  order: string[];
+}
+
 export {
   CreateTicketArgs,
   UpdateTicketArgs,
   GetTicketsByRestaurantArgs,
   GetExportTicketsByRestaurantArgs,
+  getPaginatedAndSortedTicketsArgs,
 };

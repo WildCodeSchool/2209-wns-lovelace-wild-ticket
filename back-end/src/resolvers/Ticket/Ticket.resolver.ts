@@ -6,7 +6,9 @@ import {
   GetExportTicketsByRestaurantArgs,
   GetTicketsByRestaurantArgs,
   UpdateTicketArgs,
+  getPaginatedAndSortedTicketsArgs,
 } from "./Ticket.input";
+import PageOfTickets from "./PageOfTickets";
 
 @Resolver(Ticket)
 export default class TicketResolver {
@@ -22,6 +24,29 @@ export default class TicketResolver {
     @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs
   ): Promise<Ticket[] | null> {
     return TicketRepository.getTicketsByRestaurant(restaurantId, seats);
+  }
+
+  @Authorized("ROLE_RESTAURANT")
+  @Query(() => PageOfTickets)
+  PaginatedAndSortedTickets(
+    @Args()
+    {
+      restaurantId,
+      pageSize,
+      pageNumber,
+      filter,
+      sort,
+      order,
+    }: getPaginatedAndSortedTicketsArgs
+  ): Promise<PageOfTickets> {
+    return TicketRepository.getPaginatedAndSortedTicketsByRestaurant(
+      restaurantId,
+      pageSize,
+      pageNumber,
+      filter,
+      sort,
+      order
+    );
   }
 
   @Authorized("ROLE_RESTAURANT")
