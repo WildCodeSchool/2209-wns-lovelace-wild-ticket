@@ -19,6 +19,7 @@ import {
   StatsByRestaurantQuery,
   StatsByRestaurantQueryVariables,
 } from "../../../gql/graphql";
+import { InfinitySpin } from "react-loader-spinner";
 
 ChartJS.register(
   CategoryScale,
@@ -34,7 +35,7 @@ ChartJS.register(
 const DashboardStatsGraph = () => {
   const restaurantId = useContext(AppContext)?.userData.restaurant.id;
 
-  const { data } = useQuery<
+  const { data, loading } = useQuery<
     StatsByRestaurantQuery,
     StatsByRestaurantQueryVariables
   >(GET_STATS_BY_RESTAURANT, {
@@ -130,18 +131,39 @@ const DashboardStatsGraph = () => {
   return (
     <div className="dashboardStatsGraphContainer">
       <div className="dashboardStatsGraph">
+        {loading && (
+          <div className="dashboardStatsGraphLoadingSpinContainer">
+            <div className="dashboardStatsGraphLoadingSpin">
+              <InfinitySpin width="200" color="#155e75" />
+            </div>
+          </div>
+        )}
         <Bar
           options={countTodaysTicketsBySeatOptions}
           data={countTodaysTicketsBySeatDatas}
         />
       </div>
       <div className="dashboardStatsGraph">
+        {loading && (
+          <div className="dashboardStatsGraphLoadingSpinContainer">
+            <div className="dashboardStatsGraphLoadingSpin">
+              <InfinitySpin width="200" color="#155e75" />
+            </div>
+          </div>
+        )}
         <Line
           options={countCurrentWeekTicketsOptions}
           data={countCurrentWeekTicketsDatas}
         />
       </div>
       <div className="dashboardStatsGraph">
+        {loading && (
+          <div className="dashboardStatsGraphLoadingSpinContainer">
+            <div className="dashboardStatsGraphLoadingSpin">
+              <InfinitySpin width="200" color="#155e75" />
+            </div>
+          </div>
+        )}
         <Line
           options={lastThirtyDaysTicketsOptions}
           data={lastThirtyDaysTicketsDatas}

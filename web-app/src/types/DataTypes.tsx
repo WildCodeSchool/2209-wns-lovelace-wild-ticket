@@ -71,3 +71,28 @@ export type EXPORT_TICKETS_BY_RESTAURANT_TYPES_NOT_NULL = Array<{
   placedAt?: any;
   closedAt?: any;
 }>;
+
+export type GET_PAGINATED_AND_SORTED_TICKETS_BY_RESTAURANT_TYPES = {
+  __typename?: "PageOfTickets" | undefined;
+  totalCount: number;
+  nextPageNumber?: number | null | undefined;
+  tickets: {
+    __typename?: "Ticket" | undefined;
+    number: number;
+    name: string;
+    seats: number;
+    createdAt: any;
+    deliveredAt?: any;
+    placedAt?: any;
+    closedAt?: any;
+  }[];
+} | null;
+
+export type DATA_TABLE_LAZY_STATE_TYPES = {
+  globalFilter: string;
+  first: number;
+  rows: number;
+  page: number;
+  sortField: string[];
+  sortOrder: number[];
+};

@@ -5,11 +5,9 @@ import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
 import DashboardStatsGraph from "../../../components/Dashboard/DashboardStatsGraph/DashboardStatsGraph";
 import DashboardStatsList from "../../../components/Dashboard/DashboardStatsList/DashboardStatsList";
-import { GET_TICKETS_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
 
 const DashboardStats = () => {
   const appContext = useContext(AppContext);
-  const tickets = appContext?.tickets as GET_TICKETS_BY_RESTAURANT_TYPES;
 
   return appContext?.userData.role === "ROLE_ADMIN" ? (
     <section className="DashboardStatsSection">
@@ -28,7 +26,7 @@ const DashboardStats = () => {
     <section className="DashboardStatsSection">
       <DashboardStatsGraph />
       <div className="DashboardStatsSectionTabContainer">
-        <DashboardStatsList data={tickets} />
+        <DashboardStatsList />
       </div>
     </section>
   );

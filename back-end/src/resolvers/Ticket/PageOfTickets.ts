@@ -6,9 +6,6 @@ class PageOfTickets {
   @Field(() => Int)
   totalCount: number;
 
-  @Field(() => Int, { nullable: true })
-  nextPageNumber: number | null;
-
   @Field(() => [Ticket])
   tickets: Ticket[];
 }

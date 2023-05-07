@@ -32,18 +32,18 @@ export default class TicketResolver {
     @Args()
     {
       restaurantId,
+      globalFilter,
       pageSize,
       pageNumber,
-      filter,
       sort,
       order,
     }: getPaginatedAndSortedTicketsArgs
   ): Promise<PageOfTickets> {
     return TicketRepository.getPaginatedAndSortedTicketsByRestaurant(
       restaurantId,
+      globalFilter,
       pageSize,
       pageNumber,
-      filter,
       sort,
       order
     );

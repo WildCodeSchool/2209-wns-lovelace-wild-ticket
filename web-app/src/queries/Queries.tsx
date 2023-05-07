@@ -74,6 +74,37 @@ export const GET_TICKETS_BY_RESTAURANT = gql`
   }
 `;
 
+export const GET_PAGINATED_AND_SORTED_TICKETS_BY_RESTAURANT = gql`
+  query PaginatedAndSortedTickets(
+    $restaurantId: ID!
+    $globalFilter: String!
+    $pageSize: Float!
+    $pageNumber: Float!
+    $sort: [String!]!
+    $order: [Float!]!
+  ) {
+    PaginatedAndSortedTickets(
+      restaurantId: $restaurantId
+      globalFilter: $globalFilter
+      pageSize: $pageSize
+      pageNumber: $pageNumber
+      sort: $sort
+      order: $order
+    ) {
+      totalCount
+      tickets {
+        number
+        name
+        seats
+        createdAt
+        deliveredAt
+        placedAt
+        closedAt
+      }
+    }
+  }
+`;
+
 export const EXPORT_TICKETS_BY_RESTAURANT = gql`
   query ExportTicketsByRestaurant(
     $restaurantId: ID!

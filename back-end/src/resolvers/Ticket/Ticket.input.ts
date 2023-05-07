@@ -106,6 +106,10 @@ class getPaginatedAndSortedTicketsArgs {
   restaurantId: string;
 
   @Field()
+  @IsString()
+  globalFilter: string;
+
+  @Field()
   @IsInt()
   pageSize: number;
 
@@ -113,18 +117,11 @@ class getPaginatedAndSortedTicketsArgs {
   @IsInt()
   pageNumber: number;
 
-  @Field({ nullable: true })
-  @IsString()
-  @ValidateIf((value) => value === null)
-  filter: string;
-
   @Field(() => [String], { nullable: true })
-  @ValidateIf((value) => value === null)
   sort: string[];
 
-  @Field(() => [String], { nullable: true })
-  @ValidateIf((value) => value === null)
-  order: string[];
+  @Field(() => [Number])
+  order: number[];
 }
 
 export {
