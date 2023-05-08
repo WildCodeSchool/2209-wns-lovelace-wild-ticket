@@ -85,8 +85,7 @@ export default class TicketRepository extends TicketDb {
         seatsMax: seats,
       });
     }
-    query.orderBy("ticket.createdAt", "DESC");
-    query.addOrderBy("ticket.number", "DESC");
+    query.orderBy("ticket.number", "DESC");
     return await query.getMany();
   }
 
@@ -127,7 +126,7 @@ export default class TicketRepository extends TicketDb {
       .where("ticket.restaurant = :restaurantId", { restaurantId });
 
     globalFilter &&
-      query.andWhere("ticket.name LIKE :filter", {
+      query.andWhere("ticket.name ILIKE :filter", {
         filter: `%${globalFilter}%`,
       });
 
@@ -139,8 +138,7 @@ export default class TicketRepository extends TicketDb {
     });
 
     if (!sort.length || !order.length || sort.length !== order.length) {
-      query.addOrderBy("ticket.createdAt", "DESC");
-      query.addOrderBy("ticket.number", "DESC");
+      query.orderBy("ticket.number", "DESC");
     }
 
     query.take(pageSize).skip((pageNumber - 1) * pageSize);
@@ -190,11 +188,6 @@ export default class TicketRepository extends TicketDb {
       restaurant,
       lastTicket
     );
-    /*     let ticketNumber = 1;
-
-    lastTicket && lastTicket.number < 1000
-      ? (ticketNumber = lastTicket.number + 1)
-      : ticketNumber; */
 
     const createdAt = new Date();
 
@@ -315,8 +308,7 @@ export default class TicketRepository extends TicketDb {
         dateMax: dateMax,
       });
     }
-    query.orderBy("ticket.createdAt", "ASC");
-    query.addOrderBy("ticket.number", "ASC");
+    query.orderBy("ticket.number", "ASC");
     return await query.getMany();
   }
 }
