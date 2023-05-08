@@ -1,4 +1,4 @@
-export default class DateUplastThirtyDays {
+export default class DateUpdates {
   static substractDaysToDate(dateNow: Date, daysToSubstract: number) {
     let ticketsDay = new Date(dateNow);
     ticketsDay.setDate(ticketsDay.getDate() - daysToSubstract);
@@ -54,5 +54,13 @@ export default class DateUplastThirtyDays {
       lastThirtyDays.unshift(dayMonth);
     }
     return lastThirtyDays;
+  };
+
+  static dateToString = (date: Date) => {
+    const year = date.getFullYear().toString().slice(-2);
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+
+    return year + month + day;
   };
 }

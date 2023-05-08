@@ -11,6 +11,7 @@ import TableRepository from "../Table/Table.repository";
 import TicketDb from "./Ticket.db";
 import Ticket from "./Ticket.entity";
 import PageOfTickets from "../../resolvers/Ticket/PageOfTickets";
+import TicketService from "../../services/TicketService";
 
 export default class TicketRepository extends TicketDb {
   static async initializeTickets(): Promise<void> {
@@ -29,8 +30,14 @@ export default class TicketRepository extends TicketDb {
               )) as Table)
             : undefined;
 
-          const newTicket = new Ticket(
+          const ticketNumber = TicketService.formatTicketNumberForFixtures(
+            restaurant,
             ticket.number,
+            ticket.createdAt
+          );
+
+          const newTicket = new Ticket(
+            ticketNumber,
             ticket.name,
             ticket.seats,
             ticket.createdAt,
@@ -53,7 +60,7 @@ export default class TicketRepository extends TicketDb {
     return this.repository.find();
   }
 
-  static async getTicketByNumber(number: number): Promise<Ticket | null> {
+  static async getTicketByNumber(number: string): Promise<Ticket | null> {
     return this.repository.findOneBy({ number: number });
   }
 
@@ -178,11 +185,16 @@ export default class TicketRepository extends TicketDb {
       throw new Error("Aucun restaurant ne correspond à cet ID.");
 
     const lastTicket = await this.getLastTicket(restaurant);
-    let ticketNumber = 1;
+
+    const ticketNumber = TicketService.formatTicketNumber(
+      restaurant,
+      lastTicket
+    );
+    /*     let ticketNumber = 1;
 
     lastTicket && lastTicket.number < 1000
       ? (ticketNumber = lastTicket.number + 1)
-      : ticketNumber;
+      : ticketNumber; */
 
     const createdAt = new Date();
 
