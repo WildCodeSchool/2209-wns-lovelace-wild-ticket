@@ -1,4 +1,4 @@
-export default class DateUplastThirtyDays {
+export default class DateUpdates {
   static substractDaysToDate(dateNow: Date, daysToSubstract: number) {
     let ticketsDay = new Date(dateNow);
     ticketsDay.setDate(ticketsDay.getDate() - daysToSubstract);
