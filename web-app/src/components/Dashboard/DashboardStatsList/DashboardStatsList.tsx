@@ -50,8 +50,8 @@ const DashboardStatsList = () => {
     first: 0,
     rows: 18,
     page: 1,
-    sortField: ["createdAt", "number"],
-    sortOrder: [-1, -1],
+    sortField: ["number"],
+    sortOrder: [-1],
   });
 
   // Data Table Data Filtering, Sorting, and Paginating
