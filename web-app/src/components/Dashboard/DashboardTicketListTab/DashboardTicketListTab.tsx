@@ -158,7 +158,8 @@ export default function DashboardTicketListTab({
         }
       >
         <h1 className="dashboardTicketListModalTitle">
-          Voulez-vous placer le ticket n° {ticketNumber} ?
+          Voulez-vous placer le ticket <br />
+          n° {ticketNumber} ?
         </h1>
         <div className="dashboardTicketListModalButtonContainer">
           <button
@@ -190,7 +191,8 @@ export default function DashboardTicketListTab({
         }
       >
         <h1 className="dashboardTicketListModalTitle">
-          Voulez-vous clore le ticket n° {ticketNumber} ?
+          Voulez-vous clore le ticket <br />
+          n° {ticketNumber} ?
         </h1>
         <div className="dashboardTicketListModalButtonContainer">
           <button
