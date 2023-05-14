@@ -4,6 +4,7 @@ import {
   initializeDatabaseRepositories,
 } from "../../database/utils";
 import DateUpdates from "../../services/DateUpdates";
+import TicketService from "../../services/TicketService";
 import PoleRepository from "../Pole/Pole.repository";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import TableRepository from "../Table/Table.repository";
@@ -85,7 +86,12 @@ describe("TicketRepository integration", () => {
               "0601020304"
             );
 
-            expect(ticket.number).toEqual("R-230508-001");
+            const expectedTicket = TicketService.formatTicketNumber(
+              restaurant,
+              null
+            );
+
+            expect(ticket.number).toEqual(expectedTicket);
           });
         });
       });
