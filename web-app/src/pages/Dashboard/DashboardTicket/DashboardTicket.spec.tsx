@@ -86,7 +86,7 @@ describe("DashboardTicket", () => {
   describe("when the user arrive on the page", () => {
     it("should render the page itself", async () => {
       renderDashboardTicket();
-      expect(screen.getByText("Tickets Placés")).toBeInTheDocument();
+      expect(screen.getByText("1 - 2 couverts")).toBeInTheDocument();
     });
   });
 });
