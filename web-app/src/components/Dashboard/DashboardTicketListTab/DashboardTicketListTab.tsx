@@ -1,12 +1,9 @@
 import { useState } from "react";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 import { InfinitySpin } from "react-loader-spinner";
+import { BUTTON_DISAPPEAR_DELAY } from "../../../constants/Constants";
 import {
-  BUTTON_DISAPPEAR_DELAY,
-  MAX_DELIVERED_TICKET_DELAY,
-  TICKET_DISAPPEAR_DELAY,
-} from "../../../constants/Constants";
-import {
-  addMinutesToDate,
   substractMinutesToDate,
   waitingTime,
 } from "../../../services/DateService";
@@ -22,16 +19,16 @@ import DashboardTicketListStatus from "./DashboardTicketListStatus/DashboardTick
 import "./DashboardTicketListTab.scss";
 
 export default function DashboardTicketListTab({
-  dataHead,
-  tickets,
+  waitingTickets,
+  placedTickets,
   tables,
   isLoading,
   handleDelete,
   handleDeliver,
   handlePlace,
 }: {
-  dataHead: string[];
-  tickets: GET_TICKETS_BY_RESTAURANT_TYPES;
+  waitingTickets: GET_TICKETS_BY_RESTAURANT_TYPES;
+  placedTickets: GET_TICKETS_BY_RESTAURANT_TYPES;
   tables: GET_TABLES_BY_RESTAURANT_TYPES;
   isLoading: boolean;
   handleDelete: (ticketId: string) => Promise<void>;
@@ -85,6 +82,68 @@ export default function DashboardTicketListTab({
     setTicketId(ticket?.id as string);
     setOpenConfirmClosedAtModal(true);
     setIsClickable(false);
+  };
+
+  const waitingTimes = (waitingTicket: any) => {
+    return <p>{waitingTime(waitingTicket.createdAt)} mn</p>;
+  };
+
+  const waitingTicketsStatus = (waitingTicket: any) => {
+    return <DashboardTicketListStatus ticket={waitingTicket} tables={tables} />;
+  };
+
+  const placedTicketsStatus = (placedTicket: any) => {
+    return <DashboardTicketListStatus ticket={placedTicket} tables={tables} />;
+  };
+
+  const waitingTicketsActions = (waitingTicket: any) => {
+    return (
+      <div className="ListTabBodyRowActionsButtonContainer">
+        {waitingTicket.deliveredAt !== null &&
+          new Date(waitingTicket.closedAt) >
+            substractMinutesToDate(new Date(), BUTTON_DISAPPEAR_DELAY) && (
+            <SVGIconValid
+              onClick={async () => {
+                await confirmPlace(waitingTicket);
+              }}
+              isClickable={isClickable}
+            />
+          )}
+        {waitingTicket?.placedAt === null &&
+          waitingTicket?.closedAt === null &&
+          isTableAvailable(tables, waitingTicket.seats) && (
+            <SVGIconAdd
+              onClick={async () => {
+                await confirmDeliver(waitingTicket);
+              }}
+              isClickable={isClickable}
+            />
+          )}
+        {((waitingTicket.deliveredAt !== null &&
+          new Date(waitingTicket.closedAt) > new Date()) ||
+          waitingTicket.closedAt === null) && (
+          <SVGIconDelete
+            onClick={async () => {
+              await confirmDelete(waitingTicket);
+            }}
+            isClickable={isClickable}
+          />
+        )}
+      </div>
+    );
+  };
+
+  const placedTicketsActions = (placedTicket: any) => {
+    return (
+      <div className="ListTabBodyRowActionsButtonContainer">
+        <SVGIconDelete
+          onClick={async () => {
+            await confirmDelete(placedTicket);
+          }}
+          isClickable={isClickable}
+        />
+      </div>
+    );
   };
 
   return isLoading ? (
@@ -216,133 +275,135 @@ export default function DashboardTicketListTab({
           </button>
         </div>
       </div>
-      <table className="ListTab">
-        <thead className="ListTabHeader">
-          <tr className="ListTabHeaderRow">
-            {dataHead.map((headContent) => (
-              <th key={headContent}>{headContent}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="ListTabBody">
-          <tr>
-            <td colSpan={6} className="ListTabBodyTitleRow">
-              Tickets non placés
-            </td>
-          </tr>
-          {tickets &&
-            tickets
-              .filter(
-                (ticket) =>
-                  ticket.placedAt === null &&
-                  ((ticket.deliveredAt !== null &&
-                    addMinutesToDate(
-                      new Date(ticket.closedAt),
-                      TICKET_DISAPPEAR_DELAY
-                    ) > new Date()) ||
-                    ticket.closedAt === null)
-              )
-              .sort(
-                (a, b) =>
-                  parseInt(a.number.split("-")[2], 10) -
-                  parseInt(b.number.split("-")[2], 10)
-              )
-              .map((ticket) => (
-                <tr key={ticket.number} className="ListTabBodyRow">
-                  <td>{ticket.number}</td>
-                  <td>{ticket.name}</td>
-                  <td>{ticket.seats}</td>
-                  <td>{waitingTime(ticket.createdAt)} mn</td>
-                  <td>
-                    <DashboardTicketListStatus
-                      ticket={ticket}
-                      tables={tables}
-                    />
-                  </td>
-                  <td className="ListTabBodyActions">
-                    <div className="ListTabBodyRowActionsButtonContainer">
-                      {ticket?.deliveredAt !== null &&
-                        new Date(ticket?.closedAt) >
-                          substractMinutesToDate(
-                            new Date(),
-                            BUTTON_DISAPPEAR_DELAY
-                          ) && (
-                          <SVGIconValid
-                            onClick={async () => {
-                              await confirmPlace(ticket);
-                            }}
-                            isClickable={isClickable}
-                          />
-                        )}
-                      {ticket?.placedAt === null &&
-                        ticket?.closedAt === null &&
-                        isTableAvailable(tables, ticket.seats) && (
-                          <SVGIconAdd
-                            onClick={async () => {
-                              await confirmDeliver(ticket);
-                            }}
-                            isClickable={isClickable}
-                          />
-                        )}
-                      {((ticket.deliveredAt !== null &&
-                        new Date(ticket.closedAt) > new Date()) ||
-                        ticket.closedAt === null) && (
-                        <SVGIconDelete
-                          onClick={async () => {
-                            await confirmDelete(ticket);
-                          }}
-                          isClickable={isClickable}
-                        />
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-          <tr>
-            <td colSpan={6} className="ListTabBodyTitleRow">
-              Tickets Placés
-            </td>
-          </tr>
-          {tickets &&
-            tickets
-              .filter(
-                (ticket) =>
-                  ticket.deliveredAt !== null &&
-                  ticket.placedAt !== null &&
-                  new Date(ticket.closedAt) >
-                    addMinutesToDate(new Date(), MAX_DELIVERED_TICKET_DELAY)
-              )
-              .sort(
-                (a, b) =>
-                  parseInt(a.number.split("-")[2], 10) -
-                  parseInt(b.number.split("-")[2], 10)
-              )
-              .map((ticket) => (
-                <tr key={ticket.number} className="ListTabBodyRow">
-                  <td>{ticket.number}</td>
-                  <td>{ticket.name}</td>
-                  <td>{ticket.seats}</td>
-                  <td>-</td>
-                  <td>
-                    <DashboardTicketListStatus
-                      ticket={ticket}
-                      tables={tables}
-                    />
-                  </td>
-                  <td className="ListTabBodyActions">
-                    <div className="ListTabBodyRowActionsButtonContainer">
-                      <SVGIconDelete
-                        onClick={async () => {
-                          await confirmDelete(ticket);
-                        }}
-                        isClickable={isClickable}
-                      />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-        </tbody>
-      </table>
+      <div className="DashboardTicketListTabContainer">
+        {waitingTickets && (
+          <DataTable
+            value={undefined}
+            rows={0}
+            className="DashboardTicketListTabHeaderTable"
+            tableStyle={{ width: "100%" }}
+            size="small"
+          >
+            <Column
+              style={{ textAlign: "center" }}
+              className="DashboardTicketListTabNumberColumn"
+              header="N° Ticket"
+            ></Column>
+            <Column
+              style={{ textAlign: "center" }}
+              className="DashboardTicketListTabNameColumn"
+              header="Nom"
+            ></Column>
+            <Column
+              style={{ textAlign: "center" }}
+              className="DashboardTicketListTabSeatsColumn"
+              header="Couverts"
+            ></Column>
+            <Column
+              style={{ textAlign: "center" }}
+              className="DashboardTicketListTabWaitingColumn"
+              header="Attente"
+            ></Column>
+            <Column
+              style={{ textAlign: "center" }}
+              className="DashboardTicketListTabStatusColumn"
+              header="Statut"
+            ></Column>
+            <Column
+              style={{ textAlign: "center" }}
+              className="DashboardTicketListTabActionsColumn"
+              header="Action"
+            ></Column>
+          </DataTable>
+        )}
+        <div className="DashboardTicketListTabWaitingDataTableContainer">
+          {waitingTickets && (
+            <DataTable
+              value={waitingTickets}
+              className="DashboardTicketListTabWaitingDataTable"
+              tableStyle={{ width: "100%" }}
+              size="small"
+              emptyMessage="Aucun ticket en attente"
+            >
+              <Column
+                style={{ textAlign: "center" }}
+                className="DashboardTicketListTabNumberColumn"
+                body={(ticket) => {
+                  return parseInt(ticket.number.split("-")[2], 10);
+                }}
+              ></Column>
+              <Column
+                style={{ textAlign: "center" }}
+                className="DashboardTicketListTabNameColumn"
+                field="name"
+              ></Column>
+              <Column
+                style={{ textAlign: "center" }}
+                className="DashboardTicketListTabSeatsColumn"
+                field="seats"
+              ></Column>
+              <Column
+                style={{ textAlign: "center" }}
+                className="DashboardTicketListTabWaitingColumn"
+                body={waitingTimes}
+              ></Column>
+              <Column
+                style={{ textAlign: "center" }}
+                className="DashboardTicketListTabStatusColumn"
+                body={waitingTicketsStatus}
+              ></Column>
+              <Column
+                style={{ textAlign: "center" }}
+                className="DashboardTicketListTabActionsColumn"
+                body={waitingTicketsActions}
+              ></Column>
+            </DataTable>
+          )}
+        </div>
+      </div>
+      {placedTickets && (
+        <DataTable
+          value={placedTickets}
+          className="DashboardTicketListTabPlacedDataTable"
+          tableStyle={{ width: "100%" }}
+          scrollable={true}
+          size="small"
+          emptyMessage="Aucun ticket placé"
+        >
+          <Column
+            style={{ textAlign: "center" }}
+            className="DashboardTicketListTabNumberColumn"
+            body={(ticket) => {
+              return parseInt(ticket.number.split("-")[2], 10);
+            }}
+          ></Column>
+          <Column
+            style={{ textAlign: "center" }}
+            className="DashboardTicketListTabNameColumn"
+            field="name"
+          ></Column>
+          <Column
+            style={{ textAlign: "center" }}
+            className="DashboardTicketListTabSeatsColumn"
+            field="seats"
+          ></Column>
+          <Column
+            style={{ textAlign: "center" }}
+            className="DashboardTicketListTabWaitingColumn"
+            body={<p>-</p>}
+          ></Column>
+          <Column
+            style={{ textAlign: "center" }}
+            className="DashboardTicketListTabStatusColumn"
+            body={placedTicketsStatus}
+          ></Column>
+          <Column
+            style={{ textAlign: "center" }}
+            className="DashboardTicketListTabActionsColumn"
+            body={placedTicketsActions}
+          ></Column>
+        </DataTable>
+      )}
     </>
   );
 }

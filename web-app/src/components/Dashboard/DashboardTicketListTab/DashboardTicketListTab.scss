@@ -91,49 +91,126 @@
   }
 }
 
-.ListTab {
+.DashboardTicketListTabContainer {
   width: 100%;
-  border-collapse: collapse;
+  height: 50%;
+  overflow: hidden;
 
-  .ListTabHeader {
-    .ListTabHeaderRow {
-      background-color: $gray200;
-      position: sticky;
-      height: 50px;
-      top: 0;
+  .DashboardTicketListTabHeaderTable {
+    width: 100%;
+
+    .DashboardTicketListTabNumberColumn {
+      width: 15%;
+    }
+
+    .DashboardTicketListTabNameColumn {
+      width: 15%;
+      min-width: 100px;
+    }
+
+    .DashboardTicketListTabSeatsColumn {
+      width: 10%;
+      min-width: 86px;
+    }
+
+    .DashboardTicketListTabWaitingColumn {
+      width: 10%;
+      min-width: 95px;
+    }
+
+    .DashboardTicketListTabStatusColumn {
+      width: 25%;
+      min-width: 138px;
+    }
+
+    .DashboardTicketListTabActionsColumn {
+      width: 25%;
+    }
+
+    tbody {
+      display: none;
     }
   }
 
-  .ListTabBody {
-    .ListTabBodyTitleRow {
-      text-align: center;
-      background-color: rgb(205, 205, 205);
-    }
+  .DashboardTicketListTabWaitingDataTableContainer {
+    width: 100%;
+    max-height: 89%;
+    overflow-y: scroll;
 
-    .ListTabBodyRow {
-      text-align: center;
-      height: 50px;
+    .DashboardTicketListTabWaitingDataTable {
+      width: 100%;
 
-      .ListTabBodyActions {
-        display: flex;
-        justify-content: center;
+      thead {
+        display: none;
+      }
 
-        .ListTabBodyRowActionsButtonContainer {
-          display: flex;
-          justify-content: flex-end;
-          width: 100px;
-        }
+      .DashboardTicketListTabNumberColumn {
+        width: 15%;
+      }
+
+      .DashboardTicketListTabNameColumn {
+        width: 15%;
+        min-width: 100px;
+      }
+
+      .DashboardTicketListTabSeatsColumn {
+        width: 10%;
+        min-width: 86px;
+      }
+
+      .DashboardTicketListTabWaitingColumn {
+        width: 10%;
+        min-width: 95px;
+      }
+
+      .DashboardTicketListTabStatusColumn {
+        width: 25%;
+        min-width: 138px;
+      }
+
+      .DashboardTicketListTabActionsColumn {
+        width: 25%;
       }
     }
   }
 }
 
-.ListTabBodyRow:nth-child(odd) {
-  background-color: white;
-}
+.DashboardTicketListTabPlacedDataTable {
+  width: 100%;
+  overflow-y: auto;
+  height: 55%;
 
-.ListTabBodyRow:nth-child(even) {
-  background-color: $gray100;
+  thead {
+    display: none;
+  }
+
+  .DashboardTicketListTabNumberColumn {
+    width: 15%;
+  }
+
+  .DashboardTicketListTabNameColumn {
+    width: 15%;
+    min-width: 100px;
+  }
+
+  .DashboardTicketListTabSeatsColumn {
+    width: 10%;
+    min-width: 86px;
+  }
+
+  .DashboardTicketListTabWaitingColumn {
+    width: 10%;
+    min-width: 95px;
+  }
+
+  .DashboardTicketListTabStatusColumn {
+    width: 25%;
+    min-width: 138px;
+  }
+
+  .DashboardTicketListTabActionsColumn {
+    width: 25%;
+  }
 }
 
 .dashboardTicketListModalHidden {
@@ -142,4 +219,8 @@
 
 .dashboardTicketListModalButtonActive {
   background-color: $modal-button-hover-background-color !important;
+}
+
+.p-datatable-emptymessage td {
+  text-align: center !important;
 }

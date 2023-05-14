@@ -1,4 +1,4 @@
-import { Between, MoreThan } from "typeorm";
+import { Between, Brackets, MoreThan } from "typeorm";
 import TicketFixtures, {
   TicketFixturesType,
 } from "../../DataFixtures/TicketFixtures";
@@ -306,6 +306,66 @@ export default class TicketRepository extends TicketDb {
     if (dateMin as Date) {
       query.andWhere("ticket.createdAt < :dateMax", {
         dateMax: dateMax,
+      });
+    }
+    query.orderBy("ticket.number", "ASC");
+    return await query.getMany();
+  }
+
+  static async getWaitingTicketsByRestaurant(
+    restaurantId: string,
+    seats: number | null
+  ): Promise<Ticket[] | null> {
+    const restaurant = await RestaurantRepository.getRestaurantById(
+      restaurantId
+    );
+    if (!restaurant) throw new Error();
+    let query = this.repository
+      .createQueryBuilder("ticket")
+      .leftJoinAndSelect("ticket.restaurant", "restaurant")
+      .leftJoinAndSelect("ticket.table", "userTable")
+      .where("ticket.restaurant.id = :restaurantId", {
+        restaurantId: restaurantId,
+      })
+      .andWhere("ticket.placedAt IS NULL")
+      .andWhere(
+        new Brackets((qb) =>
+          qb
+            .where("ticket.deliveredAt IS NOT NULL")
+            .andWhere("ticket.closedAt + interval '1 minute' > NOW()")
+            .orWhere("ticket.closedAt IS NULL")
+        )
+      );
+    if (seats) {
+      query.andWhere("ticket.seats = :seats", {
+        seats: seats,
+      });
+    }
+    query.orderBy("ticket.number", "ASC");
+    return await query.getMany();
+  }
+
+  static async getPlacedTicketsByRestaurant(
+    restaurantId: string,
+    seats: number | null
+  ): Promise<Ticket[] | null> {
+    const restaurant = await RestaurantRepository.getRestaurantById(
+      restaurantId
+    );
+    if (!restaurant) throw new Error();
+    let query = this.repository
+      .createQueryBuilder("ticket")
+      .leftJoinAndSelect("ticket.restaurant", "restaurant")
+      .leftJoinAndSelect("ticket.table", "userTable")
+      .where("ticket.restaurant.id = :restaurantId", {
+        restaurantId: restaurantId,
+      })
+      .andWhere("ticket.placedAt IS NOT NULL")
+      .andWhere("ticket.deliveredAt IS NOT NULL")
+      .andWhere("ticket.closedAt > NOW() + interval '5 minute'");
+    if (seats) {
+      query.andWhere("ticket.seats = :seats", {
+        seats: seats,
       });
     }
     query.orderBy("ticket.number", "ASC");

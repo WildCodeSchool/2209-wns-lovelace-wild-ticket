@@ -74,6 +74,48 @@ export const GET_TICKETS_BY_RESTAURANT = gql`
   }
 `;
 
+export const GET_WAITING_TICKETS_BY_RESTAURANT = gql`
+  query WaitingTicketsByRestaurant($restaurantId: ID!, $seats: Float) {
+    WaitingTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {
+      id
+      number
+      name
+      seats
+      email
+      phoneNumber
+      createdAt
+      deliveredAt
+      placedAt
+      closedAt
+      table {
+        id
+        number
+      }
+    }
+  }
+`;
+
+export const GET_PLACED_TICKETS_BY_RESTAURANT = gql`
+  query PlacedTicketsByRestaurant($restaurantId: ID!, $seats: Float) {
+    PlacedTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {
+      id
+      number
+      name
+      seats
+      email
+      phoneNumber
+      createdAt
+      deliveredAt
+      placedAt
+      closedAt
+      table {
+        id
+        number
+      }
+    }
+  }
+`;
+
 export const GET_PAGINATED_AND_SORTED_TICKETS_BY_RESTAURANT = gql`
   query PaginatedAndSortedTickets(
     $restaurantId: ID!

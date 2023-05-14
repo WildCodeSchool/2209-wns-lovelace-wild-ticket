@@ -26,6 +26,22 @@ export default class TicketResolver {
     return TicketRepository.getTicketsByRestaurant(restaurantId, seats);
   }
 
+  @Query(() => [Ticket])
+  @Authorized("ROLE_RESTAURANT")
+  WaitingTicketsByRestaurant(
+    @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs
+  ): Promise<Ticket[] | null> {
+    return TicketRepository.getWaitingTicketsByRestaurant(restaurantId, seats);
+  }
+
+  @Query(() => [Ticket])
+  @Authorized("ROLE_RESTAURANT")
+  PlacedTicketsByRestaurant(
+    @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs
+  ): Promise<Ticket[] | null> {
+    return TicketRepository.getPlacedTicketsByRestaurant(restaurantId, seats);
+  }
+
   @Authorized("ROLE_RESTAURANT")
   @Query(() => PageOfTickets)
   PaginatedAndSortedTickets(
