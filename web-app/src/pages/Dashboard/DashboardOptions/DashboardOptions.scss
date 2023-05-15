@@ -1,0 +1,30 @@
+@import "../../../index.scss";
+
+.DashboardOptionsSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: auto;
+  height: 90%;
+  margin: 10px 15px 15px 80px;
+
+  .DashboardOptionsContainer {
+    min-width: 510px;
+    width: 45%;
+    height: 45%;
+    border: 1px solid black;
+
+    p {
+      font-size: 22px;
+      font-weight: 600;
+    }
+  }
+}
+
+@media screen and (max-width: 1125px) {
+  .DashboardOptionsContainer {
+    max-height: 330px;
+  }
+}
