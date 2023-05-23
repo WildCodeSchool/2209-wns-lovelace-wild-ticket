@@ -11,15 +11,37 @@
   margin: 10px 15px 15px 80px;
 
   .DashboardOptionsContainer {
+    overflow: hidden;
+    position: relative;
     min-width: 510px;
     width: 45%;
-    height: 45%;
+    max-height: 45%;
     border: 1px solid black;
 
-    p {
-      font-size: 22px;
-      font-weight: 600;
+    .titleContainer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      left: -25px;
+
+      .titleIcon {
+
+        font-size: 50px;
+        color: #164e63;
+      }
+
+      .titleText {
+        font-size: 30px;
+        font-weight: 600;
+        color: #164e63;
+      }
     }
+
+    .DashboardOptionsForm {
+      display: flex;
+      flex-direction: column;
+    }
+
   }
 }
 

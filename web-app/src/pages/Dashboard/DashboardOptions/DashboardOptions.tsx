@@ -4,7 +4,10 @@ import { AppContext } from "../../../context/AppContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
 import "./DashboardOptions.scss";
-
+import "primeicons/primeicons.css";
+import DashboardOptionsRestaurantForm from "../../../components/Dashboard/DashboardOptionsRestaurantForm/DashboardOptionsRestaurantForm";
+import DashboardOptionsOperatorForm from "../../../components/Dashboard/DashboardOptionsOperatorForm/DashboardOptionsOperatorForm";
+import DashboardOptionsGeneralOpForm from "../../../components/Dashboard/DashboardOptionsGeneralOpForm/DashboardOptionsGeneralOpForm";
 const DashboardOptions = () => {
   const appContext = useContext(AppContext);
 
@@ -23,9 +26,9 @@ const DashboardOptions = () => {
     </div>
   ) : (
     <section className="DashboardOptionsSection">
-      <div className="DashboardOptionsContainer"><p>Config Resto</p></div>
-      <div className="DashboardOptionsContainer"><p>Config Utilisateur</p></div>
-      <div className="DashboardOptionsContainer"><p>Config Dashboard</p></div>
+      <DashboardOptionsRestaurantForm />
+      <DashboardOptionsOperatorForm />
+      <DashboardOptionsGeneralOpForm />
     </section>
   );
 };
