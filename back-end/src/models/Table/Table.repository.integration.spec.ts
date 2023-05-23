@@ -43,6 +43,7 @@ describe("TableRepository integration", () => {
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
           undefined,
+          5,
           pole.id
         );
 
@@ -76,6 +77,7 @@ describe("TableRepository integration", () => {
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
           undefined,
+          5,
           pole.id
         );
 
@@ -111,6 +113,7 @@ describe("TableRepository integration", () => {
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
           undefined,
+          5,
           pole.id
         );
 
