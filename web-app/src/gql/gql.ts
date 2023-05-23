@@ -15,6 +15,14 @@ const documents = {
     types.MyProfileDocument,
   "\n  query TicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    TicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n":
     types.TicketsByRestaurantDocument,
+  "\n  query WaitingTicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    WaitingTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n":
+    types.WaitingTicketsByRestaurantDocument,
+  "\n  query PlacedTicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    PlacedTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n":
+    types.PlacedTicketsByRestaurantDocument,
+  "\n  query PaginatedAndSortedTickets(\n    $restaurantId: ID!\n    $globalFilter: String!\n    $pageSize: Float!\n    $pageNumber: Float!\n    $sort: [String!]!\n    $order: [Float!]!\n  ) {\n    PaginatedAndSortedTickets(\n      restaurantId: $restaurantId\n      globalFilter: $globalFilter\n      pageSize: $pageSize\n      pageNumber: $pageNumber\n      sort: $sort\n      order: $order\n    ) {\n      totalCount\n      tickets {\n        number\n        name\n        seats\n        createdAt\n        deliveredAt\n        placedAt\n        closedAt\n      }\n    }\n  }\n":
+    types.PaginatedAndSortedTicketsDocument,
+  "\n  query ExportTicketsByRestaurant(\n    $restaurantId: ID!\n    $dateMin: DateTime\n    $dateMax: DateTime\n  ) {\n    ExportTicketsByRestaurant(\n      restaurantId: $restaurantId\n      dateMin: $dateMin\n      dateMax: $dateMax\n    ) {\n      number\n      name\n      email\n      phoneNumber\n      seats\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n    }\n  }\n":
+    types.ExportTicketsByRestaurantDocument,
   "\n  mutation UpdateDeliveredAt($updateDeliveredAtId: ID!, $table: String!) {\n    updateDeliveredAt(id: $updateDeliveredAtId, table: $table) {\n      id\n    }\n  }\n":
     types.UpdateDeliveredAtDocument,
   "\n  mutation UpdatePlacedAt($updatePlacedAtId: String!) {\n    updatePlacedAt(id: $updatePlacedAtId) {\n      id\n      deliveredAt\n      placedAt\n      closedAt\n    }\n  }\n":
@@ -23,6 +31,8 @@ const documents = {
     types.UpdateClosedAtDocument,
   "\n  query TablesByRestaurant($restaurantId: ID!, $capacity: Float) {\n    TablesByRestaurant(restaurantId: $restaurantId, capacity: $capacity) {\n      id\n      number\n      capacity\n    }\n  }\n":
     types.TablesByRestaurantDocument,
+  "\n  query StatsByRestaurant($restaurantId: String!) {\n    StatsByRestaurant(restaurantId: $restaurantId) {\n      tableCapacity\n      daysOfWeek\n      lastThirtyDays\n      countTicketsBySeat\n      countActualWeekTickets\n      countLastThirtyDaysTickets\n    }\n  }\n":
+    types.StatsByRestaurantDocument,
 };
 
 export function graphql(
@@ -44,6 +54,18 @@ export function graphql(
   source: "\n  query TicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    TicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n"
 ): (typeof documents)["\n  query TicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    TicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n"];
 export function graphql(
+  source: "\n  query WaitingTicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    WaitingTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query WaitingTicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    WaitingTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query PlacedTicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    PlacedTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query PlacedTicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    PlacedTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query PaginatedAndSortedTickets(\n    $restaurantId: ID!\n    $globalFilter: String!\n    $pageSize: Float!\n    $pageNumber: Float!\n    $sort: [String!]!\n    $order: [Float!]!\n  ) {\n    PaginatedAndSortedTickets(\n      restaurantId: $restaurantId\n      globalFilter: $globalFilter\n      pageSize: $pageSize\n      pageNumber: $pageNumber\n      sort: $sort\n      order: $order\n    ) {\n      totalCount\n      tickets {\n        number\n        name\n        seats\n        createdAt\n        deliveredAt\n        placedAt\n        closedAt\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query PaginatedAndSortedTickets(\n    $restaurantId: ID!\n    $globalFilter: String!\n    $pageSize: Float!\n    $pageNumber: Float!\n    $sort: [String!]!\n    $order: [Float!]!\n  ) {\n    PaginatedAndSortedTickets(\n      restaurantId: $restaurantId\n      globalFilter: $globalFilter\n      pageSize: $pageSize\n      pageNumber: $pageNumber\n      sort: $sort\n      order: $order\n    ) {\n      totalCount\n      tickets {\n        number\n        name\n        seats\n        createdAt\n        deliveredAt\n        placedAt\n        closedAt\n      }\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query ExportTicketsByRestaurant(\n    $restaurantId: ID!\n    $dateMin: DateTime\n    $dateMax: DateTime\n  ) {\n    ExportTicketsByRestaurant(\n      restaurantId: $restaurantId\n      dateMin: $dateMin\n      dateMax: $dateMax\n    ) {\n      number\n      name\n      email\n      phoneNumber\n      seats\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n    }\n  }\n"
+): (typeof documents)["\n  query ExportTicketsByRestaurant(\n    $restaurantId: ID!\n    $dateMin: DateTime\n    $dateMax: DateTime\n  ) {\n    ExportTicketsByRestaurant(\n      restaurantId: $restaurantId\n      dateMin: $dateMin\n      dateMax: $dateMax\n    ) {\n      number\n      name\n      email\n      phoneNumber\n      seats\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n    }\n  }\n"];
+export function graphql(
   source: "\n  mutation UpdateDeliveredAt($updateDeliveredAtId: ID!, $table: String!) {\n    updateDeliveredAt(id: $updateDeliveredAtId, table: $table) {\n      id\n    }\n  }\n"
 ): (typeof documents)["\n  mutation UpdateDeliveredAt($updateDeliveredAtId: ID!, $table: String!) {\n    updateDeliveredAt(id: $updateDeliveredAtId, table: $table) {\n      id\n    }\n  }\n"];
 export function graphql(
@@ -55,6 +77,9 @@ export function graphql(
 export function graphql(
   source: "\n  query TablesByRestaurant($restaurantId: ID!, $capacity: Float) {\n    TablesByRestaurant(restaurantId: $restaurantId, capacity: $capacity) {\n      id\n      number\n      capacity\n    }\n  }\n"
 ): (typeof documents)["\n  query TablesByRestaurant($restaurantId: ID!, $capacity: Float) {\n    TablesByRestaurant(restaurantId: $restaurantId, capacity: $capacity) {\n      id\n      number\n      capacity\n    }\n  }\n"];
+export function graphql(
+  source: "\n  query StatsByRestaurant($restaurantId: String!) {\n    StatsByRestaurant(restaurantId: $restaurantId) {\n      tableCapacity\n      daysOfWeek\n      lastThirtyDays\n      countTicketsBySeat\n      countActualWeekTickets\n      countLastThirtyDaysTickets\n    }\n  }\n"
+): (typeof documents)["\n  query StatsByRestaurant($restaurantId: String!) {\n    StatsByRestaurant(restaurantId: $restaurantId) {\n      tableCapacity\n      daysOfWeek\n      lastThirtyDays\n      countTicketsBySeat\n      countActualWeekTickets\n      countLastThirtyDaysTickets\n    }\n  }\n"];
 
 export function graphql(source: string): unknown;
 export function graphql(source: string) {

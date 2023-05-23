@@ -3,9 +3,12 @@ import Ticket from "../../models/Ticket/Ticket.entity";
 import TicketRepository from "../../models/Ticket/Ticket.repository";
 import {
   CreateTicketArgs,
+  GetExportTicketsByRestaurantArgs,
   GetTicketsByRestaurantArgs,
   UpdateTicketArgs,
+  getPaginatedAndSortedTicketsArgs,
 } from "./Ticket.input";
+import PageOfTickets from "./PageOfTickets";
 
 @Resolver(Ticket)
 export default class TicketResolver {
@@ -15,8 +18,7 @@ export default class TicketResolver {
     return TicketRepository.getTickets();
   }
 
-  //TODO: Disable to fetch list in react native. See how to use auth account
-  //@Authorized("ROLE_RESTAURANT")
+  //TODO: Find a way to secure this query (used in mobile-app)
   @Query(() => [Ticket])
   TicketsByRestaurant(
     @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs
@@ -24,10 +26,61 @@ export default class TicketResolver {
     return TicketRepository.getTicketsByRestaurant(restaurantId, seats);
   }
 
+  @Query(() => [Ticket])
+  @Authorized("ROLE_RESTAURANT")
+  WaitingTicketsByRestaurant(
+    @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs
+  ): Promise<Ticket[] | null> {
+    return TicketRepository.getWaitingTicketsByRestaurant(restaurantId, seats);
+  }
+
+  @Query(() => [Ticket])
+  @Authorized("ROLE_RESTAURANT")
+  PlacedTicketsByRestaurant(
+    @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs
+  ): Promise<Ticket[] | null> {
+    return TicketRepository.getPlacedTicketsByRestaurant(restaurantId, seats);
+  }
+
+  @Authorized("ROLE_RESTAURANT")
+  @Query(() => PageOfTickets)
+  PaginatedAndSortedTickets(
+    @Args()
+    {
+      restaurantId,
+      globalFilter,
+      pageSize,
+      pageNumber,
+      sort,
+      order,
+    }: getPaginatedAndSortedTicketsArgs
+  ): Promise<PageOfTickets> {
+    return TicketRepository.getPaginatedAndSortedTicketsByRestaurant(
+      restaurantId,
+      globalFilter,
+      pageSize,
+      pageNumber,
+      sort,
+      order
+    );
+  }
+
   @Authorized("ROLE_RESTAURANT")
   @Query(() => Ticket)
   Ticket(@Arg("id") id: string): Promise<Ticket | null> {
     return TicketRepository.getTicketById(id);
+  }
+
+  @Query(() => [Ticket])
+  @Authorized("ROLE_RESTAURANT")
+  ExportTicketsByRestaurant(
+    @Args() { restaurantId, dateMin, dateMax }: GetExportTicketsByRestaurantArgs
+  ): Promise<Ticket[] | null> {
+    return TicketRepository.getExportTicketsByRestaurant(
+      restaurantId,
+      dateMin,
+      dateMax
+    );
   }
 
   @Mutation(() => Ticket)

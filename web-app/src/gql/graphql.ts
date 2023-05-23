@@ -72,6 +72,7 @@ export type MutationCreatePoleArgs = {
 
 export type MutationCreateRestaurantArgs = {
   name: Scalars["String"];
+  picture?: InputMaybe<Scalars["String"]>;
   pole: Scalars["ID"];
 };
 
@@ -153,6 +154,7 @@ export type MutationUpdatePoleArgs = {
 export type MutationUpdateRestaurantArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
+  picture?: InputMaybe<Scalars["String"]>;
 };
 
 export type MutationUpdateRestaurantOpeningTimeArgs = {
@@ -195,6 +197,12 @@ export type PageOfRestaurants = {
   totalCount: Scalars["Int"];
 };
 
+export type PageOfTickets = {
+  __typename?: "PageOfTickets";
+  tickets: Array<Ticket>;
+  totalCount: Scalars["Int"];
+};
+
 export type Pole = {
   __typename?: "Pole";
   address: Scalars["String"];
@@ -211,12 +219,17 @@ export type Pole = {
 
 export type Query = {
   __typename?: "Query";
+  ExportTicketsByRestaurant: Array<Ticket>;
+  PaginatedAndSortedTickets: PageOfTickets;
+  PlacedTicketsByRestaurant: Array<Ticket>;
+  StatsByRestaurant: Stats;
   Table: Table;
   Tables: Array<Table>;
   TablesByRestaurant: Array<Table>;
   Ticket: Ticket;
   Tickets: Array<Ticket>;
   TicketsByRestaurant: Array<Ticket>;
+  WaitingTicketsByRestaurant: Array<Ticket>;
   getPaginateRestaurantsByPole: PageOfRestaurants;
   getPoleById: Pole;
   getRestaurantById: Restaurant;
@@ -225,6 +238,31 @@ export type Query = {
   getUsers: Array<AppUser>;
   myProfile: AppUser;
   poles: Array<Pole>;
+};
+
+export type QueryExportTicketsByRestaurantArgs = {
+  dateMax?: InputMaybe<Scalars["DateTime"]>;
+  dateMin?: InputMaybe<Scalars["DateTime"]>;
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+};
+
+export type QueryPaginatedAndSortedTicketsArgs = {
+  globalFilter: Scalars["String"];
+  order: Array<Scalars["Float"]>;
+  pageNumber: Scalars["Float"];
+  pageSize: Scalars["Float"];
+  restaurantId: Scalars["ID"];
+  sort?: InputMaybe<Array<Scalars["String"]>>;
+};
+
+export type QueryPlacedTicketsByRestaurantArgs = {
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+};
+
+export type QueryStatsByRestaurantArgs = {
+  restaurantId: Scalars["String"];
 };
 
 export type QueryTableArgs = {
@@ -241,6 +279,11 @@ export type QueryTicketArgs = {
 };
 
 export type QueryTicketsByRestaurantArgs = {
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+};
+
+export type QueryWaitingTicketsByRestaurantArgs = {
   restaurantId: Scalars["ID"];
   seats?: InputMaybe<Scalars["Float"]>;
 };
@@ -269,11 +312,21 @@ export type Restaurant = {
   id: Scalars["ID"];
   name: Scalars["String"];
   openAt?: Maybe<Scalars["DateTime"]>;
-  picture: Scalars["String"];
+  picture?: Maybe<Scalars["String"]>;
   pole: Pole;
   table: Array<Table>;
   ticket: Array<Ticket>;
   updatedAt?: Maybe<Scalars["DateTime"]>;
+};
+
+export type Stats = {
+  __typename?: "Stats";
+  countActualWeekTickets: Array<Scalars["Float"]>;
+  countLastThirtyDaysTickets: Array<Scalars["Float"]>;
+  countTicketsBySeat: Array<Scalars["Float"]>;
+  daysOfWeek: Array<Scalars["String"]>;
+  lastThirtyDays: Array<Scalars["String"]>;
+  tableCapacity: Array<Scalars["String"]>;
 };
 
 export type Table = {
@@ -293,7 +346,7 @@ export type Ticket = {
   email?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   name: Scalars["String"];
-  number: Scalars["Float"];
+  number: Scalars["String"];
   phoneNumber?: Maybe<Scalars["String"]>;
   placedAt?: Maybe<Scalars["DateTime"]>;
   restaurant: Restaurant;
@@ -364,7 +417,7 @@ export type TicketsByRestaurantQuery = {
   TicketsByRestaurant: Array<{
     __typename?: "Ticket";
     id: string;
-    number: number;
+    number: string;
     name: string;
     seats: number;
     email?: string | null;
@@ -374,6 +427,101 @@ export type TicketsByRestaurantQuery = {
     placedAt?: any | null;
     closedAt?: any | null;
     table?: { __typename?: "Table"; id: string; number: number } | null;
+  }>;
+};
+
+export type WaitingTicketsByRestaurantQueryVariables = Exact<{
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+}>;
+
+export type WaitingTicketsByRestaurantQuery = {
+  __typename?: "Query";
+  WaitingTicketsByRestaurant: Array<{
+    __typename?: "Ticket";
+    id: string;
+    number: string;
+    name: string;
+    seats: number;
+    email?: string | null;
+    phoneNumber?: string | null;
+    createdAt: any;
+    deliveredAt?: any | null;
+    placedAt?: any | null;
+    closedAt?: any | null;
+    table?: { __typename?: "Table"; id: string; number: number } | null;
+  }>;
+};
+
+export type PlacedTicketsByRestaurantQueryVariables = Exact<{
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+}>;
+
+export type PlacedTicketsByRestaurantQuery = {
+  __typename?: "Query";
+  PlacedTicketsByRestaurant: Array<{
+    __typename?: "Ticket";
+    id: string;
+    number: string;
+    name: string;
+    seats: number;
+    email?: string | null;
+    phoneNumber?: string | null;
+    createdAt: any;
+    deliveredAt?: any | null;
+    placedAt?: any | null;
+    closedAt?: any | null;
+    table?: { __typename?: "Table"; id: string; number: number } | null;
+  }>;
+};
+
+export type PaginatedAndSortedTicketsQueryVariables = Exact<{
+  restaurantId: Scalars["ID"];
+  globalFilter: Scalars["String"];
+  pageSize: Scalars["Float"];
+  pageNumber: Scalars["Float"];
+  sort: Array<Scalars["String"]> | Scalars["String"];
+  order: Array<Scalars["Float"]> | Scalars["Float"];
+}>;
+
+export type PaginatedAndSortedTicketsQuery = {
+  __typename?: "Query";
+  PaginatedAndSortedTickets: {
+    __typename?: "PageOfTickets";
+    totalCount: number;
+    tickets: Array<{
+      __typename?: "Ticket";
+      number: string;
+      name: string;
+      seats: number;
+      createdAt: any;
+      deliveredAt?: any | null;
+      placedAt?: any | null;
+      closedAt?: any | null;
+    }>;
+  };
+};
+
+export type ExportTicketsByRestaurantQueryVariables = Exact<{
+  restaurantId: Scalars["ID"];
+  dateMin?: InputMaybe<Scalars["DateTime"]>;
+  dateMax?: InputMaybe<Scalars["DateTime"]>;
+}>;
+
+export type ExportTicketsByRestaurantQuery = {
+  __typename?: "Query";
+  ExportTicketsByRestaurant: Array<{
+    __typename?: "Ticket";
+    number: string;
+    name: string;
+    email?: string | null;
+    phoneNumber?: string | null;
+    seats: number;
+    createdAt: any;
+    deliveredAt?: any | null;
+    placedAt?: any | null;
+    closedAt?: any | null;
   }>;
 };
 
@@ -424,6 +572,23 @@ export type TablesByRestaurantQuery = {
     number: number;
     capacity: number;
   }>;
+};
+
+export type StatsByRestaurantQueryVariables = Exact<{
+  restaurantId: Scalars["String"];
+}>;
+
+export type StatsByRestaurantQuery = {
+  __typename?: "Query";
+  StatsByRestaurant: {
+    __typename?: "Stats";
+    tableCapacity: Array<string>;
+    daysOfWeek: Array<string>;
+    lastThirtyDays: Array<string>;
+    countTicketsBySeat: Array<number>;
+    countActualWeekTickets: Array<number>;
+    countLastThirtyDaysTickets: Array<number>;
+  };
 };
 
 export const SignInDocument = {
@@ -830,6 +995,478 @@ export const TicketsByRestaurantDocument = {
   TicketsByRestaurantQuery,
   TicketsByRestaurantQueryVariables
 >;
+export const WaitingTicketsByRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "WaitingTicketsByRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "seats" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "WaitingTicketsByRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurantId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurantId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "seats" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "seats" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "number" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "seats" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+                { kind: "Field", name: { kind: "Name", value: "phoneNumber" } },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+                { kind: "Field", name: { kind: "Name", value: "deliveredAt" } },
+                { kind: "Field", name: { kind: "Name", value: "placedAt" } },
+                { kind: "Field", name: { kind: "Name", value: "closedAt" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "table" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "number" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  WaitingTicketsByRestaurantQuery,
+  WaitingTicketsByRestaurantQueryVariables
+>;
+export const PlacedTicketsByRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "PlacedTicketsByRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "seats" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "PlacedTicketsByRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurantId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurantId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "seats" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "seats" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "number" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "seats" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+                { kind: "Field", name: { kind: "Name", value: "phoneNumber" } },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+                { kind: "Field", name: { kind: "Name", value: "deliveredAt" } },
+                { kind: "Field", name: { kind: "Name", value: "placedAt" } },
+                { kind: "Field", name: { kind: "Name", value: "closedAt" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "table" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "number" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PlacedTicketsByRestaurantQuery,
+  PlacedTicketsByRestaurantQueryVariables
+>;
+export const PaginatedAndSortedTicketsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "PaginatedAndSortedTickets" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "globalFilter" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageNumber" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "sort" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "ListType",
+              type: {
+                kind: "NonNullType",
+                type: {
+                  kind: "NamedType",
+                  name: { kind: "Name", value: "String" },
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "order" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "ListType",
+              type: {
+                kind: "NonNullType",
+                type: {
+                  kind: "NamedType",
+                  name: { kind: "Name", value: "Float" },
+                },
+              },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "PaginatedAndSortedTickets" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurantId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurantId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "globalFilter" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "globalFilter" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "pageSize" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "pageNumber" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageNumber" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "sort" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "sort" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "order" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "tickets" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "number" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "seats" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "deliveredAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "placedAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closedAt" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PaginatedAndSortedTicketsQuery,
+  PaginatedAndSortedTicketsQueryVariables
+>;
+export const ExportTicketsByRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ExportTicketsByRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "dateMin" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "dateMax" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "ExportTicketsByRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurantId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurantId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "dateMin" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "dateMin" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "dateMax" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "dateMax" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "number" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+                { kind: "Field", name: { kind: "Name", value: "phoneNumber" } },
+                { kind: "Field", name: { kind: "Name", value: "seats" } },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+                { kind: "Field", name: { kind: "Name", value: "deliveredAt" } },
+                { kind: "Field", name: { kind: "Name", value: "placedAt" } },
+                { kind: "Field", name: { kind: "Name", value: "closedAt" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ExportTicketsByRestaurantQuery,
+  ExportTicketsByRestaurantQueryVariables
+>;
 export const UpdateDeliveredAtDocument = {
   kind: "Document",
   definitions: [
@@ -1083,4 +1720,78 @@ export const TablesByRestaurantDocument = {
 } as unknown as DocumentNode<
   TablesByRestaurantQuery,
   TablesByRestaurantQueryVariables
+>;
+export const StatsByRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "StatsByRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "StatsByRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurantId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurantId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "tableCapacity" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "daysOfWeek" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "lastThirtyDays" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "countTicketsBySeat" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "countActualWeekTickets" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "countLastThirtyDaysTickets" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StatsByRestaurantQuery,
+  StatsByRestaurantQueryVariables
 >;

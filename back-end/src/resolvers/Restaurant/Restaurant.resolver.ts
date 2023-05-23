@@ -14,11 +14,14 @@ const PAGE_SIZE = 4;
 
 @Resolver(Restaurant)
 export default class RestaurantResolver {
+  //Comment "Authorized" decorator to enable access in apollo server
+  @Authorized()
   @Query(() => [Restaurant])
   getRestaurants(): Promise<Restaurant[]> {
     return RestaurantRepository.getRestaurants();
   }
 
+  //TODO: Find a way to secure this query (used in mobile-app)
   @Query(() => PageOfRestaurants)
   getPaginateRestaurantsByPole(
     @Args() { pole, pageNumber }: GetPaginateRestaurantsByPole
@@ -30,6 +33,7 @@ export default class RestaurantResolver {
     );
   }
 
+  //TODO: Find a way to secure this query (used in mobile-app)
   @Query(() => Restaurant)
   getRestaurantById(@Arg("id") id: string): Promise<Restaurant | null> {
     return RestaurantRepository.getRestaurantById(id);

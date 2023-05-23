@@ -10,7 +10,7 @@ export type RESTAURANT_TYPE = {
 export type GET_TICKETS_BY_RESTAURANT_TYPES = Array<{
   __typename?: "Ticket" | undefined;
   id: string;
-  number: number;
+  number: string;
   name: string;
   seats: number;
   email?: string | null;

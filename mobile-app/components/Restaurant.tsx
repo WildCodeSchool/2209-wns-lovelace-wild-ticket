@@ -121,7 +121,6 @@ const Restaurant = ({
     setEmptyTables(getEmptyTables(tickets, tables));
     setwaitingTickets(getWaitingTickets(tickets, tables));
   }, [tickets, tables]);
-  console.log(waitingTickets);
   return picture ? (
     <>
       <Image

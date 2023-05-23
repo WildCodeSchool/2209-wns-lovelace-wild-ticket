@@ -20,9 +20,9 @@ import TableResolver from "./resolvers/Table/Table.resolver";
 import TicketResolver from "./resolvers/Ticket/Ticket.resolver";
 import PoleResolver from "./resolvers/Pole/Pole.resolver";
 import RestaurantResolver from "./resolvers/Restaurant/Restaurant.resolver";
+import StatsResolver from "./resolvers/Stats/Stats.resolver";
 import { AppUserFixtures } from "./DataFixtures/AppUserFixtures";
 import { TableFixtures } from "./DataFixtures/TableFixtures";
-import { IS_PRODUCTION } from "./config";
 
 export type GlobalContext = ExpressContext & {
   user: AppUser | null;
@@ -37,6 +37,7 @@ const startServer = async () => {
         TicketResolver,
         PoleResolver,
         RestaurantResolver,
+        StatsResolver,
       ],
       authChecker: async ({ context }, roles: string[]) => {
         return roles.length === 0
