@@ -127,6 +127,7 @@ const Restaurant = ({
       <Image
         style={styles.picture}
         source={{ uri: picture }}
+        resizeMode="contain"
         blurRadius={isRestaurantClosed(openAt, closeAt) ? 10 : 0}
       />
       <Text style={styles.text}>
@@ -175,11 +176,11 @@ export default Restaurant;
 const styles = StyleSheet.create({
   picture: {
     width: 175,
-    height: 175,
+    aspectRatio: 1,
   },
   text: {
     position: "absolute",
-    bottom: 3,
+    bottom: 2,
     fontSize: 18,
     fontWeight: "bold",
   },
