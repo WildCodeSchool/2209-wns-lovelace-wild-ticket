@@ -27,8 +27,8 @@ const DashboardOptions = () => {
   ) : (
     <section className="DashboardOptionsSection">
       <DashboardOptionsRestaurantForm />
-      <DashboardOptionsOperatorForm />
-      <DashboardOptionsGeneralOpForm />
+      {/* <DashboardOptionsOperatorForm /> */}
+      {/* <DashboardOptionsGeneralOpForm /> */}
     </section>
   );
 };
