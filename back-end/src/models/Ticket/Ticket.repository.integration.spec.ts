@@ -85,7 +85,7 @@ describe("TicketRepository integration", () => {
               "0601020304"
             );
 
-            expect(ticket.number).toEqual("R-230508-001");
+            expect(ticket.number).toEqual("R-230524-001");
           });
         });
       });
