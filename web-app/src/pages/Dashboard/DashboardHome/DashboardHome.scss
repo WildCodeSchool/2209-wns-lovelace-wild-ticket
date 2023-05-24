@@ -1,0 +1,100 @@
+.DashboardMain {
+
+  // width: 100%;
+  .DashboardContent {
+    height: 90vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .contentTop {
+      height: 100%;
+      width: 100%;
+
+      .statsTop {
+        display: flex;
+        justify-content: space-between;
+        padding: 2rem 2rem 1rem;
+
+        .btnStats {
+          background-color: #164e63;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          color: #fff;
+          font-size: 1.25rem;
+          height: fit-content;
+          padding: 2.5rem;
+
+          &:hover {
+            background-color: #1f2937;
+            transition: 0.7s;
+          }
+        }
+      }
+
+      .statsBottom {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem 2rem;
+        height: max-content;
+
+        .boxStatsTickets,
+        .boxStatsTables {
+          display: flex;
+          justify-content: space-around;
+          border: 3px solid #164e63;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 1.25rem;
+          margin-top: 2rem;
+          padding: 1rem;
+          width: 250px;
+
+
+          &:active {
+            border: 5px solid #164e63;
+          }
+
+          .statsTickets,
+          .statsTables {
+            color: #164e63;
+
+            span {
+              font-size: 1.5rem;
+              font-weight: 600;
+            }
+
+            p {
+              margin: 0;
+            }
+          }
+
+          .icon {
+            font-size: 2.25rem;
+            color: #164e63;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 810px) {
+  .DashboardMain {
+    .DashboardContent {
+      .contentBottom {
+
+        .open,
+        .close {
+          .buttons {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
