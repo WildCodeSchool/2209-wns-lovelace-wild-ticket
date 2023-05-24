@@ -6,14 +6,14 @@
   justify-content: space-between;
   align-items: center;
   width: auto;
-  height: 10%;
-  // margin-left: 4rem;
-  // padding: 0 15px;
+  height: 8vh;
+  margin-left: 4rem;
+  padding: 0 15px;
   box-shadow: 2px 0 3px 2px rgba(0, 0, 0, 0.2);
 
   .DashboardHeaderLocationContainer {
     width: 250px;
-    margin-left: 4.5rem;
+    //margin-left: 4.5rem;
 
     .HeaderLocation {
       font-size: 22px;
@@ -21,11 +21,25 @@
     }
   }
 
+  .DashboardHeaderDateHomeContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 250px;
+
+    .HeaderDate {
+      font-size: 1.25rem;
+      margin: 0;
+    }
+  }
+  
+
   .DashboardHeaderDateContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 300px;
+    justify-content: flex-end;
+    width: 250px;
 
     .HeaderDate {
       font-size: 1.25rem;
@@ -45,7 +59,7 @@
     align-items: end;
     justify-content: flex-end;
     width: 250px;
-    margin-right: 1rem;
+    //margin-right: 1rem;
 
     .HeaderStatsTextContainer {
       display: flex;
@@ -60,15 +74,17 @@
   }
 }
 
+
 @media only screen and (min-width: 1440px){
   .DashboardHeader {
+
     .DashboardHeaderStatsContainer {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+      //display: flex;
+      //flex-direction: row;
+      //align-items: center;
       justify-content: flex-end;
-      gap: 50px;
-      width: 450px;
+      gap: 8px;
+      //width: 450px;
   
       .HeaderStatsTextContainer {
         display: flex;

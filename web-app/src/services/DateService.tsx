@@ -4,8 +4,8 @@
 export const convertDate = (dateNow: Date) => {
   const locale = "fr";
 
-  const day = dateNow.toLocaleDateString(locale, { weekday: "long" });
-  const date = `${day}, ${dateNow.getDate()} ${dateNow.toLocaleDateString(
+  const day = dateNow.toLocaleDateString(locale, { weekday: "short" });
+  const date = `${day} ${dateNow.getDate()} ${dateNow.toLocaleDateString(
     locale,
     { month: "long", year: "numeric" }
   )}`;

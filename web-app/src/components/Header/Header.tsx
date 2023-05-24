@@ -85,7 +85,7 @@ export default function DashBoardHeader() {
         <p className="HeaderLocation">{dashboardLocation}</p>
       </div>
       {dashboardLocation === "Accueil" ? (
-        <div className="DashboardHeaderDateContainer">
+        <div className="DashboardHeaderDateHomeContainer">
           <p className="HeaderDate">{dateNow?.date}</p>
         </div>
       ) : (
