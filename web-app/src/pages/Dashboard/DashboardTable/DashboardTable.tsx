@@ -15,7 +15,7 @@ const DashboardTable = () => {
         <div className="AddBtnSection">
           <button className="AddBtn">Ajout d'une table</button>
         </div>
-        <TabTables/>
+        <TabTables />
 
         {/* <SVGLogo
           logoWidth={BIG_LOGO_DASHBOARD_SIZE}

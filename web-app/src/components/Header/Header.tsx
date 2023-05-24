@@ -85,9 +85,9 @@ export default function DashBoardHeader() {
         <p className="HeaderLocation">{dashboardLocation}</p>
       </div>
       {dashboardLocation === "Accueil" ? (
-       <div className="DashboardHeaderDateContainer">
-       <p className="HeaderDate">{dateNow?.date}</p>
-     </div>
+        <div className="DashboardHeaderDateContainer">
+          <p className="HeaderDate">{dateNow?.date}</p>
+        </div>
       ) : (
         <div className="DashboardHeaderDateContainer">
           <p className="HeaderDate">{dateNow?.date}</p>
@@ -97,21 +97,25 @@ export default function DashBoardHeader() {
 
       {
         //TODO: Insérer les vraies données de file d'attente
-         userRole === ROLE_RESTAURANT && dashboardLocation === "Accueil" ?  "" : <div className="DashboardHeaderStatsContainer">
-         <div className="HeaderStatsTextContainer">
-           <SVGMiniIconUser iconParams={HEADER_ICON_PARAMS} />
-           <p className="HeaderStats">
-             {waitingTickets} Ticket{waitingTickets > 1 ? "s" : ""} en
-             attente
-           </p>
-         </div>
-         <div className="HeaderStatsTextContainer">
-           <SVGMiniIconTable iconParams={HEADER_ICON_PARAMS} />
-           <p className="HeaderStats">
-             {occupiedTables}/{tables?.length} Tables occupées
-           </p>
-         </div>
-       </div>
+        userRole === ROLE_RESTAURANT && dashboardLocation === "Accueil" ? (
+          ""
+        ) : (
+          <div className="DashboardHeaderStatsContainer">
+            <div className="HeaderStatsTextContainer">
+              <SVGMiniIconUser iconParams={HEADER_ICON_PARAMS} />
+              <p className="HeaderStats">
+                {waitingTickets} Ticket{waitingTickets > 1 ? "s" : ""} en
+                attente
+              </p>
+            </div>
+            <div className="HeaderStatsTextContainer">
+              <SVGMiniIconTable iconParams={HEADER_ICON_PARAMS} />
+              <p className="HeaderStats">
+                {occupiedTables}/{tables?.length} Tables occupées
+              </p>
+            </div>
+          </div>
+        )
       }
 
       {

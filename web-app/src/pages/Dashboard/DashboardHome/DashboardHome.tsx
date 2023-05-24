@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineConfirmationNumber, MdOutlineTableBar } from "react-icons/md";
 import { AppContext } from "../../../context/AppContext";
-import { addMinutesToDate} from "../../../services/DateService";
+import { addMinutesToDate } from "../../../services/DateService";
 import Clock from "../../../components/Clock/Clock";
 import OpenCloseTime from "../../../components/OpenCloseTime/OpenCloseTime";
 
@@ -15,7 +15,6 @@ import { DASHBOARD_STATS, DASHBOARD_TICKET } from "../../paths";
 
 import "../DashboardTemp.scss";
 import "../DashboardHome/DashboardHome.scss";
-
 
 const DashboardHome = () => {
   const appContext = useContext(AppContext);
@@ -62,8 +61,6 @@ const DashboardHome = () => {
 
     return emptyTables.length;
   };
-
- 
 
   useEffect(() => {
     setWaitingTickets(getCountOfWaitingTickets(tickets) as number);
