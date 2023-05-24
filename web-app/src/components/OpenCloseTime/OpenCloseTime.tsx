@@ -54,7 +54,6 @@ const OpenCloseTime = () => {
       <div className="openClose">
         <div className="open">
           <h2>Ouverture de la réservation</h2>
-          
           <div className="field">
             {openAt != null ? (
               <h3>
