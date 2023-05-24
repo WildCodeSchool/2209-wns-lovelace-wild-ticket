@@ -7,7 +7,7 @@ import {
   DASHBOARD_TABLE,
   DASHBOARD_TICKET,
   DASHBOARD_USER,
-} from "../../../pages/paths";
+} from "../../pages/paths";
 
 export const headerLocation = (location: string): string => {
   switch (location) {

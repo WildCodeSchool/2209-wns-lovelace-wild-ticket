@@ -1,0 +1,51 @@
+.contentBottom {
+  border-top: 3px solid #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+  width: 100%;
+
+  .openClose {
+    display: flex;
+
+    .open,
+    .close {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2rem 0 3rem;
+      padding: 2rem;
+      text-align: center;
+      width: 500px;
+
+      h2 {
+        margin: 0 0 2rem;
+      }
+
+      h3 {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .openCloseBtn {
+    background-color: #164e63;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.25rem;
+    height: fit-content;
+    margin-left: auto;
+    padding: 1rem 3rem;
+
+    &:active {
+      background-color:#1f2937;
+    }
+  }
+    
+  .rs-calendar-time-dropdown-cell.rs-calendar-time-dropdown-cell-active {
+    background-color: #164e63 !important;
+  }
+}

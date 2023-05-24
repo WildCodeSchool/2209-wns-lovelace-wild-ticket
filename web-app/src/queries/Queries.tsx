@@ -227,3 +227,28 @@ export const GET_STATS_BY_RESTAURANT = gql`
     }
   }
 `;
+
+/**
+ * *************** RESTAURANT QUERIES **********************
+ */
+
+export const UPDATE_RESTAURANTS_TIME = gql`
+  mutation UpdateRestaurantOpeningTime(
+    $updateRestaurantOpeningTimeId: ID!
+    $hourOpenAt: Float!
+    $minutesOpenAt: Float!
+    $hourCloseAt: Float!
+    $minutesCloseAt: Float!
+  ) {
+    updateRestaurantOpeningTime(
+      id: $updateRestaurantOpeningTimeId
+      hourOpenAt: $hourOpenAt
+      minutesOpenAt: $minutesOpenAt
+      hourCloseAt: $hourCloseAt
+      minutesCloseAt: $minutesCloseAt
+    ) {
+      closeAt
+      openAt
+    }
+  }
+`;
