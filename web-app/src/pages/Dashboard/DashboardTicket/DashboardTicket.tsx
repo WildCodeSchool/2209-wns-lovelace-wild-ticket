@@ -1,22 +1,25 @@
-// TODO: Quand toutes les pages seront créées, modifier l'import sur toutes les autres pages dashboard comme suit.
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Button } from "primereact/button";
 import DashboardTicketListTab from "../../../components/Dashboard/DashboardTicketListTab/DashboardTicketListTab";
 import { AppContext } from "../../../context/AppContext";
+import { TicketsFilterTabContent } from "../../../data/DashboardTicketDatas";
 import {
-  TicketsFilterTabContent,
-  TicketsHeadTabContent,
-} from "../../../data/DashboardTicketDatas";
-import {
+  PlacedTicketsByRestaurantQuery,
+  PlacedTicketsByRestaurantQueryVariables,
   UpdateClosedAtMutation,
   UpdateClosedAtMutationVariables,
   UpdateDeliveredAtMutation,
   UpdateDeliveredAtMutationVariables,
   UpdatePlacedAtMutation,
   UpdatePlacedAtMutationVariables,
+  WaitingTicketsByRestaurantQuery,
+  WaitingTicketsByRestaurantQueryVariables,
 } from "../../../gql/graphql";
 import {
+  GET_PLACED_TICKETS_BY_RESTAURANT,
+  GET_WAITING_TICKETS_BY_RESTAURANT,
   UPDATE_CLOSED_AT,
   UPDATE_DELIVERED_AT,
   UPDATE_PLACED_AT,
@@ -28,6 +31,7 @@ import {
 import "./DashboardTicket.scss";
 
 const DashboardTicket = () => {
+  const restaurantId = useContext(AppContext)?.userData.restaurant.id;
   const setSeats = useContext(AppContext)?.setSeats as React.Dispatch<
     React.SetStateAction<number | null>
   >;
@@ -36,8 +40,42 @@ const DashboardTicket = () => {
   const tables = useContext(AppContext)
     ?.tables as GET_TABLES_BY_RESTAURANT_TYPES;
   const ticketsLoading = useContext(AppContext)?.ticketsLoading as boolean;
-  const ticketsRefetch = useContext(AppContext)?.ticketsRefetch as () => {};
   const tablesRefetch = useContext(AppContext)?.ticketsRefetch as () => {};
+  const [sortSeats, setSortSeats] = useState<number | null>(null);
+
+  // GET WAITING TICKETS FUNCTIONNALITY
+  const [waitingTickets, setWaitingTickets] =
+    useState<GET_TICKETS_BY_RESTAURANT_TYPES>([]);
+  const { refetch: refetchWaitingTickets } = useQuery<
+    WaitingTicketsByRestaurantQuery,
+    WaitingTicketsByRestaurantQueryVariables
+  >(GET_WAITING_TICKETS_BY_RESTAURANT, {
+    skip: restaurantId === undefined,
+    notifyOnNetworkStatusChange: true,
+    variables: { restaurantId: restaurantId as string, seats: sortSeats },
+    onCompleted: (data) => {
+      if (data?.WaitingTicketsByRestaurant) {
+        setWaitingTickets(data.WaitingTicketsByRestaurant);
+      }
+    },
+  });
+
+  // GET PLACED TICKETS FUNCTIONNALITY
+  const [placedTickets, setPlacedTickets] =
+    useState<GET_TICKETS_BY_RESTAURANT_TYPES>([]);
+  const { refetch: refetchPlacedTickets } = useQuery<
+    PlacedTicketsByRestaurantQuery,
+    PlacedTicketsByRestaurantQueryVariables
+  >(GET_PLACED_TICKETS_BY_RESTAURANT, {
+    skip: restaurantId === undefined,
+    notifyOnNetworkStatusChange: true,
+    variables: { restaurantId: restaurantId as string, seats: sortSeats },
+    onCompleted: (data) => {
+      if (data?.PlacedTicketsByRestaurant) {
+        setPlacedTickets(data.PlacedTicketsByRestaurant);
+      }
+    },
+  });
 
   // GET EMPTY TABLES FUNCTIONNALITY
   const [emptyTables, setEmptyTables] =
@@ -68,6 +106,7 @@ const DashboardTicket = () => {
 
   const handleFilterButtonClick = async (ticketSeats: number | null) => {
     setActiveFilterButton(ticketSeats);
+    setSortSeats(ticketSeats);
     setSeats(ticketSeats);
   };
 
@@ -85,7 +124,8 @@ const DashboardTicket = () => {
       table: freeTableToDeliver,
     },
     onCompleted: () => {
-      ticketsRefetch();
+      refetchWaitingTickets();
+      refetchPlacedTickets();
       tablesRefetch();
       toast.success(
         "La table a bien été délivrée. Une notification a été envoyée au client."
@@ -121,7 +161,8 @@ const DashboardTicket = () => {
       updatePlacedAtId: placedTicketId,
     },
     onCompleted: () => {
-      ticketsRefetch();
+      refetchWaitingTickets();
+      refetchPlacedTickets();
       tablesRefetch();
       toast.success("Le client a bien été placé.");
     },
@@ -151,7 +192,8 @@ const DashboardTicket = () => {
       updateClosedAtId: closedTicketId,
     },
     onCompleted: () => {
-      ticketsRefetch();
+      refetchWaitingTickets();
+      refetchPlacedTickets();
       tablesRefetch();
       toast.success("Le ticket a bien été clôturé.");
     },
@@ -172,7 +214,8 @@ const DashboardTicket = () => {
   useEffect(() => {
     setEmptyTables(getEmptyTables(tickets, tables));
     const intervalId = setInterval(() => {
-      ticketsRefetch();
+      refetchWaitingTickets();
+      refetchPlacedTickets();
       tablesRefetch();
       setEmptyTables(getEmptyTables(tickets, tables));
     }, 60 * 1000);
@@ -180,33 +223,40 @@ const DashboardTicket = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [tickets, tables, ticketsRefetch, tablesRefetch]);
+  }, [
+    tickets,
+    tables,
+    refetchWaitingTickets,
+    refetchPlacedTickets,
+    tablesRefetch,
+  ]);
 
   return (
     <section className="DashboardTicketSection">
       <header className="DashboardTicketHeader">
         <div className="DashboardTicketHeaderButtonContainer">
-          {TicketsFilterTabContent.map((ticketContent, index) => (
-            <button
-              className={
-                activeFilterButton === ticketContent.seats
-                  ? "DashboardTicketHeaderButton DashboardTicketHeaderButtonActive"
-                  : "DashboardTicketHeaderButton"
-              }
-              key={index}
-              onClick={() => {
-                handleFilterButtonClick(ticketContent.seats);
-              }}
-            >
-              {ticketContent.buttonContent}
-            </button>
-          ))}
+          <span className="DashboardTicketHeaderButtonSet">
+            {TicketsFilterTabContent.map((ticketContent, index) => (
+              <Button
+                className={
+                  activeFilterButton === ticketContent.seats
+                    ? "DashboardTicketHeaderButton DashboardTicketHeaderButtonActive"
+                    : "DashboardTicketHeaderButton"
+                }
+                key={index}
+                label={ticketContent.label}
+                onClick={() => {
+                  handleFilterButtonClick(ticketContent.seats);
+                }}
+              />
+            ))}
+          </span>
         </div>
       </header>
       <main className="DashboardTicketList">
         <DashboardTicketListTab
-          dataHead={TicketsHeadTabContent}
-          tickets={tickets}
+          waitingTickets={waitingTickets}
+          placedTickets={placedTickets}
           tables={emptyTables}
           isLoading={ticketsLoading}
           handleDelete={onDelete}
@@ -214,7 +264,6 @@ const DashboardTicket = () => {
           handlePlace={onPlace}
         />
       </main>
-      <footer className="DashboardTicketFooter"></footer>
     </section>
   );
 };

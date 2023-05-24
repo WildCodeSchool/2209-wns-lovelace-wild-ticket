@@ -1,0 +1,82 @@
+@import "../../../index.scss";
+
+.DashboardStatsListContainer {
+  margin-top: 15px;
+}
+
+.DashboardStatsListHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  height: 10px;
+
+  .DashboardStatsListHeaderSearch {
+    display: flex;
+    justify-content: flex-end;
+
+    .p-input-icon-left {
+      position: relative;
+      display: inline-block;
+
+      .pi-search {
+        position: absolute;
+        top: 50%;
+        left: 0.4rem !important;
+        margin-top: -.5rem;
+      }
+
+      .DashboardStatsListHeaderSearchInput {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-size: 1rem;
+        color: #495057;
+        background: #ffffff;
+        padding: 0.6rem 0.5rem 0.5rem 0.5rem;
+        padding-left: 2rem !important;
+        border: 1px solid #ced4da;
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+        appearance: none;
+        border-radius: 6px;
+      }
+    }
+  }
+
+  .DashboardStatsListHeaderExport {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .DashboardStatsListHeaderExportText {
+      margin-right: 20px;
+    }
+
+    .DashboardStatsListHeaderExportButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-left: 5px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+  }
+}
+
+.p-paginator {
+  text-align: center;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #164e63 !important;
+  border-color: #164e63 !important;
+  border-radius: 5px;
+}
+
+.p-component {
+  box-sizing: border-box;
+}
+
+.containerDisabled {
+  pointer-events: none;
+  opacity: 0.8;
+}

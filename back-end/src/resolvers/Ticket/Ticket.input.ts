@@ -9,6 +9,8 @@ import {
   Max,
   ValidateIf,
   IsNumber,
+  IsDate,
+  IsString,
 } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
@@ -75,4 +77,57 @@ class GetTicketsByRestaurantArgs {
   seats: number;
 }
 
-export { CreateTicketArgs, UpdateTicketArgs, GetTicketsByRestaurantArgs };
+@ArgsType()
+class GetExportTicketsByRestaurantArgs {
+  @Field(() => ID)
+  @IsUUID()
+  restaurantId: string;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  @ValidateIf((value) => value === null)
+  seats: number;
+
+  @Field({ nullable: true })
+  @IsDate()
+  @ValidateIf((value) => value === null)
+  dateMin: Date;
+
+  @Field({ nullable: true })
+  @IsDate()
+  @ValidateIf((value) => value === null)
+  dateMax: Date;
+}
+
+@ArgsType()
+class getPaginatedAndSortedTicketsArgs {
+  @Field(() => ID)
+  @IsUUID()
+  restaurantId: string;
+
+  @Field()
+  @IsString()
+  globalFilter: string;
+
+  @Field()
+  @IsInt()
+  pageSize: number;
+
+  @Field()
+  @IsInt()
+  pageNumber: number;
+
+  @Field(() => [String], { nullable: true })
+  sort: string[];
+
+  @Field(() => [Number])
+  order: number[];
+}
+
+export {
+  CreateTicketArgs,
+  UpdateTicketArgs,
+  GetTicketsByRestaurantArgs,
+  GetExportTicketsByRestaurantArgs,
+  getPaginatedAndSortedTicketsArgs,
+};

@@ -44,7 +44,7 @@ const getEmptyTables = (
 const mockTickets: GET_TICKETS_BY_RESTAURANT_TYPES = [
   {
     id: "1",
-    number: 1,
+    number: "1",
     name: "Vincent",
     seats: 2,
     email: "vincent@blabla.fr",
@@ -86,7 +86,7 @@ describe("DashboardTicket", () => {
   describe("when the user arrive on the page", () => {
     it("should render the page itself", async () => {
       renderDashboardTicket();
-      expect(screen.getByText("Tickets Placés")).toBeInTheDocument();
+      expect(screen.getByText("1 - 2 couverts")).toBeInTheDocument();
     });
   });
 });

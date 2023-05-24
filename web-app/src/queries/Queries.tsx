@@ -74,6 +74,103 @@ export const GET_TICKETS_BY_RESTAURANT = gql`
   }
 `;
 
+export const GET_WAITING_TICKETS_BY_RESTAURANT = gql`
+  query WaitingTicketsByRestaurant($restaurantId: ID!, $seats: Float) {
+    WaitingTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {
+      id
+      number
+      name
+      seats
+      email
+      phoneNumber
+      createdAt
+      deliveredAt
+      placedAt
+      closedAt
+      table {
+        id
+        number
+      }
+    }
+  }
+`;
+
+export const GET_PLACED_TICKETS_BY_RESTAURANT = gql`
+  query PlacedTicketsByRestaurant($restaurantId: ID!, $seats: Float) {
+    PlacedTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {
+      id
+      number
+      name
+      seats
+      email
+      phoneNumber
+      createdAt
+      deliveredAt
+      placedAt
+      closedAt
+      table {
+        id
+        number
+      }
+    }
+  }
+`;
+
+export const GET_PAGINATED_AND_SORTED_TICKETS_BY_RESTAURANT = gql`
+  query PaginatedAndSortedTickets(
+    $restaurantId: ID!
+    $globalFilter: String!
+    $pageSize: Float!
+    $pageNumber: Float!
+    $sort: [String!]!
+    $order: [Float!]!
+  ) {
+    PaginatedAndSortedTickets(
+      restaurantId: $restaurantId
+      globalFilter: $globalFilter
+      pageSize: $pageSize
+      pageNumber: $pageNumber
+      sort: $sort
+      order: $order
+    ) {
+      totalCount
+      tickets {
+        number
+        name
+        seats
+        createdAt
+        deliveredAt
+        placedAt
+        closedAt
+      }
+    }
+  }
+`;
+
+export const EXPORT_TICKETS_BY_RESTAURANT = gql`
+  query ExportTicketsByRestaurant(
+    $restaurantId: ID!
+    $dateMin: DateTime
+    $dateMax: DateTime
+  ) {
+    ExportTicketsByRestaurant(
+      restaurantId: $restaurantId
+      dateMin: $dateMin
+      dateMax: $dateMax
+    ) {
+      number
+      name
+      email
+      phoneNumber
+      seats
+      createdAt
+      deliveredAt
+      placedAt
+      closedAt
+    }
+  }
+`;
+
 export const UPDATE_DELIVERED_AT = gql`
   mutation UpdateDeliveredAt($updateDeliveredAtId: ID!, $table: String!) {
     updateDeliveredAt(id: $updateDeliveredAtId, table: $table) {
@@ -186,6 +283,22 @@ export const DELETE_POLE = gql`
 `;
 
 /**
+ * *************** STATS QUERIES **********************
+ */
+export const GET_STATS_BY_RESTAURANT = gql`
+  query StatsByRestaurant($restaurantId: String!) {
+    StatsByRestaurant(restaurantId: $restaurantId) {
+      tableCapacity
+      daysOfWeek
+      lastThirtyDays
+      countTicketsBySeat
+      countActualWeekTickets
+      countLastThirtyDaysTickets
+    }
+  }
+`;
+
+/**
  * *************** RESTAURANT QUERIES **********************
  */
 export const GET_RESTAURANTS = gql`
@@ -201,6 +314,27 @@ export const GET_RESTAURANTS = gql`
         city
         email
       }
+    }
+  }
+`;
+
+export const UPDATE_RESTAURANTS_TIME = gql`
+  mutation UpdateRestaurantOpeningTime(
+    $updateRestaurantOpeningTimeId: ID!
+    $hourOpenAt: Float!
+    $minutesOpenAt: Float!
+    $hourCloseAt: Float!
+    $minutesCloseAt: Float!
+  ) {
+    updateRestaurantOpeningTime(
+      id: $updateRestaurantOpeningTimeId
+      hourOpenAt: $hourOpenAt
+      minutesOpenAt: $minutesOpenAt
+      hourCloseAt: $hourCloseAt
+      minutesCloseAt: $minutesCloseAt
+    ) {
+      closeAt
+      openAt
     }
   }
 `;

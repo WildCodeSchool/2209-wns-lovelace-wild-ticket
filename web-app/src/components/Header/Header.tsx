@@ -1,22 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { AppContext } from "../../../context/AppContext";
-
+import { AppContext } from "../../context/AppContext";
+import { headerLocation } from "./utils";
+import "./Header.scss";
 import {
   HEADER_ICON_PARAMS,
   ROLE_ADMIN,
   ROLE_RESTAURANT,
   TICKET_DISAPPEAR_DELAY,
-} from "../../../constants/Constants";
-import { addMinutesToDate, convertDate } from "../../../services/DateService";
-import SVGMiniIconUser from "../../SVG/SVGMiniIconUser/SVGMiniIconUser";
-import { headerLocation } from "./utils";
-import "./DashboardHeader.scss";
-import SVGMiniIconTable from "../../SVG/SVGMiniIconTable/SVGMiniIconTable";
+} from "../../constants/Constants";
+import { addMinutesToDate, convertDate } from "../../services/DateService";
+import SVGMiniIconUser from "../SVG/SVGMiniIconUser/SVGMiniIconUser";
+import SVGMiniIconTable from "../SVG/SVGMiniIconTable/SVGMiniIconTable";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
-} from "../../../types/DataTypes";
+} from "../../types/DataTypes";
 
 export default function DashBoardHeader() {
   const [dateToConvert, setDateToConvert] = useState<Date>(new Date());
@@ -85,14 +84,22 @@ export default function DashBoardHeader() {
       <div className="DashboardHeaderLocationContainer">
         <p className="HeaderLocation">{dashboardLocation}</p>
       </div>
-      <div className="DashboardHeaderDateContainer">
-        <p className="HeaderDate">{dateNow?.date}</p>
-        <p className="HeaderTime">{dateNow?.time}</p>
-      </div>
+      {dashboardLocation === "Accueil" ? (
+        <div className="DashboardHeaderDateContainer">
+          <p className="HeaderDate">{dateNow?.date}</p>
+        </div>
+      ) : (
+        <div className="DashboardHeaderDateContainer">
+          <p className="HeaderDate">{dateNow?.date}</p>
+          <p className="HeaderTime">{dateNow?.time}</p>
+        </div>
+      )}
 
       {
         //TODO: Insérer les vraies données de file d'attente
-        userRole === ROLE_RESTAURANT && (
+        userRole === ROLE_RESTAURANT && dashboardLocation === "Accueil" ? (
+          ""
+        ) : (
           <div className="DashboardHeaderStatsContainer">
             <div className="HeaderStatsTextContainer">
               <SVGMiniIconUser iconParams={HEADER_ICON_PARAMS} />
