@@ -40,7 +40,7 @@ export default function DashboardTicketListTab({
 }) {
   const [ticketId, setTicketId] = useState<string>("");
   const [tableId, setTableId] = useState<string>("");
-  const [ticketNumber, setTicketNumber] = useState<number>(0);
+  const [ticketNumber, setTicketNumber] = useState<string>("");
   const [openConfirmClosedAtModal, setOpenConfirmClosedAtModal] =
     useState<boolean>(false);
   const [openConfirmDeliveredAtModal, setOpenConfirmDeliveredAtModal] =
@@ -75,13 +75,13 @@ export default function DashboardTicketListTab({
 
   const confirmPlace = async (ticket: GET_TICKET_BY_RESTAURANT_TYPES) => {
     setTicketId(ticket?.id as string);
-    setTicketNumber(ticket?.number as number);
+    setTicketNumber(ticket?.number as string);
     setOpenConfirmPlacedAtModal(true);
     setIsClickable(false);
   };
 
   const confirmDelete = async (ticket: GET_TICKET_BY_RESTAURANT_TYPES) => {
-    setTicketNumber(ticket?.number as number);
+    setTicketNumber(ticket?.number as string);
     setTicketId(ticket?.id as string);
     setOpenConfirmClosedAtModal(true);
     setIsClickable(false);
@@ -158,7 +158,8 @@ export default function DashboardTicketListTab({
         }
       >
         <h1 className="dashboardTicketListModalTitle">
-          Voulez-vous placer le ticket n° {ticketNumber} ?
+          Voulez-vous placer le ticket <br />
+          n° {ticketNumber} ?
         </h1>
         <div className="dashboardTicketListModalButtonContainer">
           <button
@@ -190,7 +191,8 @@ export default function DashboardTicketListTab({
         }
       >
         <h1 className="dashboardTicketListModalTitle">
-          Voulez-vous clore le ticket n° {ticketNumber} ?
+          Voulez-vous clore le ticket <br />
+          n° {ticketNumber} ?
         </h1>
         <div className="dashboardTicketListModalButtonContainer">
           <button
@@ -240,7 +242,11 @@ export default function DashboardTicketListTab({
                     ) > new Date()) ||
                     ticket.closedAt === null)
               )
-              .sort((a, b) => a.number - b.number)
+              .sort(
+                (a, b) =>
+                  parseInt(a.number.split("-")[2], 10) -
+                  parseInt(b.number.split("-")[2], 10)
+              )
               .map((ticket) => (
                 <tr key={ticket.number} className="ListTabBodyRow">
                   <td>{ticket.number}</td>
@@ -306,7 +312,11 @@ export default function DashboardTicketListTab({
                   new Date(ticket.closedAt) >
                     addMinutesToDate(new Date(), MAX_DELIVERED_TICKET_DELAY)
               )
-              .sort((a, b) => a.number - b.number)
+              .sort(
+                (a, b) =>
+                  parseInt(a.number.split("-")[2], 10) -
+                  parseInt(b.number.split("-")[2], 10)
+              )
               .map((ticket) => (
                 <tr key={ticket.number} className="ListTabBodyRow">
                   <td>{ticket.number}</td>

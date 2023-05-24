@@ -44,7 +44,7 @@ const getEmptyTables = (
 const mockTickets: GET_TICKETS_BY_RESTAURANT_TYPES = [
   {
     id: "1",
-    number: 1,
+    number: "1",
     name: "Vincent",
     seats: 2,
     email: "vincent@blabla.fr",

@@ -7,7 +7,7 @@ import Table from "../Table/Table.entity";
 @ObjectType()
 export default class Ticket {
   constructor(
-    number: number,
+    number: string,
     name: string,
     seats: number,
     createdAt: Date,
@@ -50,7 +50,7 @@ export default class Ticket {
 
   @Column()
   @Field()
-  number: number;
+  number: string;
 
   @Column()
   @Field()

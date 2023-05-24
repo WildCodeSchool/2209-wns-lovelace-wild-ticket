@@ -11,6 +11,7 @@ import TableRepository from "../Table/Table.repository";
 import TicketDb from "./Ticket.db";
 import Ticket from "./Ticket.entity";
 import PageOfTickets from "../../resolvers/Ticket/PageOfTickets";
+import TicketService from "../../services/TicketService";
 
 export default class TicketRepository extends TicketDb {
   static async initializeTickets(): Promise<void> {
@@ -29,8 +30,14 @@ export default class TicketRepository extends TicketDb {
               )) as Table)
             : undefined;
 
-          const newTicket = new Ticket(
+          const ticketNumber = TicketService.formatTicketNumberForFixtures(
+            restaurant,
             ticket.number,
+            ticket.createdAt
+          );
+
+          const newTicket = new Ticket(
+            ticketNumber,
             ticket.name,
             ticket.seats,
             ticket.createdAt,
@@ -53,7 +60,7 @@ export default class TicketRepository extends TicketDb {
     return this.repository.find();
   }
 
-  static async getTicketByNumber(number: number): Promise<Ticket | null> {
+  static async getTicketByNumber(number: string): Promise<Ticket | null> {
     return this.repository.findOneBy({ number: number });
   }
 
@@ -78,8 +85,7 @@ export default class TicketRepository extends TicketDb {
         seatsMax: seats,
       });
     }
-    query.orderBy("ticket.createdAt", "DESC");
-    query.addOrderBy("ticket.number", "DESC");
+    query.orderBy("ticket.number", "DESC");
     return await query.getMany();
   }
 
@@ -120,7 +126,7 @@ export default class TicketRepository extends TicketDb {
       .where("ticket.restaurant = :restaurantId", { restaurantId });
 
     globalFilter &&
-      query.andWhere("ticket.name LIKE :filter", {
+      query.andWhere("ticket.name ILIKE :filter", {
         filter: `%${globalFilter}%`,
       });
 
@@ -132,8 +138,7 @@ export default class TicketRepository extends TicketDb {
     });
 
     if (!sort.length || !order.length || sort.length !== order.length) {
-      query.addOrderBy("ticket.createdAt", "DESC");
-      query.addOrderBy("ticket.number", "DESC");
+      query.orderBy("ticket.number", "DESC");
     }
 
     query.take(pageSize).skip((pageNumber - 1) * pageSize);
@@ -178,11 +183,11 @@ export default class TicketRepository extends TicketDb {
       throw new Error("Aucun restaurant ne correspond à cet ID.");
 
     const lastTicket = await this.getLastTicket(restaurant);
-    let ticketNumber = 1;
 
-    lastTicket && lastTicket.number < 1000
-      ? (ticketNumber = lastTicket.number + 1)
-      : ticketNumber;
+    const ticketNumber = TicketService.formatTicketNumber(
+      restaurant,
+      lastTicket
+    );
 
     const createdAt = new Date();
 
@@ -303,8 +308,7 @@ export default class TicketRepository extends TicketDb {
         dateMax: dateMax,
       });
     }
-    query.orderBy("ticket.createdAt", "ASC");
-    query.addOrderBy("ticket.number", "ASC");
+    query.orderBy("ticket.number", "ASC");
     return await query.getMany();
   }
 }

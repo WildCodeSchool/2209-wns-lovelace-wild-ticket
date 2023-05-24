@@ -334,7 +334,7 @@ export type Ticket = {
   email?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   name: Scalars["String"];
-  number: Scalars["Float"];
+  number: Scalars["String"];
   phoneNumber?: Maybe<Scalars["String"]>;
   placedAt?: Maybe<Scalars["DateTime"]>;
   restaurant: Restaurant;
@@ -405,7 +405,7 @@ export type TicketsByRestaurantQuery = {
   TicketsByRestaurant: Array<{
     __typename?: "Ticket";
     id: string;
-    number: number;
+    number: string;
     name: string;
     seats: number;
     email?: string | null;
@@ -434,7 +434,7 @@ export type PaginatedAndSortedTicketsQuery = {
     totalCount: number;
     tickets: Array<{
       __typename?: "Ticket";
-      number: number;
+      number: string;
       name: string;
       seats: number;
       createdAt: any;
@@ -455,7 +455,7 @@ export type ExportTicketsByRestaurantQuery = {
   __typename?: "Query";
   ExportTicketsByRestaurant: Array<{
     __typename?: "Ticket";
-    number: number;
+    number: string;
     name: string;
     email?: string | null;
     phoneNumber?: string | null;
