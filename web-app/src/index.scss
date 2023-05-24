@@ -62,6 +62,10 @@ body {
   background-color: $background-color;
 }
 
+#root {
+overflow: hidden;
+}
+
 main {
   position: relative;
   display: flex;

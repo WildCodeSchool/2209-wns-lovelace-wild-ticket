@@ -4,7 +4,7 @@ export type RESTAURANT_TYPE = {
   name: string;
   openAt?: any;
   closeAt?: any;
-  picture: string;
+  picture?: string | null | undefined;
 };
 
 export type GET_TICKETS_BY_RESTAURANT_TYPES = Array<{

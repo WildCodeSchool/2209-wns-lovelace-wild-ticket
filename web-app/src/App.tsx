@@ -37,7 +37,7 @@ import DashboardOptions from "./pages/Dashboard/DashboardOptions/DashboardOption
 import Protected from "./components/Protected/Protected";
 import ProtectedAdmin from "./components/Protected/ProtectedAdmin/ProtectedAdmin";
 import ProtectedRestaurant from "./components/Protected/ProtectedRestaurant/ProtectedRestaurant";
-import DashBoardHeader from "./components/Dashboard/DashboardHeader/DashboardHeader";
+import DashBoardHeader from "./components/Header/Header";
 import SideBar from "./components/Sidebar/Sidebar";
 
 function App() {
