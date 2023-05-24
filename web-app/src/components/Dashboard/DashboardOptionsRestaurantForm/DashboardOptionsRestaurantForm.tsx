@@ -3,13 +3,13 @@ import "primeicons/primeicons.css";
 
 const DashboardOptionsRestaurantForm = () => {
   return (
-    <div className="DashboardOptionsRestaurantContainer">
-      <div className="titleContainer">
-        <i className="pi pi-home titleIcon" />
-        <p className="titleText">Restaurant</p>
+    <div className="DashboardOptionsContainer">
+      <div className="DashboardOptionsTitleContainer">
+        <i className="pi pi-home DashboardOptionsTitleIcon" />
+        <p className="DashboardOptionsTitleText">Restaurant</p>
       </div>
-      <form className="DashboardOptionsRestaurantForm">
-        <div className="DashboardOptionsRestaurantFormTextInputContainer">
+      <form className="DashboardOptionsForm">
+        <div className="DashboardOptionsFormTextInputContainer">
           <label htmlFor="email">Nom</label>
           <input
             type="email"
@@ -21,7 +21,7 @@ const DashboardOptionsRestaurantForm = () => {
             //onChange={}
           />
         </div>
-        <div className="DashboardOptionsRestaurantFormTextInputContainer">
+        <div className="DashboardOptionsFormFileInputContainer">
           <label htmlFor="email">Logo</label>
           <input
             type="file"

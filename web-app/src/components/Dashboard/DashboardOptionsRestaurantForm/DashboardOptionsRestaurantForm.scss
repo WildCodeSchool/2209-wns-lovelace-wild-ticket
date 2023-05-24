@@ -1,49 +1,54 @@
 @import "../../../index.scss";
 
-.DashboardOptionsRestaurantContainer {
+.DashboardOptionsContainer {
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
   min-width: 510px;
   width: 45%;
   max-height: 45%;
-  border: 1px solid black;
+  //border: 1px solid black;
 
-  .titleContainer {
+  .DashboardOptionsTitleContainer {
     display: flex;
     align-items: center;
-    gap: 10px;
-    left: -25px;
+    height: 50px;
+    gap: 15px;
 
-    .titleIcon {
-
+    .DashboardOptionsTitleIcon {
       font-size: 50px;
       color: #164e63;
     }
 
-    .titleText {
+    .DashboardOptionsTitleText {
       font-size: 30px;
       font-weight: 600;
       color: #164e63;
     }
   }
 
-  .DashboardOptionsRestaurantForm {
+  .DashboardOptionsForm {
     display: flex;
     flex-direction: column;
+    gap: 20px;
 
-    .DashboardOptionsRestaurantFormTextInputContainer {
-      margin-bottom: 10px;
+    .DashboardOptionsFormTextInputContainer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
 
       label {
+        width: 30%;
         font-size: 16px;
         font-weight: 600;
-        margin-bottom: 10px;
       }
 
       input {
         background-color: $modal-input-background-color;
         box-sizing: border-box;
-        width: 50%;
+        width: 60%;
         height: 40px;
         border: 1px solid $modal-input-border-color;
         border-radius: 5px;
@@ -65,4 +70,10 @@
 
   }
 
+}
+
+@media screen and (max-width: 1125px) {
+  .DashboardOptionsContainer {
+    max-height: 330px;
+  }
 }
