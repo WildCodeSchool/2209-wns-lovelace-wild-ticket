@@ -80,36 +80,48 @@ function App() {
       }
     }
   }
-  
-  useEffect(() => {
 
+  useEffect(() => {
     // Vérification de l'existence des liens de thème dans le DOM
-    const primeReactMinThemePagesLinkInHead = document.getElementsByClassName("primeReactMinThemePages").length > 0;
-    const primeReactLaraLightIndigoThemePagesLinkInHead = document.getElementsByClassName("primeReactLaraLightIndigoThemePages").length > 0;
-    const primeReactNanoThemePagesLinkInHead = document.getElementsByClassName("primeReactNanoThemePages").length > 0;
-    
+    const primeReactMinThemePagesLinkInHead =
+      document.getElementsByClassName("primeReactMinThemePages").length > 0;
+    const primeReactLaraLightIndigoThemePagesLinkInHead =
+      document.getElementsByClassName("primeReactLaraLightIndigoThemePages")
+        .length > 0;
+    const primeReactNanoThemePagesLinkInHead =
+      document.getElementsByClassName("primeReactNanoThemePages").length > 0;
+
     // Condition pour déterminer les liens de thème à utiliser
     let themeLink = null;
 
     // Si la page courante est dans le tableau des pages nécessitant le thème "primereact-min"
-    if (primeReactMinThemePages.includes(currentPage) && !primeReactMinThemePagesLinkInHead) {
+    if (
+      primeReactMinThemePages.includes(currentPage) &&
+      !primeReactMinThemePagesLinkInHead
+    ) {
       themeLink = "/themes/primereact-min/primereact.min.css";
       createThemeLink(themeLink, "primeReactMinThemePages");
-    } else if (!primeReactMinThemePages.includes(currentPage)){
+    } else if (!primeReactMinThemePages.includes(currentPage)) {
       removeThemeLinks("primeReactMinThemePages");
     }
     // Si la page courante est dans le tableau des pages nécessitant le thème "primereact-lara-light-indigo"
-    if (primeReactLaraLightIndigoThemePages.includes(currentPage) && !primeReactLaraLightIndigoThemePagesLinkInHead) {
+    if (
+      primeReactLaraLightIndigoThemePages.includes(currentPage) &&
+      !primeReactLaraLightIndigoThemePagesLinkInHead
+    ) {
       themeLink = "/themes/lara-light-indigo/theme.css";
       createThemeLink(themeLink, "primeReactLaraLightIndigoThemePages");
-    } else if (!primeReactLaraLightIndigoThemePages.includes(currentPage)){
+    } else if (!primeReactLaraLightIndigoThemePages.includes(currentPage)) {
       removeThemeLinks("primeReactLaraLightIndigoThemePages");
     }
     // Si la page courante est dans le tableau des pages nécessitant le thème "primereact-nano"
-    if (primeReactNanoThemePages.includes(currentPage) && !primeReactNanoThemePagesLinkInHead) {
+    if (
+      primeReactNanoThemePages.includes(currentPage) &&
+      !primeReactNanoThemePagesLinkInHead
+    ) {
       themeLink = "/themes/nano/theme.css";
       createThemeLink(themeLink, "primeReactNanoThemePages");
-    } else if (!primeReactNanoThemePages.includes(currentPage)){
+    } else if (!primeReactNanoThemePages.includes(currentPage)) {
       removeThemeLinks("primeReactNanoThemePages");
     }
   }, [currentPage]);
