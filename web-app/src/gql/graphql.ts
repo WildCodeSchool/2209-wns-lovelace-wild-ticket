@@ -72,6 +72,7 @@ export type MutationCreatePoleArgs = {
 
 export type MutationCreateRestaurantArgs = {
   name: Scalars["String"];
+  picture?: InputMaybe<Scalars["String"]>;
   pole: Scalars["ID"];
 };
 
@@ -153,6 +154,7 @@ export type MutationUpdatePoleArgs = {
 export type MutationUpdateRestaurantArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
+  picture?: InputMaybe<Scalars["String"]>;
 };
 
 export type MutationUpdateRestaurantOpeningTimeArgs = {
@@ -269,7 +271,7 @@ export type Restaurant = {
   id: Scalars["ID"];
   name: Scalars["String"];
   openAt?: Maybe<Scalars["DateTime"]>;
-  picture: Scalars["String"];
+  picture?: Maybe<Scalars["String"]>;
   pole: Pole;
   table: Array<Table>;
   ticket: Array<Ticket>;
@@ -424,6 +426,23 @@ export type TablesByRestaurantQuery = {
     number: number;
     capacity: number;
   }>;
+};
+
+export type UpdateRestaurantOpeningTimeMutationVariables = Exact<{
+  updateRestaurantOpeningTimeId: Scalars["ID"];
+  hourOpenAt: Scalars["Float"];
+  minutesOpenAt: Scalars["Float"];
+  hourCloseAt: Scalars["Float"];
+  minutesCloseAt: Scalars["Float"];
+}>;
+
+export type UpdateRestaurantOpeningTimeMutation = {
+  __typename?: "Mutation";
+  updateRestaurantOpeningTime: {
+    __typename?: "Restaurant";
+    closeAt?: any | null;
+    openAt?: any | null;
+  };
 };
 
 export const SignInDocument = {
@@ -1083,4 +1102,135 @@ export const TablesByRestaurantDocument = {
 } as unknown as DocumentNode<
   TablesByRestaurantQuery,
   TablesByRestaurantQueryVariables
+>;
+export const UpdateRestaurantOpeningTimeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateRestaurantOpeningTime" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "updateRestaurantOpeningTimeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "hourOpenAt" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "minutesOpenAt" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "hourCloseAt" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "minutesCloseAt" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateRestaurantOpeningTime" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: {
+                    kind: "Name",
+                    value: "updateRestaurantOpeningTimeId",
+                  },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "hourOpenAt" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "hourOpenAt" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "minutesOpenAt" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "minutesOpenAt" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "hourCloseAt" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "hourCloseAt" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "minutesCloseAt" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "minutesCloseAt" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "closeAt" } },
+                { kind: "Field", name: { kind: "Name", value: "openAt" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateRestaurantOpeningTimeMutation,
+  UpdateRestaurantOpeningTimeMutationVariables
 >;
