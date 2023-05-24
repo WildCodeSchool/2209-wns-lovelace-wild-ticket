@@ -1,49 +1,22 @@
-import SVGIconForks from "../components/SVG/SVGIconForks/SVGIconForks";
-
-export const TicketsHeadTabContent: string[] = [
-  "N° Ticket",
-  "Nom",
-  "Couverts",
-  "Temps d'attente",
-  "Statut",
-  "Actions",
-];
-
 export const TicketsFilterTabContent = [
   {
-    buttonContent: (
-      <>
-        <SVGIconForks />1 - 2
-      </>
-    ),
+    label: "1 - 2 couverts",
     seats: 2,
   },
   {
-    buttonContent: (
-      <>
-        <SVGIconForks />3 - 4
-      </>
-    ),
+    label: "3 - 4 couverts",
     seats: 4,
   },
   {
-    buttonContent: (
-      <>
-        <SVGIconForks />5 - 6
-      </>
-    ),
+    label: "5 - 6 couverts",
     seats: 6,
   },
   {
-    buttonContent: (
-      <>
-        <SVGIconForks />7 - 8
-      </>
-    ),
+    label: "7 - 8 couverts",
     seats: 8,
   },
   {
-    buttonContent: "Tous les tickets",
+    label: "Tous",
     seats: null,
   },
 ];
