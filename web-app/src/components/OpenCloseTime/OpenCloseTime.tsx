@@ -61,7 +61,6 @@ const OpenCloseTime = () => {
     },
   });
 
-  console.log(openAt, closedAt);
   return (
     <div className="contentBottom">
       <div className="openClose">

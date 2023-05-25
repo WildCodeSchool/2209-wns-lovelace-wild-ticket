@@ -28,6 +28,7 @@ const documents = {
     "\n  mutation UpdateClosedAt($updateClosedAtId: String!) {\n    updateClosedAt(id: $updateClosedAtId) {\n      id\n      closedAt\n    }\n  }\n": types.UpdateClosedAtDocument,
     "\n  query TablesByRestaurant($restaurantId: ID!, $capacity: Float) {\n    TablesByRestaurant(restaurantId: $restaurantId, capacity: $capacity) {\n      id\n      number\n      capacity\n    }\n  }\n": types.TablesByRestaurantDocument,
     "\n  query StatsByRestaurant($restaurantId: String!) {\n    StatsByRestaurant(restaurantId: $restaurantId) {\n      tableCapacity\n      daysOfWeek\n      lastThirtyDays\n      countTicketsBySeat\n      countActualWeekTickets\n      countLastThirtyDaysTickets\n    }\n  }\n": types.StatsByRestaurantDocument,
+    "\n  mutation UpdateRestaurant(\n    $updateRestaurantId: ID!\n    $ticketWaitingLimit: Float!\n    $name: String!\n    $picture: String\n  ) {\n    updateRestaurant(\n      id: $updateRestaurantId\n      ticketWaitingLimit: $ticketWaitingLimit\n      name: $name\n      picture: $picture\n    ) {\n      id\n      name\n      picture\n      ticketWaitingLimit\n      openAt\n      closeAt\n    }\n  }\n": types.UpdateRestaurantDocument,
     "\n  mutation UpdateRestaurantOpeningTime(\n    $updateRestaurantOpeningTimeId: ID!\n    $hourOpenAt: Float!\n    $minutesOpenAt: Float!\n    $hourCloseAt: Float!\n    $minutesCloseAt: Float!\n  ) {\n    updateRestaurantOpeningTime(\n      id: $updateRestaurantOpeningTimeId\n      hourOpenAt: $hourOpenAt\n      minutesOpenAt: $minutesOpenAt\n      hourCloseAt: $hourCloseAt\n      minutesCloseAt: $minutesCloseAt\n    ) {\n      closeAt\n      openAt\n    }\n  }\n": types.UpdateRestaurantOpeningTimeDocument,
 };
 
@@ -105,6 +106,10 @@ export function graphql(source: "\n  query TablesByRestaurant($restaurantId: ID!
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query StatsByRestaurant($restaurantId: String!) {\n    StatsByRestaurant(restaurantId: $restaurantId) {\n      tableCapacity\n      daysOfWeek\n      lastThirtyDays\n      countTicketsBySeat\n      countActualWeekTickets\n      countLastThirtyDaysTickets\n    }\n  }\n"): (typeof documents)["\n  query StatsByRestaurant($restaurantId: String!) {\n    StatsByRestaurant(restaurantId: $restaurantId) {\n      tableCapacity\n      daysOfWeek\n      lastThirtyDays\n      countTicketsBySeat\n      countActualWeekTickets\n      countLastThirtyDaysTickets\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateRestaurant(\n    $updateRestaurantId: ID!\n    $ticketWaitingLimit: Float!\n    $name: String!\n    $picture: String\n  ) {\n    updateRestaurant(\n      id: $updateRestaurantId\n      ticketWaitingLimit: $ticketWaitingLimit\n      name: $name\n      picture: $picture\n    ) {\n      id\n      name\n      picture\n      ticketWaitingLimit\n      openAt\n      closeAt\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateRestaurant(\n    $updateRestaurantId: ID!\n    $ticketWaitingLimit: Float!\n    $name: String!\n    $picture: String\n  ) {\n    updateRestaurant(\n      id: $updateRestaurantId\n      ticketWaitingLimit: $ticketWaitingLimit\n      name: $name\n      picture: $picture\n    ) {\n      id\n      name\n      picture\n      ticketWaitingLimit\n      openAt\n      closeAt\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

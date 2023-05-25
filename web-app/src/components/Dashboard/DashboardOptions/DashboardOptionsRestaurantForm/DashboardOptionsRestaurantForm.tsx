@@ -1,27 +1,84 @@
+import { useContext, useState } from "react";
 import "../DashboardOptionsForm.scss";
 import "primeicons/primeicons.css";
+import { AppContext } from "../../../../context/AppContext";
+import { useMutation } from "@apollo/client";
+import {
+  UpdateRestaurantMutation,
+  UpdateRestaurantMutationVariables,
+} from "../../../../gql/graphql";
+import { UPDATE_RESTAURANT } from "../../../../queries/Queries";
+import { toast } from "react-toastify";
+import { validateAndConvertImageToBase64 } from "../../../../services/ImageService";
 
-const DashboardOptionsRestaurantForm = ({ data }: any) => {
+const DashboardOptionsRestaurantForm = () => {
+  const appContext = useContext(AppContext);
+  const userData = appContext?.userData;
+  const restaurantId = userData?.restaurant?.id;
+  const restaurantName = userData?.restaurant.name;
+  const restaurantPicture = userData?.restaurant.picture;
+  const ticketWaitingLimit = userData?.restaurant.ticketWaitingLimit;
+  const [updatedRestaurantName, setUpdatedRestaurantName] =
+    useState<string>(restaurantName);
+  const [updatedRestaurantPicture, setUpdatedRestaurantPicture] =
+    useState(restaurantPicture);
+
+  const [updateRestaurant] = useMutation<
+    UpdateRestaurantMutation,
+    UpdateRestaurantMutationVariables
+  >(UPDATE_RESTAURANT, {
+    notifyOnNetworkStatusChange: true,
+    variables: {
+      updateRestaurantId: restaurantId,
+      ticketWaitingLimit: ticketWaitingLimit,
+      name: updatedRestaurantName,
+      picture: updatedRestaurantPicture,
+    },
+    onCompleted: () => {
+      appContext?.refetch();
+      toast.success("Mise à jour effectuée avec succès");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const convertImage = (e: any) => {
+    const file = e.target.files[0];
+    validateAndConvertImageToBase64(file, (error: any, base64Image: any) => {
+      if (error) {
+        toast.error(error);
+        e.target.value = null;
+      } else {
+        setUpdatedRestaurantPicture(base64Image);
+      }
+    });
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    await updateRestaurant();
+  };
   return (
     <div className="DashboardOptionsContainer">
       <div className="DashboardOptionsTitleContainer">
         <i className="pi pi-home DashboardOptionsTitleIcon" />
         <p className="DashboardOptionsTitleText">Restaurant</p>
       </div>
-      <form className="DashboardOptionsForm">
+      <form
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
+        className="DashboardOptionsForm"
+      >
         <div className="DashboardOptionsFormTextInputContainer">
-          <label className="DashboardOptionsFormTextLabel" htmlFor="email">
-            Nom
-          </label>
+          <label className="DashboardOptionsFormTextLabel">Nom</label>
           <input
             className="DashboardOptionsFormTextInput"
-            type="email"
+            type="text"
             required
-            autoComplete="email"
-            id="email"
-            name="email"
-            value={data.restaurant.name}
-            //onChange={}
+            value={updatedRestaurantName}
+            onChange={(e) => setUpdatedRestaurantName(e.target.value)}
           />
         </div>
         <div className="DashboardOptionsFormFileInputContainer">
@@ -34,12 +91,12 @@ const DashboardOptionsRestaurantForm = ({ data }: any) => {
               type="file"
               id="imageInput"
               accept="image/*"
-              //onChange={handleImageChange}
+              onChange={(e) => convertImage(e)}
             />
             <div className="DashboardOptionsFormImageContainer">
               <img
                 className="DashboardOptionsFormImage"
-                src={data.restaurant.picture}
+                src={updatedRestaurantPicture}
                 alt="restaurant's logo"
               />{" "}
             </div>

@@ -237,6 +237,29 @@ export const GET_STATS_BY_RESTAURANT = gql`
  * *************** RESTAURANT QUERIES **********************
  */
 
+export const UPDATE_RESTAURANT = gql`
+  mutation UpdateRestaurant(
+    $updateRestaurantId: ID!
+    $ticketWaitingLimit: Float!
+    $name: String!
+    $picture: String
+  ) {
+    updateRestaurant(
+      id: $updateRestaurantId
+      ticketWaitingLimit: $ticketWaitingLimit
+      name: $name
+      picture: $picture
+    ) {
+      id
+      name
+      picture
+      ticketWaitingLimit
+      openAt
+      closeAt
+    }
+  }
+`;
+
 export const UPDATE_RESTAURANTS_TIME = gql`
   mutation UpdateRestaurantOpeningTime(
     $updateRestaurantOpeningTimeId: ID!

@@ -146,14 +146,11 @@
         background-color: $modal-button-hover-background-color;
       }
     }
-
-
   }
-
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1500px) {
   .DashboardOptionsContainer {
-    max-height: 340px;
+    max-height: 400px;
   }
 }
