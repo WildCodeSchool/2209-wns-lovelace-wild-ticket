@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
-import TabTables from "../../../components/TabTables/TabTables";
+import TabTables from "../../../components/ListTables/ListTables";
 
 import "../DashboardTemp.scss";
 
