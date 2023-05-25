@@ -212,6 +212,38 @@ export const GET_TABLES_BY_RESTAURANT = gql`
   }
 `;
 
+export const CREATE_TABLE = gql`
+  mutation CreateTable(
+    $number: Float!
+    $capacity: Float!
+    $restaurant: String!
+  ) {
+    createTable(number: $number, capacity: $capacity, restaurant: $restaurant) {
+      capacity
+      number
+      restaurant {
+        id
+      }
+    }
+  }
+`;
+
+export const UPDATE_TABLE = gql`
+  mutation UpdateTable($updateTableId: ID!, $number: Float!, $capacity: Float!) {
+    updateTable(id: $updateTableId, number: $number, capacity: $capacity) {
+      capacity
+      number
+    }
+  }
+`;
+
+export const DELETE_TABLE = gql`
+  mutation DeleteTable($deleteTableId: String!) {
+    deleteTable(id: $deleteTableId) {
+      id
+    }
+  }
+`;
 /**
  * *************** POLE QUERIES **********************
  */

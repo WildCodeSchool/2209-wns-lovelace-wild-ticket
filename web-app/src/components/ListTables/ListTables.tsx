@@ -14,7 +14,6 @@ const ListTables = () => {
   const appContext = useContext(AppContext);
   const restaurantId = appContext?.userData.restaurant.id;
 
-  const [number, setNumber] = useState<number | null>(null);
   const [seats, setSeats] = useState<number | null>(null);
   const [tables, setTables] = useState<GET_TABLES_BY_RESTAURANT_TYPES | undefined >(undefined);
 
@@ -45,7 +44,7 @@ const ListTables = () => {
       <DataTable tableStyle={{ minWidth: "50rem" }} value={tables as DataTableValueArray}>
         <Column field="number" header="N° de table"></Column>
         <Column field="capacity" header="Couverts"></Column>
-        {/* <Column field="Actions" header="Actions"></Column> */}
+        <Column  header="Action"></Column>
       </DataTable>
     </div>
   );
