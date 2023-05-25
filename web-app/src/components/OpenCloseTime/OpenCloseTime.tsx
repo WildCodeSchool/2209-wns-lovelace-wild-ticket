@@ -1,5 +1,5 @@
 import React from "react";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { useMutation } from "@apollo/client";
 import { DatePicker } from "rsuite";
@@ -11,12 +11,17 @@ import { UPDATE_RESTAURANTS_TIME } from "../../queries/Queries";
 
 import "rsuite/dist/rsuite-no-reset.min.css";
 import "../OpenCloseTime/OpenCloseTime.scss";
+import { toast } from "react-toastify";
 
 const OpenCloseTime = () => {
   const appContext = useContext(AppContext);
   //UPDATE OPENING AND CLOSED TIME
-  const [openAt, setOpenAt] = React.useState<Date | null>();
-  const [closedAt, setClosedAt] = React.useState<Date | null>();
+  const [openAt, setOpenAt] = React.useState<Date | null>(
+    new Date(appContext?.userData.restaurant.openAt)
+  );
+  const [closedAt, setClosedAt] = React.useState<Date | null>(
+    new Date(appContext?.userData.restaurant.closeAt)
+  );
   const restaurantId = appContext?.userData.restaurant.id as string;
 
   let openHour = openAt?.getHours() as number;
@@ -44,30 +49,35 @@ const OpenCloseTime = () => {
       minutesCloseAt: closeMinute,
     },
     onCompleted: async (data) => {
-      // setOpenAt(null);
-      // setClosedAt(null);
+      setOpenAt(new Date(data.updateRestaurantOpeningTime.openAt));
+      setClosedAt(new Date(data.updateRestaurantOpeningTime.closeAt));
+      appContext?.refetch();
+      toast.success(
+        "Les horaires d'ouverture et de fermeture ont été mis à jour avec succès !"
+      );
     },
-    onError: () => {},
+    onError: () => {
+      toast.error("Une erreur est survenue, veuillez réessayer plus tard");
+    },
   });
+
+  console.log(openAt, closedAt);
   return (
     <div className="contentBottom">
       <div className="openClose">
         <div className="open">
           <h2>Ouverture de la réservation</h2>
           <div className="field">
-            {openAt != null ? (
-              <h3>
-                {openHour}:{openMinute}
-              </h3>
-            ) : (
-              ""
-            )}
             <DatePicker
               id="clearValue"
               format="HH:mm"
               editable={true}
               onChange={(open) => setOpenAt(open)}
-              value={openAt}
+              value={
+                openAt != null && openAt.getDate === new Date().getDate
+                  ? openAt
+                  : null
+              }
               placement="auto"
               placeholder="Ouverture"
               size="lg"
@@ -78,19 +88,16 @@ const OpenCloseTime = () => {
         <div className="close">
           <h2>Fermeture de la réservation</h2>
           <div className="field">
-            {closedAt != null ? (
-              <h3>
-                {closeHour}:{closeMinute}
-              </h3>
-            ) : (
-              ""
-            )}
             <DatePicker
               id="clearValue1"
               format="HH:mm"
               editable={true}
               onChange={(close) => setClosedAt(close)}
-              value={closedAt}
+              value={
+                closedAt != null && closedAt.getDate === new Date().getDate
+                  ? closedAt
+                  : null
+              }
               placement="auto"
               placeholder="Fermeture"
               size="lg"

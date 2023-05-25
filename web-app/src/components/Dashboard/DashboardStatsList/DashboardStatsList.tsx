@@ -174,7 +174,7 @@ const DashboardStatsList = () => {
         setIsPortraitTabletView(false);
         setlazyState((prevState: DATA_TABLE_LAZY_STATE_TYPES) => ({
           ...prevState,
-          rows: 16,
+          rows: 15,
         }));
       }
     };
