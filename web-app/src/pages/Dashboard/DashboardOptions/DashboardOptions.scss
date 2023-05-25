@@ -2,13 +2,13 @@
 
 .DashboardOptionsSection {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-around;
+  align-items: flex-start;
   flex-wrap: wrap;
   gap: 10px;
   width: auto;
   height: 90%;
-  margin: 10px 15px 15px 80px;
+  margin: 40px 15px 15px 80px;
 }
 
 @media screen and (max-width: 1125px) {

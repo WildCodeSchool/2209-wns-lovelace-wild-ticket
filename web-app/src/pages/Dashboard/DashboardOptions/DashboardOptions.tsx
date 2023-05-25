@@ -5,11 +5,12 @@ import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
 import "./DashboardOptions.scss";
 import "primeicons/primeicons.css";
-import DashboardOptionsRestaurantForm from "../../../components/Dashboard/DashboardOptionsRestaurantForm/DashboardOptionsRestaurantForm";
-import DashboardOptionsOperatorForm from "../../../components/Dashboard/DashboardOptionsOperatorForm/DashboardOptionsOperatorForm";
-import DashboardOptionsGeneralOpForm from "../../../components/Dashboard/DashboardOptionsGeneralOpForm/DashboardOptionsGeneralOpForm";
+import DashboardOptionsRestaurantForm from "../../../components/Dashboard/DashboardOptions/DashboardOptionsRestaurantForm/DashboardOptionsRestaurantForm";
+import DashboardOptionsOperatorForm from "../../../components/Dashboard/DashboardOptions/DashboardOptionsOperatorForm/DashboardOptionsOperatorForm";
+import DashboardOptionsGeneralOpForm from "../../../components/Dashboard/DashboardOptions/DashboardOptionsGeneralOpForm/DashboardOptionsGeneralOpForm";
 const DashboardOptions = () => {
   const appContext = useContext(AppContext);
+  const userData = appContext?.userData;
 
   return appContext?.userData.role === "ROLE_ADMIN" ? (
     <div className="DashboardMain">
@@ -26,9 +27,9 @@ const DashboardOptions = () => {
     </div>
   ) : (
     <section className="DashboardOptionsSection">
-      <DashboardOptionsRestaurantForm />
-      {/* <DashboardOptionsOperatorForm /> */}
-      {/* <DashboardOptionsGeneralOpForm /> */}
+      <DashboardOptionsRestaurantForm data={userData} />
+      <DashboardOptionsOperatorForm data={userData} />
+      <DashboardOptionsGeneralOpForm data={userData} />
     </section>
   );
 };

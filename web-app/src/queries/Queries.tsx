@@ -48,6 +48,8 @@ export const MY_PROFILE = gql`
         name
         picture
         ticketWaitingLimit
+        openAt
+        closeAt
       }
     }
   }
