@@ -10,14 +10,23 @@ import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
 } from "../../../types/DataTypes";
-import { TICKET_DISAPPEAR_DELAY } from "../../../constants/Constants";
-import { DASHBOARD_STATS, DASHBOARD_TICKET } from "../../paths";
+import {
+  BIG_LOGO_DASHBOARD_SIZE,
+  TICKET_DISAPPEAR_DELAY,
+} from "../../../constants/Constants";
+import {
+  DASHBOARD_STATS,
+  DASHBOARD_TABLE,
+  DASHBOARD_TICKET,
+} from "../../paths";
 
 import "../DashboardTemp.scss";
 import "../DashboardHome/DashboardHome.scss";
+import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 
 const DashboardHome = () => {
   const appContext = useContext(AppContext);
+  const userData = appContext?.userData;
   const navigate = useNavigate();
   const tickets = useContext(AppContext)
     ?.tickets as GET_TICKETS_BY_RESTAURANT_TYPES;
@@ -75,37 +84,63 @@ const DashboardHome = () => {
     navigate(DASHBOARD_TICKET);
   };
 
-  return (
+  const goToTables = () => {
+    navigate(DASHBOARD_TABLE);
+  };
+
+  return appContext?.userData.role === "ROLE_ADMIN" ? (
     <div className="DashboardMain">
       <div className="DashboardContent">
-        <div className="contentTop">
-          <div className="statsTop">
-            <Clock></Clock>
-            <button className="btnStats" onClick={goToStats}>
-              Statistiques
-            </button>
-          </div>
-          <div className="statsBottom">
-            <div className="boxStatsTickets" onClick={goToTickets}>
-              <div className="statsTickets">
-                <span>{waitingTickets}</span>
-                <p>Ticket{waitingTickets > 1 ? "s" : ""} en attente</p>
-              </div>
-              <MdOutlineConfirmationNumber className="icon" />
-            </div>
-            <div className="boxStatsTables" onClick={goToTickets}>
-              <div className="statsTables">
-                <span> {occupiedTables}</span>
-                <p>Tables occupées</p>
-              </div>
-              <MdOutlineTableBar className="icon" />
-            </div>
-          </div>
-        </div>
-        <OpenCloseTime></OpenCloseTime>
+        <SVGLogo
+          logoWidth={BIG_LOGO_DASHBOARD_SIZE}
+          logoHeight={BIG_LOGO_DASHBOARD_SIZE}
+          logoFill={appContext?.userSVGColorScheme}
+        />
+        <h1>DASHBOARD HOME</h1>
+        <p className="DashboardText">Page Under Construction...</p>
         <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
       </div>
     </div>
+  ) : (
+    <section className="DashboardHomeSection">
+      <div className="DashboardHomeTopContent">
+        <div className="DashboardHomeTopLeftContainer">
+          <div className="boxStatsTickets" onClick={goToTickets}>
+            <div className="statsTickets">
+              <span>{waitingTickets}</span>
+              <p>Ticket{waitingTickets > 1 ? "s" : ""} en attente</p>
+            </div>
+            <MdOutlineConfirmationNumber className="icon" />
+          </div>
+          <button className="btnStats" onClick={goToTables}>
+            Tables
+          </button>
+        </div>
+        <div className="DashboardHomeTopMiddleContainer">
+          <img
+            className="DashboardHomeTopMiddleRestaurantLogo"
+            src={userData.restaurant.picture}
+            alt="restaurant logo"
+          />
+          <Clock></Clock>
+        </div>
+        <div className="DashboardHomeTopRightContainer">
+          <div className="boxStatsTables" onClick={goToTickets}>
+            <div className="statsTables">
+              <span> {occupiedTables}</span>
+              <p>Tables occupées</p>
+            </div>
+            <MdOutlineTableBar className="icon" />
+          </div>
+          <button className="btnStats" onClick={goToStats}>
+            Statistiques
+          </button>
+        </div>
+      </div>
+      <div className="DashboardHomeBottomContent">
+        <OpenCloseTime></OpenCloseTime>
+      </div>
+    </section>
   );
 };
 
