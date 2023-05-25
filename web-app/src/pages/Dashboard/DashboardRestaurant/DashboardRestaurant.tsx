@@ -1,25 +1,53 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import "../DashboardTemp.scss";
 import { AppContext } from "../../../context/AppContext";
-import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
-import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
+import "./DashboardRestaurant.scss";
+import { GET_RESTAURANTS_TYPES } from "../../../types/DataTypes";
+import { useQuery } from "@apollo/client";
+import { GetRestaurantsQuery } from "../../../gql/graphql";
+import { GET_RESTAURANTS } from "../../../queries/Queries";
 
 const DashboardRestaurant = () => {
   const appContext = useContext(AppContext);
+  const [restaurants, setRestaurants] = useState<GET_RESTAURANTS_TYPES>(null);
 
+  const { loading, refetch } = useQuery<GetRestaurantsQuery>(GET_RESTAURANTS, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data) => {
+      if (data.getRestaurants) {
+        setRestaurants(data.getRestaurants);
+      }
+    },
+  });
+  console.log(restaurants);
   return (
-    <div className="DashboardMain">
-      <div className="DashboardContent">
-        <SVGLogo
-          logoWidth={BIG_LOGO_DASHBOARD_SIZE}
-          logoHeight={BIG_LOGO_DASHBOARD_SIZE}
-          logoFill={appContext?.userSVGColorScheme}
-        />
-        <h1>DASHBOARD RESTAURANT</h1>
-        <p className="DashboardText">Page Under Construction...</p>
-        <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
-      </div>
-    </div>
+    <section className="DashboardRestaurantSection">
+      <header className="DashboardRestaurantHeader">
+        <h1>Liste des Pôles</h1>
+      </header>
+      <main className="DashboardRestaurantList">
+        {
+          <table className="ListTab">
+            <thead className="ListTabHeader">
+              <tr className="ListTabHeaderRow">
+                <td>Nom</td>
+                <td>Pôle</td>
+              </tr>
+            </thead>
+            <tbody className="ListTabBody">
+              {restaurants &&
+                restaurants.map((restaurant) => (
+                  <tr className="ListTabBodyRow">
+                    <td>{restaurant.name}</td>
+                    <td>{restaurant.pole?.name}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        }
+      </main>
+      <footer className="DashboardRestaurantFooter"></footer>
+    </section>
   );
 };
 

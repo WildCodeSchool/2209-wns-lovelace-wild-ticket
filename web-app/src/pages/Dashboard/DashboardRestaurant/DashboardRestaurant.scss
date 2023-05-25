@@ -1,0 +1,66 @@
+@import "../../../index.scss";
+
+.DashboardRestaurantSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: auto;
+  height: 90%;
+  margin: 10px 15px 15px 80px;
+
+  .DashboardRestaurantHeader {
+    background-color: $gray200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 60px;
+  }
+
+  .DashboardRestaurantList {
+    position: relative;
+    background-color: $gray200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+
+    .ListTab {
+      width: 100%;
+      border-collapse: collapse;
+
+      .ListTabHeader {
+        .ListTabHeaderRow {
+          text-align: center;
+          background-color: $gray200;
+          position: sticky;
+          height: 50px;
+          top: 0;
+          font-weight: bold;
+        }
+      }
+
+      .ListTabBody {
+        .ListTabBodyRow {
+          text-align: center;
+          height: 50px;
+        }
+      }
+    }
+  }
+
+  .DashboardRestaurantFooter {
+    background-color: $gray200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 60px;
+  }
+}
