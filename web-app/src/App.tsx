@@ -46,10 +46,7 @@ function App() {
 
   const currentPage = window.location.pathname;
 
-  const primeReactMinThemePages = [
-    DASHBOARD_POLE,
-    DASHBOARD_RESTAURANT,
-  ];
+  const primeReactMinThemePages = [DASHBOARD_POLE, DASHBOARD_RESTAURANT];
   const primeReactLaraLightIndigoThemePages = [
     DASHBOARD_POLE,
     DASHBOARD_RESTAURANT,
