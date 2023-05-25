@@ -2,17 +2,18 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineConfirmationNumber, MdOutlineTableBar } from "react-icons/md";
 import { AppContext } from "../../../context/AppContext";
+import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
+import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
+import MainMenu from "../../../components/MainMenu/MainMenu";
 import { addMinutesToDate } from "../../../services/DateService";
 import Clock from "../../../components/Clock/Clock";
 import OpenCloseTime from "../../../components/OpenCloseTime/OpenCloseTime";
-
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
 } from "../../../types/DataTypes";
 import { TICKET_DISAPPEAR_DELAY } from "../../../constants/Constants";
 import { DASHBOARD_STATS, DASHBOARD_TICKET } from "../../paths";
-
 import "../DashboardTemp.scss";
 import "../DashboardHome/DashboardHome.scss";
 
@@ -78,31 +79,48 @@ const DashboardHome = () => {
   return (
     <div className="DashboardMain">
       <div className="DashboardContent">
-        <div className="contentTop">
-          <div className="statsTop">
-            <Clock></Clock>
-            <button className="btnStats" onClick={goToStats}>
-              Statistiques
-            </button>
-          </div>
-          <div className="statsBottom">
-            <div className="boxStatsTickets" onClick={goToTickets}>
-              <div className="statsTickets">
-                <span>{waitingTickets}</span>
-                <p>Ticket{waitingTickets > 1 ? "s" : ""} en attente</p>
+        {appContext?.userData.role === "ROLE_ADMIN" ? (
+          <>
+            {/* Partie Admin */}
+            <SVGLogo
+              logoWidth={BIG_LOGO_DASHBOARD_SIZE}
+              logoHeight={BIG_LOGO_DASHBOARD_SIZE}
+              logoFill={appContext?.userSVGColorScheme}
+            />
+            <h1>DASHBOARD</h1>
+            <MainMenu />
+          </>
+        ) : (
+          <>
+            {/* Partie Restaurateur */}
+            <div className="contentTop">
+              <div className="statsTop">
+                <Clock></Clock>
+                <button className="btnStats" onClick={goToStats}>
+                  Statistiques
+                </button>
               </div>
-              <MdOutlineConfirmationNumber className="icon" />
-            </div>
-            <div className="boxStatsTables" onClick={goToTickets}>
-              <div className="statsTables">
-                <span> {occupiedTables}</span>
-                <p>Tables occupées</p>
+              <div className="statsBottom">
+                <div className="boxStatsTickets" onClick={goToTickets}>
+                  <div className="statsTickets">
+                    <span>{waitingTickets}</span>
+                    <p>Ticket{waitingTickets > 1 ? "s" : ""} en attente</p>
+                  </div>
+                  <MdOutlineConfirmationNumber className="icon" />
+                </div>
+                <div className="boxStatsTables" onClick={goToTickets}>
+                  <div className="statsTables">
+                    <span> {occupiedTables}</span>
+                    <p>Tables occupées</p>
+                  </div>
+                  <MdOutlineTableBar className="icon" />
+                </div>
               </div>
-              <MdOutlineTableBar className="icon" />
             </div>
-          </div>
-        </div>
-        <OpenCloseTime></OpenCloseTime>
+            <OpenCloseTime></OpenCloseTime>
+          </>
+        )}
+
         <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
       </div>
     </div>

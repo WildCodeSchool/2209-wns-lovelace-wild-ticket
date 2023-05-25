@@ -213,6 +213,76 @@ export const GET_TABLES_BY_RESTAURANT = gql`
 `;
 
 /**
+ * *************** POLE QUERIES **********************
+ */
+export const GET_POLES = gql`
+  query Poles {
+    poles {
+      id
+      name
+      address
+      zipCode
+      city
+      email
+      restaurant {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const CREATE_POLE = gql`
+  mutation CreatePole(
+    $name: String!
+    $address: String!
+    $zipCode: String!
+    $city: String!
+    $email: String!
+  ) {
+    createPole(
+      name: $name
+      address: $address
+      zipCode: $zipCode
+      city: $city
+      email: $email
+    ) {
+      id
+    }
+  }
+`;
+
+export const UPDATE_POLE = gql`
+  mutation UpdatePole(
+    $name: String!
+    $address: String!
+    $zipCode: String!
+    $city: String!
+    $email: String!
+    $updatePoleId: ID!
+  ) {
+    updatePole(
+      name: $name
+      address: $address
+      zipCode: $zipCode
+      city: $city
+      email: $email
+      id: $updatePoleId
+    ) {
+      id
+    }
+  }
+`;
+
+export const DELETE_POLE = gql`
+  mutation DeletePole($deletePoleId: String!) {
+    deletePole(id: $deletePoleId) {
+      id
+    }
+  }
+`;
+
+/**
  * *************** STATS QUERIES **********************
  */
 export const GET_STATS_BY_RESTAURANT = gql`
@@ -231,6 +301,22 @@ export const GET_STATS_BY_RESTAURANT = gql`
 /**
  * *************** RESTAURANT QUERIES **********************
  */
+export const GET_RESTAURANTS = gql`
+  query GetRestaurants {
+    getRestaurants {
+      id
+      name
+      pole {
+        id
+        name
+        address
+        zipCode
+        city
+        email
+      }
+    }
+  }
+`;
 
 export const UPDATE_RESTAURANTS_TIME = gql`
   mutation UpdateRestaurantOpeningTime(

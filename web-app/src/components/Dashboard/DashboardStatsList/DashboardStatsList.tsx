@@ -24,8 +24,6 @@ import {
 import { exportTickets } from "../../../services/ExportService";
 import { toast } from "react-toastify";
 import { changeDateFormat } from "../../../services/DateService";
-
-import "primereact/resources/themes/nano/theme.css";
 import "primeicons/primeicons.css";
 import "./DashboardStatsList.scss";
 import {
