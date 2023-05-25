@@ -1,4 +1,4 @@
-import React from 'react'
+import { CREATE_TABLE } from "../../../queries/Queries";
 
 const CreateTableButton = () => {
   return (
