@@ -244,6 +244,7 @@ export const DELETE_TABLE = gql`
     }
   }
 `;
+
 /**
  * *************** POLE QUERIES **********************
  */
