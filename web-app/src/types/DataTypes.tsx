@@ -96,6 +96,7 @@ export type GET_RESTAURANTS_TYPES = Array<{
     email: string;
   };
 }> | null;
+
 export type EXPORT_TICKETS_BY_RESTAURANT_TYPES = Array<{
   __typename?: "Ticket" | undefined;
   number: string;

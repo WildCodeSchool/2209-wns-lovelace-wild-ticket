@@ -1,21 +1,24 @@
-import { useContext } from "react";
-import { AppContext } from "../../../context/AppContext";
-import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
-import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
+import { useState } from "react";
 import TabTables from "../../../components/Dashboard/DashboardTables/ListTables";
-
-import "../DashboardTemp.scss";
+import ModalCreateTable from "../../../components/Dashboard/DashboardTables/ModalCreateTable";
+import ModalEditTable from "../../../components/Dashboard/DashboardTables/ModalEditTable";
 
 const DashboardTable = () => {
-  const appContext = useContext(AppContext);
+  const [tableId, setTableId] = useState<string>("");
 
+  const handleTableId = (tableId: string) => {
+    setTableId(tableId)
+  }
+  
   return (
     <div className="DashboardMain">
       <div className="DashboardContent">
         <div className="AddBtnSection">
           <button className="AddBtn">Ajout d'une table</button>
         </div>
-        <TabTables />
+        <ModalCreateTable />
+        <ModalEditTable tableId={tableId}/>
+        <TabTables setTableId={handleTableId} />
       </div>
     </div>
   );
