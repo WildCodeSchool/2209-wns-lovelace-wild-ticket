@@ -46,6 +46,56 @@ export type GET_TABLES_BY_RESTAURANT_TYPES = Array<{
   capacity: number;
 }> | null;
 
+export type GET_POLES_TYPES = Array<{
+  __typename?: "Pole";
+  id: string;
+  name: string;
+  address: string;
+  zipCode: string;
+  city: string;
+  email: string;
+  restaurant?:
+    | Array<{
+        __typename?: "Restaurant";
+        id: string;
+        name: string;
+      }>
+    | null
+    | undefined;
+}> | null;
+
+export type GET_POLE_TYPES = {
+  __typename?: "Pole" | undefined;
+  id: string;
+  name: string;
+  address: string;
+  zipCode: string;
+  city: string;
+  email: string;
+  restaurant?:
+    | Array<{
+        __typename?: "Restaurant";
+        id: string;
+        name: string;
+      }>
+    | null
+    | undefined;
+} | null;
+
+export type GET_RESTAURANTS_TYPES = Array<{
+  __typename?: "Restaurant";
+  id: string;
+  name: string;
+  pole?: {
+    __typename?: "Pole";
+    id: string;
+    name: string;
+    address: string;
+    zipCode: string;
+    city: string;
+    email: string;
+  };
+}> | null;
 export type EXPORT_TICKETS_BY_RESTAURANT_TYPES = Array<{
   __typename?: "Ticket" | undefined;
   number: string;
