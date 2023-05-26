@@ -5,7 +5,7 @@ import DateUpdates from "./DateUpdates";
 export default class TicketService {
   static getRestaurantInitials(restaurant: Restaurant) {
     const restaurantName = restaurant.name;
-    
+
     return restaurantName
       .split(" ")
       .filter((word) => word.length > 0)
