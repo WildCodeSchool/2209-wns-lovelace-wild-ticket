@@ -90,13 +90,13 @@ const DashboardHome = () => {
   return appContext?.userData.role === "ROLE_ADMIN" ? (
     <div className="DashboardMain">
       <div className="DashboardContent">
-      <SVGLogo
-              logoWidth={BIG_LOGO_DASHBOARD_SIZE}
-              logoHeight={BIG_LOGO_DASHBOARD_SIZE}
-              logoFill={appContext?.userSVGColorScheme}
-            />
-            <h1>DASHBOARD</h1>
-            <MainMenu />
+        <SVGLogo
+          logoWidth={BIG_LOGO_DASHBOARD_SIZE}
+          logoHeight={BIG_LOGO_DASHBOARD_SIZE}
+          logoFill={appContext?.userSVGColorScheme}
+        />
+        <h1>DASHBOARD</h1>
+        <MainMenu />
         <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
       </div>
     </div>
