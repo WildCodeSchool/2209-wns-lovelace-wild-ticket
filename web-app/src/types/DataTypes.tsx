@@ -86,6 +86,7 @@ export type GET_RESTAURANTS_TYPES = Array<{
   __typename?: "Restaurant";
   id: string;
   name: string;
+  picture?: string | null | undefined;
   pole?: {
     __typename?: "Pole";
     id: string;

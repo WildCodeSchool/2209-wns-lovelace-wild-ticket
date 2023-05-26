@@ -306,6 +306,7 @@ export const GET_RESTAURANTS = gql`
     getRestaurants {
       id
       name
+      picture
       pole {
         id
         name
@@ -335,6 +336,14 @@ export const UPDATE_RESTAURANTS_TIME = gql`
     ) {
       closeAt
       openAt
+    }
+  }
+`;
+
+export const CREATE_RESTAURANT = gql`
+  mutation CreateRestaurant($name: String!, $pole: ID!, $picture: String) {
+    createRestaurant(name: $name, pole: $pole, picture: $picture) {
+      id
     }
   }
 `;
