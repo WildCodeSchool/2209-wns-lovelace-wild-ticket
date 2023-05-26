@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineConfirmationNumber, MdOutlineTableBar } from "react-icons/md";
 import { AppContext } from "../../../context/AppContext";
+import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
+import MainMenu from "../../../components/MainMenu/MainMenu";
 import { addMinutesToDate } from "../../../services/DateService";
 import Clock from "../../../components/Clock/Clock";
 import OpenCloseTime from "../../../components/OpenCloseTime/OpenCloseTime";
-
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
@@ -19,10 +20,8 @@ import {
   DASHBOARD_TABLE,
   DASHBOARD_TICKET,
 } from "../../paths";
-
 import "../DashboardTemp.scss";
 import "../DashboardHome/DashboardHome.scss";
-import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 
 const DashboardHome = () => {
   const appContext = useContext(AppContext);
@@ -91,13 +90,13 @@ const DashboardHome = () => {
   return appContext?.userData.role === "ROLE_ADMIN" ? (
     <div className="DashboardMain">
       <div className="DashboardContent">
-        <SVGLogo
-          logoWidth={BIG_LOGO_DASHBOARD_SIZE}
-          logoHeight={BIG_LOGO_DASHBOARD_SIZE}
-          logoFill={appContext?.userSVGColorScheme}
-        />
-        <h1>DASHBOARD HOME</h1>
-        <p className="DashboardText">Page Under Construction...</p>
+      <SVGLogo
+              logoWidth={BIG_LOGO_DASHBOARD_SIZE}
+              logoHeight={BIG_LOGO_DASHBOARD_SIZE}
+              logoFill={appContext?.userSVGColorScheme}
+            />
+            <h1>DASHBOARD</h1>
+            <MainMenu />
         <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
       </div>
     </div>
