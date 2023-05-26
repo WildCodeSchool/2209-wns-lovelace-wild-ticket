@@ -9,11 +9,11 @@ import {
 } from "../../../gql/graphql";
 import { GET_TABLES_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
 import { AppContext } from "../../../context/AppContext";
-// import ModalEditTable from "./ModalEditTable";
+
 import SVGIconEdit from "../../SVG/SVGIconEdit/SVGIconEdit";
 import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
 
-const ListTables = (setTableId: any) => {
+const ListTables = ({propTableId} : {propTableId:  (tableId: string) => Promise<void> }) => {
   const appContext = useContext(AppContext);
   const restaurantId = appContext?.userData.restaurant.id;
 
@@ -29,10 +29,6 @@ const ListTables = (setTableId: any) => {
     GET_TABLES_BY_RESTAURANT_TYPES | undefined
   >(undefined);
 
- 
-  // const getTableId = async (table: GET_TABLES_BY_RESTAURANT_TYPES ) => {
-  //   setTableId(table?.id as string)
-  // }
   console.log(tables);
 
   const { refetch: tablesRefetch } = useQuery<
@@ -55,13 +51,14 @@ const ListTables = (setTableId: any) => {
     tablesRefetch();
   }, [tablesRefetch]);
 
+  
   const actionButton = (table: any) => {
     return (
       <div className="ListTabBodyRowActionsButtonContainer">
         <SVGIconEdit
           onClick={async () => {
             openModal();
-            setTableId(table.id as string)
+            await propTableId(table.id as string)
           }}
           isClickable={isClickable}
         />

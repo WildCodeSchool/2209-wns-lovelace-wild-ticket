@@ -216,6 +216,8 @@ export const GET_TABLE_BY_ID = gql`
   query Table($tableId: String!) {
     Table(id: $tableId) {
       id
+      number
+      capacity
     }
   }
 `;
