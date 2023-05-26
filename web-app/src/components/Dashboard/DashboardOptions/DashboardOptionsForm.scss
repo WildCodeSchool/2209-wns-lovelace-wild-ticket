@@ -5,7 +5,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 15px;
   min-width: 510px;
   max-width: 610px;
   padding-left: 10px;
@@ -81,13 +81,20 @@
       .DashboardOptionsFormFileInputImage {
         display: flex;
         flex-direction: column;
-        gap: 10px;
         width: 60%;
+        padding-left: 5px;
 
         .DashboardOptionsFormFileInput {
           width: 100%;
           font-size: 16px;
           margin-top: 10px;
+        }
+
+        .DashboardOptionsFormFileInputText {
+          font-size: 13px;
+          color: $gray500;
+          margin-top: 3px;
+          margin-bottom: 0;
         }
 
         .DashboardOptionsFormImageContainer {
@@ -99,6 +106,7 @@
           border: 3px dashed #164e63;
           border-radius: 10px;
           background-color: $gray200;
+          margin-top: 15px;
 
           .DashboardOptionsFormImage {
             width: 90%;
