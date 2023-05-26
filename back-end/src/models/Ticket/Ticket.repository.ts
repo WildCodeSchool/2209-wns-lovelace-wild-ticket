@@ -115,7 +115,8 @@ export default class TicketRepository extends TicketDb {
     const restaurant = await RestaurantRepository.getRestaurantById(
       restaurantId
     );
-    if (!restaurant) throw new Error();
+    if (!restaurant)
+      throw new Error("Aucun restaurant ne correspond à cet ID.");
 
     const countTotalTickets = await this.repository.count({
       where: { restaurant },

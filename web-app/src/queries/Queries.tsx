@@ -32,10 +32,27 @@ export const UPDATE_USER_PASSWORD_WITH_TOKEN = gql`
   }
 `;
 
+export const UPDATE_USER_PASSWORD = gql`
+  mutation UpdateUserPassword(
+    $updateUserPasswordId: ID!
+    $password: String!
+    $newUserPassword: String!
+  ) {
+    updateUserPassword(
+      id: $updateUserPasswordId
+      password: $password
+      newUserPassword: $newUserPassword
+    ) {
+      id
+    }
+  }
+`;
+
 export const MY_PROFILE = gql`
   query MyProfile {
     myProfile {
       id
+      login
       email
       role
       poles {
@@ -45,6 +62,10 @@ export const MY_PROFILE = gql`
       restaurant {
         id
         name
+        picture
+        ticketWaitingLimit
+        openAt
+        closeAt
       }
     }
   }
@@ -314,6 +335,29 @@ export const GET_RESTAURANTS = gql`
         city
         email
       }
+    }
+  }
+`;
+
+export const UPDATE_RESTAURANT = gql`
+  mutation UpdateRestaurant(
+    $updateRestaurantId: ID!
+    $ticketWaitingLimit: Float!
+    $name: String!
+    $picture: String
+  ) {
+    updateRestaurant(
+      id: $updateRestaurantId
+      ticketWaitingLimit: $ticketWaitingLimit
+      name: $name
+      picture: $picture
+    ) {
+      id
+      name
+      picture
+      ticketWaitingLimit
+      openAt
+      closeAt
     }
   }
 `;

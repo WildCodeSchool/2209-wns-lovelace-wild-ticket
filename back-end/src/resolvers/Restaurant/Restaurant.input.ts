@@ -33,6 +33,10 @@ class CreateRestaurantArgs {
   })
   name: string;
 
+  @Field()
+  @IsPositive()
+  ticketWaitingLimit: number;
+
   @Field({ nullable: true })
   @ValidateIf((value) => value === null)
   picture: string;
@@ -56,6 +60,10 @@ class UpdateRestaurantArgs {
     message: "Le nom doit faire au maximum 255 caractères de long.",
   })
   name: string;
+
+  @Field()
+  @IsPositive()
+  ticketWaitingLimit: number;
 
   @Field({ nullable: true })
   @ValidateIf((value) => value === null)

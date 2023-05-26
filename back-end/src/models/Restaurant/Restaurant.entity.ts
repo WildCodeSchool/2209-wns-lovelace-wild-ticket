@@ -19,6 +19,7 @@ export default class Restaurant {
     name: string,
     pole: Pole,
     createdAt: Date,
+    ticketWaitingLimit: number,
     updatedAt?: Date,
     openAt?: Date,
     closeAt?: Date,
@@ -33,6 +34,9 @@ export default class Restaurant {
     this.createdAt = createdAt;
     if (updatedAt) {
       this.updatedAt = updatedAt;
+    }
+    if (ticketWaitingLimit) {
+      this.ticketWaitingLimit = ticketWaitingLimit;
     }
     if (openAt) {
       this.openAt = openAt;
@@ -56,6 +60,10 @@ export default class Restaurant {
   @Column({ nullable: true })
   @Field({ nullable: true })
   picture?: string;
+
+  @Column()
+  @Field()
+  ticketWaitingLimit: number;
 
   @Column()
   @Field()
