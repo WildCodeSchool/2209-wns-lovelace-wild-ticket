@@ -212,6 +212,14 @@ export const GET_TABLES_BY_RESTAURANT = gql`
   }
 `;
 
+export const GET_TABLE_BY_ID = gql`
+  query Table($tableId: String!) {
+    Table(id: $tableId) {
+      id
+    }
+  }
+`;
+
 export const CREATE_TABLE = gql`
   mutation CreateTable(
     $number: Float!
@@ -229,7 +237,11 @@ export const CREATE_TABLE = gql`
 `;
 
 export const UPDATE_TABLE = gql`
-  mutation UpdateTable($updateTableId: ID!, $number: Float!, $capacity: Float!) {
+  mutation UpdateTable(
+    $updateTableId: ID!
+    $number: Float!
+    $capacity: Float!
+  ) {
     updateTable(id: $updateTableId, number: $number, capacity: $capacity) {
       capacity
       number
