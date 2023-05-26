@@ -97,8 +97,12 @@ const DashboardOptionsRestaurantForm = () => {
               accept="image/*"
               onChange={(e) => convertImage(e)}
             />
-            <p className="DashboardOptionsFormFileInputText">Taille max : 1000px * 1000px.</p>
-            <p className="DashboardOptionsFormFileInputText">Formats autorisés: JPG, JPEG et PNG.</p>
+            <p className="DashboardOptionsFormFileInputText">
+              Taille max : 1000px * 1000px.
+            </p>
+            <p className="DashboardOptionsFormFileInputText">
+              Formats autorisés: JPG, JPEG et PNG.
+            </p>
             <div className="DashboardOptionsFormImageContainer">
               <img
                 className="DashboardOptionsFormImage"
