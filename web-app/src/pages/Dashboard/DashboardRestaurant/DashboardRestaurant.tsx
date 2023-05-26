@@ -76,7 +76,7 @@ const DashboardRestaurant = () => {
   const submitAddRestaurantForm = async () => {
     try {
       await createRestaurant({
-        variables: { name:name, picture:selectedPicture, pole:pole },
+        variables: { name: name, picture: selectedPicture, pole: pole },
       });
       setName("");
       setPole("");
@@ -103,7 +103,7 @@ const DashboardRestaurant = () => {
         </div>
       </header>
       <main className="DashboardRestaurantList">
-{/*         {
+        {/*         {
           <table className="ListTab">
             <thead className="ListTabHeader">
               <tr className="ListTabHeaderRow">

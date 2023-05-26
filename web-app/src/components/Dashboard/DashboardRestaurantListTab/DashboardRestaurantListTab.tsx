@@ -9,9 +9,9 @@ import { FilterMatchMode } from "primereact/api";
 export default function DashboardPoleListTab({
   restaurants,
   isClickable,
-  /* editRestaurantForm, */
-  /* confirmDelete, */
-}: {
+}: /* editRestaurantForm, */
+/* confirmDelete, */
+{
   restaurants: any;
   isClickable: boolean;
   /* editRestaurantForm: any; */
@@ -37,12 +37,14 @@ export default function DashboardPoleListTab({
   }; */
 
   const imageBodyTemplate = (restaurant: any) => {
-    return (
-      restaurant.picture ? (
-        <img className="restaurant-logo" src={restaurant.picture} alt={restaurant.name} />
-      ) : (
-        "Image indisponible"
-      )
+    return restaurant.picture ? (
+      <img
+        className="restaurant-logo"
+        src={restaurant.picture}
+        alt={restaurant.name}
+      />
+    ) : (
+      "Image indisponible"
     );
   };
 
@@ -85,7 +87,7 @@ export default function DashboardPoleListTab({
           filterPlaceholder="Pôle"
           style={{ minWidth: "10rem" }}
         ></Column>
-{/*         <Column
+        {/*         <Column
           header="Actions"
           style={{ flex: "0 0 4rem", minWidth: "10rem" }}
           body={(pole: GET_POLE_TYPES) => actionButton(pole)}
