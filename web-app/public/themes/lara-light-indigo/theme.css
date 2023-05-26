@@ -3571,7 +3571,7 @@
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
   background: #EEF2FF;
   border-color: #EEF2FF;
-  color: #4338CA;
+  color: #FFFF;
 }
 .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover {
   background: #e9ecef;

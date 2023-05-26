@@ -18,6 +18,7 @@ import {
   GET_POLES,
   GET_RESTAURANTS,
 } from "../../../queries/Queries";
+import DashboardRestaurantListTab from "../../../components/Dashboard/DashboardRestaurantListTab/DashboardRestaurantListTab";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../../utils";
 import { validateAndConvertImageToBase64 } from "../../../services/ImageService";
@@ -53,8 +54,7 @@ const DashboardRestaurant = () => {
   const [openAddRestaurantModal, setOpenAddRestaurantModal] =
     useState<boolean>(false);
   const [name, setName] = useState("");
-  const [selectedPicture, setSelectedPicture] = useState<File | null>(null);
-  const [picture, setPicture] = useState("");
+  const [selectedPicture, setSelectedPicture] = useState<string | null>(null);
   const [pole, setPole] = useState("");
   const [createRestaurant] = useMutation<
     CreateRestaurantMutation,
@@ -76,10 +76,9 @@ const DashboardRestaurant = () => {
   const submitAddRestaurantForm = async () => {
     try {
       await createRestaurant({
-        variables: { name, picture, pole },
+        variables: { name:name, picture:selectedPicture, pole:pole },
       });
       setName("");
-      setPicture("");
       setPole("");
       toast.success(`Vous avez créé un restaurant avec succès.`);
       refetch();
@@ -104,7 +103,7 @@ const DashboardRestaurant = () => {
         </div>
       </header>
       <main className="DashboardRestaurantList">
-        {
+{/*         {
           <table className="ListTab">
             <thead className="ListTabHeader">
               <tr className="ListTabHeaderRow">
@@ -130,10 +129,14 @@ const DashboardRestaurant = () => {
                 ))}
             </tbody>
           </table>
-        }
+        } */}
+        <DashboardRestaurantListTab
+          restaurants={restaurants}
+          isClickable={isClickable}
+          /* editRestaurantForm={editRestaurantForm} */
+          /* confirmDelete={confirmDelete} */
+        />
       </main>
-      {/* Footer */}
-      <footer className="DashboardRestaurantFooter"></footer>
 
       {/* Modal d'ajout d'un nouveau restaurant */}
       <div
