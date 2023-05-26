@@ -90,9 +90,9 @@ export default class AppUserResolver {
   @Authorized()
   @Mutation(() => AppUser)
   async updateUserPassword(
-    @Args() { id, password }: updateUserPasswordArgs
+    @Args() { id, password, newUserPassword }: updateUserPasswordArgs
   ): Promise<AppUser> {
-    return AppUserRepository.updateUserPassword(id, password);
+    return AppUserRepository.updateUserPassword(id, password, newUserPassword);
   }
 
   @Mutation(() => Boolean)

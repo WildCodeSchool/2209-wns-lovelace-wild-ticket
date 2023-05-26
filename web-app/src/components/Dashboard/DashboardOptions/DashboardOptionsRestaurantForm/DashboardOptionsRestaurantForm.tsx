@@ -72,24 +72,28 @@ const DashboardOptionsRestaurantForm = () => {
         className="DashboardOptionsForm"
       >
         <div className="DashboardOptionsFormTextInputContainer">
-          <label className="DashboardOptionsFormTextLabel">Nom</label>
+          <label className="DashboardOptionsFormTextLabel" htmlFor="name">
+            Nom
+          </label>
           <input
+            id="name"
             className="DashboardOptionsFormTextInput"
             type="text"
-            required
+            autoComplete="off"
             value={updatedRestaurantName}
             onChange={(e) => setUpdatedRestaurantName(e.target.value)}
+            required
           />
         </div>
         <div className="DashboardOptionsFormFileInputContainer">
-          <label className="DashboardOptionsFormFileLabel" htmlFor="email">
+          <label className="DashboardOptionsFormFileLabel" htmlFor="picture">
             Logo
           </label>
           <div className="DashboardOptionsFormFileInputImage">
             <input
+              id="picture"
               className="DashboardOptionsFormFileInput"
               type="file"
-              id="imageInput"
               accept="image/*"
               onChange={(e) => convertImage(e)}
             />

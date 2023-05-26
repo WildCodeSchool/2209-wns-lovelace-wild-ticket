@@ -32,6 +32,22 @@ export const UPDATE_USER_PASSWORD_WITH_TOKEN = gql`
   }
 `;
 
+export const UPDATE_USER_PASSWORD = gql`
+  mutation UpdateUserPassword(
+    $updateUserPasswordId: ID!
+    $password: String!
+    $newUserPassword: String!
+  ) {
+    updateUserPassword(
+      id: $updateUserPasswordId
+      password: $password
+      newUserPassword: $newUserPassword
+    ) {
+      id
+    }
+  }
+`;
+
 export const MY_PROFILE = gql`
   query MyProfile {
     myProfile {

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { SyntheticEvent, useContext, useState } from "react";
 import "../DashboardOptionsForm.scss";
 import "primeicons/primeicons.css";
 import { AppContext } from "../../../../context/AppContext";
@@ -40,7 +40,7 @@ const DashboardOptionsGeneralOpForm = () => {
     },
   });
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     await updateRestaurant();
   };
@@ -58,10 +58,14 @@ const DashboardOptionsGeneralOpForm = () => {
         className="DashboardOptionsForm"
       >
         <div className="DashboardOptionsFormTextInputContainer">
-          <label className="DashboardOptionsFormTextLabel" htmlFor="email">
+          <label
+            className="DashboardOptionsFormTextLabel"
+            htmlFor="maxDelayTicket"
+          >
             Délai maximal (en mn)
           </label>
           <input
+            id="maxDelayTicket"
             className="DashboardOptionsFormTextInput"
             type="number"
             min="0"
