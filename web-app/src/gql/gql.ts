@@ -17,7 +17,8 @@ const documents = {
     "\n  mutation SignOut($signOutId: String!) {\n    signOut(id: $signOutId) {\n      id\n    }\n  }\n": types.SignOutDocument,
     "\n  mutation SendResetPasswordEmail($email: String!) {\n    sendResetPasswordEmail(email: $email)\n  }\n": types.SendResetPasswordEmailDocument,
     "\n  mutation updateUserPasswordWithToken($token: String!, $password: String!) {\n    updateUserPasswordWithToken(token: $token, password: $password)\n  }\n": types.UpdateUserPasswordWithTokenDocument,
-    "\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      poles {\n        id\n        name\n      }\n      restaurant {\n        id\n        name\n      }\n    }\n  }\n": types.MyProfileDocument,
+    "\n  mutation UpdateUserPassword(\n    $updateUserPasswordId: ID!\n    $password: String!\n    $newUserPassword: String!\n  ) {\n    updateUserPassword(\n      id: $updateUserPasswordId\n      password: $password\n      newUserPassword: $newUserPassword\n    ) {\n      id\n    }\n  }\n": types.UpdateUserPasswordDocument,
+    "\n  query MyProfile {\n    myProfile {\n      id\n      login\n      email\n      role\n      poles {\n        id\n        name\n      }\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        openAt\n        closeAt\n      }\n    }\n  }\n": types.MyProfileDocument,
     "\n  query TicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    TicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n": types.TicketsByRestaurantDocument,
     "\n  query WaitingTicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    WaitingTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n": types.WaitingTicketsByRestaurantDocument,
     "\n  query PlacedTicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    PlacedTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n": types.PlacedTicketsByRestaurantDocument,
@@ -37,6 +38,7 @@ const documents = {
     "\n  mutation DeletePole($deletePoleId: String!) {\n    deletePole(id: $deletePoleId) {\n      id\n    }\n  }\n": types.DeletePoleDocument,
     "\n  query StatsByRestaurant($restaurantId: String!) {\n    StatsByRestaurant(restaurantId: $restaurantId) {\n      tableCapacity\n      daysOfWeek\n      lastThirtyDays\n      countTicketsBySeat\n      countActualWeekTickets\n      countLastThirtyDaysTickets\n    }\n  }\n": types.StatsByRestaurantDocument,
     "\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n      pole {\n        id\n        name\n        address\n        zipCode\n        city\n        email\n      }\n    }\n  }\n": types.GetRestaurantsDocument,
+    "\n  mutation UpdateRestaurant(\n    $updateRestaurantId: ID!\n    $ticketWaitingLimit: Float!\n    $name: String!\n    $picture: String\n  ) {\n    updateRestaurant(\n      id: $updateRestaurantId\n      ticketWaitingLimit: $ticketWaitingLimit\n      name: $name\n      picture: $picture\n    ) {\n      id\n      name\n      picture\n      ticketWaitingLimit\n      openAt\n      closeAt\n    }\n  }\n": types.UpdateRestaurantDocument,
     "\n  mutation UpdateRestaurantOpeningTime(\n    $updateRestaurantOpeningTimeId: ID!\n    $hourOpenAt: Float!\n    $minutesOpenAt: Float!\n    $hourCloseAt: Float!\n    $minutesCloseAt: Float!\n  ) {\n    updateRestaurantOpeningTime(\n      id: $updateRestaurantOpeningTimeId\n      hourOpenAt: $hourOpenAt\n      minutesOpenAt: $minutesOpenAt\n      hourCloseAt: $hourCloseAt\n      minutesCloseAt: $minutesCloseAt\n    ) {\n      closeAt\n      openAt\n    }\n  }\n": types.UpdateRestaurantOpeningTimeDocument,
 };
 
@@ -73,7 +75,11 @@ export function graphql(source: "\n  mutation updateUserPasswordWithToken($token
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      poles {\n        id\n        name\n      }\n      restaurant {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      poles {\n        id\n        name\n      }\n      restaurant {\n        id\n        name\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  mutation UpdateUserPassword(\n    $updateUserPasswordId: ID!\n    $password: String!\n    $newUserPassword: String!\n  ) {\n    updateUserPassword(\n      id: $updateUserPasswordId\n      password: $password\n      newUserPassword: $newUserPassword\n    ) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateUserPassword(\n    $updateUserPasswordId: ID!\n    $password: String!\n    $newUserPassword: String!\n  ) {\n    updateUserPassword(\n      id: $updateUserPasswordId\n      password: $password\n      newUserPassword: $newUserPassword\n    ) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query MyProfile {\n    myProfile {\n      id\n      login\n      email\n      role\n      poles {\n        id\n        name\n      }\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        openAt\n        closeAt\n      }\n    }\n  }\n"): (typeof documents)["\n  query MyProfile {\n    myProfile {\n      id\n      login\n      email\n      role\n      poles {\n        id\n        name\n      }\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        openAt\n        closeAt\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -150,6 +156,10 @@ export function graphql(source: "\n  query StatsByRestaurant($restaurantId: Stri
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n      pole {\n        id\n        name\n        address\n        zipCode\n        city\n        email\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n      pole {\n        id\n        name\n        address\n        zipCode\n        city\n        email\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation UpdateRestaurant(\n    $updateRestaurantId: ID!\n    $ticketWaitingLimit: Float!\n    $name: String!\n    $picture: String\n  ) {\n    updateRestaurant(\n      id: $updateRestaurantId\n      ticketWaitingLimit: $ticketWaitingLimit\n      name: $name\n      picture: $picture\n    ) {\n      id\n      name\n      picture\n      ticketWaitingLimit\n      openAt\n      closeAt\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateRestaurant(\n    $updateRestaurantId: ID!\n    $ticketWaitingLimit: Float!\n    $name: String!\n    $picture: String\n  ) {\n    updateRestaurant(\n      id: $updateRestaurantId\n      ticketWaitingLimit: $ticketWaitingLimit\n      name: $name\n      picture: $picture\n    ) {\n      id\n      name\n      picture\n      ticketWaitingLimit\n      openAt\n      closeAt\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

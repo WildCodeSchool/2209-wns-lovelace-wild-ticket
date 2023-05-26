@@ -1,6 +1,7 @@
 import {
   Contains,
   IsEmail,
+  IsString,
   Matches,
   MaxLength,
   MinLength,
@@ -86,11 +87,15 @@ export class updateUserPasswordArgs {
   id: string;
 
   @Field()
+  @IsString()
+  password: string;
+
+  @Field()
   @Matches(passwordRegExp, {
     message:
       "Le mot de passe doit comporter au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.",
   })
-  password: string;
+  newUserPassword: string;
 }
 
 @ArgsType()

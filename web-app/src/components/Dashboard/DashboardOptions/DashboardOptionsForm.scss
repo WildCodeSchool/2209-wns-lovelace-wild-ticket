@@ -1,0 +1,164 @@
+@import "../../../index.scss";
+
+.DashboardOptionsContainer {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 510px;
+  max-width: 610px;
+  padding-left: 10px;
+  width: 45%;
+  max-height: 45%;
+  border-left: 3px solid;
+  border-image: linear-gradient(to bottom, #164e63, transparent) 1;
+
+  .DashboardOptionsTitleContainer {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    gap: 15px;
+
+    .DashboardOptionsTitleIcon {
+      font-size: 50px;
+      color: #164e63;
+    }
+
+    .DashboardOptionsTitleText {
+      font-size: 25px;
+      font-weight: 600;
+      color: #164e63;
+    }
+  }
+
+  .DashboardOptionsForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .DashboardOptionsFormTextInputContainer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .DashboardOptionsFormTextLabel {
+        width: 40%;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .DashboardOptionsFormTextInput {
+        background-color: $modal-input-background-color;
+        box-sizing: border-box;
+        width: 60%;
+        height: 40px;
+        border: 1px solid $modal-input-border-color;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 16px;
+        font-weight: 400;
+
+        &:focus {
+          background-color: $modal-input-focus-background-color;
+          outline: none;
+        }
+      }
+    }
+
+    .DashboardOptionsFormFileInputContainer {
+      position: relative;
+      display: flex;
+      align-items: space-between;
+
+      .DashboardOptionsFormFileLabel {
+        width: 40%;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 10px;
+      }
+
+      .DashboardOptionsFormFileInputImage {
+        display: flex;
+        flex-direction: column;
+        width: 60%;
+        padding-left: 5px;
+
+        .DashboardOptionsFormFileInput {
+          width: 100%;
+          font-size: 16px;
+          margin-top: 10px;
+        }
+
+        .DashboardOptionsFormFileInputText {
+          font-size: 13px;
+          color: $gray500;
+          margin-top: 3px;
+          margin-bottom: 0;
+        }
+
+        .DashboardOptionsFormImageContainer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 150px;
+          height: 150px;
+          border: 3px dashed #164e63;
+          border-radius: 10px;
+          background-color: $gray200;
+          margin-top: 15px;
+
+          .DashboardOptionsFormImage {
+            width: 90%;
+            height: 90%;
+          }
+        }
+      }
+
+      .DashboardOptionsFormRestaurantButton {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        align-self: flex-end;
+        width: 100%;
+        height: 40px;
+        border: none;
+        border-radius: 5px;
+        background-color: $modal-button-background-color;
+        color: $white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $modal-button-hover-background-color;
+        }
+      }
+
+    }
+
+    .DashboardOptionsFormButton {
+      margin-top: 10px;
+      align-self: flex-end;
+      width: 100%;
+      height: 40px;
+      border: none;
+      border-radius: 5px;
+      background-color: $modal-button-background-color;
+      color: $white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $modal-button-hover-background-color;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .DashboardOptionsContainer {
+    max-height: 400px;
+  }
+}
