@@ -5,9 +5,9 @@ import DateUpdates from "./DateUpdates";
 export default class TicketService {
   static getRestaurantInitials(restaurant: Restaurant) {
     const restaurantName = restaurant.name;
-    const restaurantWords = restaurantName.split(" ");
-
-    return restaurantWords
+    
+    return restaurantName
+      .split(" ")
       .filter((word) => word.length > 0)
       .map((word) => word[0].toUpperCase())
       .join("");
