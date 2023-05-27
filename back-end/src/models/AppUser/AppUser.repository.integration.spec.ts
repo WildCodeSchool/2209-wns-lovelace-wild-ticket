@@ -31,7 +31,6 @@ describe("AppUserRepository integration", () => {
         return expect(() =>
           AppUserRepository.updateUser(
             falseUuid,
-            "Jean",
             "jean@user.com",
             "ROLE_ADMIN",
             [],
@@ -42,6 +41,7 @@ describe("AppUserRepository integration", () => {
     });
     describe("when a user exists", () => {
       it("returns the updated user", async () => {
+        console.log("test");
         const pole = await PoleRepository.createPole(
           "Pôle de Lyon",
           "rue de la Poste",
@@ -51,7 +51,6 @@ describe("AppUserRepository integration", () => {
         );
 
         const user = await AppUserRepository.createUser(
-          "Jean",
           "jean@user.com",
           hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
@@ -59,14 +58,17 @@ describe("AppUserRepository integration", () => {
           ""
         );
 
+        console.log(user);
+
         const updatedUser = await AppUserRepository.updateUser(
           user.id,
-          "Jean",
           "jean@user.fr",
           "ROLE_ADMIN",
           [pole.id],
           ""
         );
+
+        console.log(updatedUser);
 
         expect(updatedUser.id).toBe(user.id);
         expect(updatedUser.email).toBe("jean@user.fr");
@@ -87,7 +89,6 @@ describe("AppUserRepository integration", () => {
     describe("when a user exists", () => {
       it("expects user is null in database", async () => {
         const user = await AppUserRepository.createUser(
-          "Jean",
           "jean@user.com",
           hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
@@ -119,7 +120,6 @@ describe("AppUserRepository integration", () => {
         describe("when password invalid", () => {
           it("throws invalid credentials error", async () => {
             await AppUserRepository.createUser(
-              "Jean",
               emailAddress,
               hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
@@ -136,7 +136,6 @@ describe("AppUserRepository integration", () => {
         describe("when password valid", () => {
           it("creates session in database", async () => {
             await AppUserRepository.createUser(
-              "Jean",
               emailAddress,
               hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
@@ -156,7 +155,6 @@ describe("AppUserRepository integration", () => {
 
           it("returns user and session", async () => {
             await AppUserRepository.createUser(
-              "Jean",
               emailAddress,
               hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
@@ -182,7 +180,6 @@ describe("AppUserRepository integration", () => {
       const emailAddress = "jean@user.com";
       it("deletes session in database", async () => {
         await AppUserRepository.createUser(
-          "Jean",
           emailAddress,
           hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
@@ -204,7 +201,6 @@ describe("AppUserRepository integration", () => {
 
       it("returns user", async () => {
         await AppUserRepository.createUser(
-          "Jean",
           emailAddress,
           hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
