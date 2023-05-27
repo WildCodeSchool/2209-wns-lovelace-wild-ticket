@@ -15,7 +15,6 @@ export const AppUserFixtures: AppUserFixtures[] = [
     password: process.env.APP_USER_ADMIN_PASSWORD as string,
     role: "ROLE_ADMIN",
     createdAt: "2022-12-20T11:00:00",
-    poles: ["Pôle de Lyon"],
   },
   {
     email: process.env.APP_USER_RESTAURANT_EMAIL as string,
