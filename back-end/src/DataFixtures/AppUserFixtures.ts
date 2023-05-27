@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-
 export type AppUserFixtures = {
   email: string;
   password: string;
