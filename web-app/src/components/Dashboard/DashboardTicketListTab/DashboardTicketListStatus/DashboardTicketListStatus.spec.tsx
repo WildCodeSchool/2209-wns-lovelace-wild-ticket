@@ -14,12 +14,13 @@ import DashboardTicketListStatus from "./DashboardTicketListStatus";
 const renderDashboardTicketListStatus = (
   ticket: GET_TICKET_BY_RESTAURANT_TYPES,
   tables: GET_TABLES_BY_RESTAURANT_TYPES,
+  maxDeliveredTicketDelay: number,
   mock?: any
 ) => {
   render(
     <MockedProvider mocks={mock}>
       <MemoryRouter>
-        <DashboardTicketListStatus ticket={ticket} tables={tables} />
+        <DashboardTicketListStatus ticket={ticket} tables={tables} maxDeliveredTicketDelay={maxDeliveredTicketDelay} />
       </MemoryRouter>
     </MockedProvider>
   );
@@ -90,10 +91,10 @@ const mockTicketPlacedAt: GET_TICKET_BY_RESTAURANT_TYPES = {
   seats: 2,
   email: "vincent@blabla.fr",
   phoneNumber: null,
-  createdAt: substractMinutesToDate(new Date(), 10),
-  deliveredAt: substractMinutesToDate(new Date(), 10),
-  placedAt: substractMinutesToDate(new Date(), 10),
-  closedAt: addMinutesToDate(new Date(), 180),
+  createdAt: substractMinutesToDate(new Date(), 30),
+  deliveredAt: substractMinutesToDate(new Date(), 30),
+  placedAt: substractMinutesToDate(new Date(), 30),
+  closedAt: addMinutesToDate(new Date(), 240),
   table: {
     __typename: "Table",
     id: "1",
@@ -133,7 +134,8 @@ describe("DashboardTicketListStatus", () => {
       it("should render 'waiting list' status", async () => {
         renderDashboardTicketListStatus(
           mockTicketCreatedAt,
-          mockNoAvailableTables
+          mockNoAvailableTables,
+          5
         );
         expect(screen.getByText("En attente")).toBeInTheDocument();
       });
@@ -143,7 +145,8 @@ describe("DashboardTicketListStatus", () => {
       it("should render 'available table' status", async () => {
         renderDashboardTicketListStatus(
           mockTicketCreatedAt,
-          mockAvailableTables
+          mockAvailableTables,
+          5
         );
         expect(screen.getByText("Table Disponible")).toBeInTheDocument();
       });
@@ -155,7 +158,8 @@ describe("DashboardTicketListStatus", () => {
       it("should render 'waiting table' status", async () => {
         renderDashboardTicketListStatus(
           mockTicketOkDeliveredAt,
-          mockAvailableTables
+          mockAvailableTables,
+          5
         );
         expect(screen.getByText("Attendu table 1")).toBeInTheDocument();
       });
@@ -165,7 +169,8 @@ describe("DashboardTicketListStatus", () => {
       it("should render 'free table' status", async () => {
         renderDashboardTicketListStatus(
           mockTicketNokDeliveredAt,
-          mockAvailableTables
+          mockAvailableTables,
+          5
         );
         expect(screen.getByText("Table 1 libérée")).toBeInTheDocument();
       });
@@ -174,7 +179,7 @@ describe("DashboardTicketListStatus", () => {
 
   describe("when the ticket is placed", () => {
     it("should render the table where the client is placed", async () => {
-      renderDashboardTicketListStatus(mockTicketPlacedAt, mockAvailableTables);
+      renderDashboardTicketListStatus(mockTicketPlacedAt, mockAvailableTables, 5);
       expect(screen.getByText("Table 1")).toBeInTheDocument();
     });
   });
