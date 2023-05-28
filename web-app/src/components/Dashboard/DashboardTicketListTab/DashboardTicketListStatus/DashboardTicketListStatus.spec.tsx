@@ -28,7 +28,7 @@ const renderDashboardTicketListStatus = (
 const mockTicketCreatedAt: GET_TICKET_BY_RESTAURANT_TYPES = {
   __typename: "Ticket",
   id: "1",
-  number: 1,
+  number: "1",
   name: "Vincent",
   seats: 2,
   email: "vincent@blabla.fr",
@@ -47,7 +47,7 @@ const mockTicketCreatedAt: GET_TICKET_BY_RESTAURANT_TYPES = {
 const mockTicketOkDeliveredAt: GET_TICKET_BY_RESTAURANT_TYPES = {
   __typename: "Ticket",
   id: "1",
-  number: 1,
+  number: "1",
   name: "Vincent",
   seats: 2,
   email: "vincent@blabla.fr",
@@ -66,7 +66,7 @@ const mockTicketOkDeliveredAt: GET_TICKET_BY_RESTAURANT_TYPES = {
 const mockTicketNokDeliveredAt: GET_TICKET_BY_RESTAURANT_TYPES = {
   __typename: "Ticket",
   id: "1",
-  number: 1,
+  number: "1",
   name: "Vincent",
   seats: 2,
   email: "vincent@blabla.fr",
@@ -85,7 +85,7 @@ const mockTicketNokDeliveredAt: GET_TICKET_BY_RESTAURANT_TYPES = {
 const mockTicketPlacedAt: GET_TICKET_BY_RESTAURANT_TYPES = {
   __typename: "Ticket",
   id: "1",
-  number: 1,
+  number: "1",
   name: "Vincent",
   seats: 2,
   email: "vincent@blabla.fr",

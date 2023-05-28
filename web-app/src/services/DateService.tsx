@@ -4,8 +4,8 @@
 export const convertDate = (dateNow: Date) => {
   const locale = "fr";
 
-  const day = dateNow.toLocaleDateString(locale, { weekday: "long" });
-  const date = `${day}, ${dateNow.getDate()} ${dateNow.toLocaleDateString(
+  const day = dateNow.toLocaleDateString(locale, { weekday: "short" });
+  const date = `${day} ${dateNow.getDate()} ${dateNow.toLocaleDateString(
     locale,
     { month: "long", year: "numeric" }
   )}`;
@@ -47,4 +47,21 @@ export const substractMinutesToDate = (
   let ticketsDay = new Date(dateNow);
   ticketsDay.setMinutes(ticketsDay.getMinutes() - minutesToSubstract);
   return ticketsDay;
+};
+
+export const newDateAtMidnight = () => {
+  return new Date(new Date().setHours(0, 0, 0, 0));
+};
+
+export const changeDateFormat = (date: any) => {
+  if (!date) {
+    return "";
+  }
+  const dateToFormat = new Date(date);
+  const day = dateToFormat.getDate().toString().padStart(2, "0");
+  const month = (dateToFormat.getMonth() + 1).toString().padStart(2, "0");
+  const year = dateToFormat.getFullYear().toString();
+  const hours = dateToFormat.getHours().toString().padStart(2, "0");
+  const minutes = dateToFormat.getMinutes().toString().padStart(2, "0");
+  return `${day}-${month}-${year} ${hours}:${minutes}`;
 };

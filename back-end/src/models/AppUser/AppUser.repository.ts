@@ -166,15 +166,20 @@ export default class AppUserRepository extends AppUserDb {
 
   static async updateUserPassword(
     id: string,
-    password: string
+    password: string,
+    newPassword: string
   ): Promise<AppUser> {
-    const userToUpdate = await this.getUserById(id);
+    const userToUpdate = (await this.getUserById(id)) as AppUser;
+
+    if (!compareSync(password, userToUpdate.hashedPassword)) {
+      throw new Error("Votre ancien mot de passe est incorrect.");
+    }
 
     const updatedAt = new Date();
 
     return this.repository.save({
       id: id,
-      hashedPassword: hashSync(password),
+      hashedPassword: hashSync(newPassword),
       updatedAt: updatedAt,
     });
   }

@@ -32,10 +32,27 @@ export const UPDATE_USER_PASSWORD_WITH_TOKEN = gql`
   }
 `;
 
+export const UPDATE_USER_PASSWORD = gql`
+  mutation UpdateUserPassword(
+    $updateUserPasswordId: ID!
+    $password: String!
+    $newUserPassword: String!
+  ) {
+    updateUserPassword(
+      id: $updateUserPasswordId
+      password: $password
+      newUserPassword: $newUserPassword
+    ) {
+      id
+    }
+  }
+`;
+
 export const MY_PROFILE = gql`
   query MyProfile {
     myProfile {
       id
+      login
       email
       role
       poles {
@@ -45,6 +62,10 @@ export const MY_PROFILE = gql`
       restaurant {
         id
         name
+        picture
+        ticketWaitingLimit
+        openAt
+        closeAt
       }
     }
   }
@@ -70,6 +91,103 @@ export const GET_TICKETS_BY_RESTAURANT = gql`
         id
         number
       }
+    }
+  }
+`;
+
+export const GET_WAITING_TICKETS_BY_RESTAURANT = gql`
+  query WaitingTicketsByRestaurant($restaurantId: ID!, $seats: Float) {
+    WaitingTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {
+      id
+      number
+      name
+      seats
+      email
+      phoneNumber
+      createdAt
+      deliveredAt
+      placedAt
+      closedAt
+      table {
+        id
+        number
+      }
+    }
+  }
+`;
+
+export const GET_PLACED_TICKETS_BY_RESTAURANT = gql`
+  query PlacedTicketsByRestaurant($restaurantId: ID!, $seats: Float) {
+    PlacedTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {
+      id
+      number
+      name
+      seats
+      email
+      phoneNumber
+      createdAt
+      deliveredAt
+      placedAt
+      closedAt
+      table {
+        id
+        number
+      }
+    }
+  }
+`;
+
+export const GET_PAGINATED_AND_SORTED_TICKETS_BY_RESTAURANT = gql`
+  query PaginatedAndSortedTickets(
+    $restaurantId: ID!
+    $globalFilter: String!
+    $pageSize: Float!
+    $pageNumber: Float!
+    $sort: [String!]!
+    $order: [Float!]!
+  ) {
+    PaginatedAndSortedTickets(
+      restaurantId: $restaurantId
+      globalFilter: $globalFilter
+      pageSize: $pageSize
+      pageNumber: $pageNumber
+      sort: $sort
+      order: $order
+    ) {
+      totalCount
+      tickets {
+        number
+        name
+        seats
+        createdAt
+        deliveredAt
+        placedAt
+        closedAt
+      }
+    }
+  }
+`;
+
+export const EXPORT_TICKETS_BY_RESTAURANT = gql`
+  query ExportTicketsByRestaurant(
+    $restaurantId: ID!
+    $dateMin: DateTime
+    $dateMax: DateTime
+  ) {
+    ExportTicketsByRestaurant(
+      restaurantId: $restaurantId
+      dateMin: $dateMin
+      dateMax: $dateMax
+    ) {
+      number
+      name
+      email
+      phoneNumber
+      seats
+      createdAt
+      deliveredAt
+      placedAt
+      closedAt
     }
   }
 `;
@@ -111,6 +229,156 @@ export const GET_TABLES_BY_RESTAURANT = gql`
       id
       number
       capacity
+    }
+  }
+`;
+
+/**
+ * *************** POLE QUERIES **********************
+ */
+export const GET_POLES = gql`
+  query Poles {
+    poles {
+      id
+      name
+      address
+      zipCode
+      city
+      email
+      restaurant {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const CREATE_POLE = gql`
+  mutation CreatePole(
+    $name: String!
+    $address: String!
+    $zipCode: String!
+    $city: String!
+    $email: String!
+  ) {
+    createPole(
+      name: $name
+      address: $address
+      zipCode: $zipCode
+      city: $city
+      email: $email
+    ) {
+      id
+    }
+  }
+`;
+
+export const UPDATE_POLE = gql`
+  mutation UpdatePole(
+    $name: String!
+    $address: String!
+    $zipCode: String!
+    $city: String!
+    $email: String!
+    $updatePoleId: ID!
+  ) {
+    updatePole(
+      name: $name
+      address: $address
+      zipCode: $zipCode
+      city: $city
+      email: $email
+      id: $updatePoleId
+    ) {
+      id
+    }
+  }
+`;
+
+export const DELETE_POLE = gql`
+  mutation DeletePole($deletePoleId: String!) {
+    deletePole(id: $deletePoleId) {
+      id
+    }
+  }
+`;
+
+/**
+ * *************** STATS QUERIES **********************
+ */
+export const GET_STATS_BY_RESTAURANT = gql`
+  query StatsByRestaurant($restaurantId: String!) {
+    StatsByRestaurant(restaurantId: $restaurantId) {
+      tableCapacity
+      daysOfWeek
+      lastThirtyDays
+      countTicketsBySeat
+      countActualWeekTickets
+      countLastThirtyDaysTickets
+    }
+  }
+`;
+
+/**
+ * *************** RESTAURANT QUERIES **********************
+ */
+export const GET_RESTAURANTS = gql`
+  query GetRestaurants {
+    getRestaurants {
+      id
+      name
+      pole {
+        id
+        name
+        address
+        zipCode
+        city
+        email
+      }
+    }
+  }
+`;
+
+export const UPDATE_RESTAURANT = gql`
+  mutation UpdateRestaurant(
+    $updateRestaurantId: ID!
+    $ticketWaitingLimit: Float!
+    $name: String!
+    $picture: String
+  ) {
+    updateRestaurant(
+      id: $updateRestaurantId
+      ticketWaitingLimit: $ticketWaitingLimit
+      name: $name
+      picture: $picture
+    ) {
+      id
+      name
+      picture
+      ticketWaitingLimit
+      openAt
+      closeAt
+    }
+  }
+`;
+
+export const UPDATE_RESTAURANTS_TIME = gql`
+  mutation UpdateRestaurantOpeningTime(
+    $updateRestaurantOpeningTimeId: ID!
+    $hourOpenAt: Float!
+    $minutesOpenAt: Float!
+    $hourCloseAt: Float!
+    $minutesCloseAt: Float!
+  ) {
+    updateRestaurantOpeningTime(
+      id: $updateRestaurantOpeningTimeId
+      hourOpenAt: $hourOpenAt
+      minutesOpenAt: $minutesOpenAt
+      hourCloseAt: $hourCloseAt
+      minutesCloseAt: $minutesCloseAt
+    ) {
+      closeAt
+      openAt
     }
   }
 `;

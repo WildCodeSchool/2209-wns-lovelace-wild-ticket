@@ -4,6 +4,7 @@ import {
   initializeDatabaseRepositories,
 } from "../../database/utils";
 import DateUpdates from "../../services/DateUpdates";
+import TicketService from "../../services/TicketService";
 import PoleRepository from "../Pole/Pole.repository";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import TableRepository from "../Table/Table.repository";
@@ -51,6 +52,7 @@ describe("TicketRepository integration", () => {
             const restaurant = await RestaurantRepository.createRestaurant(
               "restaurant",
               undefined,
+              5,
               pole.id
             );
 
@@ -74,6 +76,7 @@ describe("TicketRepository integration", () => {
             const restaurant = await RestaurantRepository.createRestaurant(
               "restaurant",
               undefined,
+              5,
               pole.id
             );
 
@@ -85,7 +88,12 @@ describe("TicketRepository integration", () => {
               "0601020304"
             );
 
-            expect(ticket.number).toEqual(1);
+            const expectedTicket = TicketService.formatTicketNumber(
+              restaurant,
+              null
+            );
+
+            expect(ticket.number).toEqual(expectedTicket);
           });
         });
       });
@@ -108,6 +116,7 @@ describe("TicketRepository integration", () => {
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
           undefined,
+          5,
           pole.id
         );
 
@@ -133,6 +142,7 @@ describe("TicketRepository integration", () => {
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
           undefined,
+          5,
           pole.id
         );
 
@@ -162,6 +172,7 @@ describe("TicketRepository integration", () => {
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
           undefined,
+          5,
           pole.id
         );
 
@@ -213,6 +224,7 @@ describe("TicketRepository integration", () => {
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
           undefined,
+          5,
           pole.id
         );
 
@@ -268,6 +280,7 @@ describe("TicketRepository integration", () => {
         const restaurant = await RestaurantRepository.createRestaurant(
           "restaurant",
           undefined,
+          5,
           pole.id
         );
 

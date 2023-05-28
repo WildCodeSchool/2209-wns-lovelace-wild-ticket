@@ -1,0 +1,65 @@
+.contentBottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+
+  .openClose {
+    display: flex;
+
+    .open,
+    .close {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      text-align: center;
+      width: 500px;
+
+      h2 {
+        margin: 0 0 2rem;
+      }
+
+      h3 {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .openCloseBtn {
+    background-color: #164e63;
+    border: none;
+    border-radius: 5px;
+    width: 15%;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.25rem;
+    height: fit-content;
+    padding: 1rem 3rem;
+
+    &:active {
+      background-color: #1f2937;
+    }
+  }
+
+  .rs-calendar-time-dropdown-cell.rs-calendar-time-dropdown-cell-active {
+    background-color: #164e63 !important;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .contentBottom {
+    .openClose {
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+
+      .open,
+      .close {
+        width: 100%;
+      }
+    }
+  }
+}

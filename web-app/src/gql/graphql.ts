@@ -72,7 +72,9 @@ export type MutationCreatePoleArgs = {
 
 export type MutationCreateRestaurantArgs = {
   name: Scalars["String"];
+  picture?: InputMaybe<Scalars["String"]>;
   pole: Scalars["ID"];
+  ticketWaitingLimit: Scalars["Float"];
 };
 
 export type MutationCreateTableArgs = {
@@ -153,6 +155,8 @@ export type MutationUpdatePoleArgs = {
 export type MutationUpdateRestaurantArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
+  picture?: InputMaybe<Scalars["String"]>;
+  ticketWaitingLimit: Scalars["Float"];
 };
 
 export type MutationUpdateRestaurantOpeningTimeArgs = {
@@ -180,6 +184,7 @@ export type MutationUpdateUserArgs = {
 
 export type MutationUpdateUserPasswordArgs = {
   id: Scalars["ID"];
+  newUserPassword: Scalars["String"];
   password: Scalars["String"];
 };
 
@@ -192,6 +197,12 @@ export type PageOfRestaurants = {
   __typename?: "PageOfRestaurants";
   nextPageNumber?: Maybe<Scalars["Int"]>;
   restaurants: Array<Restaurant>;
+  totalCount: Scalars["Int"];
+};
+
+export type PageOfTickets = {
+  __typename?: "PageOfTickets";
+  tickets: Array<Ticket>;
   totalCount: Scalars["Int"];
 };
 
@@ -211,12 +222,17 @@ export type Pole = {
 
 export type Query = {
   __typename?: "Query";
+  ExportTicketsByRestaurant: Array<Ticket>;
+  PaginatedAndSortedTickets: PageOfTickets;
+  PlacedTicketsByRestaurant: Array<Ticket>;
+  StatsByRestaurant: Stats;
   Table: Table;
   Tables: Array<Table>;
   TablesByRestaurant: Array<Table>;
   Ticket: Ticket;
   Tickets: Array<Ticket>;
   TicketsByRestaurant: Array<Ticket>;
+  WaitingTicketsByRestaurant: Array<Ticket>;
   getPaginateRestaurantsByPole: PageOfRestaurants;
   getPoleById: Pole;
   getRestaurantById: Restaurant;
@@ -225,6 +241,31 @@ export type Query = {
   getUsers: Array<AppUser>;
   myProfile: AppUser;
   poles: Array<Pole>;
+};
+
+export type QueryExportTicketsByRestaurantArgs = {
+  dateMax?: InputMaybe<Scalars["DateTime"]>;
+  dateMin?: InputMaybe<Scalars["DateTime"]>;
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+};
+
+export type QueryPaginatedAndSortedTicketsArgs = {
+  globalFilter: Scalars["String"];
+  order: Array<Scalars["Float"]>;
+  pageNumber: Scalars["Float"];
+  pageSize: Scalars["Float"];
+  restaurantId: Scalars["ID"];
+  sort?: InputMaybe<Array<Scalars["String"]>>;
+};
+
+export type QueryPlacedTicketsByRestaurantArgs = {
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+};
+
+export type QueryStatsByRestaurantArgs = {
+  restaurantId: Scalars["String"];
 };
 
 export type QueryTableArgs = {
@@ -241,6 +282,11 @@ export type QueryTicketArgs = {
 };
 
 export type QueryTicketsByRestaurantArgs = {
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+};
+
+export type QueryWaitingTicketsByRestaurantArgs = {
   restaurantId: Scalars["ID"];
   seats?: InputMaybe<Scalars["Float"]>;
 };
@@ -269,11 +315,22 @@ export type Restaurant = {
   id: Scalars["ID"];
   name: Scalars["String"];
   openAt?: Maybe<Scalars["DateTime"]>;
-  picture: Scalars["String"];
+  picture?: Maybe<Scalars["String"]>;
   pole: Pole;
   table: Array<Table>;
   ticket: Array<Ticket>;
+  ticketWaitingLimit: Scalars["Float"];
   updatedAt?: Maybe<Scalars["DateTime"]>;
+};
+
+export type Stats = {
+  __typename?: "Stats";
+  countActualWeekTickets: Array<Scalars["Float"]>;
+  countLastThirtyDaysTickets: Array<Scalars["Float"]>;
+  countTicketsBySeat: Array<Scalars["Float"]>;
+  daysOfWeek: Array<Scalars["String"]>;
+  lastThirtyDays: Array<Scalars["String"]>;
+  tableCapacity: Array<Scalars["String"]>;
 };
 
 export type Table = {
@@ -293,7 +350,7 @@ export type Ticket = {
   email?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   name: Scalars["String"];
-  number: Scalars["Float"];
+  number: Scalars["String"];
   phoneNumber?: Maybe<Scalars["String"]>;
   placedAt?: Maybe<Scalars["DateTime"]>;
   restaurant: Restaurant;
@@ -340,6 +397,17 @@ export type UpdateUserPasswordWithTokenMutation = {
   updateUserPasswordWithToken: boolean;
 };
 
+export type UpdateUserPasswordMutationVariables = Exact<{
+  updateUserPasswordId: Scalars["ID"];
+  password: Scalars["String"];
+  newUserPassword: Scalars["String"];
+}>;
+
+export type UpdateUserPasswordMutation = {
+  __typename?: "Mutation";
+  updateUserPassword: { __typename?: "AppUser"; id: string };
+};
+
 export type MyProfileQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MyProfileQuery = {
@@ -347,10 +415,19 @@ export type MyProfileQuery = {
   myProfile: {
     __typename?: "AppUser";
     id: string;
+    login: string;
     email: string;
     role: string;
     poles?: Array<{ __typename?: "Pole"; id: string; name: string }> | null;
-    restaurant?: { __typename?: "Restaurant"; id: string; name: string } | null;
+    restaurant?: {
+      __typename?: "Restaurant";
+      id: string;
+      name: string;
+      picture?: string | null;
+      ticketWaitingLimit: number;
+      openAt?: any | null;
+      closeAt?: any | null;
+    } | null;
   };
 };
 
@@ -364,7 +441,7 @@ export type TicketsByRestaurantQuery = {
   TicketsByRestaurant: Array<{
     __typename?: "Ticket";
     id: string;
-    number: number;
+    number: string;
     name: string;
     seats: number;
     email?: string | null;
@@ -374,6 +451,101 @@ export type TicketsByRestaurantQuery = {
     placedAt?: any | null;
     closedAt?: any | null;
     table?: { __typename?: "Table"; id: string; number: number } | null;
+  }>;
+};
+
+export type WaitingTicketsByRestaurantQueryVariables = Exact<{
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+}>;
+
+export type WaitingTicketsByRestaurantQuery = {
+  __typename?: "Query";
+  WaitingTicketsByRestaurant: Array<{
+    __typename?: "Ticket";
+    id: string;
+    number: string;
+    name: string;
+    seats: number;
+    email?: string | null;
+    phoneNumber?: string | null;
+    createdAt: any;
+    deliveredAt?: any | null;
+    placedAt?: any | null;
+    closedAt?: any | null;
+    table?: { __typename?: "Table"; id: string; number: number } | null;
+  }>;
+};
+
+export type PlacedTicketsByRestaurantQueryVariables = Exact<{
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+}>;
+
+export type PlacedTicketsByRestaurantQuery = {
+  __typename?: "Query";
+  PlacedTicketsByRestaurant: Array<{
+    __typename?: "Ticket";
+    id: string;
+    number: string;
+    name: string;
+    seats: number;
+    email?: string | null;
+    phoneNumber?: string | null;
+    createdAt: any;
+    deliveredAt?: any | null;
+    placedAt?: any | null;
+    closedAt?: any | null;
+    table?: { __typename?: "Table"; id: string; number: number } | null;
+  }>;
+};
+
+export type PaginatedAndSortedTicketsQueryVariables = Exact<{
+  restaurantId: Scalars["ID"];
+  globalFilter: Scalars["String"];
+  pageSize: Scalars["Float"];
+  pageNumber: Scalars["Float"];
+  sort: Array<Scalars["String"]> | Scalars["String"];
+  order: Array<Scalars["Float"]> | Scalars["Float"];
+}>;
+
+export type PaginatedAndSortedTicketsQuery = {
+  __typename?: "Query";
+  PaginatedAndSortedTickets: {
+    __typename?: "PageOfTickets";
+    totalCount: number;
+    tickets: Array<{
+      __typename?: "Ticket";
+      number: string;
+      name: string;
+      seats: number;
+      createdAt: any;
+      deliveredAt?: any | null;
+      placedAt?: any | null;
+      closedAt?: any | null;
+    }>;
+  };
+};
+
+export type ExportTicketsByRestaurantQueryVariables = Exact<{
+  restaurantId: Scalars["ID"];
+  dateMin?: InputMaybe<Scalars["DateTime"]>;
+  dateMax?: InputMaybe<Scalars["DateTime"]>;
+}>;
+
+export type ExportTicketsByRestaurantQuery = {
+  __typename?: "Query";
+  ExportTicketsByRestaurant: Array<{
+    __typename?: "Ticket";
+    number: string;
+    name: string;
+    email?: string | null;
+    phoneNumber?: string | null;
+    seats: number;
+    createdAt: any;
+    deliveredAt?: any | null;
+    placedAt?: any | null;
+    closedAt?: any | null;
   }>;
 };
 
@@ -424,6 +596,136 @@ export type TablesByRestaurantQuery = {
     number: number;
     capacity: number;
   }>;
+};
+
+export type PolesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type PolesQuery = {
+  __typename?: "Query";
+  poles: Array<{
+    __typename?: "Pole";
+    id: string;
+    name: string;
+    address: string;
+    zipCode: string;
+    city: string;
+    email: string;
+    restaurant?: Array<{
+      __typename?: "Restaurant";
+      id: string;
+      name: string;
+    }> | null;
+  }>;
+};
+
+export type CreatePoleMutationVariables = Exact<{
+  name: Scalars["String"];
+  address: Scalars["String"];
+  zipCode: Scalars["String"];
+  city: Scalars["String"];
+  email: Scalars["String"];
+}>;
+
+export type CreatePoleMutation = {
+  __typename?: "Mutation";
+  createPole: { __typename?: "Pole"; id: string };
+};
+
+export type UpdatePoleMutationVariables = Exact<{
+  name: Scalars["String"];
+  address: Scalars["String"];
+  zipCode: Scalars["String"];
+  city: Scalars["String"];
+  email: Scalars["String"];
+  updatePoleId: Scalars["ID"];
+}>;
+
+export type UpdatePoleMutation = {
+  __typename?: "Mutation";
+  updatePole: { __typename?: "Pole"; id: string };
+};
+
+export type DeletePoleMutationVariables = Exact<{
+  deletePoleId: Scalars["String"];
+}>;
+
+export type DeletePoleMutation = {
+  __typename?: "Mutation";
+  deletePole: { __typename?: "Pole"; id: string };
+};
+
+export type StatsByRestaurantQueryVariables = Exact<{
+  restaurantId: Scalars["String"];
+}>;
+
+export type StatsByRestaurantQuery = {
+  __typename?: "Query";
+  StatsByRestaurant: {
+    __typename?: "Stats";
+    tableCapacity: Array<string>;
+    daysOfWeek: Array<string>;
+    lastThirtyDays: Array<string>;
+    countTicketsBySeat: Array<number>;
+    countActualWeekTickets: Array<number>;
+    countLastThirtyDaysTickets: Array<number>;
+  };
+};
+
+export type GetRestaurantsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetRestaurantsQuery = {
+  __typename?: "Query";
+  getRestaurants: Array<{
+    __typename?: "Restaurant";
+    id: string;
+    name: string;
+    pole: {
+      __typename?: "Pole";
+      id: string;
+      name: string;
+      address: string;
+      zipCode: string;
+      city: string;
+      email: string;
+    };
+  }>;
+};
+
+export type UpdateRestaurantMutationVariables = Exact<{
+  updateRestaurantId: Scalars["ID"];
+  ticketWaitingLimit: Scalars["Float"];
+  name: Scalars["String"];
+  picture?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type UpdateRestaurantMutation = {
+  __typename?: "Mutation";
+  updateRestaurant: {
+    __typename?: "Restaurant";
+    id: string;
+    name: string;
+    picture?: string | null;
+    ticketWaitingLimit: number;
+    openAt?: any | null;
+    closeAt?: any | null;
+  };
+};
+
+export type UpdateRestaurantOpeningTimeMutationVariables = Exact<{
+  updateRestaurantOpeningTimeId: Scalars["ID"];
+  hourOpenAt: Scalars["Float"];
+  minutesOpenAt: Scalars["Float"];
+  hourCloseAt: Scalars["Float"];
+  minutesCloseAt: Scalars["Float"];
+}>;
+
+export type UpdateRestaurantOpeningTimeMutation = {
+  __typename?: "Mutation";
+  updateRestaurantOpeningTime: {
+    __typename?: "Restaurant";
+    closeAt?: any | null;
+    openAt?: any | null;
+  };
 };
 
 export const SignInDocument = {
@@ -691,6 +993,101 @@ export const UpdateUserPasswordWithTokenDocument = {
   UpdateUserPasswordWithTokenMutation,
   UpdateUserPasswordWithTokenMutationVariables
 >;
+export const UpdateUserPasswordDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateUserPassword" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "updateUserPasswordId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "password" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "newUserPassword" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateUserPassword" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "updateUserPasswordId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "password" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "password" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "newUserPassword" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "newUserPassword" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateUserPasswordMutation,
+  UpdateUserPasswordMutationVariables
+>;
 export const MyProfileDocument = {
   kind: "Document",
   definitions: [
@@ -708,6 +1105,7 @@ export const MyProfileDocument = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "login" } },
                 { kind: "Field", name: { kind: "Name", value: "email" } },
                 { kind: "Field", name: { kind: "Name", value: "role" } },
                 {
@@ -729,6 +1127,22 @@ export const MyProfileDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "picture" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "ticketWaitingLimit" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "openAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closeAt" },
+                      },
                     ],
                   },
                 },
@@ -829,6 +1243,478 @@ export const TicketsByRestaurantDocument = {
 } as unknown as DocumentNode<
   TicketsByRestaurantQuery,
   TicketsByRestaurantQueryVariables
+>;
+export const WaitingTicketsByRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "WaitingTicketsByRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "seats" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "WaitingTicketsByRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurantId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurantId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "seats" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "seats" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "number" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "seats" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+                { kind: "Field", name: { kind: "Name", value: "phoneNumber" } },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+                { kind: "Field", name: { kind: "Name", value: "deliveredAt" } },
+                { kind: "Field", name: { kind: "Name", value: "placedAt" } },
+                { kind: "Field", name: { kind: "Name", value: "closedAt" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "table" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "number" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  WaitingTicketsByRestaurantQuery,
+  WaitingTicketsByRestaurantQueryVariables
+>;
+export const PlacedTicketsByRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "PlacedTicketsByRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "seats" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "PlacedTicketsByRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurantId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurantId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "seats" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "seats" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "number" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "seats" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+                { kind: "Field", name: { kind: "Name", value: "phoneNumber" } },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+                { kind: "Field", name: { kind: "Name", value: "deliveredAt" } },
+                { kind: "Field", name: { kind: "Name", value: "placedAt" } },
+                { kind: "Field", name: { kind: "Name", value: "closedAt" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "table" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "number" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PlacedTicketsByRestaurantQuery,
+  PlacedTicketsByRestaurantQueryVariables
+>;
+export const PaginatedAndSortedTicketsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "PaginatedAndSortedTickets" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "globalFilter" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageSize" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "pageNumber" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "sort" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "ListType",
+              type: {
+                kind: "NonNullType",
+                type: {
+                  kind: "NamedType",
+                  name: { kind: "Name", value: "String" },
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "order" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "ListType",
+              type: {
+                kind: "NonNullType",
+                type: {
+                  kind: "NamedType",
+                  name: { kind: "Name", value: "Float" },
+                },
+              },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "PaginatedAndSortedTickets" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurantId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurantId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "globalFilter" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "globalFilter" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "pageSize" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageSize" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "pageNumber" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pageNumber" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "sort" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "sort" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "order" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "totalCount" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "tickets" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "number" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      { kind: "Field", name: { kind: "Name", value: "seats" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "deliveredAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "placedAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closedAt" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PaginatedAndSortedTicketsQuery,
+  PaginatedAndSortedTicketsQueryVariables
+>;
+export const ExportTicketsByRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ExportTicketsByRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "dateMin" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "dateMax" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "DateTime" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "ExportTicketsByRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurantId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurantId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "dateMin" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "dateMin" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "dateMax" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "dateMax" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "number" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+                { kind: "Field", name: { kind: "Name", value: "phoneNumber" } },
+                { kind: "Field", name: { kind: "Name", value: "seats" } },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+                { kind: "Field", name: { kind: "Name", value: "deliveredAt" } },
+                { kind: "Field", name: { kind: "Name", value: "placedAt" } },
+                { kind: "Field", name: { kind: "Name", value: "closedAt" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ExportTicketsByRestaurantQuery,
+  ExportTicketsByRestaurantQueryVariables
 >;
 export const UpdateDeliveredAtDocument = {
   kind: "Document",
@@ -1083,4 +1969,746 @@ export const TablesByRestaurantDocument = {
 } as unknown as DocumentNode<
   TablesByRestaurantQuery,
   TablesByRestaurantQueryVariables
+>;
+export const PolesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Poles" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "poles" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "address" } },
+                { kind: "Field", name: { kind: "Name", value: "zipCode" } },
+                { kind: "Field", name: { kind: "Name", value: "city" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "restaurant" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PolesQuery, PolesQueryVariables>;
+export const CreatePoleDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CreatePole" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "address" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zipCode" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "city" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "email" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createPole" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "address" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zipCode" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zipCode" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "city" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "city" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "email" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "email" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreatePoleMutation, CreatePoleMutationVariables>;
+export const UpdatePoleDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdatePole" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "address" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "zipCode" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "city" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "email" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "updatePoleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updatePole" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "address" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "address" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "zipCode" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "zipCode" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "city" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "city" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "email" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "email" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "updatePoleId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UpdatePoleMutation, UpdatePoleMutationVariables>;
+export const DeletePoleDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeletePole" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "deletePoleId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deletePole" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "deletePoleId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DeletePoleMutation, DeletePoleMutationVariables>;
+export const StatsByRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "StatsByRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "StatsByRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurantId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurantId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "tableCapacity" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "daysOfWeek" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "lastThirtyDays" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "countTicketsBySeat" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "countActualWeekTickets" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "countLastThirtyDaysTickets" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StatsByRestaurantQuery,
+  StatsByRestaurantQueryVariables
+>;
+export const GetRestaurantsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetRestaurants" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getRestaurants" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "pole" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "address" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "zipCode" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "city" } },
+                      { kind: "Field", name: { kind: "Name", value: "email" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetRestaurantsQuery, GetRestaurantsQueryVariables>;
+export const UpdateRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "updateRestaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ticketWaitingLimit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "picture" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "updateRestaurantId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ticketWaitingLimit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ticketWaitingLimit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "picture" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "picture" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "picture" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "ticketWaitingLimit" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "openAt" } },
+                { kind: "Field", name: { kind: "Name", value: "closeAt" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateRestaurantMutation,
+  UpdateRestaurantMutationVariables
+>;
+export const UpdateRestaurantOpeningTimeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateRestaurantOpeningTime" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "updateRestaurantOpeningTimeId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "hourOpenAt" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "minutesOpenAt" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "hourCloseAt" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "minutesCloseAt" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateRestaurantOpeningTime" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: {
+                    kind: "Name",
+                    value: "updateRestaurantOpeningTimeId",
+                  },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "hourOpenAt" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "hourOpenAt" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "minutesOpenAt" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "minutesOpenAt" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "hourCloseAt" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "hourCloseAt" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "minutesCloseAt" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "minutesCloseAt" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "closeAt" } },
+                { kind: "Field", name: { kind: "Name", value: "openAt" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateRestaurantOpeningTimeMutation,
+  UpdateRestaurantOpeningTimeMutationVariables
 >;

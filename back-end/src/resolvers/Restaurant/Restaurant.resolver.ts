@@ -14,11 +14,13 @@ const PAGE_SIZE = 4;
 
 @Resolver(Restaurant)
 export default class RestaurantResolver {
+  //Comment "Authorized" decorator to enable access in apollo server
   @Query(() => [Restaurant])
   getRestaurants(): Promise<Restaurant[]> {
     return RestaurantRepository.getRestaurants();
   }
 
+  //TODO: Find a way to secure this query (used in mobile-app)
   @Query(() => PageOfRestaurants)
   getPaginateRestaurantsByPole(
     @Args() { pole, pageNumber }: GetPaginateRestaurantsByPole
@@ -30,6 +32,7 @@ export default class RestaurantResolver {
     );
   }
 
+  //TODO: Find a way to secure this query (used in mobile-app)
   @Query(() => Restaurant)
   getRestaurantById(@Arg("id") id: string): Promise<Restaurant | null> {
     return RestaurantRepository.getRestaurantById(id);
@@ -38,17 +41,27 @@ export default class RestaurantResolver {
   @Authorized("ROLE_ADMIN")
   @Mutation(() => Restaurant)
   createRestaurant(
-    @Args() { name, picture, pole }: CreateRestaurantArgs
+    @Args() { name, picture, ticketWaitingLimit, pole }: CreateRestaurantArgs
   ): Promise<Restaurant> {
-    return RestaurantRepository.createRestaurant(name, picture, pole);
+    return RestaurantRepository.createRestaurant(
+      name,
+      picture,
+      ticketWaitingLimit,
+      pole
+    );
   }
 
   @Authorized()
   @Mutation(() => Restaurant)
   updateRestaurant(
-    @Args() { id, name, picture }: UpdateRestaurantArgs
+    @Args() { id, name, ticketWaitingLimit, picture }: UpdateRestaurantArgs
   ): Promise<Restaurant> {
-    return RestaurantRepository.updateRestaurant(id, name, picture);
+    return RestaurantRepository.updateRestaurant(
+      id,
+      name,
+      picture,
+      ticketWaitingLimit
+    );
   }
 
   @Authorized("ROLE_RESTAURANT")

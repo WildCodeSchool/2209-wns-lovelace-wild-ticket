@@ -1,0 +1,271 @@
+@import "../../../index.scss";
+
+.DashboardHomeSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 5px;
+  width: auto;
+  height: 90%;
+  margin: 20px 15px 15px 80px;
+
+  .DashboardHomeTopContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50%;
+    width: 100%;
+    padding-bottom: 20px;
+    border-bottom: 3px solid;
+    border-image: linear-gradient(to right, transparent, #164e63, transparent) 1;
+
+    .DashboardHomeTopLeftContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      width: 30%;
+      min-width: 250px;
+      height: 100%;
+
+      .boxStatsTickets {
+        display: flex;
+        justify-content: space-around;
+        border: 3px solid #164e63;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.25rem;
+        margin-top: 2rem;
+        padding: 1rem;
+        width: 250px;
+
+
+        &:active {
+          border: 5px solid #164e63;
+        }
+
+        .statsTickets {
+          color: #164e63;
+
+          span {
+            font-size: 1.5rem;
+            font-weight: 600;
+          }
+
+          p {
+            margin: 0;
+          }
+        }
+
+        .icon {
+          font-size: 2.25rem;
+          color: #164e63;
+        }
+      }
+
+      .btnStats {
+        background-color: #164e63;
+        border: none;
+        border-radius: 5px;
+        width: 55%;
+        cursor: pointer;
+        color: #fff;
+        font-size: 1.25rem;
+        height: fit-content;
+        padding: 2rem;
+
+        &:hover {
+          background-color: $modal-button-hover-background-color;
+        }
+      }
+    }
+
+    .DashboardHomeTopMiddleContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      width: 30%;
+      min-width: 250px;
+      height: 100%;
+
+      .DashboardHomeTopMiddleRestaurantLogo {
+        width: 50%;
+        max-width: 250px;
+      }
+    }
+
+    .DashboardHomeTopRightContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      width: 30%;
+      min-width: 250px;
+      height: 100%;
+
+      .boxStatsTables {
+        display: flex;
+        justify-content: space-around;
+        border: 3px solid #164e63;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.25rem;
+        margin-top: 2rem;
+        padding: 1rem;
+        width: 250px;
+
+
+        &:active {
+          border: 5px solid #164e63;
+        }
+
+        .statsTables {
+          color: #164e63;
+
+          span {
+            font-size: 1.5rem;
+            font-weight: 600;
+          }
+
+          p {
+            margin: 0;
+          }
+        }
+
+        .icon {
+          font-size: 2.25rem;
+          color: #164e63;
+        }
+      }
+
+      .btnStats {
+        background-color: #164e63;
+        border: none;
+        border-radius: 5px;
+        width: 55%;
+        cursor: pointer;
+        color: #fff;
+        font-size: 1.25rem;
+        height: fit-content;
+        padding: 2rem;
+
+        &:hover {
+          background-color: $modal-button-hover-background-color;
+        }
+      }
+    }
+
+    .statsTop {
+      display: flex;
+      justify-content: space-between;
+      padding: 2rem 2rem 1rem;
+
+      .btnStats {
+        background-color: #164e63;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #fff;
+        font-size: 1.25rem;
+        height: fit-content;
+        padding: 2.5rem;
+
+        &:hover {
+          background-color: #1f2937;
+          transition: 0.7s;
+        }
+      }
+    }
+
+    .statsBottom {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      height: max-content;
+
+      .boxStatsTickets,
+      .boxStatsTables {
+        display: flex;
+        justify-content: space-around;
+        border: 3px solid #164e63;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.25rem;
+        margin-top: 2rem;
+        padding: 1rem;
+        width: 250px;
+
+
+        &:active {
+          border: 5px solid #164e63;
+        }
+
+        .statsTickets,
+        .statsTables {
+          color: #164e63;
+
+          span {
+            font-size: 1.5rem;
+            font-weight: 600;
+          }
+
+          p {
+            margin: 0;
+          }
+        }
+
+        .icon {
+          font-size: 2.25rem;
+          color: #164e63;
+        }
+      }
+    }
+  }
+
+  .DashboardHomeBottomContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+
+@media only screen and (max-width: 1000px) {
+  .DashboardHomeTopContent {
+    flex-direction: row;
+    flex-wrap: wrap-reverse !important;
+    align-items: flex-start;
+
+    .DashboardHomeTopLeftContainer {
+      height: 60% !important;
+    }
+
+    .DashboardHomeTopMiddleContainer {
+      order: 1;
+      flex-direction: row !important;
+      justify-content: space-around !important;
+      width: 100% !important;
+      height: 40% !important;
+
+      .DashboardHomeTopMiddleRestaurantLogo {
+        width: 30% !important;
+        max-width: 150px !important;
+      }
+    }
+
+    .DashboardHomeTopRightContainer {
+      height: 60% !important;
+    }
+  }
+
+  .btnStats {
+    width: 70% !important;
+  }
+
+  .openCloseBtn {
+    width: 30% !important;
+  }
+}
