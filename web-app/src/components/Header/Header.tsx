@@ -22,18 +22,14 @@ export default function DashBoardHeader() {
   const [dateToConvert, setDateToConvert] = useState<Date>(new Date());
   const [dateNow, setDateNow] = useState<{ date: string; time: string }>();
   const [dashboardLocation, setDashboardLocation] = useState<string>("Accueil");
+  const [waitingTickets, setWaitingTickets] = useState<number>(0);
+  const [occupiedTables, setOccupiedTables] = useState<number>(0);
   const location = useLocation().pathname;
   const userRole = useContext(AppContext)?.userData.role;
   const tickets = useContext(AppContext)
     ?.tickets as GET_TICKETS_BY_RESTAURANT_TYPES;
   const tables = useContext(AppContext)
     ?.tables as GET_TABLES_BY_RESTAURANT_TYPES;
-
-  // GET WAITING TICKETS COUNT
-  const [waitingTickets, setWaitingTickets] = useState<number>(0);
-
-  // GET OCCUPIED TABLES
-  const [occupiedTables, setOccupiedTables] = useState<number>(0);
 
   useEffect(() => {
     setDashboardLocation(headerLocation(location));
@@ -64,28 +60,24 @@ export default function DashBoardHeader() {
         </div>
       )}
 
-      {
-        //TODO: Insérer les vraies données de file d'attente
-        userRole === ROLE_RESTAURANT && dashboardLocation === "Accueil" ? (
-          ""
-        ) : (
-          <div className="DashboardHeaderStatsContainer">
-            <div className="HeaderStatsTextContainer">
-              <SVGMiniIconUser iconParams={HEADER_ICON_PARAMS} />
-              <p className="HeaderStats">
-                {waitingTickets} Ticket{waitingTickets > 1 ? "s" : ""} en
-                attente
-              </p>
-            </div>
-            <div className="HeaderStatsTextContainer">
-              <SVGMiniIconTable iconParams={HEADER_ICON_PARAMS} />
-              <p className="HeaderStats">
-                {occupiedTables}/{tables?.length} Tables occupées
-              </p>
-            </div>
+      {userRole === ROLE_RESTAURANT && dashboardLocation === "Accueil" ? (
+        ""
+      ) : (
+        <div className="DashboardHeaderStatsContainer">
+          <div className="HeaderStatsTextContainer">
+            <SVGMiniIconUser iconParams={HEADER_ICON_PARAMS} />
+            <p className="HeaderStats">
+              {waitingTickets} Ticket{waitingTickets > 1 ? "s" : ""} en attente
+            </p>
           </div>
-        )
-      }
+          <div className="HeaderStatsTextContainer">
+            <SVGMiniIconTable iconParams={HEADER_ICON_PARAMS} />
+            <p className="HeaderStats">
+              {occupiedTables}/{tables?.length} Tables occupées
+            </p>
+          </div>
+        </div>
+      )}
 
       {
         //TODO: A voir si on rajoute des stats pour les admins
