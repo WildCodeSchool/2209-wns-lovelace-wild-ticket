@@ -15,7 +15,6 @@ import { toast } from "react-toastify";
 
 const OpenCloseTime = () => {
   const appContext = useContext(AppContext);
-  //UPDATE OPENING AND CLOSED TIME
   const [openAt, setOpenAt] = React.useState<Date | null>(
     new Date(appContext?.userData.restaurant.openAt)
   );
