@@ -193,7 +193,7 @@ describe("TicketRepository integration", () => {
 
         const closedAt = DateUpdates.addMinutesToDate(
           deliveredTicket.deliveredAt as Date,
-          restaurant.ticketWaitingLimit,
+          restaurant.ticketWaitingLimit
         );
 
         expect(deliveredTicket.closedAt).toEqual(closedAt);

@@ -20,7 +20,11 @@ const renderDashboardTicketListStatus = (
   render(
     <MockedProvider mocks={mock}>
       <MemoryRouter>
-        <DashboardTicketListStatus ticket={ticket} tables={tables} maxDeliveredTicketDelay={maxDeliveredTicketDelay} />
+        <DashboardTicketListStatus
+          ticket={ticket}
+          tables={tables}
+          maxDeliveredTicketDelay={maxDeliveredTicketDelay}
+        />
       </MemoryRouter>
     </MockedProvider>
   );
@@ -179,7 +183,11 @@ describe("DashboardTicketListStatus", () => {
 
   describe("when the ticket is placed", () => {
     it("should render the table where the client is placed", async () => {
-      renderDashboardTicketListStatus(mockTicketPlacedAt, mockAvailableTables, 5);
+      renderDashboardTicketListStatus(
+        mockTicketPlacedAt,
+        mockAvailableTables,
+        5
+      );
       expect(screen.getByText("Table 1")).toBeInTheDocument();
     });
   });

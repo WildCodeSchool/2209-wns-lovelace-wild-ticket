@@ -37,7 +37,8 @@ export default function DashboardTicketListTab({
   handlePlace: (ticketId: string) => Promise<void>;
 }) {
   const appContext = useContext(AppContext);
-  const MAX_DELIVERED_TICKET_DELAY = appContext?.userData.restaurant.ticketWaitingLimit;
+  const MAX_DELIVERED_TICKET_DELAY =
+    appContext?.userData.restaurant.ticketWaitingLimit;
   const [ticketId, setTicketId] = useState<string>("");
   const [tableId, setTableId] = useState<string>("");
   const [ticketNumber, setTicketNumber] = useState<string>("");
@@ -92,11 +93,23 @@ export default function DashboardTicketListTab({
   };
 
   const waitingTicketsStatus = (waitingTicket: any) => {
-    return <DashboardTicketListStatus ticket={waitingTicket} tables={tables} maxDeliveredTicketDelay={MAX_DELIVERED_TICKET_DELAY} />;
+    return (
+      <DashboardTicketListStatus
+        ticket={waitingTicket}
+        tables={tables}
+        maxDeliveredTicketDelay={MAX_DELIVERED_TICKET_DELAY}
+      />
+    );
   };
 
   const placedTicketsStatus = (placedTicket: any) => {
-    return <DashboardTicketListStatus ticket={placedTicket} tables={tables} maxDeliveredTicketDelay={MAX_DELIVERED_TICKET_DELAY} />;
+    return (
+      <DashboardTicketListStatus
+        ticket={placedTicket}
+        tables={tables}
+        maxDeliveredTicketDelay={MAX_DELIVERED_TICKET_DELAY}
+      />
+    );
   };
 
   const waitingTicketsActions = (waitingTicket: any) => {
