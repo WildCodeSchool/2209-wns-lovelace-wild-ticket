@@ -57,4 +57,3 @@ export const ROLE_RESTAURANT: string = "ROLE_RESTAURANT";
  */
 export const BUTTON_DISAPPEAR_DELAY = 1;
 export const TICKET_DISAPPEAR_DELAY = 1;
-export const MAX_DELIVERED_TICKET_DELAY = 5;
