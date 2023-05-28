@@ -3,7 +3,6 @@ import { Field, ID, ObjectType } from "type-graphql";
 import {
   Column,
   Entity,
-  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
