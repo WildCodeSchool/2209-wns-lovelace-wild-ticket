@@ -85,18 +85,15 @@ const DashboardTicket = () => {
     tickets: GET_TICKETS_BY_RESTAURANT_TYPES,
     tables: GET_TABLES_BY_RESTAURANT_TYPES
   ): GET_TABLES_BY_RESTAURANT_TYPES => {
-    const placedTickets: (number | undefined)[] = [];
-    const emptyTables: GET_TABLES_BY_RESTAURANT_TYPES = [];
-
-    tickets
+    const placedTickets = tickets
       ?.filter((ticket) => new Date(ticket.closedAt) > new Date())
-      .map((ticket) => placedTickets.push(ticket.table?.number));
+      .map((ticket) => ticket.table?.number);
 
-    tables
-      ?.filter((table) => !placedTickets?.includes(table.number))
-      .map((table) => emptyTables.push(table));
+    const emptyTables = tables?.filter(
+      (table) => !placedTickets?.includes(table.number)
+    );
 
-    return emptyTables;
+    return emptyTables || [];
   };
 
   // GET TABLES BY SEATS
