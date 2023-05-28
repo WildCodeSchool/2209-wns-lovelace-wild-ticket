@@ -1,7 +1,5 @@
-import {
-  MAX_DELIVERED_TICKET_DELAY,
-  TICKET_DISAPPEAR_DELAY,
-} from "../../../../constants/Constants";
+import { useContext } from "react";
+import { TICKET_DISAPPEAR_DELAY } from "../../../../constants/Constants";
 import { addMinutesToDate } from "../../../../services/DateService";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
@@ -12,6 +10,7 @@ import SVGIconDeliveredTicket from "../../../SVG/SVGIconDeliveredTicket/SvgIconD
 import SVGIconPlacedTicket from "../../../SVG/SVGIconPlacedTicket/SVGIconPlacedTicket";
 import SVGIconWaitingTicket from "../../../SVG/SVGIconWaitingTicket/SVGIconWaitingTicket";
 import "./DashboardTicketListStatus.scss";
+import { AppContext } from "../../../../context/AppContext";
 
 export default function DashboardTicketListStatus({
   ticket,
@@ -20,6 +19,9 @@ export default function DashboardTicketListStatus({
   ticket: GET_TICKET_BY_RESTAURANT_TYPES;
   tables: GET_TABLES_BY_RESTAURANT_TYPES;
 }) {
+  const appContext = useContext(AppContext);
+  const MAX_DELIVERED_TICKET_DELAY =
+    appContext?.userData.restaurant.ticketWaitingLimit;
   const ticketSeats = ticket?.seats as number;
   const convertedSeatsToCapacity =
     ticketSeats % 2 === 0 ? ticketSeats : ticketSeats + 1;

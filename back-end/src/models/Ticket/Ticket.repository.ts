@@ -354,6 +354,8 @@ export default class TicketRepository extends TicketDb {
       restaurantId
     );
     if (!restaurant) throw new Error();
+    const ticketWaitingLimit = restaurant.ticketWaitingLimit as number;
+
     let query = this.repository
       .createQueryBuilder("ticket")
       .leftJoinAndSelect("ticket.restaurant", "restaurant")
@@ -363,7 +365,9 @@ export default class TicketRepository extends TicketDb {
       })
       .andWhere("ticket.placedAt IS NOT NULL")
       .andWhere("ticket.deliveredAt IS NOT NULL")
-      .andWhere("ticket.closedAt > NOW() + interval '5 minute'");
+      .andWhere("ticket.closedAt > :delay", {
+        delay: DateUpdates.addMinutesToDate(new Date(), ticketWaitingLimit),
+      });
     if (seats) {
       query.andWhere("ticket.seats = :seats", {
         seats: seats,

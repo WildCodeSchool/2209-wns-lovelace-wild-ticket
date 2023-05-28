@@ -15,6 +15,7 @@ const PAGE_SIZE = 4;
 @Resolver(Restaurant)
 export default class RestaurantResolver {
   //Comment "Authorized" decorator to enable access in apollo server
+  //@Authorized("ROLE_ADMIN")
   @Query(() => [Restaurant])
   getRestaurants(): Promise<Restaurant[]> {
     return RestaurantRepository.getRestaurants();
