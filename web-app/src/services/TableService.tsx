@@ -12,10 +12,18 @@ export default class TableService {
       ?.filter((ticket) => new Date(ticket.closedAt) > new Date())
       .map((ticket) => ticket.table?.number);
 
-    const emptyTables = tables?.filter(
-      (table) => !placedTickets?.includes(table.number)
+    return (
+      tables?.filter((table) => !placedTickets?.includes(table.number)) || []
     );
+  }
 
-    return emptyTables || [];
+  static getCountOfOccupiedTables(
+    tickets: GET_TICKETS_BY_RESTAURANT_TYPES,
+    tables: GET_TABLES_BY_RESTAURANT_TYPES
+  ): number {
+    return (
+      (tables || []).length -
+      (this.getEmptyTables(tickets, tables) || []).length
+    );
   }
 }

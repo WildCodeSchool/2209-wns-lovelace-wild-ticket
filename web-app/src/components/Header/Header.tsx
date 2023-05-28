@@ -16,6 +16,7 @@ import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
 } from "../../types/DataTypes";
+import TableService from "../../services/TableService";
 
 export default function DashBoardHeader() {
   const [dateToConvert, setDateToConvert] = useState<Date>(new Date());
@@ -48,28 +49,10 @@ export default function DashBoardHeader() {
   // GET OCCUPIED TABLES
   const [occupiedTables, setOccupiedTables] = useState<number>(0);
 
-  const getEmptyTables = (
-    tickets: GET_TICKETS_BY_RESTAURANT_TYPES,
-    tables: GET_TABLES_BY_RESTAURANT_TYPES
-  ): number => {
-    const placedTickets: (number | undefined)[] = [];
-    const emptyTables: GET_TABLES_BY_RESTAURANT_TYPES = [];
-
-    tickets
-      ?.filter((ticket) => new Date(ticket.closedAt) > new Date())
-      .map((ticket) => placedTickets.push(ticket.table?.number));
-
-    tables
-      ?.filter((table) => placedTickets?.includes(table.number))
-      .map((table) => emptyTables.push(table));
-
-    return emptyTables.length;
-  };
-
   useEffect(() => {
     setDashboardLocation(headerLocation(location));
     setWaitingTickets(getCountOfWaitingTickets(tickets) as number);
-    setOccupiedTables(getEmptyTables(tickets, tables) as number);
+    setOccupiedTables(TableService.getCountOfOccupiedTables(tickets, tables));
     const setDateEachSecond = setInterval(() => {
       setDateToConvert(new Date());
       setDateNow(convertDate(dateToConvert));

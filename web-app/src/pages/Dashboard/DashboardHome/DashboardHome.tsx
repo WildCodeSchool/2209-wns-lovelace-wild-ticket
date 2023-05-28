@@ -22,6 +22,7 @@ import {
 } from "../../paths";
 import "../DashboardTemp.scss";
 import "../DashboardHome/DashboardHome.scss";
+import TableService from "../../../services/TableService";
 
 const DashboardHome = () => {
   const appContext = useContext(AppContext);
@@ -52,27 +53,9 @@ const DashboardHome = () => {
   // GET OCCUPIED TABLES
   const [occupiedTables, setOccupiedTables] = useState<number>(0);
 
-  const getEmptyTables = (
-    tickets: GET_TICKETS_BY_RESTAURANT_TYPES,
-    tables: GET_TABLES_BY_RESTAURANT_TYPES
-  ): number => {
-    const placedTickets: (number | undefined)[] = [];
-    const emptyTables: GET_TABLES_BY_RESTAURANT_TYPES = [];
-
-    tickets
-      ?.filter((ticket) => new Date(ticket.closedAt) > new Date())
-      .map((ticket) => placedTickets.push(ticket.table?.number));
-
-    tables
-      ?.filter((table) => placedTickets?.includes(table.number))
-      .map((table) => emptyTables.push(table));
-
-    return emptyTables.length;
-  };
-
   useEffect(() => {
     setWaitingTickets(getCountOfWaitingTickets(tickets) as number);
-    setOccupiedTables(getEmptyTables(tickets, tables) as number);
+    setOccupiedTables(TableService.getCountOfOccupiedTables(tickets, tables));
   }, [tables, tickets]);
 
   const goToStats = () => {
