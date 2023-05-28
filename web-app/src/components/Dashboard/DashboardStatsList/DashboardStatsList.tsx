@@ -190,6 +190,8 @@ const DashboardStatsList = () => {
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
           <InputText
+            id="nameFilter"
+            name="nameFilter"
             autoFocus
             className="DashboardStatsListHeaderSearchInput"
             value={lazyState.globalFilter}

@@ -80,6 +80,7 @@ const DashboardOptionsRestaurantForm = () => {
           </label>
           <input
             id="name"
+            name="name"
             className="DashboardOptionsFormTextInput"
             type="text"
             autoComplete="off"
@@ -95,6 +96,7 @@ const DashboardOptionsRestaurantForm = () => {
           <div className="DashboardOptionsFormFileInputImage">
             <input
               id="picture"
+              name="picture"
               className="DashboardOptionsFormFileInput"
               type="file"
               accept="image/*"
