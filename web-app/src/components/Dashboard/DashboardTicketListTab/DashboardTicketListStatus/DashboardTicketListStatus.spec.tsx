@@ -1,10 +1,7 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import {
-  addMinutesToDate,
-  substractMinutesToDate,
-} from "../../../../services/DateService";
+import DateService from "../../../../services/DateService";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKET_BY_RESTAURANT_TYPES,
@@ -38,7 +35,7 @@ const mockTicketCreatedAt: GET_TICKET_BY_RESTAURANT_TYPES = {
   seats: 2,
   email: "vincent@blabla.fr",
   phoneNumber: null,
-  createdAt: substractMinutesToDate(new Date(), 10),
+  createdAt: DateService.substractMinutesToDate(new Date(), 10),
   deliveredAt: null,
   placedAt: null,
   closedAt: null,
@@ -57,10 +54,10 @@ const mockTicketOkDeliveredAt: GET_TICKET_BY_RESTAURANT_TYPES = {
   seats: 2,
   email: "vincent@blabla.fr",
   phoneNumber: null,
-  createdAt: substractMinutesToDate(new Date(), 1),
-  deliveredAt: substractMinutesToDate(new Date(), 1),
+  createdAt: DateService.substractMinutesToDate(new Date(), 1),
+  deliveredAt: DateService.substractMinutesToDate(new Date(), 1),
   placedAt: null,
-  closedAt: addMinutesToDate(new Date(), 4),
+  closedAt: DateService.addMinutesToDate(new Date(), 4),
   table: {
     __typename: "Table",
     id: "1",
@@ -76,8 +73,8 @@ const mockTicketNokDeliveredAt: GET_TICKET_BY_RESTAURANT_TYPES = {
   seats: 2,
   email: "vincent@blabla.fr",
   phoneNumber: null,
-  createdAt: substractMinutesToDate(new Date(), 6),
-  deliveredAt: substractMinutesToDate(new Date(), 6),
+  createdAt: DateService.substractMinutesToDate(new Date(), 6),
+  deliveredAt: DateService.substractMinutesToDate(new Date(), 6),
   placedAt: null,
   closedAt: new Date(),
   table: {
@@ -95,10 +92,10 @@ const mockTicketPlacedAt: GET_TICKET_BY_RESTAURANT_TYPES = {
   seats: 2,
   email: "vincent@blabla.fr",
   phoneNumber: null,
-  createdAt: substractMinutesToDate(new Date(), 30),
-  deliveredAt: substractMinutesToDate(new Date(), 30),
-  placedAt: substractMinutesToDate(new Date(), 30),
-  closedAt: addMinutesToDate(new Date(), 240),
+  createdAt: DateService.substractMinutesToDate(new Date(), 30),
+  deliveredAt: DateService.substractMinutesToDate(new Date(), 30),
+  placedAt: DateService.substractMinutesToDate(new Date(), 30),
+  closedAt: DateService.addMinutesToDate(new Date(), 240),
   table: {
     __typename: "Table",
     id: "1",

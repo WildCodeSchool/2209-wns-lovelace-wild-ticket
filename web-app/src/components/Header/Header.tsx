@@ -8,7 +8,7 @@ import {
   ROLE_ADMIN,
   ROLE_RESTAURANT,
 } from "../../constants/Constants";
-import { convertDate } from "../../services/DateService";
+import DateService from "../../services/DateService";
 import SVGMiniIconUser from "../SVG/SVGMiniIconUser/SVGMiniIconUser";
 import SVGMiniIconTable from "../SVG/SVGMiniIconTable/SVGMiniIconTable";
 import {
@@ -41,7 +41,7 @@ export default function DashBoardHeader() {
     setOccupiedTables(TableService.getCountOfOccupiedTables(tickets, tables));
     const setDateEachSecond = setInterval(() => {
       setDateToConvert(new Date());
-      setDateNow(convertDate(dateToConvert));
+      setDateNow(DateService.convertDateToDateAndTimeArray(dateToConvert));
     }, 1000);
     return () => {
       clearInterval(setDateEachSecond);

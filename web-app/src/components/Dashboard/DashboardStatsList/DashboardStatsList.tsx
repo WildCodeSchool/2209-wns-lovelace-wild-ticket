@@ -23,7 +23,7 @@ import {
 } from "../../../queries/Queries";
 import { exportTickets } from "../../../services/ExportService";
 import { toast } from "react-toastify";
-import { changeDateFormat } from "../../../services/DateService";
+import DateService from "../../../services/DateService";
 import "primeicons/primeicons.css";
 import "./DashboardStatsList.scss";
 import {
@@ -273,27 +273,43 @@ const DashboardStatsList = () => {
               dataType="string"
               header="Crée le"
               sortable
-              body={(ticket) => changeDateFormat(ticket.createdAt)}
+              body={(ticket) =>
+                DateService.changeDateToStringFormatWithDateAndHours(
+                  ticket.createdAt
+                )
+              }
             ></Column>
             <Column
               field="deliveredAt"
               header="Délivré le"
               sortable
-              body={(ticket) => changeDateFormat(ticket.deliveredAt)}
+              body={(ticket) =>
+                DateService.changeDateToStringFormatWithDateAndHours(
+                  ticket.deliveredAt
+                )
+              }
               hidden={isPortraitTabletView === true ? true : false}
             ></Column>
             <Column
               field="placedAt"
               header="Placé le"
               sortable
-              body={(ticket) => changeDateFormat(ticket.placedAt)}
+              body={(ticket) =>
+                DateService.changeDateToStringFormatWithDateAndHours(
+                  ticket.placedAt
+                )
+              }
               hidden={isPortraitTabletView === true ? true : false}
             ></Column>
             <Column
               field="closedAt"
               header="Clos le"
               sortable
-              body={(ticket) => changeDateFormat(ticket.closedAt)}
+              body={(ticket) =>
+                DateService.changeDateToStringFormatWithDateAndHours(
+                  ticket.closedAt
+                )
+              }
               hidden={isPortraitTabletView === true ? true : false}
             ></Column>
           </DataTable>

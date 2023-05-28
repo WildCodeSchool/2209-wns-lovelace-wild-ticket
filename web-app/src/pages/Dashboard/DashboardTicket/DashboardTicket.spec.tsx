@@ -2,10 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
 import DashboardTicket from "./DashboardTicket";
-import {
-  substractMinutesToDate,
-  addMinutesToDate,
-} from "../../../services/DateService";
+import DateService from "../../../services/DateService";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
@@ -48,12 +45,12 @@ const mockTickets: GET_TICKETS_BY_RESTAURANT_TYPES = [
     name: "Vincent",
     seats: 2,
     email: "vincent@blabla.fr",
-    createdAt: substractMinutesToDate(new Date(), 10),
+    createdAt: DateService.substractMinutesToDate(new Date(), 10),
     table: {
       id: "1",
       number: 1,
     },
-    closedAt: addMinutesToDate(new Date(), 120),
+    closedAt: DateService.addMinutesToDate(new Date(), 120),
   },
 ];
 
