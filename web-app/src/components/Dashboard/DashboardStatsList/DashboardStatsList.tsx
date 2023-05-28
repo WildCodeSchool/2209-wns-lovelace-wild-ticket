@@ -6,7 +6,7 @@ import {
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { InfinitySpin } from "react-loader-spinner";
 import DashboardStatsExportModal from "../DashboardStatsExportModal/DashboardStatsExportModal";
@@ -151,38 +151,32 @@ const DashboardStatsList = () => {
     setOpenExportModal(false);
   };
 
+  const updateDataTableRows = useCallback((): void => {
+    const width = window.innerWidth;
+    const isPortraitTablet = width < 768;
+    const isLargeDesktop = width >= 1200;
+
+    setIsPortraitTabletView(isPortraitTablet);
+
+    setlazyState((prevState: DATA_TABLE_LAZY_STATE_TYPES) => ({
+      ...prevState,
+      rows: isPortraitTablet ? 18 : isLargeDesktop ? 15 : 11,
+    }));
+  }, [setIsPortraitTabletView, setlazyState]);
+
   useEffect(() => {
-    const updateDataTableRows = (): void => {
-      const width = window.innerWidth;
-
-      if (width < 768) {
-        setIsPortraitTabletView(true);
-        setlazyState((prevState: DATA_TABLE_LAZY_STATE_TYPES) => ({
-          ...prevState,
-          rows: 18,
-        }));
-      } else if (width < 1100) {
-        setIsPortraitTabletView(false);
-      } else if (width < 1200) {
-        setlazyState((prevState: DATA_TABLE_LAZY_STATE_TYPES) => ({
-          ...prevState,
-          rows: 11,
-        }));
-      } else {
-        setIsPortraitTabletView(false);
-        setlazyState((prevState: DATA_TABLE_LAZY_STATE_TYPES) => ({
-          ...prevState,
-          rows: 15,
-        }));
-      }
-    };
-
     updateDataTableRows();
-    window.addEventListener("resize", updateDataTableRows);
-    return () => {
-      window.removeEventListener("resize", updateDataTableRows);
+
+    const handleResize = () => {
+      updateDataTableRows();
     };
-  }, []);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [updateDataTableRows]);
 
   const header = (
     <div className="DashboardStatsListHeader">
