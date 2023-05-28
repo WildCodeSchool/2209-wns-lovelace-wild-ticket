@@ -7,6 +7,7 @@ import RestaurantFixtures, {
   RestaurantFixturesType,
 } from "../../DataFixtures/RestaurantFixtures";
 import DateUpdates from "../../services/DateUpdates";
+import TicketRepository from "../Ticket/Ticket.repository";
 
 export default class RestaurantRepository extends RestaurantDb {
   static async initializeRestaurants(): Promise<void> {
@@ -118,6 +119,24 @@ export default class RestaurantRepository extends RestaurantDb {
 
     if (!existingRestaurant) {
       throw new Error("Aucun restaurant ne correspond à cet ID.");
+    }
+
+    const existingTicketWaitingLimit = existingRestaurant.ticketWaitingLimit;
+
+    if (existingTicketWaitingLimit !== ticketWaitingLimit) {
+      const restaurantTickets = await TicketRepository.getTicketsByRestaurant(
+        id,
+        null
+      );
+      const notClosedTickets = restaurantTickets?.filter(
+        (ticket) => ticket.closedAt === null
+      );
+
+      if (notClosedTickets && notClosedTickets.length > 0) {
+        throw new Error(
+          "Vous ne pouvez pas modifier le délai tant que des tickets sont en attente."
+        );
+      }
     }
 
     const updatedAt = new Date();

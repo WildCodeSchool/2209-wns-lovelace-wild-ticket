@@ -66,6 +66,14 @@
       }
     }
 
+    .DashboardOptionsFormTextInputText {
+      font-size: 13px;
+      color: $gray500;
+      margin-top: 3px;
+      margin-bottom: 0;
+      text-align: left;
+    }
+
     .DashboardOptionsFormFileInputContainer {
       position: relative;
       display: flex;

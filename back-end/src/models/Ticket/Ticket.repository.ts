@@ -226,8 +226,12 @@ export default class TicketRepository extends TicketDb {
       throw new Error("Aucune table ne correspond à cet ID.");
     }
 
+    const ticketWaitingLimit = existingTicket.restaurant.ticketWaitingLimit;
     const deliveredAt = new Date();
-    const closedAt = DateUpdates.addMinutesToDate(deliveredAt, 15);
+    const closedAt = DateUpdates.addMinutesToDate(
+      deliveredAt,
+      ticketWaitingLimit
+    );
 
     const deliveredTicket = await this.repository.save({
       id,
