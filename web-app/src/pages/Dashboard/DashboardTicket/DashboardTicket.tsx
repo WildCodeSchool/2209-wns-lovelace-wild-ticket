@@ -29,6 +29,7 @@ import {
   GET_TICKETS_BY_RESTAURANT_TYPES,
 } from "../../../types/DataTypes";
 import "./DashboardTicket.scss";
+import TableService from "../../../services/TableService";
 
 const DashboardTicket = () => {
   const restaurantId = useContext(AppContext)?.userData.restaurant.id;
@@ -46,6 +47,7 @@ const DashboardTicket = () => {
   // GET WAITING TICKETS FUNCTIONNALITY
   const [waitingTickets, setWaitingTickets] =
     useState<GET_TICKETS_BY_RESTAURANT_TYPES>([]);
+
   const { refetch: refetchWaitingTickets } = useQuery<
     WaitingTicketsByRestaurantQuery,
     WaitingTicketsByRestaurantQueryVariables
@@ -80,21 +82,6 @@ const DashboardTicket = () => {
   // GET EMPTY TABLES FUNCTIONNALITY
   const [emptyTables, setEmptyTables] =
     useState<GET_TABLES_BY_RESTAURANT_TYPES>(null);
-
-  const getEmptyTables = (
-    tickets: GET_TICKETS_BY_RESTAURANT_TYPES,
-    tables: GET_TABLES_BY_RESTAURANT_TYPES
-  ): GET_TABLES_BY_RESTAURANT_TYPES => {
-    const placedTickets = tickets
-      ?.filter((ticket) => new Date(ticket.closedAt) > new Date())
-      .map((ticket) => ticket.table?.number);
-
-    const emptyTables = tables?.filter(
-      (table) => !placedTickets?.includes(table.number)
-    );
-
-    return emptyTables || [];
-  };
 
   // GET TABLES BY SEATS
   const [activeFilterButton, setActiveFilterButton] = useState<number | null>(
@@ -209,12 +196,12 @@ const DashboardTicket = () => {
   };
 
   useEffect(() => {
-    setEmptyTables(getEmptyTables(tickets, tables));
+    setEmptyTables(TableService.getEmptyTables(tickets, tables));
     const intervalId = setInterval(() => {
       refetchWaitingTickets();
       refetchPlacedTickets();
       tablesRefetch();
-      setEmptyTables(getEmptyTables(tickets, tables));
+      setEmptyTables(TableService.getEmptyTables(tickets, tables));
     }, 60 * 1000);
 
     return () => {
