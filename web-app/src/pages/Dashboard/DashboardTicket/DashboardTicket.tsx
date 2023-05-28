@@ -43,11 +43,15 @@ const DashboardTicket = () => {
   const ticketsLoading = useContext(AppContext)?.ticketsLoading as boolean;
   const tablesRefetch = useContext(AppContext)?.ticketsRefetch as () => {};
   const [sortSeats, setSortSeats] = useState<number | null>(null);
-
-  // GET WAITING TICKETS FUNCTIONNALITY
+  const [emptyTables, setEmptyTables] =
+    useState<GET_TABLES_BY_RESTAURANT_TYPES>(null);
+  const [activeFilterButton, setActiveFilterButton] = useState<number | null>(
+    null
+  );
   const [waitingTickets, setWaitingTickets] =
     useState<GET_TICKETS_BY_RESTAURANT_TYPES>([]);
 
+  // GET WAITING TICKETS
   const { refetch: refetchWaitingTickets } = useQuery<
     WaitingTicketsByRestaurantQuery,
     WaitingTicketsByRestaurantQueryVariables
@@ -62,7 +66,7 @@ const DashboardTicket = () => {
     },
   });
 
-  // GET PLACED TICKETS FUNCTIONNALITY
+  // GET PLACED TICKETS
   const [placedTickets, setPlacedTickets] =
     useState<GET_TICKETS_BY_RESTAURANT_TYPES>([]);
   const { refetch: refetchPlacedTickets } = useQuery<
@@ -78,21 +82,6 @@ const DashboardTicket = () => {
       }
     },
   });
-
-  // GET EMPTY TABLES FUNCTIONNALITY
-  const [emptyTables, setEmptyTables] =
-    useState<GET_TABLES_BY_RESTAURANT_TYPES>(null);
-
-  // GET TABLES BY SEATS
-  const [activeFilterButton, setActiveFilterButton] = useState<number | null>(
-    null
-  );
-
-  const handleFilterButtonClick = async (ticketSeats: number | null) => {
-    setActiveFilterButton(ticketSeats);
-    setSortSeats(ticketSeats);
-    setSeats(ticketSeats);
-  };
 
   // UPDATE DELIVERED AT FUNCTIONNALITY
   const [freeTableToDeliver, setFreeTableToDeliver] = useState<string>("");
@@ -193,6 +182,13 @@ const DashboardTicket = () => {
   const onDelete = async (ticketId: string) => {
     await setTicketToDelete(ticketId as string);
     await updateClosedAtTicket();
+  };
+
+  // BUTTON GROUP FILTERS
+  const handleFilterButtonClick = async (ticketSeats: number | null) => {
+    setActiveFilterButton(ticketSeats);
+    setSortSeats(ticketSeats);
+    setSeats(ticketSeats);
   };
 
   useEffect(() => {
