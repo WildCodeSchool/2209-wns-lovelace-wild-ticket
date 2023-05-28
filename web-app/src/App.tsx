@@ -120,7 +120,12 @@ function App() {
     } else if (!primeReactNanoThemePages.includes(currentPage)) {
       removeThemeLinks("primeReactNanoThemePages");
     }
-  }, [currentPage]);
+  }, [
+    currentPage,
+    primeReactLaraLightIndigoThemePages,
+    primeReactNanoThemePages,
+    primeReactMinThemePages,
+  ]);
 
   return (
     <>
