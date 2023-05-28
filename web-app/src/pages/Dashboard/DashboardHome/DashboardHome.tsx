@@ -4,17 +4,13 @@ import { MdOutlineConfirmationNumber, MdOutlineTableBar } from "react-icons/md";
 import { AppContext } from "../../../context/AppContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 import MainMenu from "../../../components/MainMenu/MainMenu";
-import { addMinutesToDate } from "../../../services/DateService";
 import Clock from "../../../components/Clock/Clock";
 import OpenCloseTime from "../../../components/OpenCloseTime/OpenCloseTime";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
 } from "../../../types/DataTypes";
-import {
-  BIG_LOGO_DASHBOARD_SIZE,
-  TICKET_DISAPPEAR_DELAY,
-} from "../../../constants/Constants";
+import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
 import {
   DASHBOARD_STATS,
   DASHBOARD_TABLE,
@@ -23,6 +19,7 @@ import {
 import "../DashboardTemp.scss";
 import "../DashboardHome/DashboardHome.scss";
 import TableService from "../../../services/TableService";
+import TicketService from "../../../services/TicketService";
 
 const DashboardHome = () => {
   const appContext = useContext(AppContext);
@@ -33,28 +30,11 @@ const DashboardHome = () => {
   const tables = useContext(AppContext)
     ?.tables as GET_TABLES_BY_RESTAURANT_TYPES;
 
-  // GET WAITING TICKETS COUNT
   const [waitingTickets, setWaitingTickets] = useState<number>(0);
-
-  const getCountOfWaitingTickets = (
-    tickets: GET_TICKETS_BY_RESTAURANT_TYPES
-  ) => {
-    const waitingTickets = tickets?.filter(
-      (ticket) =>
-        ticket.placedAt === null &&
-        ((ticket.deliveredAt !== null &&
-          addMinutesToDate(new Date(ticket.closedAt), TICKET_DISAPPEAR_DELAY) >
-            new Date()) ||
-          ticket.closedAt === null)
-    ) as GET_TICKETS_BY_RESTAURANT_TYPES;
-    return waitingTickets?.length;
-  };
-
-  // GET OCCUPIED TABLES
   const [occupiedTables, setOccupiedTables] = useState<number>(0);
 
   useEffect(() => {
-    setWaitingTickets(getCountOfWaitingTickets(tickets) as number);
+    setWaitingTickets(TicketService.getCountOfWaitingTickets(tickets));
     setOccupiedTables(TableService.getCountOfOccupiedTables(tickets, tables));
   }, [tables, tickets]);
 

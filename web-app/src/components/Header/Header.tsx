@@ -7,9 +7,8 @@ import {
   HEADER_ICON_PARAMS,
   ROLE_ADMIN,
   ROLE_RESTAURANT,
-  TICKET_DISAPPEAR_DELAY,
 } from "../../constants/Constants";
-import { addMinutesToDate, convertDate } from "../../services/DateService";
+import { convertDate } from "../../services/DateService";
 import SVGMiniIconUser from "../SVG/SVGMiniIconUser/SVGMiniIconUser";
 import SVGMiniIconTable from "../SVG/SVGMiniIconTable/SVGMiniIconTable";
 import {
@@ -17,6 +16,7 @@ import {
   GET_TICKETS_BY_RESTAURANT_TYPES,
 } from "../../types/DataTypes";
 import TableService from "../../services/TableService";
+import TicketService from "../../services/TicketService";
 
 export default function DashBoardHeader() {
   const [dateToConvert, setDateToConvert] = useState<Date>(new Date());
@@ -32,26 +32,12 @@ export default function DashBoardHeader() {
   // GET WAITING TICKETS COUNT
   const [waitingTickets, setWaitingTickets] = useState<number>(0);
 
-  const getCountOfWaitingTickets = (
-    tickets: GET_TICKETS_BY_RESTAURANT_TYPES
-  ) => {
-    const waitingTickets = tickets?.filter(
-      (ticket) =>
-        ticket.placedAt === null &&
-        ((ticket.deliveredAt !== null &&
-          addMinutesToDate(new Date(ticket.closedAt), TICKET_DISAPPEAR_DELAY) >
-            new Date()) ||
-          ticket.closedAt === null)
-    ) as GET_TICKETS_BY_RESTAURANT_TYPES;
-    return waitingTickets?.length;
-  };
-
   // GET OCCUPIED TABLES
   const [occupiedTables, setOccupiedTables] = useState<number>(0);
 
   useEffect(() => {
     setDashboardLocation(headerLocation(location));
-    setWaitingTickets(getCountOfWaitingTickets(tickets) as number);
+    setWaitingTickets(TicketService.getCountOfWaitingTickets(tickets));
     setOccupiedTables(TableService.getCountOfOccupiedTables(tickets, tables));
     const setDateEachSecond = setInterval(() => {
       setDateToConvert(new Date());
