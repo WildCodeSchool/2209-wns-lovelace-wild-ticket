@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer, Flip } from "react-toastify";
 import { useEffect } from "react";
