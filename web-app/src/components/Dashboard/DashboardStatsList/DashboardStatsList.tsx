@@ -21,7 +21,7 @@ import {
   EXPORT_TICKETS_BY_RESTAURANT,
   GET_PAGINATED_AND_SORTED_TICKETS_BY_RESTAURANT,
 } from "../../../queries/Queries";
-import { exportTickets } from "../../../services/ExportService";
+import ExportService from "../../../services/ExportService";
 import { toast } from "react-toastify";
 import DateService from "../../../services/DateService";
 import "primeicons/primeicons.css";
@@ -118,7 +118,7 @@ const DashboardStatsList = () => {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       if (data.ExportTicketsByRestaurant) {
-        exportTickets(
+        ExportService.exportTickets(
           data.ExportTicketsByRestaurant,
           exportTypeFile,
           restaurantName
