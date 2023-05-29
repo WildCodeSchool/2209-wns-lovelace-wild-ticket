@@ -6,6 +6,7 @@ import { GET_TABLE_BY_ID_TYPES } from "../../../types/DataTypes";
 import { useLazyQuery } from "@apollo/client";
 import { TableQuery, TableQueryVariables } from "../../../gql/graphql";
 import { GET_TABLE_BY_ID } from "../../../queries/Queries";
+import ModalDeleteTable from "../../../components/Dashboard/DashboardTables/ModalDeleteTable";
 
 const DashboardTable = () => {
   const [tableId, setTableId] = useState<string>("");
@@ -41,6 +42,7 @@ const DashboardTable = () => {
         </div>
         <ModalCreateTable />
         <ModalEditTable tableId={tableId as string} />
+        <ModalDeleteTable tableId={tableId as string}/>
         <TabTables propTableId={handleTableId} />
       </div>
     </div>

@@ -13,7 +13,11 @@ import { AppContext } from "../../../context/AppContext";
 import SVGIconEdit from "../../SVG/SVGIconEdit/SVGIconEdit";
 import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
 
-const ListTables = ({propTableId} : {propTableId:  (tableId: string) => Promise<void> }) => {
+const ListTables = ({
+  propTableId,
+}: {
+  propTableId: (tableId: string) => Promise<void>;
+}) => {
   const appContext = useContext(AppContext);
   const restaurantId = appContext?.userData.restaurant.id;
 
@@ -51,18 +55,22 @@ const ListTables = ({propTableId} : {propTableId:  (tableId: string) => Promise<
     tablesRefetch();
   }, [tablesRefetch]);
 
-  
   const actionButton = (table: any) => {
     return (
       <div className="ListTabBodyRowActionsButtonContainer">
         <SVGIconEdit
           onClick={async () => {
             openModal();
-            await propTableId(table.id as string)
+            await propTableId(table.id as string);
           }}
           isClickable={isClickable}
         />
-        <SVGIconDelete onClick={async () => {}} isClickable={isClickable} />
+        <SVGIconDelete
+          onClick={async () => {
+            await propTableId(table.id as string);
+          }}
+          isClickable={isClickable}
+        />
       </div>
     );
   };
@@ -72,7 +80,7 @@ const ListTables = ({propTableId} : {propTableId:  (tableId: string) => Promise<
       <DataTable
         tableStyle={{ minWidth: "50rem" }}
         value={tables as DataTableValueArray}
-      > 
+      >
         <Column field="id" header="Test id"></Column>
         <Column field="number" header="N° de table"></Column>
         <Column field="capacity" header="Couverts"></Column>
