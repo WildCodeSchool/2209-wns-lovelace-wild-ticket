@@ -73,7 +73,7 @@ const OpenCloseTime = () => {
               editable={true}
               onChange={(open) => setOpenAt(open)}
               value={
-                openAt != null && openAt.getDate === new Date().getDate
+                openAt != null && openAt.getDate() === new Date().getDate()
                   ? openAt
                   : null
               }
@@ -93,7 +93,7 @@ const OpenCloseTime = () => {
               editable={true}
               onChange={(close) => setClosedAt(close)}
               value={
-                closedAt != null && closedAt.getDate === new Date().getDate
+                closedAt != null && closedAt.getDate() === new Date().getDate()
                   ? closedAt
                   : null
               }

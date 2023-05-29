@@ -137,7 +137,7 @@ const DashboardHome = () => {
         </div>
       </div>
       <div className="DashboardHomeBottomContent">
-        <OpenCloseTime></OpenCloseTime>
+        <OpenCloseTime />
       </div>
     </section>
   );
