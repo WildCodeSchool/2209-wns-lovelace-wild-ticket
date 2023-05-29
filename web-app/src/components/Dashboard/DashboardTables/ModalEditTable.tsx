@@ -1,55 +1,70 @@
-import React, { Dispatch, SetStateAction} from "react";
+import React, { useContext, useState } from "react";
+import { useMutation } from "@apollo/client";
+import {
+  UpdateTableMutation,
+  UpdateTableMutationVariables,
+} from "../../../gql/graphql";
+import { UPDATE_TABLE } from "../../../queries/Queries";
 
-const ModalEditTable = ({
-  tableNumber,
-  tableCapacity,
-  setTableNumber,
-  setTableSeat,
-  submitEdit
-}: {
-  tableNumber: number | null,
-  tableCapacity : number | null,
-  setTableNumber: Dispatch<SetStateAction<number | null>>,
-  setTableSeat: Dispatch<SetStateAction<number | null>>
-  submitEdit : () => void
-}) => {
- 
-  console.log(3333, tableNumber);
-  console.log(2222, tableCapacity);
+import { toast } from "react-toastify";
+import { getErrorMessage } from "../../../utils";
 
+const ModalEditTable = ({ tableId }: { tableId: string }) => {
+  const [editNumber, setEditNumber] = useState<number>(1);
+  const [editSeats, setEditSeats] = useState<number>(2);
+
+  console.log('get table id on modal edit table: ' + tableId)
+
+  const [updateTable] = useMutation<
+    UpdateTableMutation,
+    UpdateTableMutationVariables
+  >(UPDATE_TABLE);
+
+  const submitEditTableForm = async () => {
+    try {
+      await updateTable({
+        variables: {
+          updateTableId: tableId,
+          capacity: editSeats,
+          number: editNumber,
+        },
+      });
+      toast.success(`Vous avez modifié une table avec succès.`);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
 
   return (
     <div>
-      <form className="edit-table-form" onSubmit={submitEdit}>
+      <form className="edit-table-form">
         <div className="edit-table-form-input">
           <label htmlFor="number">N° de table</label>
           <input
-            type="text"
+            type="number"
             required
             id="number"
             name="number"
-              value={tableNumber as number}
+            value={editNumber}
             onChange={(event) => {
-              setTableNumber(event.target.valueAsNumber);
+              setEditNumber(event.target.valueAsNumber);
             }}
           />
         </div>
-        
         <div className="edit-table-form-input">
           <label htmlFor="seats">Capacité</label>
-        <input
-            type="text"
+          <input
+            type="number"
             required
             id="seats"
             name="seats"
-            value={tableCapacity ? tableCapacity : 0}
+            value={editSeats}
             onChange={(event) => {
-              setTableSeat(event.target.valueAsNumber);
+              setEditSeats(event.target.valueAsNumber);
             }}
           />
-          
         </div>
-        <button>Valider</button>
+        <button onClick={submitEditTableForm}>Valider</button>
       </form>
     </div>
   );
