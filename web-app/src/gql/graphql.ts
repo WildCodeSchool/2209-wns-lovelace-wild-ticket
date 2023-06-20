@@ -27,7 +27,6 @@ export type AppUser = {
   createdAt: Scalars["DateTime"];
   email: Scalars["String"];
   id: Scalars["ID"];
-  login: Scalars["String"];
   poles?: Maybe<Array<Pole>>;
   resetPasswordToken?: Maybe<Scalars["String"]>;
   resetPasswordTokenExpiration?: Maybe<Scalars["DateTime"]>;
@@ -93,7 +92,6 @@ export type MutationCreateTicketArgs = {
 
 export type MutationCreateUserArgs = {
   email: Scalars["String"];
-  login: Scalars["String"];
   password: Scalars["String"];
   poles?: InputMaybe<Array<Scalars["String"]>>;
   restaurant?: InputMaybe<Scalars["String"]>;
@@ -176,7 +174,6 @@ export type MutationUpdateTableArgs = {
 export type MutationUpdateUserArgs = {
   email: Scalars["String"];
   id: Scalars["ID"];
-  login: Scalars["String"];
   poles?: InputMaybe<Array<Scalars["String"]>>;
   restaurant?: InputMaybe<Scalars["String"]>;
   role: Scalars["String"];
@@ -415,7 +412,6 @@ export type MyProfileQuery = {
   myProfile: {
     __typename?: "AppUser";
     id: string;
-    login: string;
     email: string;
     role: string;
     poles?: Array<{ __typename?: "Pole"; id: string; name: string }> | null;
@@ -1105,7 +1101,6 @@ export const MyProfileDocument = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "login" } },
                 { kind: "Field", name: { kind: "Name", value: "email" } },
                 { kind: "Field", name: { kind: "Name", value: "role" } },
                 {

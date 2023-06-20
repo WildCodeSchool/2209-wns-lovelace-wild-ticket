@@ -16,7 +16,6 @@ export default class EmailService {
 
   static async sendEmail(
     recipientEmail: string,
-    recipientName: string,
     subject: string,
     text: string,
     html: string
@@ -31,7 +30,6 @@ export default class EmailService {
           To: [
             {
               Email: recipientEmail,
-              Name: recipientName,
             },
           ],
           Subject: subject,

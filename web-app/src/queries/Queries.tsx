@@ -52,7 +52,6 @@ export const MY_PROFILE = gql`
   query MyProfile {
     myProfile {
       id
-      login
       email
       role
       poles {

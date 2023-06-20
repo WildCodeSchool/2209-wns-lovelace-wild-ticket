@@ -1,5 +1,4 @@
 export type AppUserFixtures = {
-  login: string;
   email: string;
   password: string;
   role: string;
@@ -10,7 +9,6 @@ export type AppUserFixtures = {
 
 export const AppUserFixtures: AppUserFixtures[] = [
   {
-    login: "Vincent",
     email: "vincent@r-ticket.agtn.fr",
     password: "Vincent69!",
     role: "ROLE_ADMIN",
@@ -18,7 +16,6 @@ export const AppUserFixtures: AppUserFixtures[] = [
     poles: ["Pôle de Lyon"],
   },
   {
-    login: "Estelle",
     email: "estelle@r-ticket.agtn.fr",
     password: "Estelle69!",
     role: "ROLE_RESTAURANT",
@@ -26,7 +23,6 @@ export const AppUserFixtures: AppUserFixtures[] = [
     restaurant: "Pura Vegan",
   },
   {
-    login: "Anthony",
     email: "anthony@r-ticket.agtn.fr",
     password: "Anthony69!",
     role: "ROLE_RESTAURANT",
@@ -34,7 +30,6 @@ export const AppUserFixtures: AppUserFixtures[] = [
     restaurant: "La Suzette",
   },
   {
-    login: "Michel",
     email: "michel.lardonnaise@r-ticket.agtn.fr",
     password: "Michel69!",
     role: "ROLE_RESTAURANT",
