@@ -5,12 +5,9 @@ import {
   PrimaryGeneratedColumn,
   Column,
   Index,
-  ManyToMany,
-  JoinTable,
   OneToOne,
   JoinColumn,
 } from "typeorm";
-import Pole from "../Pole/Pole.entity";
 import Restaurant from "../Restaurant/Restaurant.entity";
 
 @Entity()
@@ -22,7 +19,6 @@ export default class AppUser {
     role: string,
     createdAt: Date,
     restaurant?: Restaurant,
-    poles?: Pole[],
     updatedAt?: Date,
     resetPasswordToken?: string,
     resetPasswordTokenExpiration?: Date
@@ -33,9 +29,6 @@ export default class AppUser {
     this.createdAt = createdAt;
     if (restaurant) {
       this.restaurant = restaurant;
-    }
-    if (poles) {
-      this.poles = poles;
     }
     if (updatedAt) {
       this.updatedAt = updatedAt;
@@ -76,11 +69,6 @@ export default class AppUser {
   @JoinColumn()
   @Field({ nullable: true })
   restaurant?: Restaurant;
-
-  @ManyToMany(() => Pole, { eager: true })
-  @JoinTable()
-  @Field(() => [Pole], { nullable: true })
-  poles?: Pole[];
 
   @Column()
   @Field()

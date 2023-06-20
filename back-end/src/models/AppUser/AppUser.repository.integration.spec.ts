@@ -33,7 +33,6 @@ describe("AppUserRepository integration", () => {
             falseUuid,
             "jean@user.com",
             "ROLE_ADMIN",
-            [],
             ""
           )
         ).rejects.toThrowError("Aucun utilisateur ne correspond à cet ID.");
@@ -41,19 +40,10 @@ describe("AppUserRepository integration", () => {
     });
     describe("when a user exists", () => {
       it("returns the updated user", async () => {
-        const pole = await PoleRepository.createPole(
-          "Pôle de Lyon",
-          "rue de la Poste",
-          "69002",
-          "Lyon",
-          "polelyon@polelyon.fr"
-        );
-
         const user = await AppUserRepository.createUser(
           "jean@user.com",
           hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
-          [],
           ""
         );
 
@@ -61,7 +51,6 @@ describe("AppUserRepository integration", () => {
           user.id,
           "jean@user.fr",
           "ROLE_ADMIN",
-          [pole.id],
           ""
         );
 
@@ -87,7 +76,6 @@ describe("AppUserRepository integration", () => {
           "jean@user.com",
           hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
-          [],
           ""
         );
 
@@ -118,7 +106,6 @@ describe("AppUserRepository integration", () => {
               emailAddress,
               hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
-              [],
               ""
             );
 
@@ -134,7 +121,6 @@ describe("AppUserRepository integration", () => {
               emailAddress,
               hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
-              [],
               ""
             );
 
@@ -153,7 +139,6 @@ describe("AppUserRepository integration", () => {
               emailAddress,
               hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
-              [],
               ""
             );
 
@@ -178,7 +163,6 @@ describe("AppUserRepository integration", () => {
           emailAddress,
           hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
-          [],
           ""
         );
 
@@ -199,7 +183,6 @@ describe("AppUserRepository integration", () => {
           emailAddress,
           hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
-          [],
           ""
         );
 

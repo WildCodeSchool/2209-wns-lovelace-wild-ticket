@@ -54,10 +54,6 @@ export const MY_PROFILE = gql`
       id
       email
       role
-      poles {
-        id
-        name
-      }
       restaurant {
         id
         name

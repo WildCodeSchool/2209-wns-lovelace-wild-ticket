@@ -5,8 +5,6 @@ import { hashSync, compareSync } from "bcryptjs";
 import SessionRepository from "./Session.repository";
 import Session from "./Session.entity";
 import { AppUserFixtures } from "../../DataFixtures/AppUserFixtures";
-import PoleRepository from "../Pole/Pole.repository";
-import Pole from "../Pole/Pole.entity";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import Restaurant from "../Restaurant/Restaurant.entity";
 import EmailService from "../../services/EmailService";
@@ -22,16 +20,7 @@ export default class AppUserRepository extends AppUserDb {
       AppUserFixtures.map(async (appUser) => {
         const appUserPassword = hashSync(appUser.password);
         const appUserCreationDate = new Date(appUser.createdAt);
-        let appUserPoles = [];
         let appUserRestaurant = undefined;
-
-        if (appUser.poles) {
-          for (const pole of appUser.poles) {
-            appUserPoles.push(
-              (await PoleRepository.getPoleByName(pole)) as Pole
-            );
-          }
-        }
 
         if (appUser.restaurant) {
           appUserRestaurant = (await RestaurantRepository.getRestaurantByName(
@@ -44,8 +33,7 @@ export default class AppUserRepository extends AppUserDb {
           appUserPassword,
           appUser.role,
           appUserCreationDate,
-          appUserRestaurant,
-          appUserPoles
+          appUserRestaurant
         );
 
         await this.repository.save(newAppUser);
@@ -93,18 +81,10 @@ export default class AppUserRepository extends AppUserDb {
     email: string,
     password: string,
     role: string,
-    poles: string[],
     restaurant: string
   ): Promise<AppUser> {
     const createdAt = new Date();
-    let appUserPoles = [];
     let appUserRestaurant = undefined;
-
-    if (poles) {
-      for (const pole of poles) {
-        appUserPoles.push((await PoleRepository.getPoleById(pole)) as Pole);
-      }
-    }
 
     if (restaurant) {
       appUserRestaurant = (await RestaurantRepository.getRestaurantById(
@@ -117,8 +97,7 @@ export default class AppUserRepository extends AppUserDb {
       password,
       role,
       createdAt,
-      appUserRestaurant,
-      appUserPoles
+      appUserRestaurant
     );
 
     return await this.repository.save(newAppUser);
@@ -128,20 +107,12 @@ export default class AppUserRepository extends AppUserDb {
     id: string,
     email: string,
     role: string,
-    poles: string[],
     restaurant: string
   ): Promise<AppUser> {
     const userToUpdate = await this.getUserById(id);
 
     const updatedAt = new Date();
-    let appUserPoles = [];
     let appUserRestaurant = undefined;
-
-    if (poles) {
-      for (const pole of poles) {
-        appUserPoles.push((await PoleRepository.getPoleById(pole)) as Pole);
-      }
-    }
 
     if (restaurant) {
       appUserRestaurant = (await RestaurantRepository.getRestaurantById(
@@ -154,7 +125,6 @@ export default class AppUserRepository extends AppUserDb {
       email: email,
       role: role,
       updatedAt: updatedAt,
-      poles: appUserPoles,
       restaurant: appUserRestaurant,
     });
   }

@@ -38,23 +38,17 @@ export default class AppUserResolver {
   @Mutation(() => AppUser)
   createUser(
     @Args()
-    { email, password, role, poles, restaurant }: UserCreationArgs
+    { email, password, role, restaurant }: UserCreationArgs
   ): Promise<AppUser> {
-    return AppUserRepository.createUser(
-      email,
-      password,
-      role,
-      poles,
-      restaurant
-    );
+    return AppUserRepository.createUser(email, password, role, restaurant);
   }
 
   @Authorized()
   @Mutation(() => AppUser)
   updateUser(
-    @Args() { id, email, role, poles, restaurant }: UserUpdateArgs
+    @Args() { id, email, role, restaurant }: UserUpdateArgs
   ): Promise<AppUser> {
-    return AppUserRepository.updateUser(id, email, role, poles, restaurant);
+    return AppUserRepository.updateUser(id, email, role, restaurant);
   }
 
   @Authorized("ROLE_ADMIN")
