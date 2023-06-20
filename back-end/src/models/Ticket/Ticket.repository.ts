@@ -226,8 +226,12 @@ export default class TicketRepository extends TicketDb {
       throw new Error("Aucune table ne correspond à cet ID.");
     }
 
+    const ticketWaitingLimit = existingTicket.restaurant.ticketWaitingLimit;
     const deliveredAt = new Date();
-    const closedAt = DateUpdates.addMinutesToDate(deliveredAt, 15);
+    const closedAt = DateUpdates.addMinutesToDate(
+      deliveredAt,
+      ticketWaitingLimit
+    );
 
     const deliveredTicket = await this.repository.save({
       id,
@@ -354,6 +358,8 @@ export default class TicketRepository extends TicketDb {
       restaurantId
     );
     if (!restaurant) throw new Error();
+    const ticketWaitingLimit = restaurant.ticketWaitingLimit as number;
+
     let query = this.repository
       .createQueryBuilder("ticket")
       .leftJoinAndSelect("ticket.restaurant", "restaurant")
@@ -363,7 +369,9 @@ export default class TicketRepository extends TicketDb {
       })
       .andWhere("ticket.placedAt IS NOT NULL")
       .andWhere("ticket.deliveredAt IS NOT NULL")
-      .andWhere("ticket.closedAt > NOW() + interval '5 minute'");
+      .andWhere("ticket.closedAt > :delay", {
+        delay: DateUpdates.addMinutesToDate(new Date(), ticketWaitingLimit),
+      });
     if (seats) {
       query.andWhere("ticket.seats = :seats", {
         seats: seats,

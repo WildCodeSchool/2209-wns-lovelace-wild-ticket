@@ -60,20 +60,28 @@ const DashboardOptionsGeneralOpForm = () => {
         <div className="DashboardOptionsFormTextInputContainer">
           <label
             className="DashboardOptionsFormTextLabel"
+            style={{ marginBottom: "15px" }}
             htmlFor="maxDelayTicket"
           >
             Délai maximal (en mn)
           </label>
-          <input
-            id="maxDelayTicket"
-            className="DashboardOptionsFormTextInput"
-            type="number"
-            min="0"
-            required
-            value={ticketWaitingLimit}
-            onChange={(e) => setTicketWaitingLimit(parseInt(e.target.value))}
-          />
+          <div style={{ width: "60%" }}>
+            <input
+              id="maxDelayTicket"
+              className="DashboardOptionsFormTextInput"
+              style={{ width: "100%" }}
+              type="number"
+              min="0"
+              required
+              value={ticketWaitingLimit}
+              onChange={(e) => setTicketWaitingLimit(parseInt(e.target.value))}
+            />
+            <p className="DashboardOptionsFormTextInputText">
+              Modifiable uniquement si aucun ticket n'est en attente.
+            </p>
+          </div>
         </div>
+
         <button className="DashboardOptionsFormButton" style={{ width: "20%" }}>
           Modifier
         </button>

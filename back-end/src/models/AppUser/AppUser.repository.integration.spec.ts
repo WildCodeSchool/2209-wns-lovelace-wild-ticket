@@ -41,7 +41,6 @@ describe("AppUserRepository integration", () => {
     });
     describe("when a user exists", () => {
       it("returns the updated user", async () => {
-        console.log("test");
         const pole = await PoleRepository.createPole(
           "Pôle de Lyon",
           "rue de la Poste",
@@ -58,8 +57,6 @@ describe("AppUserRepository integration", () => {
           ""
         );
 
-        console.log(user);
-
         const updatedUser = await AppUserRepository.updateUser(
           user.id,
           "jean@user.fr",
@@ -67,8 +64,6 @@ describe("AppUserRepository integration", () => {
           [pole.id],
           ""
         );
-
-        console.log(updatedUser);
 
         expect(updatedUser.id).toBe(user.id);
         expect(updatedUser.email).toBe("jean@user.fr");
