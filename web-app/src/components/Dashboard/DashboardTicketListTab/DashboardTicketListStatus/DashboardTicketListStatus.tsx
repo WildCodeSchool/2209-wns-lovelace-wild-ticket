@@ -41,7 +41,11 @@ export default function DashboardTicketListStatus({
     );
   }
 
-  if (ticket?.deliveredAt !== null && new Date(ticket?.closedAt) > new Date()) {
+  if (
+    ticket?.deliveredAt !== null &&
+    ticket?.placedAt === null &&
+    new Date(ticket?.closedAt) > new Date()
+  ) {
     return (
       <div className="DashboardTicketListStatusContainer">
         <SVGIconDeliveredTicket />
@@ -70,8 +74,7 @@ export default function DashboardTicketListStatus({
   }
 
   if (
-    ticket?.placedAt === null &&
-    ticket?.closedAt === null &&
+    ticket?.deliveredAt == null &&
     filteredTables &&
     filteredTables.length !== 0
   ) {
@@ -84,6 +87,7 @@ export default function DashboardTicketListStatus({
       </>
     );
   }
+
   return (
     <div className="DashboardTicketListStatusContainer">
       <SVGIconWaitingTicket />
