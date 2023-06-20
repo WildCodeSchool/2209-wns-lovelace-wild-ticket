@@ -27,8 +27,6 @@ export type AppUser = {
   createdAt: Scalars["DateTime"];
   email: Scalars["String"];
   id: Scalars["ID"];
-  login: Scalars["String"];
-  poles?: Maybe<Array<Pole>>;
   resetPasswordToken?: Maybe<Scalars["String"]>;
   resetPasswordTokenExpiration?: Maybe<Scalars["DateTime"]>;
   restaurant?: Maybe<Restaurant>;
@@ -74,6 +72,7 @@ export type MutationCreateRestaurantArgs = {
   name: Scalars["String"];
   picture?: InputMaybe<Scalars["String"]>;
   pole: Scalars["ID"];
+  ticketWaitingLimit: Scalars["Float"];
 };
 
 export type MutationCreateTableArgs = {
@@ -92,9 +91,7 @@ export type MutationCreateTicketArgs = {
 
 export type MutationCreateUserArgs = {
   email: Scalars["String"];
-  login: Scalars["String"];
   password: Scalars["String"];
-  poles?: InputMaybe<Array<Scalars["String"]>>;
   restaurant?: InputMaybe<Scalars["String"]>;
   role: Scalars["String"];
 };
@@ -155,6 +152,7 @@ export type MutationUpdateRestaurantArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
   picture?: InputMaybe<Scalars["String"]>;
+  ticketWaitingLimit: Scalars["Float"];
 };
 
 export type MutationUpdateRestaurantOpeningTimeArgs = {
@@ -174,14 +172,13 @@ export type MutationUpdateTableArgs = {
 export type MutationUpdateUserArgs = {
   email: Scalars["String"];
   id: Scalars["ID"];
-  login: Scalars["String"];
-  poles?: InputMaybe<Array<Scalars["String"]>>;
   restaurant?: InputMaybe<Scalars["String"]>;
   role: Scalars["String"];
 };
 
 export type MutationUpdateUserPasswordArgs = {
   id: Scalars["ID"];
+  newUserPassword: Scalars["String"];
   password: Scalars["String"];
 };
 
@@ -206,7 +203,6 @@ export type PageOfTickets = {
 export type Pole = {
   __typename?: "Pole";
   address: Scalars["String"];
-  appUser?: Maybe<AppUser>;
   city: Scalars["String"];
   createdAt: Scalars["DateTime"];
   email: Scalars["String"];
@@ -221,6 +217,7 @@ export type Query = {
   __typename?: "Query";
   ExportTicketsByRestaurant: Array<Ticket>;
   PaginatedAndSortedTickets: PageOfTickets;
+  PlacedTicketsByRestaurant: Array<Ticket>;
   StatsByRestaurant: Stats;
   Table: Table;
   Tables: Array<Table>;
@@ -228,6 +225,7 @@ export type Query = {
   Ticket: Ticket;
   Tickets: Array<Ticket>;
   TicketsByRestaurant: Array<Ticket>;
+  WaitingTicketsByRestaurant: Array<Ticket>;
   getPaginateRestaurantsByPole: PageOfRestaurants;
   getPoleById: Pole;
   getRestaurantById: Restaurant;
@@ -254,6 +252,11 @@ export type QueryPaginatedAndSortedTicketsArgs = {
   sort?: InputMaybe<Array<Scalars["String"]>>;
 };
 
+export type QueryPlacedTicketsByRestaurantArgs = {
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+};
+
 export type QueryStatsByRestaurantArgs = {
   restaurantId: Scalars["String"];
 };
@@ -272,6 +275,11 @@ export type QueryTicketArgs = {
 };
 
 export type QueryTicketsByRestaurantArgs = {
+  restaurantId: Scalars["ID"];
+  seats?: InputMaybe<Scalars["Float"]>;
+};
+
+export type QueryWaitingTicketsByRestaurantArgs = {
   restaurantId: Scalars["ID"];
   seats?: InputMaybe<Scalars["Float"]>;
 };
@@ -304,6 +312,7 @@ export type Restaurant = {
   pole: Pole;
   table: Array<Table>;
   ticket: Array<Ticket>;
+  ticketWaitingLimit: Scalars["Float"];
   updatedAt?: Maybe<Scalars["DateTime"]>;
 };
 

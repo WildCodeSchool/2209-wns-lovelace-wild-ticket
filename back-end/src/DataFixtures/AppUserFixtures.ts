@@ -3,7 +3,6 @@ export type AppUserFixtures = {
   password: string;
   role: string;
   createdAt: string;
-  poles?: string[];
   restaurant?: string;
 };
 

@@ -23,7 +23,7 @@ const documents = {
     types.UpdateUserPasswordWithTokenDocument,
   "\n  mutation UpdateUserPassword(\n    $updateUserPasswordId: ID!\n    $password: String!\n    $newUserPassword: String!\n  ) {\n    updateUserPassword(\n      id: $updateUserPasswordId\n      password: $password\n      newUserPassword: $newUserPassword\n    ) {\n      id\n    }\n  }\n":
     types.UpdateUserPasswordDocument,
-  "\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      poles {\n        id\n        name\n      }\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        openAt\n        closeAt\n      }\n    }\n  }\n":
+  "\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        openAt\n        closeAt\n      }\n    }\n  }\n":
     types.MyProfileDocument,
   "\n  query TicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    TicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n":
     types.TicketsByRestaurantDocument,
@@ -109,8 +109,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      poles {\n        id\n        name\n      }\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        openAt\n        closeAt\n      }\n    }\n  }\n"
-): (typeof documents)["\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      poles {\n        id\n        name\n      }\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        openAt\n        closeAt\n      }\n    }\n  }\n"];
+  source: "\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        openAt\n        closeAt\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        openAt\n        closeAt\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

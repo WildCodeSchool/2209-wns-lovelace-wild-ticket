@@ -27,7 +27,6 @@ export type AppUser = {
   createdAt: Scalars["DateTime"];
   email: Scalars["String"];
   id: Scalars["ID"];
-  poles?: Maybe<Array<Pole>>;
   resetPasswordToken?: Maybe<Scalars["String"]>;
   resetPasswordTokenExpiration?: Maybe<Scalars["DateTime"]>;
   restaurant?: Maybe<Restaurant>;
@@ -93,7 +92,6 @@ export type MutationCreateTicketArgs = {
 export type MutationCreateUserArgs = {
   email: Scalars["String"];
   password: Scalars["String"];
-  poles?: InputMaybe<Array<Scalars["String"]>>;
   restaurant?: InputMaybe<Scalars["String"]>;
   role: Scalars["String"];
 };
@@ -174,7 +172,6 @@ export type MutationUpdateTableArgs = {
 export type MutationUpdateUserArgs = {
   email: Scalars["String"];
   id: Scalars["ID"];
-  poles?: InputMaybe<Array<Scalars["String"]>>;
   restaurant?: InputMaybe<Scalars["String"]>;
   role: Scalars["String"];
 };
@@ -206,7 +203,6 @@ export type PageOfTickets = {
 export type Pole = {
   __typename?: "Pole";
   address: Scalars["String"];
-  appUser?: Maybe<AppUser>;
   city: Scalars["String"];
   createdAt: Scalars["DateTime"];
   email: Scalars["String"];
@@ -414,7 +410,6 @@ export type MyProfileQuery = {
     id: string;
     email: string;
     role: string;
-    poles?: Array<{ __typename?: "Pole"; id: string; name: string }> | null;
     restaurant?: {
       __typename?: "Restaurant";
       id: string;
@@ -1103,17 +1098,6 @@ export const MyProfileDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "email" } },
                 { kind: "Field", name: { kind: "Name", value: "role" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "poles" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                    ],
-                  },
-                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "restaurant" },

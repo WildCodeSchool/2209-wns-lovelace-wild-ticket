@@ -4,7 +4,6 @@ import {
   IsString,
   Matches,
   MaxLength,
-  MinLength,
 } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
@@ -32,9 +31,6 @@ export class UserCreationArgs {
   @Contains("ROLE_")
   role: string;
 
-  @Field(() => [String], { nullable: true })
-  poles: string[];
-
   @Field({ nullable: true })
   restaurant: string;
 }
@@ -54,9 +50,6 @@ export class UserUpdateArgs {
   @Field()
   @Contains("ROLE_")
   role: string;
-
-  @Field(() => [String], { nullable: true })
-  poles: string[];
 
   @Field({ nullable: true })
   restaurant: string;
