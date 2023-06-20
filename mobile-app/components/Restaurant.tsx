@@ -174,7 +174,7 @@ export default Restaurant;
 
 const styles = StyleSheet.create({
   picture: {
-    width: 175,
+    width: 155,
     aspectRatio: 1,
   },
   text: {
