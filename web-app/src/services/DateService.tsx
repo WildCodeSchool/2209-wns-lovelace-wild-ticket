@@ -1,67 +1,55 @@
-/**
- * Function used to convert a date objet in readable date, hours, minutes and seconds
- */
-export const convertDate = (dateNow: Date) => {
-  const locale = "fr";
+export default class DateService {
+  static convertDateToDateAndTimeArray = (dateNow: Date) => {
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: "short",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "numeric",
+      hour12: false,
+      minute: "numeric",
+      second: "numeric",
+    };
 
-  const day = dateNow.toLocaleDateString(locale, { weekday: "short" });
-  const date = `${day} ${dateNow.getDate()} ${dateNow.toLocaleDateString(
-    locale,
-    { month: "long", year: "numeric" }
-  )}`;
+    const formattedDate = dateNow.toLocaleString("fr", options);
 
-  const time = dateNow.toLocaleTimeString(locale, {
-    hour: "numeric",
-    hour12: false,
-    minute: "numeric",
-    second: "numeric",
-  });
-
-  return {
-    date,
-    time,
+    return {
+      date: formattedDate.split(" à")[0],
+      time: formattedDate.split("à ")[1],
+    };
   };
-};
 
-/**
- * Function used to show the waiting time of a new ticket
- */
-export const waitingTime = (createdAt: Date) => {
-  const dateNow = new Date();
-  const dateDeliveredAt = new Date(createdAt);
-  const diffInMs = dateNow.getTime() - dateDeliveredAt.getTime();
+  static waitingTimeSinceDelivery = (createdAt: Date) => {
+    return Math.ceil(
+      (Date.now() - new Date(createdAt).getTime()) / (1000 * 60)
+    );
+  };
 
-  return Math.ceil(diffInMs / (1000 * 60));
-};
+  static addMinutesToDate = (dateNow: Date, minutesToAdd: number): Date => {
+    let ticketsDay = new Date(dateNow);
+    ticketsDay.setMinutes(ticketsDay.getMinutes() + minutesToAdd);
+    return ticketsDay;
+  };
 
-export const addMinutesToDate = (dateNow: Date, minutesToAdd: number): Date => {
-  let ticketsDay = new Date(dateNow);
-  ticketsDay.setMinutes(ticketsDay.getMinutes() + minutesToAdd);
-  return ticketsDay;
-};
+  static substractMinutesToDate = (
+    dateNow: Date,
+    minutesToSubstract: number
+  ): Date => {
+    let ticketsDay = new Date(dateNow);
+    ticketsDay.setMinutes(ticketsDay.getMinutes() - minutesToSubstract);
+    return ticketsDay;
+  };
 
-export const substractMinutesToDate = (
-  dateNow: Date,
-  minutesToSubstract: number
-): Date => {
-  let ticketsDay = new Date(dateNow);
-  ticketsDay.setMinutes(ticketsDay.getMinutes() - minutesToSubstract);
-  return ticketsDay;
-};
-
-export const newDateAtMidnight = () => {
-  return new Date(new Date().setHours(0, 0, 0, 0));
-};
-
-export const changeDateFormat = (date: any) => {
-  if (!date) {
-    return "";
-  }
-  const dateToFormat = new Date(date);
-  const day = dateToFormat.getDate().toString().padStart(2, "0");
-  const month = (dateToFormat.getMonth() + 1).toString().padStart(2, "0");
-  const year = dateToFormat.getFullYear().toString();
-  const hours = dateToFormat.getHours().toString().padStart(2, "0");
-  const minutes = dateToFormat.getMinutes().toString().padStart(2, "0");
-  return `${day}-${month}-${year} ${hours}:${minutes}`;
-};
+  static changeDateToStringFormatWithDateAndHours = (date: any) => {
+    if (!date) {
+      return "";
+    }
+    const dateToFormat = new Date(date);
+    const day = dateToFormat.getDate().toString().padStart(2, "0");
+    const month = (dateToFormat.getMonth() + 1).toString().padStart(2, "0");
+    const year = dateToFormat.getFullYear().toString();
+    const hours = dateToFormat.getHours().toString().padStart(2, "0");
+    const minutes = dateToFormat.getMinutes().toString().padStart(2, "0");
+    return `${day}-${month}-${year} ${hours}:${minutes}`;
+  };
+}

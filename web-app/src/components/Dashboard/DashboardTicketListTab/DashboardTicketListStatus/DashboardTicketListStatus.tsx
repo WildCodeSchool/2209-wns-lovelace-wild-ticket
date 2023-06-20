@@ -1,5 +1,5 @@
 import { TICKET_DISAPPEAR_DELAY } from "../../../../constants/Constants";
-import { addMinutesToDate } from "../../../../services/DateService";
+import DateService from "../../../../services/DateService";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKET_BY_RESTAURANT_TYPES,
@@ -29,7 +29,7 @@ export default function DashboardTicketListStatus({
     ticket?.deliveredAt !== null &&
     ticket?.placedAt !== null &&
     new Date(ticket?.closedAt) >
-      addMinutesToDate(new Date(), maxDeliveredTicketDelay)
+      DateService.addMinutesToDate(new Date(), maxDeliveredTicketDelay)
   ) {
     return (
       <div className="DashboardTicketListStatusContainer">
@@ -41,7 +41,11 @@ export default function DashboardTicketListStatus({
     );
   }
 
-  if (ticket?.deliveredAt !== null && new Date(ticket?.closedAt) > new Date()) {
+  if (
+    ticket?.deliveredAt !== null &&
+    ticket?.placedAt === null &&
+    new Date(ticket?.closedAt) > new Date()
+  ) {
     return (
       <div className="DashboardTicketListStatusContainer">
         <SVGIconDeliveredTicket />
@@ -54,8 +58,10 @@ export default function DashboardTicketListStatus({
 
   if (
     ticket?.deliveredAt !== null &&
-    addMinutesToDate(new Date(ticket?.closedAt), TICKET_DISAPPEAR_DELAY) >
-      new Date()
+    DateService.addMinutesToDate(
+      new Date(ticket?.closedAt),
+      TICKET_DISAPPEAR_DELAY
+    ) > new Date()
   ) {
     return (
       <div className="DashboardTicketListStatusContainer">
@@ -68,8 +74,7 @@ export default function DashboardTicketListStatus({
   }
 
   if (
-    ticket?.placedAt === null &&
-    ticket?.closedAt === null &&
+    ticket?.deliveredAt == null &&
     filteredTables &&
     filteredTables.length !== 0
   ) {
@@ -82,6 +87,7 @@ export default function DashboardTicketListStatus({
       </>
     );
   }
+
   return (
     <div className="DashboardTicketListStatusContainer">
       <SVGIconWaitingTicket />

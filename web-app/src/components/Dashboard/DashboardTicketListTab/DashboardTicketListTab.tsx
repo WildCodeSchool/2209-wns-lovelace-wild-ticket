@@ -3,10 +3,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InfinitySpin } from "react-loader-spinner";
 import { BUTTON_DISAPPEAR_DELAY } from "../../../constants/Constants";
-import {
-  substractMinutesToDate,
-  waitingTime,
-} from "../../../services/DateService";
+import DateService from "../../../services/DateService";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
@@ -89,7 +86,9 @@ export default function DashboardTicketListTab({
   };
 
   const waitingTimes = (waitingTicket: any) => {
-    return <p>{waitingTime(waitingTicket.createdAt)} mn</p>;
+    return (
+      <p>{DateService.waitingTimeSinceDelivery(waitingTicket.createdAt)} mn</p>
+    );
   };
 
   const waitingTicketsStatus = (waitingTicket: any) => {
@@ -117,7 +116,10 @@ export default function DashboardTicketListTab({
       <div className="ListTabBodyRowActionsButtonContainer">
         {waitingTicket.deliveredAt !== null &&
           new Date(waitingTicket.closedAt) >
-            substractMinutesToDate(new Date(), BUTTON_DISAPPEAR_DELAY) && (
+            DateService.substractMinutesToDate(
+              new Date(),
+              BUTTON_DISAPPEAR_DELAY
+            ) && (
             <SVGIconValid
               onClick={async () => {
                 await confirmPlace(waitingTicket);

@@ -51,7 +51,7 @@ export default function SideBar() {
       },
     });
   };
-  //TODO: Voir si possibilité de transition lors du hover sur les icones.
+
   return (
     <aside className="SideBar">
       <div className="SideBarIconsContainer">

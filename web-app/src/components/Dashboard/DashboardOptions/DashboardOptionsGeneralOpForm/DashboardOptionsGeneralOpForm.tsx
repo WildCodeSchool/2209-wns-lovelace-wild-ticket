@@ -68,6 +68,7 @@ const DashboardOptionsGeneralOpForm = () => {
           <div style={{ width: "60%" }}>
             <input
               id="maxDelayTicket"
+              name="maxDelayTicket"
               className="DashboardOptionsFormTextInput"
               style={{ width: "100%" }}
               type="number"
