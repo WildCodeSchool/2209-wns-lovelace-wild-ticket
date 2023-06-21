@@ -19,6 +19,9 @@ import TableService from "../../services/TableService";
 import TicketService from "../../services/TicketService";
 
 export default function DashBoardHeader() {
+  const appContext = useContext(AppContext);
+  const notComingTicketDisapearDelay =
+    appContext?.userData.restaurant?.notComingTicketDisapearDelay;
   const [dateToConvert, setDateToConvert] = useState<Date>(new Date());
   const [dateNow, setDateNow] = useState<{ date: string; time: string }>();
   const [dashboardLocation, setDashboardLocation] = useState<string>("Accueil");
@@ -33,7 +36,12 @@ export default function DashBoardHeader() {
 
   useEffect(() => {
     setDashboardLocation(headerLocation(location));
-    setWaitingTickets(TicketService.getCountOfWaitingTickets(tickets));
+    setWaitingTickets(
+      TicketService.getCountOfWaitingTickets(
+        tickets,
+        notComingTicketDisapearDelay
+      )
+    );
     setOccupiedTables(TableService.getCountOfOccupiedTables(tickets, tables));
     const setDateEachSecond = setInterval(() => {
       setDateToConvert(new Date());
@@ -42,7 +50,7 @@ export default function DashBoardHeader() {
     return () => {
       clearInterval(setDateEachSecond);
     };
-  }, [dateToConvert, location, tables, tickets]);
+  }, [dateToConvert, location, tables, tickets, notComingTicketDisapearDelay]);
 
   return (
     <header className="DashboardHeader">

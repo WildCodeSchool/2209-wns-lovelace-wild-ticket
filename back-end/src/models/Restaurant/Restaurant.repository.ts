@@ -24,6 +24,7 @@ export default class RestaurantRepository extends RestaurantDb {
           lyonPole,
           restaurant.createdAt,
           restaurant.ticketWaitingLimit,
+          restaurant.notComingTicketDisapearDelay,
           undefined,
           restaurant.openAt,
           restaurant.closeAt,
@@ -77,6 +78,7 @@ export default class RestaurantRepository extends RestaurantDb {
     name: string,
     picture: string | undefined,
     ticketWaitingLimit: number,
+    notComingTicketDisapearDelay: number,
     idPole: string
   ): Promise<Restaurant> {
     const pole = (await PoleRepository.getPoleById(idPole)) as Pole;
@@ -95,6 +97,7 @@ export default class RestaurantRepository extends RestaurantDb {
       pole,
       createdAt,
       ticketWaitingLimit,
+      notComingTicketDisapearDelay,
       undefined,
       openAt,
       closeAt,
@@ -108,7 +111,8 @@ export default class RestaurantRepository extends RestaurantDb {
     id: string,
     name: string,
     picture: string | undefined,
-    ticketWaitingLimit: number
+    ticketWaitingLimit: number,
+    notComingTicketDisapearDelay: number
   ): Promise<
     {
       id: string;
@@ -122,19 +126,20 @@ export default class RestaurantRepository extends RestaurantDb {
     }
 
     const existingTicketWaitingLimit = existingRestaurant.ticketWaitingLimit;
+    const existingNotComingTicketDisapearDelay =
+      existingRestaurant.notComingTicketDisapearDelay;
 
-    if (existingTicketWaitingLimit !== ticketWaitingLimit) {
-      const restaurantTickets = await TicketRepository.getTicketsByRestaurant(
-        id,
-        null
-      );
-      const notClosedTickets = restaurantTickets?.filter(
-        (ticket) => ticket.closedAt === null
-      );
+    if (
+      existingTicketWaitingLimit !== ticketWaitingLimit ||
+      existingNotComingTicketDisapearDelay !== notComingTicketDisapearDelay
+    ) {
+      const countTodayTickets =
+        await TicketRepository.getCountTicketsByRestaurantSinceMidnight(id);
+      console.log(countTodayTickets);
 
-      if (notClosedTickets && notClosedTickets.length > 0) {
+      if (countTodayTickets && countTodayTickets > 0) {
         throw new Error(
-          "Vous ne pouvez pas modifier le délai tant que des tickets sont en attente."
+          "Impossible de modifier ces délais en cours de journée."
         );
       }
     }
@@ -145,6 +150,7 @@ export default class RestaurantRepository extends RestaurantDb {
       id,
       name,
       ticketWaitingLimit,
+      notComingTicketDisapearDelay,
       updatedAt: updatedAt,
       picture,
     });

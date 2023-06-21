@@ -18,6 +18,8 @@ const DashboardOptionsRestaurantForm = () => {
   const restaurantName = userData?.restaurant.name;
   const restaurantPicture = userData?.restaurant.picture;
   const ticketWaitingLimit = userData?.restaurant.ticketWaitingLimit;
+  const notComingTicketDisapearDelay =
+    userData?.restaurant.notComingTicketDisapearDelay;
   const [updatedRestaurantName, setUpdatedRestaurantName] =
     useState<string>(restaurantName);
   const [updatedRestaurantPicture, setUpdatedRestaurantPicture] =
@@ -31,6 +33,7 @@ const DashboardOptionsRestaurantForm = () => {
     variables: {
       updateRestaurantId: restaurantId,
       ticketWaitingLimit: ticketWaitingLimit,
+      notComingTicketDisapearDelay: notComingTicketDisapearDelay,
       name: updatedRestaurantName,
       picture: updatedRestaurantPicture,
     },

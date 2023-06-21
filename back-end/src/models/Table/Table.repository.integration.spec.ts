@@ -44,6 +44,7 @@ describe("TableRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -78,6 +79,7 @@ describe("TableRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -114,6 +116,7 @@ describe("TableRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 

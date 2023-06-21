@@ -70,6 +70,7 @@ export type MutationCreatePoleArgs = {
 
 export type MutationCreateRestaurantArgs = {
   name: Scalars["String"];
+  notComingTicketDisapearDelay: Scalars["Float"];
   picture?: InputMaybe<Scalars["String"]>;
   pole: Scalars["ID"];
   ticketWaitingLimit: Scalars["Float"];
@@ -151,6 +152,7 @@ export type MutationUpdatePoleArgs = {
 export type MutationUpdateRestaurantArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
+  notComingTicketDisapearDelay: Scalars["Float"];
   picture?: InputMaybe<Scalars["String"]>;
   ticketWaitingLimit: Scalars["Float"];
 };
@@ -307,6 +309,7 @@ export type Restaurant = {
   createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
   name: Scalars["String"];
+  notComingTicketDisapearDelay: Scalars["Float"];
   openAt?: Maybe<Scalars["DateTime"]>;
   picture?: Maybe<Scalars["String"]>;
   pole: Pole;

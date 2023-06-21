@@ -19,6 +19,8 @@ const DashboardOptionsGeneralOpForm = () => {
   const [ticketWaitingLimit, setTicketWaitingLimit] = useState<number>(
     userData?.restaurant?.ticketWaitingLimit
   );
+  const [notComingTicketDisapearDelay, setNotComingTicketDisapearDelay] =
+    useState<number>(userData?.restaurant?.notComingTicketDisapearDelay);
 
   const [updateRestaurant] = useMutation<
     UpdateRestaurantMutation,
@@ -28,6 +30,7 @@ const DashboardOptionsGeneralOpForm = () => {
     variables: {
       updateRestaurantId: restaurantId,
       ticketWaitingLimit: ticketWaitingLimit,
+      notComingTicketDisapearDelay: notComingTicketDisapearDelay,
       name: restaurantName,
       picture: restaurantPicture,
     },
@@ -49,7 +52,12 @@ const DashboardOptionsGeneralOpForm = () => {
     <div className="DashboardOptionsContainer">
       <div className="DashboardOptionsTitleContainer">
         <i className="pi pi-ticket DashboardOptionsTitleIcon" />
-        <p className="DashboardOptionsTitleText">Tickets</p>
+        <p className="DashboardOptionsTitleText">
+          Tickets{" "}
+          <span style={{ fontSize: "14px" }}>
+            (modifiable en début de journée uniquement.)
+          </span>
+        </p>
       </div>
       <form
         onSubmit={(e) => {
@@ -60,10 +68,9 @@ const DashboardOptionsGeneralOpForm = () => {
         <div className="DashboardOptionsFormTextInputContainer">
           <label
             className="DashboardOptionsFormTextLabel"
-            style={{ marginBottom: "15px" }}
             htmlFor="maxDelayTicket"
           >
-            Délai maximal (en mn)
+            Délai maximal
           </label>
           <div style={{ width: "60%" }}>
             <input
@@ -77,9 +84,29 @@ const DashboardOptionsGeneralOpForm = () => {
               value={ticketWaitingLimit}
               onChange={(e) => setTicketWaitingLimit(parseInt(e.target.value))}
             />
-            <p className="DashboardOptionsFormTextInputText">
-              Modifiable uniquement si aucun ticket n'est en attente.
-            </p>
+          </div>
+        </div>
+        <div className="DashboardOptionsFormTextInputContainer">
+          <label
+            className="DashboardOptionsFormTextLabel"
+            htmlFor="notComingTicketDisapearDelay"
+          >
+            Délai disparition ticket
+          </label>
+          <div style={{ width: "60%" }}>
+            <input
+              id="notComingTicketDisapearDelay"
+              name="notComingTicketDisapearDelay"
+              className="DashboardOptionsFormTextInput"
+              style={{ width: "100%" }}
+              type="number"
+              min="0"
+              required
+              value={notComingTicketDisapearDelay}
+              onChange={(e) =>
+                setNotComingTicketDisapearDelay(parseInt(e.target.value))
+              }
+            />
           </div>
         </div>
 

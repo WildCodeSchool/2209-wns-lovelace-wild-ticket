@@ -1,10 +1,10 @@
-import { TICKET_DISAPPEAR_DELAY } from "../constants/Constants";
 import { GET_TICKETS_BY_RESTAURANT_TYPES } from "../types/DataTypes";
 import DateService from "./DateService";
 
 export default class TicketService {
   static getCountOfWaitingTickets(
-    tickets: GET_TICKETS_BY_RESTAURANT_TYPES
+    tickets: GET_TICKETS_BY_RESTAURANT_TYPES,
+    notComingTicketDisapearDelay: number
   ): number {
     const waitingTickets = tickets?.filter(
       (ticket) =>
@@ -12,7 +12,7 @@ export default class TicketService {
         ((ticket.deliveredAt !== null &&
           DateService.addMinutesToDate(
             new Date(ticket.closedAt),
-            TICKET_DISAPPEAR_DELAY
+            notComingTicketDisapearDelay
           ) > new Date()) ||
           ticket.closedAt === null)
     );

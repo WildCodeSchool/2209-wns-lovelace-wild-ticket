@@ -70,6 +70,7 @@ export type MutationCreatePoleArgs = {
 
 export type MutationCreateRestaurantArgs = {
   name: Scalars["String"];
+  notComingTicketDisapearDelay: Scalars["Float"];
   picture?: InputMaybe<Scalars["String"]>;
   pole: Scalars["ID"];
   ticketWaitingLimit: Scalars["Float"];
@@ -151,6 +152,7 @@ export type MutationUpdatePoleArgs = {
 export type MutationUpdateRestaurantArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
+  notComingTicketDisapearDelay: Scalars["Float"];
   picture?: InputMaybe<Scalars["String"]>;
   ticketWaitingLimit: Scalars["Float"];
 };
@@ -307,6 +309,7 @@ export type Restaurant = {
   createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
   name: Scalars["String"];
+  notComingTicketDisapearDelay: Scalars["Float"];
   openAt?: Maybe<Scalars["DateTime"]>;
   picture?: Maybe<Scalars["String"]>;
   pole: Pole;
@@ -416,6 +419,7 @@ export type MyProfileQuery = {
       name: string;
       picture?: string | null;
       ticketWaitingLimit: number;
+      notComingTicketDisapearDelay: number;
       openAt?: any | null;
       closeAt?: any | null;
     } | null;
@@ -685,6 +689,7 @@ export type GetRestaurantsQuery = {
 export type UpdateRestaurantMutationVariables = Exact<{
   updateRestaurantId: Scalars["ID"];
   ticketWaitingLimit: Scalars["Float"];
+  notComingTicketDisapearDelay: Scalars["Float"];
   name: Scalars["String"];
   picture?: InputMaybe<Scalars["String"]>;
 }>;
@@ -697,6 +702,7 @@ export type UpdateRestaurantMutation = {
     name: string;
     picture?: string | null;
     ticketWaitingLimit: number;
+    notComingTicketDisapearDelay: number;
     openAt?: any | null;
     closeAt?: any | null;
   };
@@ -1113,6 +1119,13 @@ export const MyProfileDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "ticketWaitingLimit" },
+                      },
+                      {
+                        kind: "Field",
+                        name: {
+                          kind: "Name",
+                          value: "notComingTicketDisapearDelay",
+                        },
                       },
                       {
                         kind: "Field",
@@ -2479,6 +2492,17 @@ export const UpdateRestaurantDocument = {
         },
         {
           kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "notComingTicketDisapearDelay" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
           variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
           type: {
             kind: "NonNullType",
@@ -2522,6 +2546,14 @@ export const UpdateRestaurantDocument = {
               },
               {
                 kind: "Argument",
+                name: { kind: "Name", value: "notComingTicketDisapearDelay" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "notComingTicketDisapearDelay" },
+                },
+              },
+              {
+                kind: "Argument",
                 name: { kind: "Name", value: "name" },
                 value: {
                   kind: "Variable",
@@ -2546,6 +2578,10 @@ export const UpdateRestaurantDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "ticketWaitingLimit" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "notComingTicketDisapearDelay" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "openAt" } },
                 { kind: "Field", name: { kind: "Name", value: "closeAt" } },
