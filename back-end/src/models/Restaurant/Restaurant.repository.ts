@@ -126,19 +126,20 @@ export default class RestaurantRepository extends RestaurantDb {
     }
 
     const existingTicketWaitingLimit = existingRestaurant.ticketWaitingLimit;
+    const existingNotComingTicketDisapearDelay =
+      existingRestaurant.notComingTicketDisapearDelay;
 
-    if (existingTicketWaitingLimit !== ticketWaitingLimit) {
-      const restaurantTickets = await TicketRepository.getTicketsByRestaurant(
-        id,
-        null
-      );
-      const notClosedTickets = restaurantTickets?.filter(
-        (ticket) => ticket.closedAt === null
-      );
+    if (
+      existingTicketWaitingLimit !== ticketWaitingLimit ||
+      existingNotComingTicketDisapearDelay !== notComingTicketDisapearDelay
+    ) {
+      const countTodayTickets =
+        await TicketRepository.getCountTicketsByRestaurantSinceMidnight(id);
+      console.log(countTodayTickets);
 
-      if (notClosedTickets && notClosedTickets.length > 0) {
+      if (countTodayTickets && countTodayTickets > 0) {
         throw new Error(
-          "Vous ne pouvez pas modifier le délai tant que des tickets sont en attente."
+          "Impossible de modifier ces délais en cours de journée."
         );
       }
     }

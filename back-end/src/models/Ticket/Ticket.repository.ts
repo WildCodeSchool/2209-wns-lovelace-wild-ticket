@@ -325,6 +325,7 @@ export default class TicketRepository extends TicketDb {
       restaurantId
     );
     if (!restaurant) throw new Error();
+    const maxDisapearDelay = restaurant.notComingTicketDisapearDelay;
     let query = this.repository
       .createQueryBuilder("ticket")
       .leftJoinAndSelect("ticket.restaurant", "restaurant")
@@ -337,7 +338,9 @@ export default class TicketRepository extends TicketDb {
         new Brackets((qb) =>
           qb
             .where("ticket.deliveredAt IS NOT NULL")
-            .andWhere("ticket.closedAt + interval '1 minute' > NOW()")
+            .andWhere(
+              `ticket.closedAt + interval '${maxDisapearDelay} minute' > NOW()`
+            )
             .orWhere("ticket.closedAt IS NULL")
         )
       );
@@ -379,5 +382,21 @@ export default class TicketRepository extends TicketDb {
     }
     query.orderBy("ticket.number", "ASC");
     return await query.getMany();
+  }
+
+  static async getCountTicketsByRestaurantSinceMidnight(
+    restaurantId: string
+  ): Promise<number> {
+    const restaurant = await RestaurantRepository.getRestaurantById(
+      restaurantId
+    );
+    if (!restaurant) throw new Error();
+    const startOfDay = DateUpdates.newDateAtMidnight();
+    return await this.repository.count({
+      where: {
+        restaurant: restaurant,
+        createdAt: MoreThan(startOfDay),
+      },
+    });
   }
 }
