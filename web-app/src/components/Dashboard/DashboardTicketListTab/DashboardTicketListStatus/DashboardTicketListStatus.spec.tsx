@@ -12,6 +12,7 @@ const renderDashboardTicketListStatus = (
   ticket: GET_TICKET_BY_RESTAURANT_TYPES,
   tables: GET_TABLES_BY_RESTAURANT_TYPES,
   maxDeliveredTicketDelay: number,
+  notComingTicketDisapearDelay: number,
   mock?: any
 ) => {
   render(
@@ -21,6 +22,7 @@ const renderDashboardTicketListStatus = (
           ticket={ticket}
           tables={tables}
           maxDeliveredTicketDelay={maxDeliveredTicketDelay}
+          notComingTicketDisapearDelay={notComingTicketDisapearDelay}
         />
       </MemoryRouter>
     </MockedProvider>
@@ -136,7 +138,8 @@ describe("DashboardTicketListStatus", () => {
         renderDashboardTicketListStatus(
           mockTicketCreatedAt,
           mockNoAvailableTables,
-          5
+          5,
+          2
         );
         expect(screen.getByText("En attente")).toBeInTheDocument();
       });
@@ -147,7 +150,8 @@ describe("DashboardTicketListStatus", () => {
         renderDashboardTicketListStatus(
           mockTicketCreatedAt,
           mockAvailableTables,
-          5
+          5,
+          2
         );
         expect(screen.getByText("Table Disponible")).toBeInTheDocument();
       });
@@ -160,7 +164,8 @@ describe("DashboardTicketListStatus", () => {
         renderDashboardTicketListStatus(
           mockTicketOkDeliveredAt,
           mockAvailableTables,
-          5
+          5,
+          2
         );
         expect(screen.getByText("Attendu table 1")).toBeInTheDocument();
       });
@@ -171,7 +176,8 @@ describe("DashboardTicketListStatus", () => {
         renderDashboardTicketListStatus(
           mockTicketNokDeliveredAt,
           mockAvailableTables,
-          5
+          5,
+          2
         );
         expect(screen.getByText("Table 1 libérée")).toBeInTheDocument();
       });
@@ -183,7 +189,8 @@ describe("DashboardTicketListStatus", () => {
       renderDashboardTicketListStatus(
         mockTicketPlacedAt,
         mockAvailableTables,
-        5
+        5,
+        2
       );
       expect(screen.getByText("Table 1")).toBeInTheDocument();
     });

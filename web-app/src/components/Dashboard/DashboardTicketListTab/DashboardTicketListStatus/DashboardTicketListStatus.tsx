@@ -1,4 +1,3 @@
-import { TICKET_DISAPPEAR_DELAY } from "../../../../constants/Constants";
 import DateService from "../../../../services/DateService";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
@@ -14,10 +13,12 @@ export default function DashboardTicketListStatus({
   ticket,
   tables,
   maxDeliveredTicketDelay,
+  notComingTicketDisapearDelay,
 }: {
   ticket: GET_TICKET_BY_RESTAURANT_TYPES;
   tables: GET_TABLES_BY_RESTAURANT_TYPES;
   maxDeliveredTicketDelay: number;
+  notComingTicketDisapearDelay: number;
 }) {
   const ticketSeats = ticket?.seats as number;
   const convertedSeatsToCapacity =
@@ -58,9 +59,10 @@ export default function DashboardTicketListStatus({
 
   if (
     ticket?.deliveredAt !== null &&
+    ticket?.placedAt === null &&
     DateService.addMinutesToDate(
       new Date(ticket?.closedAt),
-      TICKET_DISAPPEAR_DELAY
+      notComingTicketDisapearDelay
     ) > new Date()
   ) {
     return (

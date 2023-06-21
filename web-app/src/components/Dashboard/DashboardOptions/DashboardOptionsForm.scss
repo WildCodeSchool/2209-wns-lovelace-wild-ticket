@@ -35,7 +35,7 @@
   .DashboardOptionsForm {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 
     .DashboardOptionsFormTextInputContainer {
       display: flex;
@@ -46,6 +46,7 @@
         width: 40%;
         font-size: 16px;
         font-weight: 600;
+        margin-bottom: 0px;
       }
 
       .DashboardOptionsFormTextInput {

@@ -29,14 +29,21 @@ const DashboardHome = () => {
     ?.tickets as GET_TICKETS_BY_RESTAURANT_TYPES;
   const tables = useContext(AppContext)
     ?.tables as GET_TABLES_BY_RESTAURANT_TYPES;
+  const notComingTicketDisapearDelay =
+    userData.restaurant?.notComingTicketDisapearDelay;
 
   const [waitingTickets, setWaitingTickets] = useState<number>(0);
   const [occupiedTables, setOccupiedTables] = useState<number>(0);
 
   useEffect(() => {
-    setWaitingTickets(TicketService.getCountOfWaitingTickets(tickets));
+    setWaitingTickets(
+      TicketService.getCountOfWaitingTickets(
+        tickets,
+        notComingTicketDisapearDelay
+      )
+    );
     setOccupiedTables(TableService.getCountOfOccupiedTables(tickets, tables));
-  }, [tables, tickets]);
+  }, [tables, tickets, notComingTicketDisapearDelay]);
 
   const goToStats = () => {
     navigate(DASHBOARD_STATS);

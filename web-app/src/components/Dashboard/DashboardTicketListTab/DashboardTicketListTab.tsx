@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InfinitySpin } from "react-loader-spinner";
-import { BUTTON_DISAPPEAR_DELAY } from "../../../constants/Constants";
 import DateService from "../../../services/DateService";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
@@ -36,6 +35,8 @@ export default function DashboardTicketListTab({
   const appContext = useContext(AppContext);
   const MAX_DELIVERED_TICKET_DELAY =
     appContext?.userData.restaurant.ticketWaitingLimit;
+  const NOT_COMING_TICKET_DISAPEAR_DELAY =
+    appContext?.userData.restaurant.notComingTicketDisapearDelay;
   const [ticketId, setTicketId] = useState<string>("");
   const [tableId, setTableId] = useState<string>("");
   const [ticketNumber, setTicketNumber] = useState<string>("");
@@ -97,6 +98,7 @@ export default function DashboardTicketListTab({
         ticket={waitingTicket}
         tables={tables}
         maxDeliveredTicketDelay={MAX_DELIVERED_TICKET_DELAY}
+        notComingTicketDisapearDelay={NOT_COMING_TICKET_DISAPEAR_DELAY}
       />
     );
   };
@@ -107,6 +109,7 @@ export default function DashboardTicketListTab({
         ticket={placedTicket}
         tables={tables}
         maxDeliveredTicketDelay={MAX_DELIVERED_TICKET_DELAY}
+        notComingTicketDisapearDelay={NOT_COMING_TICKET_DISAPEAR_DELAY}
       />
     );
   };
@@ -118,7 +121,7 @@ export default function DashboardTicketListTab({
           new Date(waitingTicket.closedAt) >
             DateService.substractMinutesToDate(
               new Date(),
-              BUTTON_DISAPPEAR_DELAY
+              NOT_COMING_TICKET_DISAPEAR_DELAY
             ) && (
             <SVGIconValid
               onClick={async () => {
