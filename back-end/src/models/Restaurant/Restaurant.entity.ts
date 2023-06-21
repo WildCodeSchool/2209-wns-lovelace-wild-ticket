@@ -20,6 +20,7 @@ export default class Restaurant {
     pole: Pole,
     createdAt: Date,
     ticketWaitingLimit: number,
+    notComingTicketDisapearDelay: number,
     updatedAt?: Date,
     openAt?: Date,
     closeAt?: Date,
@@ -37,6 +38,9 @@ export default class Restaurant {
     }
     if (ticketWaitingLimit) {
       this.ticketWaitingLimit = ticketWaitingLimit;
+    }
+    if (notComingTicketDisapearDelay) {
+      this.notComingTicketDisapearDelay = notComingTicketDisapearDelay;
     }
     if (openAt) {
       this.openAt = openAt;
@@ -64,6 +68,10 @@ export default class Restaurant {
   @Column()
   @Field()
   ticketWaitingLimit: number;
+
+  @Column()
+  @Field()
+  notComingTicketDisapearDelay: number;
 
   @Column()
   @Field()

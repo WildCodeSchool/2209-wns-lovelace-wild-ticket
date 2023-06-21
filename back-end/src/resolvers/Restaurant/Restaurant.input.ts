@@ -37,6 +37,10 @@ class CreateRestaurantArgs {
   @IsPositive()
   ticketWaitingLimit: number;
 
+  @Field()
+  @IsPositive()
+  notComingTicketDisapearDelay: number;
+
   @Field({ nullable: true })
   @ValidateIf((value) => value === null)
   picture: string;
@@ -64,6 +68,10 @@ class UpdateRestaurantArgs {
   @Field()
   @IsPositive()
   ticketWaitingLimit: number;
+
+  @Field()
+  @IsPositive()
+  notComingTicketDisapearDelay: number;
 
   @Field({ nullable: true })
   @ValidateIf((value) => value === null)

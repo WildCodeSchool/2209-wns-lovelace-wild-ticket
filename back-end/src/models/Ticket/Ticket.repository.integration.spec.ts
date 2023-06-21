@@ -53,6 +53,7 @@ describe("TicketRepository integration", () => {
               "restaurant",
               undefined,
               5,
+              2,
               pole.id
             );
 
@@ -77,6 +78,7 @@ describe("TicketRepository integration", () => {
               "restaurant",
               undefined,
               5,
+              2,
               pole.id
             );
 
@@ -117,6 +119,7 @@ describe("TicketRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -143,6 +146,7 @@ describe("TicketRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -173,6 +177,7 @@ describe("TicketRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -225,6 +230,7 @@ describe("TicketRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -281,6 +287,7 @@ describe("TicketRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 

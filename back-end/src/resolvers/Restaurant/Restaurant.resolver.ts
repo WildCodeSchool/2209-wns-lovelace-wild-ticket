@@ -42,12 +42,20 @@ export default class RestaurantResolver {
   @Authorized("ROLE_ADMIN")
   @Mutation(() => Restaurant)
   createRestaurant(
-    @Args() { name, picture, ticketWaitingLimit, pole }: CreateRestaurantArgs
+    @Args()
+    {
+      name,
+      picture,
+      ticketWaitingLimit,
+      notComingTicketDisapearDelay,
+      pole,
+    }: CreateRestaurantArgs
   ): Promise<Restaurant> {
     return RestaurantRepository.createRestaurant(
       name,
       picture,
       ticketWaitingLimit,
+      notComingTicketDisapearDelay,
       pole
     );
   }
@@ -55,13 +63,21 @@ export default class RestaurantResolver {
   @Authorized()
   @Mutation(() => Restaurant)
   updateRestaurant(
-    @Args() { id, name, ticketWaitingLimit, picture }: UpdateRestaurantArgs
+    @Args()
+    {
+      id,
+      name,
+      ticketWaitingLimit,
+      notComingTicketDisapearDelay,
+      picture,
+    }: UpdateRestaurantArgs
   ): Promise<Restaurant> {
     return RestaurantRepository.updateRestaurant(
       id,
       name,
       picture,
-      ticketWaitingLimit
+      ticketWaitingLimit,
+      notComingTicketDisapearDelay
     );
   }
 

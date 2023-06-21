@@ -24,6 +24,7 @@ export default class RestaurantRepository extends RestaurantDb {
           lyonPole,
           restaurant.createdAt,
           restaurant.ticketWaitingLimit,
+          restaurant.notComingTicketDisapearDelay,
           undefined,
           restaurant.openAt,
           restaurant.closeAt,
@@ -77,6 +78,7 @@ export default class RestaurantRepository extends RestaurantDb {
     name: string,
     picture: string | undefined,
     ticketWaitingLimit: number,
+    notComingTicketDisapearDelay: number,
     idPole: string
   ): Promise<Restaurant> {
     const pole = (await PoleRepository.getPoleById(idPole)) as Pole;
@@ -95,6 +97,7 @@ export default class RestaurantRepository extends RestaurantDb {
       pole,
       createdAt,
       ticketWaitingLimit,
+      notComingTicketDisapearDelay,
       undefined,
       openAt,
       closeAt,
@@ -108,7 +111,8 @@ export default class RestaurantRepository extends RestaurantDb {
     id: string,
     name: string,
     picture: string | undefined,
-    ticketWaitingLimit: number
+    ticketWaitingLimit: number,
+    notComingTicketDisapearDelay: number
   ): Promise<
     {
       id: string;
@@ -145,6 +149,7 @@ export default class RestaurantRepository extends RestaurantDb {
       id,
       name,
       ticketWaitingLimit,
+      notComingTicketDisapearDelay,
       updatedAt: updatedAt,
       picture,
     });
