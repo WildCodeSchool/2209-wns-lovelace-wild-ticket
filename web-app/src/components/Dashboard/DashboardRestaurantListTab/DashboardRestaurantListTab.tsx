@@ -1,9 +1,6 @@
 import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { Column } from "primereact/column";
-import {
-  GET_POLE_TYPES,
-  GET_RESTAURANTS_TYPES,
-} from "../../../types/DataTypes";
+import { GET_RESTAURANT_TYPES } from "../../../types/DataTypes";
 import SVGIconEdit from "../../SVG/SVGIconEdit/SVGIconEdit";
 import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
 import { useState } from "react";
@@ -20,7 +17,7 @@ export default function DashboardPoleListTab({
   editRestaurantForm: any;
   /* confirmDelete: (pole: GET_POLE_TYPES) => Promise<void>; */
 }) {
-  const actionButton = (restaurant: GET_RESTAURANTS_TYPES) => {
+  const actionButton = (restaurant: GET_RESTAURANT_TYPES) => {
     return (
       <div className="ListTabBodyRowActionsButtonContainer">
         <SVGIconEdit
@@ -93,7 +90,7 @@ export default function DashboardPoleListTab({
         <Column
           header="Actions"
           style={{ flex: "0 0 4rem", minWidth: "10rem" }}
-          body={(restaurant: GET_RESTAURANTS_TYPES) => actionButton(restaurant)}
+          body={(restaurant: GET_RESTAURANT_TYPES) => actionButton(restaurant)}
         ></Column>
       </DataTable>
     </div>

@@ -5,6 +5,7 @@ import "./DashboardRestaurant.scss";
 import {
   GET_POLES_TYPES,
   GET_RESTAURANTS_TYPES,
+  GET_RESTAURANT_TYPES,
 } from "../../../types/DataTypes";
 import { useMutation, useQuery } from "@apollo/client";
 import {
@@ -103,20 +104,10 @@ const DashboardRestaurant = () => {
     UpdateRestaurantMutationVariables
   >(UPDATE_RESTAURANT);
 
-  // const editRestaurantForm = async (restaurant: GET_RESTAURANTS_TYPES) => {
-  //   console.log(restaurant);
-  //   setEditRestaurantId(restaurant?.id as string);
-  //   setEditRestaurantName(restaurant?.name as string);
-  //   setOpenEditRestaurantModal(true);
-  // };
-
-  const editRestaurantForm = async (restaurant: GET_RESTAURANTS_TYPES) => {
-    console.log(restaurant);
-    if (restaurant) {
-      setEditRestaurantId(restaurant.id);
-      setEditRestaurantName(restaurant.name);
-      setOpenEditRestaurantModal(true);
-    }
+  const editRestaurantForm = async (restaurant: GET_RESTAURANT_TYPES) => {
+    setEditRestaurantId(restaurant?.id as string);
+    setEditRestaurantName(restaurant?.name as string);
+    setOpenEditRestaurantModal(true);
   };
 
   const submitEditRestaurantForm = async () => {
