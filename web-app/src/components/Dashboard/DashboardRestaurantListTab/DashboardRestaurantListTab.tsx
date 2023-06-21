@@ -1,6 +1,9 @@
 import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { GET_POLE_TYPES, GET_RESTAURANTS_TYPES } from "../../../types/DataTypes";
+import {
+  GET_POLE_TYPES,
+  GET_RESTAURANTS_TYPES,
+} from "../../../types/DataTypes";
 import SVGIconEdit from "../../SVG/SVGIconEdit/SVGIconEdit";
 import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
 import { useState } from "react";
@@ -10,8 +13,8 @@ export default function DashboardPoleListTab({
   restaurants,
   isClickable,
   editRestaurantForm,
-  /* confirmDelete, */
-}: {
+}: /* confirmDelete, */
+{
   restaurants: any;
   isClickable: boolean;
   editRestaurantForm: any;

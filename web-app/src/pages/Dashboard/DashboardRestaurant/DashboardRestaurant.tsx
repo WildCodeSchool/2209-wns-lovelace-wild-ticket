@@ -118,7 +118,6 @@ const DashboardRestaurant = () => {
       setOpenEditRestaurantModal(true);
     }
   };
-  
 
   const submitEditRestaurantForm = async () => {
     try {
