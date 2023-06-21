@@ -347,3 +347,15 @@ export const CREATE_RESTAURANT = gql`
     }
   }
 `;
+
+export const UPDATE_RESTAURANT = gql`
+  mutation UpdateRestaurant(
+    $updateRestaurantId: ID!
+    $name: String!
+    $picture: String
+  ) {
+    updateRestaurant(id: $updateRestaurantId, name: $name, picture: $picture) {
+      id
+    }
+  }
+`;

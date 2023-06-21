@@ -172,9 +172,6 @@ const DashboardPole = () => {
         />
       </main>
 
-      {/* Footer */}
-      <footer className="DashboardPoleFooter"></footer>
-
       {/* Modal de confirmation de suppression */}
       <div
         className={
@@ -317,7 +314,7 @@ const DashboardPole = () => {
         </div>
       </div>
 
-      {/* Modal d'édition d'un nouveau pole */}
+      {/* Modal d'édition d'un pole */}
       <div
         className={
           openEditPoleModal

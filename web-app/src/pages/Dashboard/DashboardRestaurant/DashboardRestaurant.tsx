@@ -12,11 +12,14 @@ import {
   CreateRestaurantMutationVariables,
   GetRestaurantsQuery,
   PolesQuery,
+  UpdateRestaurantMutation,
+  UpdateRestaurantMutationVariables,
 } from "../../../gql/graphql";
 import {
   CREATE_RESTAURANT,
   GET_POLES,
   GET_RESTAURANTS,
+  UPDATE_RESTAURANT,
 } from "../../../queries/Queries";
 import DashboardRestaurantListTab from "../../../components/Dashboard/DashboardRestaurantListTab/DashboardRestaurantListTab";
 import { toast } from "react-toastify";
@@ -26,6 +29,20 @@ import { validateAndConvertImageToBase64 } from "../../../services/ImageService"
 const DashboardRestaurant = () => {
   // Chargement du contexte
   const appContext = useContext(AppContext);
+
+  // Fonction pour la conversion d'une image en base64
+  const convertImage = (e: any) => {
+    const file = e.target.files[0];
+    validateAndConvertImageToBase64(file, (error: any, base64Image: any) => {
+      if (error) {
+        toast.error(error);
+        e.target.value = null;
+      } else {
+        setSelectedPicture(base64Image);
+      }
+    });
+  };
+
   // Chargement des restaurants
   const [restaurants, setRestaurants] = useState<GET_RESTAURANTS_TYPES>(null);
   const { loading, refetch } = useQuery<GetRestaurantsQuery>(GET_RESTAURANTS, {
@@ -36,7 +53,7 @@ const DashboardRestaurant = () => {
       }
     },
   });
-  console.log(restaurants);
+
   // Chargement des poles
   const [poles, setPoles] = useState<GET_POLES_TYPES>(null);
   const { loading: loadingPoles } = useQuery<PolesQuery>(GET_POLES, {
@@ -61,18 +78,6 @@ const DashboardRestaurant = () => {
     CreateRestaurantMutationVariables
   >(CREATE_RESTAURANT);
 
-  const convertImage = (e: any) => {
-    const file = e.target.files[0];
-    validateAndConvertImageToBase64(file, (error: any, base64Image: any) => {
-      if (error) {
-        toast.error(error);
-        e.target.value = null;
-      } else {
-        setSelectedPicture(base64Image);
-      }
-    });
-  };
-
   const submitAddRestaurantForm = async () => {
     try {
       await createRestaurant({
@@ -81,6 +86,54 @@ const DashboardRestaurant = () => {
       setName("");
       setPole("");
       toast.success(`Vous avez créé un restaurant avec succès.`);
+      refetch();
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  // Modification d'un restaurant
+  const [openEditRestaurantModal, setOpenEditRestaurantModal] =
+    useState<boolean>(false);
+  const [editRestaurantId, setEditRestaurantId] = useState<string>("");
+  const [editRestaurantName, setEditRestaurantName] = useState<string>("");
+
+  const [editRestaurant] = useMutation<
+    UpdateRestaurantMutation,
+    UpdateRestaurantMutationVariables
+  >(UPDATE_RESTAURANT);
+
+  // const editRestaurantForm = async (restaurant: GET_RESTAURANTS_TYPES) => {
+  //   console.log(restaurant);
+  //   setEditRestaurantId(restaurant?.id as string);
+  //   setEditRestaurantName(restaurant?.name as string);
+  //   setOpenEditRestaurantModal(true);
+  // };
+
+  const editRestaurantForm = async (restaurant: GET_RESTAURANTS_TYPES) => {
+    console.log(restaurant);
+    if (restaurant) {
+      setEditRestaurantId(restaurant.id);
+      setEditRestaurantName(restaurant.name);
+      setOpenEditRestaurantModal(true);
+    }
+  };
+  
+
+  const submitEditRestaurantForm = async () => {
+    try {
+      await editRestaurant({
+        variables: {
+          name: editRestaurantName,
+          picture: selectedPicture,
+          updateRestaurantId: editRestaurantId,
+        },
+      });
+      setEditRestaurantId("");
+      setEditRestaurantName("");
+      toast.success(
+        `Vous avez modifié le pôle "${editRestaurantName}" avec succès.`
+      );
       refetch();
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -133,7 +186,7 @@ const DashboardRestaurant = () => {
         <DashboardRestaurantListTab
           restaurants={restaurants}
           isClickable={isClickable}
-          /* editRestaurantForm={editRestaurantForm} */
+          editRestaurantForm={editRestaurantForm}
           /* confirmDelete={confirmDelete} */
         />
       </main>
@@ -215,6 +268,70 @@ const DashboardRestaurant = () => {
             className="dashboardRestaurantListModalButton"
             onClick={() => {
               setOpenAddRestaurantModal(false);
+              setIsClickable(true);
+            }}
+          >
+            Annuler
+          </button>
+        </div>
+      </div>
+
+      {/* Modal d'édition d'un pole */}
+      <div
+        className={
+          openEditRestaurantModal
+            ? "dashboardRestaurantListModal"
+            : "dashboardRestaurantListModalHidden"
+        }
+      >
+        <h1 className="dashboardRestaurantListModalTitle">
+          Modification d'un pôle
+        </h1>
+        <div className="dashboardRestaurantListModalTablesContainer">
+          <form className="add-restaurant-form">
+            <div className="add-restaurant-form-input">
+              <label htmlFor="name">Nom</label>
+              <input
+                type="text"
+                required
+                autoComplete="name"
+                id="name"
+                name="name"
+                value={editRestaurantName}
+                onChange={(event) => {
+                  setEditRestaurantName(event.target.value);
+                }}
+              />
+            </div>
+            <div className="add-restaurant-form-input">
+              <label htmlFor="name">Logo</label>
+              <input
+                type="file"
+                id="picture"
+                name="picture"
+                accept="image/*"
+                onChange={(event) => {
+                  convertImage(event);
+                }}
+              />
+            </div>
+          </form>
+        </div>
+        <div className="dashboardRestaurantListModalButtonContainer">
+          <button
+            className="dashboardRestaurantListModalButton"
+            onClick={async () => {
+              await submitEditRestaurantForm();
+              setOpenEditRestaurantModal(false);
+              setIsClickable(true);
+            }}
+          >
+            Modifier
+          </button>
+          <button
+            className="dashboardRestaurantListModalButton"
+            onClick={() => {
+              setOpenEditRestaurantModal(false);
               setIsClickable(true);
             }}
           >

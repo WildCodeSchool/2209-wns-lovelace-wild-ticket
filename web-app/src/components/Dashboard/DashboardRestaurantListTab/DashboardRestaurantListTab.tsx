@@ -1,6 +1,6 @@
 import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { GET_POLE_TYPES } from "../../../types/DataTypes";
+import { GET_POLE_TYPES, GET_RESTAURANTS_TYPES } from "../../../types/DataTypes";
 import SVGIconEdit from "../../SVG/SVGIconEdit/SVGIconEdit";
 import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
 import { useState } from "react";
@@ -9,32 +9,32 @@ import { FilterMatchMode } from "primereact/api";
 export default function DashboardPoleListTab({
   restaurants,
   isClickable,
-}: /* editRestaurantForm, */
-/* confirmDelete, */
-{
+  editRestaurantForm,
+  /* confirmDelete, */
+}: {
   restaurants: any;
   isClickable: boolean;
-  /* editRestaurantForm: any; */
+  editRestaurantForm: any;
   /* confirmDelete: (pole: GET_POLE_TYPES) => Promise<void>; */
 }) {
-  /* const actionButton = (pole: GET_POLE_TYPES) => {
+  const actionButton = (restaurant: GET_RESTAURANTS_TYPES) => {
     return (
       <div className="ListTabBodyRowActionsButtonContainer">
         <SVGIconEdit
           onClick={async () => {
-            editRestaurantForm(pole);
+            editRestaurantForm(restaurant);
           }}
           isClickable={isClickable}
         />
-        <SVGIconDelete
+        {/* <SVGIconDelete
           onClick={async () => {
             await confirmDelete(pole);
           }}
           isClickable={isClickable}
-        />
+        /> */}
       </div>
     );
-  }; */
+  };
 
   const imageBodyTemplate = (restaurant: any) => {
     return restaurant.picture ? (
@@ -87,11 +87,11 @@ export default function DashboardPoleListTab({
           filterPlaceholder="Pôle"
           style={{ minWidth: "10rem" }}
         ></Column>
-        {/*         <Column
+        <Column
           header="Actions"
           style={{ flex: "0 0 4rem", minWidth: "10rem" }}
-          body={(pole: GET_POLE_TYPES) => actionButton(pole)}
-        ></Column> */}
+          body={(restaurant: GET_RESTAURANTS_TYPES) => actionButton(restaurant)}
+        ></Column>
       </DataTable>
     </div>
   );
