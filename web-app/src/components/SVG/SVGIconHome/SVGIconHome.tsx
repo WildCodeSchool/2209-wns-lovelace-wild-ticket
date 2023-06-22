@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DASHBOARD_HOME } from "../../../pages/paths";
 import {
@@ -6,6 +6,7 @@ import {
   MIN_ICON_PARAMS_TYPE,
 } from "../../../constants/Constants";
 import "../SVGIcon.scss";
+import { AppContext } from "../../../context/AppContext";
 
 export default function SVGIconHome({
   iconMaxParams,
@@ -14,6 +15,7 @@ export default function SVGIconHome({
   iconMaxParams: MAX_ICON_PARAMS_TYPE;
   iconMinParams: MIN_ICON_PARAMS_TYPE;
 }) {
+  const appContext = useContext(AppContext);
   const [isMouseOver, setIsMouseOver] = useState(false);
   const location = useLocation().pathname;
   const navigate = useNavigate();
@@ -27,6 +29,7 @@ export default function SVGIconHome({
   };
 
   const goTo = () => {
+    appContext?.setSeats(null);
     navigate(DASHBOARD_HOME);
   };
 

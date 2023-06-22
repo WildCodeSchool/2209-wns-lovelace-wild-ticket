@@ -1,9 +1,5 @@
 import DateUpdates from "../../services/DateUpdates";
-import {
-  countCurrentWeekTickets,
-  countLastThirtyDaysTickets,
-  countTodaysTicketsBySeat,
-} from "../../services/StatsService";
+import StatsService from "../../services/StatsService";
 import TicketRepository from "../Ticket/Ticket.repository";
 import Stats from "./Stats.entity";
 
@@ -23,11 +19,14 @@ export default class StatsRepository {
     const tableCapacity = ["2", "4", "6", "8"];
     const daysOfWeek = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
     const lastThirtyDays = DateUpdates.lastThirtyDays();
-    const countTicketsBySeat = await countTodaysTicketsBySeat(tickets);
-    const countActualWeekTickets = await countCurrentWeekTickets(tickets);
-    const countOfLastThirtyDaysTickets = await countLastThirtyDaysTickets(
+    const countTicketsBySeat = await StatsService.countTodaysTicketsBySeat(
       tickets
     );
+    const countActualWeekTickets = await StatsService.countCurrentWeekTickets(
+      tickets
+    );
+    const countOfLastThirtyDaysTickets =
+      await StatsService.countLastThirtyDaysTickets(tickets);
 
     return new Stats(
       tableCapacity,

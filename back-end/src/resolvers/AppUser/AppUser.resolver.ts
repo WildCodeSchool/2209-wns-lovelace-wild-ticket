@@ -38,31 +38,17 @@ export default class AppUserResolver {
   @Mutation(() => AppUser)
   createUser(
     @Args()
-    { login, email, password, role, poles, restaurant }: UserCreationArgs
+    { email, password, role, restaurant }: UserCreationArgs
   ): Promise<AppUser> {
-    return AppUserRepository.createUser(
-      login,
-      email,
-      password,
-      role,
-      poles,
-      restaurant
-    );
+    return AppUserRepository.createUser(email, password, role, restaurant);
   }
 
   @Authorized()
   @Mutation(() => AppUser)
   updateUser(
-    @Args() { id, login, email, role, poles, restaurant }: UserUpdateArgs
+    @Args() { id, email, role, restaurant }: UserUpdateArgs
   ): Promise<AppUser> {
-    return AppUserRepository.updateUser(
-      id,
-      login,
-      email,
-      role,
-      poles,
-      restaurant
-    );
+    return AppUserRepository.updateUser(id, email, role, restaurant);
   }
 
   @Authorized("ROLE_ADMIN")
@@ -90,9 +76,9 @@ export default class AppUserResolver {
   @Authorized()
   @Mutation(() => AppUser)
   async updateUserPassword(
-    @Args() { id, password }: updateUserPasswordArgs
+    @Args() { id, password, newUserPassword }: updateUserPasswordArgs
   ): Promise<AppUser> {
-    return AppUserRepository.updateUserPassword(id, password);
+    return AppUserRepository.updateUserPassword(id, password, newUserPassword);
   }
 
   @Mutation(() => Boolean)

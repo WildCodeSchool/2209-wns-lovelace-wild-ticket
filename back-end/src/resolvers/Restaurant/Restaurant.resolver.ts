@@ -15,7 +15,7 @@ const PAGE_SIZE = 4;
 @Resolver(Restaurant)
 export default class RestaurantResolver {
   //Comment "Authorized" decorator to enable access in apollo server
-  @Authorized()
+  //@Authorized("ROLE_ADMIN")
   @Query(() => [Restaurant])
   getRestaurants(): Promise<Restaurant[]> {
     return RestaurantRepository.getRestaurants();
@@ -42,17 +42,43 @@ export default class RestaurantResolver {
   @Authorized("ROLE_ADMIN")
   @Mutation(() => Restaurant)
   createRestaurant(
-    @Args() { name, picture, pole }: CreateRestaurantArgs
+    @Args()
+    {
+      name,
+      picture,
+      ticketWaitingLimit,
+      notComingTicketDisapearDelay,
+      pole,
+    }: CreateRestaurantArgs
   ): Promise<Restaurant> {
-    return RestaurantRepository.createRestaurant(name, picture, pole);
+    return RestaurantRepository.createRestaurant(
+      name,
+      picture,
+      ticketWaitingLimit,
+      notComingTicketDisapearDelay,
+      pole
+    );
   }
 
   @Authorized()
   @Mutation(() => Restaurant)
   updateRestaurant(
-    @Args() { id, name, picture }: UpdateRestaurantArgs
+    @Args()
+    {
+      id,
+      name,
+      ticketWaitingLimit,
+      notComingTicketDisapearDelay,
+      picture,
+    }: UpdateRestaurantArgs
   ): Promise<Restaurant> {
-    return RestaurantRepository.updateRestaurant(id, name, picture);
+    return RestaurantRepository.updateRestaurant(
+      id,
+      name,
+      picture,
+      ticketWaitingLimit,
+      notComingTicketDisapearDelay
+    );
   }
 
   @Authorized("ROLE_RESTAURANT")

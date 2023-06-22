@@ -1,8 +1,4 @@
-import {
-  MAX_DELIVERED_TICKET_DELAY,
-  TICKET_DISAPPEAR_DELAY,
-} from "../../../../constants/Constants";
-import { addMinutesToDate } from "../../../../services/DateService";
+import DateService from "../../../../services/DateService";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKET_BY_RESTAURANT_TYPES,
@@ -16,9 +12,13 @@ import "./DashboardTicketListStatus.scss";
 export default function DashboardTicketListStatus({
   ticket,
   tables,
+  maxDeliveredTicketDelay,
+  notComingTicketDisapearDelay,
 }: {
   ticket: GET_TICKET_BY_RESTAURANT_TYPES;
   tables: GET_TABLES_BY_RESTAURANT_TYPES;
+  maxDeliveredTicketDelay: number;
+  notComingTicketDisapearDelay: number;
 }) {
   const ticketSeats = ticket?.seats as number;
   const convertedSeatsToCapacity =
@@ -30,7 +30,7 @@ export default function DashboardTicketListStatus({
     ticket?.deliveredAt !== null &&
     ticket?.placedAt !== null &&
     new Date(ticket?.closedAt) >
-      addMinutesToDate(new Date(), MAX_DELIVERED_TICKET_DELAY)
+      DateService.addMinutesToDate(new Date(), maxDeliveredTicketDelay)
   ) {
     return (
       <div className="DashboardTicketListStatusContainer">
@@ -42,7 +42,11 @@ export default function DashboardTicketListStatus({
     );
   }
 
-  if (ticket?.deliveredAt !== null && new Date(ticket?.closedAt) > new Date()) {
+  if (
+    ticket?.deliveredAt !== null &&
+    ticket?.placedAt === null &&
+    new Date(ticket?.closedAt) > new Date()
+  ) {
     return (
       <div className="DashboardTicketListStatusContainer">
         <SVGIconDeliveredTicket />
@@ -55,8 +59,11 @@ export default function DashboardTicketListStatus({
 
   if (
     ticket?.deliveredAt !== null &&
-    addMinutesToDate(new Date(ticket?.closedAt), TICKET_DISAPPEAR_DELAY) >
-      new Date()
+    ticket?.placedAt === null &&
+    DateService.addMinutesToDate(
+      new Date(ticket?.closedAt),
+      notComingTicketDisapearDelay
+    ) > new Date()
   ) {
     return (
       <div className="DashboardTicketListStatusContainer">
@@ -69,8 +76,7 @@ export default function DashboardTicketListStatus({
   }
 
   if (
-    ticket?.placedAt === null &&
-    ticket?.closedAt === null &&
+    ticket?.deliveredAt == null &&
     filteredTables &&
     filteredTables.length !== 0
   ) {
@@ -83,6 +89,7 @@ export default function DashboardTicketListStatus({
       </>
     );
   }
+
   return (
     <div className="DashboardTicketListStatusContainer">
       <SVGIconWaitingTicket />

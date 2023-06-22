@@ -1,8 +1,15 @@
 .time {
-  border: 3px solid #164e63;
-  border-radius: 5px;
-  font-size: 3rem;
+  font-size: calc(4vw + 15px);
   margin: 0;
   padding: 3rem;
   color: #164e63;
+}
+
+@media only screen and (max-width: 1000px) {
+  .time {
+    width: 30%;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
 }

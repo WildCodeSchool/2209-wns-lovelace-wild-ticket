@@ -25,7 +25,7 @@ import {
 import DashboardRestaurantListTab from "../../../components/Dashboard/DashboardRestaurantListTab/DashboardRestaurantListTab";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../../utils";
-import { validateAndConvertImageToBase64 } from "../../../services/ImageService";
+import ImageService from "../../../services/ImageService";
 
 const DashboardRestaurant = () => {
   // Chargement du contexte
@@ -34,12 +34,13 @@ const DashboardRestaurant = () => {
   // Fonction pour la conversion d'une image en base64
   const convertImage = (e: any) => {
     const file = e.target.files[0];
-    validateAndConvertImageToBase64(file, (error: any, base64Image: any) => {
+    ImageService.validateAndConvertImageToBase64(file, (error: any, base64Image: any) => {
       if (error) {
         toast.error(error);
         e.target.value = null;
       } else {
         setSelectedPicture(base64Image);
+        setEditRestaurantPicture(base64Image);
       }
     });
   };
@@ -82,7 +83,13 @@ const DashboardRestaurant = () => {
   const submitAddRestaurantForm = async () => {
     try {
       await createRestaurant({
-        variables: { name: name, picture: selectedPicture, pole: pole },
+        variables: { 
+          name: name, 
+          picture: selectedPicture, 
+          ticketWaitingLimit: 5,
+          notComingTicketDisapearDelay: 2, 
+          pole: pole 
+        },
       });
       setName("");
       setPole("");
@@ -98,6 +105,7 @@ const DashboardRestaurant = () => {
     useState<boolean>(false);
   const [editRestaurantId, setEditRestaurantId] = useState<string>("");
   const [editRestaurantName, setEditRestaurantName] = useState<string>("");
+  const [editRestaurantPicture, setEditRestaurantPicture] = useState<string>("" as any);
 
   const [editRestaurant] = useMutation<
     UpdateRestaurantMutation,
@@ -107,6 +115,7 @@ const DashboardRestaurant = () => {
   const editRestaurantForm = async (restaurant: GET_RESTAURANT_TYPES) => {
     setEditRestaurantId(restaurant?.id as string);
     setEditRestaurantName(restaurant?.name as string);
+    setEditRestaurantPicture(restaurant?.picture as string);
     setOpenEditRestaurantModal(true);
   };
 
@@ -115,12 +124,15 @@ const DashboardRestaurant = () => {
       await editRestaurant({
         variables: {
           name: editRestaurantName,
-          picture: selectedPicture,
+          picture: editRestaurantPicture,
           updateRestaurantId: editRestaurantId,
+          ticketWaitingLimit: 5,
+          notComingTicketDisapearDelay: 2,
         },
       });
       setEditRestaurantId("");
       setEditRestaurantName("");
+      setEditRestaurantPicture("");
       toast.success(
         `Vous avez modifié le pôle "${editRestaurantName}" avec succès.`
       );
@@ -266,7 +278,7 @@ const DashboardRestaurant = () => {
         </div>
       </div>
 
-      {/* Modal d'édition d'un pole */}
+      {/* Modal d'édition d'un restaurant */}
       <div
         className={
           openEditRestaurantModal
@@ -275,7 +287,7 @@ const DashboardRestaurant = () => {
         }
       >
         <h1 className="dashboardRestaurantListModalTitle">
-          Modification d'un pôle
+          Modification d'un restaurant
         </h1>
         <div className="dashboardRestaurantListModalTablesContainer">
           <form className="add-restaurant-form">

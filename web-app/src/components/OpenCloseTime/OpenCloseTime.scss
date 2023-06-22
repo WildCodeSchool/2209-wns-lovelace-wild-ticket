@@ -1,9 +1,9 @@
 .contentBottom {
-  border-top: 3px solid #000;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 2rem;
+  align-items: center;
+  gap: 20px;
   width: 100%;
 
   .openClose {
@@ -14,7 +14,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 2rem 0 3rem;
       padding: 2rem;
       text-align: center;
       width: 500px;
@@ -33,19 +32,34 @@
     background-color: #164e63;
     border: none;
     border-radius: 5px;
+    width: 15%;
     cursor: pointer;
     color: #fff;
     font-size: 1.25rem;
     height: fit-content;
-    margin-left: auto;
     padding: 1rem 3rem;
 
     &:active {
-      background-color:#1f2937;
+      background-color: #1f2937;
     }
   }
-    
+
   .rs-calendar-time-dropdown-cell.rs-calendar-time-dropdown-cell-active {
     background-color: #164e63 !important;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .contentBottom {
+    .openClose {
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+
+      .open,
+      .close {
+        width: 100%;
+      }
+    }
   }
 }

@@ -1,4 +1,3 @@
-import React from "react";
 import { MINI_LOGO_PARAMS_TYPE } from "../../../constants/Constants";
 import "./SVGLogoMini.scss";
 

@@ -27,8 +27,6 @@ export type AppUser = {
   createdAt: Scalars["DateTime"];
   email: Scalars["String"];
   id: Scalars["ID"];
-  login: Scalars["String"];
-  poles?: Maybe<Array<Pole>>;
   resetPasswordToken?: Maybe<Scalars["String"]>;
   resetPasswordTokenExpiration?: Maybe<Scalars["DateTime"]>;
   restaurant?: Maybe<Restaurant>;
@@ -72,8 +70,10 @@ export type MutationCreatePoleArgs = {
 
 export type MutationCreateRestaurantArgs = {
   name: Scalars["String"];
+  notComingTicketDisapearDelay: Scalars["Float"];
   picture?: InputMaybe<Scalars["String"]>;
   pole: Scalars["ID"];
+  ticketWaitingLimit: Scalars["Float"];
 };
 
 export type MutationCreateTableArgs = {
@@ -92,9 +92,7 @@ export type MutationCreateTicketArgs = {
 
 export type MutationCreateUserArgs = {
   email: Scalars["String"];
-  login: Scalars["String"];
   password: Scalars["String"];
-  poles?: InputMaybe<Array<Scalars["String"]>>;
   restaurant?: InputMaybe<Scalars["String"]>;
   role: Scalars["String"];
 };
@@ -154,7 +152,9 @@ export type MutationUpdatePoleArgs = {
 export type MutationUpdateRestaurantArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
+  notComingTicketDisapearDelay: Scalars["Float"];
   picture?: InputMaybe<Scalars["String"]>;
+  ticketWaitingLimit: Scalars["Float"];
 };
 
 export type MutationUpdateRestaurantOpeningTimeArgs = {
@@ -174,14 +174,13 @@ export type MutationUpdateTableArgs = {
 export type MutationUpdateUserArgs = {
   email: Scalars["String"];
   id: Scalars["ID"];
-  login: Scalars["String"];
-  poles?: InputMaybe<Array<Scalars["String"]>>;
   restaurant?: InputMaybe<Scalars["String"]>;
   role: Scalars["String"];
 };
 
 export type MutationUpdateUserPasswordArgs = {
   id: Scalars["ID"];
+  newUserPassword: Scalars["String"];
   password: Scalars["String"];
 };
 
@@ -206,7 +205,6 @@ export type PageOfTickets = {
 export type Pole = {
   __typename?: "Pole";
   address: Scalars["String"];
-  appUser?: Maybe<AppUser>;
   city: Scalars["String"];
   createdAt: Scalars["DateTime"];
   email: Scalars["String"];
@@ -311,11 +309,13 @@ export type Restaurant = {
   createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
   name: Scalars["String"];
+  notComingTicketDisapearDelay: Scalars["Float"];
   openAt?: Maybe<Scalars["DateTime"]>;
   picture?: Maybe<Scalars["String"]>;
   pole: Pole;
   table: Array<Table>;
   ticket: Array<Ticket>;
+  ticketWaitingLimit: Scalars["Float"];
   updatedAt?: Maybe<Scalars["DateTime"]>;
 };
 
@@ -393,6 +393,17 @@ export type UpdateUserPasswordWithTokenMutation = {
   updateUserPasswordWithToken: boolean;
 };
 
+export type UpdateUserPasswordMutationVariables = Exact<{
+  updateUserPasswordId: Scalars["ID"];
+  password: Scalars["String"];
+  newUserPassword: Scalars["String"];
+}>;
+
+export type UpdateUserPasswordMutation = {
+  __typename?: "Mutation";
+  updateUserPassword: { __typename?: "AppUser"; id: string };
+};
+
 export type MyProfileQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MyProfileQuery = {
@@ -402,8 +413,16 @@ export type MyProfileQuery = {
     id: string;
     email: string;
     role: string;
-    poles?: Array<{ __typename?: "Pole"; id: string; name: string }> | null;
-    restaurant?: { __typename?: "Restaurant"; id: string; name: string } | null;
+    restaurant?: {
+      __typename?: "Restaurant";
+      id: string;
+      name: string;
+      picture?: string | null;
+      ticketWaitingLimit: number;
+      notComingTicketDisapearDelay: number;
+      openAt?: any | null;
+      closeAt?: any | null;
+    } | null;
   };
 };
 
@@ -666,6 +685,28 @@ export type GetRestaurantsQuery = {
       email: string;
     };
   }>;
+};
+
+export type UpdateRestaurantMutationVariables = Exact<{
+  updateRestaurantId: Scalars["ID"];
+  ticketWaitingLimit: Scalars["Float"];
+  notComingTicketDisapearDelay: Scalars["Float"];
+  name: Scalars["String"];
+  picture?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type UpdateRestaurantMutation = {
+  __typename?: "Mutation";
+  updateRestaurant: {
+    __typename?: "Restaurant";
+    id: string;
+    name: string;
+    picture?: string | null;
+    ticketWaitingLimit: number;
+    notComingTicketDisapearDelay: number;
+    openAt?: any | null;
+    closeAt?: any | null;
+  };
 };
 
 export type UpdateRestaurantOpeningTimeMutationVariables = Exact<{
@@ -972,6 +1013,101 @@ export const UpdateUserPasswordWithTokenDocument = {
   UpdateUserPasswordWithTokenMutation,
   UpdateUserPasswordWithTokenMutationVariables
 >;
+export const UpdateUserPasswordDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateUserPassword" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "updateUserPasswordId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "password" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "newUserPassword" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateUserPassword" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "updateUserPasswordId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "password" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "password" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "newUserPassword" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "newUserPassword" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateUserPasswordMutation,
+  UpdateUserPasswordMutationVariables
+>;
 export const MyProfileDocument = {
   kind: "Document",
   definitions: [
@@ -993,23 +1129,35 @@ export const MyProfileDocument = {
                 { kind: "Field", name: { kind: "Name", value: "role" } },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "poles" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
                   name: { kind: "Name", value: "restaurant" },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "picture" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "ticketWaitingLimit" },
+                      },
+                      {
+                        kind: "Field",
+                        name: {
+                          kind: "Name",
+                          value: "notComingTicketDisapearDelay",
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "openAt" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "closeAt" },
+                      },
                     ],
                   },
                 },
@@ -2336,6 +2484,142 @@ export const GetRestaurantsDocument = {
     },
   ],
 } as unknown as DocumentNode<GetRestaurantsQuery, GetRestaurantsQueryVariables>;
+export const UpdateRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "updateRestaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ticketWaitingLimit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "notComingTicketDisapearDelay" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "picture" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "updateRestaurantId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ticketWaitingLimit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ticketWaitingLimit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "notComingTicketDisapearDelay" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "notComingTicketDisapearDelay" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "picture" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "picture" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "picture" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "ticketWaitingLimit" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "notComingTicketDisapearDelay" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "openAt" } },
+                { kind: "Field", name: { kind: "Name", value: "closeAt" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateRestaurantMutation,
+  UpdateRestaurantMutationVariables
+>;
 export const UpdateRestaurantOpeningTimeDocument = {
   kind: "Document",
   definitions: [

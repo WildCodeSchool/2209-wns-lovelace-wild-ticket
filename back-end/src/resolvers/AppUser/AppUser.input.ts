@@ -1,9 +1,9 @@
 import {
   Contains,
   IsEmail,
+  IsString,
   Matches,
   MaxLength,
-  MinLength,
 } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
 
@@ -13,15 +13,6 @@ const passwordRegExp = new RegExp(
 
 @ArgsType()
 export class UserCreationArgs {
-  @Field()
-  @MinLength(1, {
-    message: "Le login doit faire au moins un caractère de long.",
-  })
-  @MaxLength(255, {
-    message: "Le login doit faire au plus 255 caractères de long.",
-  })
-  login: string;
-
   @Field()
   @IsEmail({ message: "L'email rentré n'est pas au bon format." })
   @MaxLength(255, {
@@ -40,9 +31,6 @@ export class UserCreationArgs {
   @Contains("ROLE_")
   role: string;
 
-  @Field(() => [String], { nullable: true })
-  poles: string[];
-
   @Field({ nullable: true })
   restaurant: string;
 }
@@ -51,15 +39,6 @@ export class UserCreationArgs {
 export class UserUpdateArgs {
   @Field(() => ID)
   id: string;
-
-  @Field()
-  @MinLength(1, {
-    message: "Le login doit faire au moins un caractère de long.",
-  })
-  @MaxLength(255, {
-    message: "Le login doit faire au plus 255 caractères de long.",
-  })
-  login: string;
 
   @Field()
   @IsEmail({ message: "L'email rentré n'est pas au bon format." })
@@ -71,9 +50,6 @@ export class UserUpdateArgs {
   @Field()
   @Contains("ROLE_")
   role: string;
-
-  @Field(() => [String], { nullable: true })
-  poles: string[];
 
   @Field({ nullable: true })
   restaurant: string;
@@ -86,11 +62,15 @@ export class updateUserPasswordArgs {
   id: string;
 
   @Field()
+  @IsString()
+  password: string;
+
+  @Field()
   @Matches(passwordRegExp, {
     message:
       "Le mot de passe doit comporter au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.",
   })
-  password: string;
+  newUserPassword: string;
 }
 
 @ArgsType()
