@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import {
   UpdateTableMutation,
@@ -11,13 +11,17 @@ import { getErrorMessage } from "../../../utils";
 
 import "./ModalEditTable.scss";
 
-const ModalEditTable = ({ tableId }: { tableId: string }) => {
+const ModalEditTable = ({
+  tableId,
+  editModal,
+}: {
+  tableId: string;
+  editModal: any;
+}) => {
   const [editNumber, setEditNumber] = useState<number>(1);
   const [editSeats, setEditSeats] = useState<number>(2);
 
-  const showHideClassName = show ? "edit-table-modal display-block" : "edit-table-modal display-none";
-
-  console.log('get table id on modal edit table: ' + tableId)
+  console.log("get table id on modal edit table: " + tableId);
 
   const [updateTable] = useMutation<
     UpdateTableMutation,
@@ -42,6 +46,7 @@ const ModalEditTable = ({ tableId }: { tableId: string }) => {
   return (
     <div className="edit-table-modal">
       <form className="edit-table-form">
+        <h2>Modification d'une table</h2>
         <div className="edit-table-form-input">
           <label htmlFor="number">N° de table</label>
           <input
@@ -70,7 +75,20 @@ const ModalEditTable = ({ tableId }: { tableId: string }) => {
             }}
           />
         </div>
-        <button className="edit-table-form-button" onClick={submitEditTableForm}>Modifier</button>
+        <div className="form-buttons">
+          <button
+            className="edit-table-form-button"
+            onClick={submitEditTableForm}
+          >
+            Modifier
+          </button>
+          <button
+            className="edit-table-form-button-close"
+            onClick={() => editModal(false)}
+          >
+            Annuler
+          </button>
+        </div>
       </form>
     </div>
   );

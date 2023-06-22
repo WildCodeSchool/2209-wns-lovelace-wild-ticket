@@ -1,33 +1,34 @@
 @import "../../../index.scss";
 
-.modal {
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-  transition: all 0.3s ease-in-out;
-  pointer-events: none;
-}
+.edit-table-modal,
+.add-table-modal, .delete-table-modal {
+  width: 400px;
+  padding: 2rem;
+  position: absolute;
+  background-color: #e5e7eb;
+  border-radius: 10px;
+  top: 220px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
 
-
-.edit-table-modal {
-  border: 4px solid red;
-  width: 80%;
-  height: 100%;
-  padding: 3rem;
-
-  .edit-table-form {
-    border: 4px solid #000;
+  .edit-table-form,
+  .add-table-form, .delete-table-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    .edit-table-form-input {
+    align-items: center;
+
+    h2 {
+      margin: 0 0 2rem;
+    }
+
+    .delete-table-text {
+      font-size: 20px;
+      // text-align: center;
+      margin: 0 0 1.5rem;
+    }
+
+    .edit-table-form-input,
+    .add-table-form-input {
       width: 100%;
       label {
         font-size: 16px;
@@ -60,8 +61,18 @@
     input[type=number] {
       -moz-appearance: textfield;
     }
+  }
 
-    .edit-table-form-button {
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .edit-table-form-button,
+    .add-table-form-button,
+    .delete-table-form-button,
+    .edit-table-form-button-close,
+    .add-table-form-button-close, .delete-table-form-button-close {
       align-self: center;
       border: none;
       border-radius: 5px;
@@ -71,7 +82,9 @@
       font-weight: 600;
       cursor: pointer;
       height: 40px;
+      margin-top: 1.5rem;
       padding: 0 1.5rem;
+
       &:hover {
         background-color: $modal-button-hover-background-color;
       }

@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useMutation } from "@apollo/client";
 import {
   CreateTableMutation,
@@ -6,6 +6,7 @@ import {
 } from "../../../gql/graphql";
 import { CREATE_TABLE } from "../../../queries/Queries";
 import { AppContext } from "../../../context/AppContext";
+
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../../utils";
 
@@ -37,7 +38,7 @@ const ModalCreateTable = () => {
   };
 
   return (
-    <div>
+    <div className="add-table-modal">
       <form className="add-table-form" >
         <div className="add-table-form-input">
           <label htmlFor="number">N° de table</label>
@@ -63,8 +64,8 @@ const ModalCreateTable = () => {
             }}
           />
         </div>
+        <button className="add-table-form-button" onClick={submitAddTableForm}>Valider</button>
       </form>
-      <button onClick={submitAddTableForm}>Valider</button>
     </div>
   );
 };

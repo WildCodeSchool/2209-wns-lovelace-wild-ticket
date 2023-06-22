@@ -1,39 +1,31 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { DataTable, DataTableValueArray } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { GET_TABLES_BY_RESTAURANT } from "../../../queries/Queries";
 import { useQuery } from "@apollo/client";
+import { AppContext } from "../../../context/AppContext";
 import {
   TablesByRestaurantQuery,
   TablesByRestaurantQueryVariables,
 } from "../../../gql/graphql";
+import { GET_TABLES_BY_RESTAURANT } from "../../../queries/Queries";
 import { GET_TABLES_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
-import { AppContext } from "../../../context/AppContext";
 
 import SVGIconEdit from "../../SVG/SVGIconEdit/SVGIconEdit";
 import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
 
 const ListTables = ({
-  propTableId,
+  propTableId, editModal, deleteModal
 }: {
-  propTableId: (tableId: string) => Promise<void>;
+  propTableId: (tableId: string) => Promise<void>, editModal : any, deleteModal: any
 }) => {
   const appContext = useContext(AppContext);
   const restaurantId = appContext?.userData.restaurant.id;
-
-  const [showModal, setShowModal] = useState<boolean>(false);
-
-  const openModal = () => {
-    setShowModal((showModal) => !showModal);
-  };
 
   const [isClickable, setIsClickable] = useState<boolean>(true);
   const [seats, setSeats] = useState<number | null>(null);
   const [tables, setTables] = useState<
     GET_TABLES_BY_RESTAURANT_TYPES | undefined
   >(undefined);
-
-  console.log(tables);
 
   const { refetch: tablesRefetch } = useQuery<
     TablesByRestaurantQuery,
@@ -60,13 +52,14 @@ const ListTables = ({
       <div className="ListTabBodyRowActionsButtonContainer">
         <SVGIconEdit
           onClick={async () => {
-            openModal();
+            editModal(true);
             await propTableId(table.id as string);
           }}
           isClickable={isClickable}
         />
         <SVGIconDelete
           onClick={async () => {
+            deleteModal(true);
             await propTableId(table.id as string);
           }}
           isClickable={isClickable}
