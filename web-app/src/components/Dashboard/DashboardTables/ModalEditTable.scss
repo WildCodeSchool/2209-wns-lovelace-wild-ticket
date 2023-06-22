@@ -89,5 +89,9 @@
         background-color: $modal-button-hover-background-color;
       }
     }
+
+    .delete-table-form-button, .delete-table-form-button-close {
+      width: 125px;
+    }
   }
 }

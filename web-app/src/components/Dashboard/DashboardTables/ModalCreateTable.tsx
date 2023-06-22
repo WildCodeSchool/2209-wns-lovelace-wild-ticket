@@ -10,7 +10,7 @@ import { AppContext } from "../../../context/AppContext";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../../utils";
 
-const ModalCreateTable = () => {
+const ModalCreateTable = ({ setShowModal }: { setShowModal: any }) => {
   const appContext = useContext(AppContext);
   const restaurantId = appContext?.userData.restaurant.id;
 
@@ -39,7 +39,8 @@ const ModalCreateTable = () => {
 
   return (
     <div className="add-table-modal">
-      <form className="add-table-form" >
+      <form className="add-table-form">
+        <h2>Ajout d'une table</h2>
         <div className="add-table-form-input">
           <label htmlFor="number">N° de table</label>
           <input
@@ -64,7 +65,20 @@ const ModalCreateTable = () => {
             }}
           />
         </div>
-        <button className="add-table-form-button" onClick={submitAddTableForm}>Valider</button>
+        <div className="form-buttons">
+          <button
+            className="add-table-form-button"
+            onClick={submitAddTableForm}
+          >
+            Ajouter
+          </button>
+          <button
+            className="delete-table-form-button-close"
+            onClick={() => setShowModal(false)}
+          >
+            Annuler
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -16,18 +16,9 @@ const DashboardTable = () => {
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [tableId, setTableId] = useState<string>("");
-  const [arrayTable, setArrayTable] = useState<GET_TABLE_BY_ID_TYPES | null>(
-    null
-  );
-  
-  console.log('get table id: ' + tableId)
+ 
 
   const handleTableId = async (tableId: string) => {
-    // await getTablebyId({
-    //   variables: {
-    //     tableId: tableId as string,
-    //   },
-    // });
     setTableId(tableId)
   };
 
@@ -40,13 +31,14 @@ const DashboardTable = () => {
       },
     }
   );
+
   return (
     <div className="DashboardMain">
       <div className="DashboardContent">
         <div className="AddBtnSection">
           <button className="add-table-button" onClick={() => setShowModal(true)} >Ajout d'une table</button>
         </div>
-        {showModal && <ModalCreateTable/>}
+        {showModal && <ModalCreateTable setShowModal={setShowModal}/>}
         {showEditModal && <ModalEditTable tableId={tableId as string} editModal={setShowEditModal} />}
         {showDeleteModal && <ModalDeleteTable tableId={tableId as string} deleteModal={setShowDeleteModal}/>}
 
