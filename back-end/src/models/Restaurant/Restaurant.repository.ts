@@ -7,6 +7,7 @@ import RestaurantFixtures, {
   RestaurantFixturesType,
 } from "../../DataFixtures/RestaurantFixtures";
 import DateUpdates from "../../services/DateUpdates";
+import TicketRepository from "../Ticket/Ticket.repository";
 
 export default class RestaurantRepository extends RestaurantDb {
   static async initializeRestaurants(): Promise<void> {
@@ -23,6 +24,7 @@ export default class RestaurantRepository extends RestaurantDb {
           lyonPole,
           restaurant.createdAt,
           restaurant.ticketWaitingLimit,
+          restaurant.notComingTicketDisapearDelay,
           undefined,
           restaurant.openAt,
           restaurant.closeAt,
@@ -76,6 +78,7 @@ export default class RestaurantRepository extends RestaurantDb {
     name: string,
     picture: string | undefined,
     ticketWaitingLimit: number,
+    notComingTicketDisapearDelay: number,
     idPole: string
   ): Promise<Restaurant> {
     const pole = (await PoleRepository.getPoleById(idPole)) as Pole;
@@ -94,6 +97,7 @@ export default class RestaurantRepository extends RestaurantDb {
       pole,
       createdAt,
       ticketWaitingLimit,
+      notComingTicketDisapearDelay,
       undefined,
       openAt,
       closeAt,
@@ -107,7 +111,8 @@ export default class RestaurantRepository extends RestaurantDb {
     id: string,
     name: string,
     picture: string | undefined,
-    ticketWaitingLimit: number
+    ticketWaitingLimit: number,
+    notComingTicketDisapearDelay: number
   ): Promise<
     {
       id: string;
@@ -120,12 +125,32 @@ export default class RestaurantRepository extends RestaurantDb {
       throw new Error("Aucun restaurant ne correspond à cet ID.");
     }
 
+    const existingTicketWaitingLimit = existingRestaurant.ticketWaitingLimit;
+    const existingNotComingTicketDisapearDelay =
+      existingRestaurant.notComingTicketDisapearDelay;
+
+    if (
+      existingTicketWaitingLimit !== ticketWaitingLimit ||
+      existingNotComingTicketDisapearDelay !== notComingTicketDisapearDelay
+    ) {
+      const countTodayTickets =
+        await TicketRepository.getCountTicketsByRestaurantSinceMidnight(id);
+      console.log(countTodayTickets);
+
+      if (countTodayTickets && countTodayTickets > 0) {
+        throw new Error(
+          "Impossible de modifier ces délais en cours de journée."
+        );
+      }
+    }
+
     const updatedAt = new Date();
 
     return this.repository.save({
       id,
       name,
       ticketWaitingLimit,
+      notComingTicketDisapearDelay,
       updatedAt: updatedAt,
       picture,
     });

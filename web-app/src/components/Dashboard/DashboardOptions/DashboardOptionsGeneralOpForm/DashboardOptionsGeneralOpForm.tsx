@@ -16,9 +16,11 @@ const DashboardOptionsGeneralOpForm = () => {
   const restaurantId = userData?.restaurant?.id;
   const restaurantName = userData?.restaurant.name;
   const restaurantPicture = userData?.restaurant.picture;
-  const [ticketWaitingLimit, setTicketWaitingLimit] = useState<number>(
+  const [ticketWaitingLimit, setTicketWaitingLimit] = useState<string>(
     userData?.restaurant?.ticketWaitingLimit
   );
+  const [notComingTicketDisapearDelay, setNotComingTicketDisapearDelay] =
+    useState<string>(userData?.restaurant?.notComingTicketDisapearDelay);
 
   const [updateRestaurant] = useMutation<
     UpdateRestaurantMutation,
@@ -27,7 +29,8 @@ const DashboardOptionsGeneralOpForm = () => {
     notifyOnNetworkStatusChange: true,
     variables: {
       updateRestaurantId: restaurantId,
-      ticketWaitingLimit: ticketWaitingLimit,
+      ticketWaitingLimit: parseInt(ticketWaitingLimit),
+      notComingTicketDisapearDelay: parseInt(notComingTicketDisapearDelay),
       name: restaurantName,
       picture: restaurantPicture,
     },
@@ -37,8 +40,27 @@ const DashboardOptionsGeneralOpForm = () => {
     },
     onError: (error) => {
       toast.error(error.message);
+      appContext?.refetch();
     },
   });
+
+  const handleTicketWaitingLimitChange = (e: any) => {
+    if (parseInt(e.target.value) <= 0 || isNaN(parseInt(e.target.value))) {
+      setTicketWaitingLimit("0");
+      return;
+    }
+    let value = parseInt(e.target.value).toString();
+    setTicketWaitingLimit(value);
+  };
+
+  const handleNotComingTicketDisapearDelayChange = (e: any) => {
+    if (parseInt(e.target.value) <= 0 || isNaN(parseInt(e.target.value))) {
+      setNotComingTicketDisapearDelay("0");
+      return;
+    }
+    let value = parseInt(e.target.value).toString();
+    setNotComingTicketDisapearDelay(value);
+  };
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -49,7 +71,12 @@ const DashboardOptionsGeneralOpForm = () => {
     <div className="DashboardOptionsContainer">
       <div className="DashboardOptionsTitleContainer">
         <i className="pi pi-ticket DashboardOptionsTitleIcon" />
-        <p className="DashboardOptionsTitleText">Tickets</p>
+        <p className="DashboardOptionsTitleText">
+          Tickets{" "}
+          <span style={{ fontSize: "14px" }}>
+            (modifiable en début de journée uniquement.)
+          </span>
+        </p>
       </div>
       <form
         onSubmit={(e) => {
@@ -62,18 +89,44 @@ const DashboardOptionsGeneralOpForm = () => {
             className="DashboardOptionsFormTextLabel"
             htmlFor="maxDelayTicket"
           >
-            Délai maximal (en mn)
+            Délai maximal
           </label>
-          <input
-            id="maxDelayTicket"
-            className="DashboardOptionsFormTextInput"
-            type="number"
-            min="0"
-            required
-            value={ticketWaitingLimit}
-            onChange={(e) => setTicketWaitingLimit(parseInt(e.target.value))}
-          />
+          <div style={{ width: "60%" }}>
+            <input
+              id="maxDelayTicket"
+              name="maxDelayTicket"
+              className="DashboardOptionsFormTextInput"
+              style={{ width: "100%" }}
+              type="number"
+              min="0"
+              required
+              value={ticketWaitingLimit}
+              onChange={(e) => handleTicketWaitingLimitChange(e)}
+            />
+          </div>
         </div>
+        <div className="DashboardOptionsFormTextInputContainer">
+          <label
+            className="DashboardOptionsFormTextLabel"
+            htmlFor="notComingTicketDisapearDelay"
+          >
+            Délai disparition ticket
+          </label>
+          <div style={{ width: "60%" }}>
+            <input
+              id="notComingTicketDisapearDelay"
+              name="notComingTicketDisapearDelay"
+              className="DashboardOptionsFormTextInput"
+              style={{ width: "100%" }}
+              type="number"
+              min="0"
+              required
+              value={notComingTicketDisapearDelay}
+              onChange={(e) => handleNotComingTicketDisapearDelayChange(e)}
+            />
+          </div>
+        </div>
+
         <button className="DashboardOptionsFormButton" style={{ width: "20%" }}>
           Modifier
         </button>

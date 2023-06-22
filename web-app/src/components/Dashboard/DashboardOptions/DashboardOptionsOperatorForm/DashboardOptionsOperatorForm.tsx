@@ -69,6 +69,7 @@ const DashboardOptionsOperatorForm = () => {
           </label>
           <input
             id="currentPassword"
+            name="currentPassword"
             className="DashboardOptionsFormTextInput"
             type="password"
             required
@@ -86,6 +87,7 @@ const DashboardOptionsOperatorForm = () => {
           <div style={{ width: "60%" }}>
             <input
               id="newPassword"
+              name="newPassword"
               style={{ width: "100%" }}
               className="DashboardOptionsFormTextInput"
               type="password"
@@ -105,6 +107,7 @@ const DashboardOptionsOperatorForm = () => {
           </label>
           <input
             id="newPasswordConfirm"
+            name="newPasswordConfirm"
             className="DashboardOptionsFormTextInput"
             type="password"
             required

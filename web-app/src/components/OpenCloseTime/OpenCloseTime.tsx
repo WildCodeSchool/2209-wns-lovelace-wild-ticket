@@ -15,7 +15,6 @@ import { toast } from "react-toastify";
 
 const OpenCloseTime = () => {
   const appContext = useContext(AppContext);
-  //UPDATE OPENING AND CLOSED TIME
   const [openAt, setOpenAt] = React.useState<Date | null>(
     new Date(appContext?.userData.restaurant.openAt)
   );
@@ -73,7 +72,7 @@ const OpenCloseTime = () => {
               editable={true}
               onChange={(open) => setOpenAt(open)}
               value={
-                openAt != null && openAt.getDate === new Date().getDate
+                openAt != null && openAt.getDate() === new Date().getDate()
                   ? openAt
                   : null
               }
@@ -93,7 +92,7 @@ const OpenCloseTime = () => {
               editable={true}
               onChange={(close) => setClosedAt(close)}
               value={
-                closedAt != null && closedAt.getDate === new Date().getDate
+                closedAt != null && closedAt.getDate() === new Date().getDate()
                   ? closedAt
                   : null
               }

@@ -53,6 +53,7 @@ describe("TicketRepository integration", () => {
               "restaurant",
               undefined,
               5,
+              2,
               pole.id
             );
 
@@ -77,6 +78,7 @@ describe("TicketRepository integration", () => {
               "restaurant",
               undefined,
               5,
+              2,
               pole.id
             );
 
@@ -117,6 +119,7 @@ describe("TicketRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -143,6 +146,7 @@ describe("TicketRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -160,7 +164,7 @@ describe("TicketRepository integration", () => {
       });
     });
     describe("when a restaurant and a ticket extists", () => {
-      it("a closedAt must be present at t + 15mn", async () => {
+      it("a closedAt must be present", async () => {
         const pole = await PoleRepository.createPole(
           "Pôle de Lyon",
           "rue de la Poste",
@@ -173,6 +177,7 @@ describe("TicketRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -193,7 +198,7 @@ describe("TicketRepository integration", () => {
 
         const closedAt = DateUpdates.addMinutesToDate(
           deliveredTicket.deliveredAt as Date,
-          15
+          restaurant.ticketWaitingLimit
         );
 
         expect(deliveredTicket.closedAt).toEqual(closedAt);
@@ -225,6 +230,7 @@ describe("TicketRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -281,6 +287,7 @@ describe("TicketRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 

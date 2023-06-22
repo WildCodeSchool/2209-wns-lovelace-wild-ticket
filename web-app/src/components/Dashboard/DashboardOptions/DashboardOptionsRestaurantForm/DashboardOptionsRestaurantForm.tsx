@@ -9,7 +9,7 @@ import {
 } from "../../../../gql/graphql";
 import { UPDATE_RESTAURANT } from "../../../../queries/Queries";
 import { toast } from "react-toastify";
-import { validateAndConvertImageToBase64 } from "../../../../services/ImageService";
+import ImageService from "../../../../services/ImageService";
 
 const DashboardOptionsRestaurantForm = () => {
   const appContext = useContext(AppContext);
@@ -18,6 +18,8 @@ const DashboardOptionsRestaurantForm = () => {
   const restaurantName = userData?.restaurant.name;
   const restaurantPicture = userData?.restaurant.picture;
   const ticketWaitingLimit = userData?.restaurant.ticketWaitingLimit;
+  const notComingTicketDisapearDelay =
+    userData?.restaurant.notComingTicketDisapearDelay;
   const [updatedRestaurantName, setUpdatedRestaurantName] =
     useState<string>(restaurantName);
   const [updatedRestaurantPicture, setUpdatedRestaurantPicture] =
@@ -31,6 +33,7 @@ const DashboardOptionsRestaurantForm = () => {
     variables: {
       updateRestaurantId: restaurantId,
       ticketWaitingLimit: ticketWaitingLimit,
+      notComingTicketDisapearDelay: notComingTicketDisapearDelay,
       name: updatedRestaurantName,
       picture: updatedRestaurantPicture,
     },
@@ -45,14 +48,17 @@ const DashboardOptionsRestaurantForm = () => {
 
   const convertImage = (e: any) => {
     const file = e.target.files[0];
-    validateAndConvertImageToBase64(file, (error: any, base64Image: any) => {
-      if (error) {
-        toast.error(error);
-        e.target.value = null;
-      } else {
-        setUpdatedRestaurantPicture(base64Image);
+    ImageService.validateAndConvertImageToBase64(
+      file,
+      (error: any, base64Image: any) => {
+        if (error) {
+          toast.error(error);
+          e.target.value = null;
+        } else {
+          setUpdatedRestaurantPicture(base64Image);
+        }
       }
-    });
+    );
   };
 
   const handleSubmit = async (e: any) => {
@@ -77,6 +83,7 @@ const DashboardOptionsRestaurantForm = () => {
           </label>
           <input
             id="name"
+            name="name"
             className="DashboardOptionsFormTextInput"
             type="text"
             autoComplete="off"
@@ -92,6 +99,7 @@ const DashboardOptionsRestaurantForm = () => {
           <div className="DashboardOptionsFormFileInputImage">
             <input
               id="picture"
+              name="picture"
               className="DashboardOptionsFormFileInput"
               type="file"
               accept="image/*"

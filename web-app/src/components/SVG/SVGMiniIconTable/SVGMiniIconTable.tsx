@@ -1,4 +1,3 @@
-import React from "react";
 import { HEADER_ICON_PARAMS_TYPE } from "../../../constants/Constants";
 
 export default function SVGMiniIconTable({

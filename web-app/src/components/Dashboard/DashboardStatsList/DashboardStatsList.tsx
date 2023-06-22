@@ -6,7 +6,7 @@ import {
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../context/AppContext";
 import { InfinitySpin } from "react-loader-spinner";
 import DashboardStatsExportModal from "../DashboardStatsExportModal/DashboardStatsExportModal";
@@ -21,9 +21,9 @@ import {
   EXPORT_TICKETS_BY_RESTAURANT,
   GET_PAGINATED_AND_SORTED_TICKETS_BY_RESTAURANT,
 } from "../../../queries/Queries";
-import { exportTickets } from "../../../services/ExportService";
+import ExportService from "../../../services/ExportService";
 import { toast } from "react-toastify";
-import { changeDateFormat } from "../../../services/DateService";
+import DateService from "../../../services/DateService";
 import "primeicons/primeicons.css";
 import "./DashboardStatsList.scss";
 import {
@@ -118,7 +118,7 @@ const DashboardStatsList = () => {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       if (data.ExportTicketsByRestaurant) {
-        exportTickets(
+        ExportService.exportTickets(
           data.ExportTicketsByRestaurant,
           exportTypeFile,
           restaurantName
@@ -151,38 +151,32 @@ const DashboardStatsList = () => {
     setOpenExportModal(false);
   };
 
+  const updateDataTableRows = useCallback((): void => {
+    const width = window.innerWidth;
+    const isPortraitTablet = width < 768;
+    const isLargeDesktop = width >= 1200;
+
+    setIsPortraitTabletView(isPortraitTablet);
+
+    setlazyState((prevState: DATA_TABLE_LAZY_STATE_TYPES) => ({
+      ...prevState,
+      rows: isPortraitTablet ? 18 : isLargeDesktop ? 15 : 11,
+    }));
+  }, [setIsPortraitTabletView, setlazyState]);
+
   useEffect(() => {
-    const updateDataTableRows = (): void => {
-      const width = window.innerWidth;
-
-      if (width < 768) {
-        setIsPortraitTabletView(true);
-        setlazyState((prevState: DATA_TABLE_LAZY_STATE_TYPES) => ({
-          ...prevState,
-          rows: 18,
-        }));
-      } else if (width < 1100) {
-        setIsPortraitTabletView(false);
-      } else if (width < 1200) {
-        setlazyState((prevState: DATA_TABLE_LAZY_STATE_TYPES) => ({
-          ...prevState,
-          rows: 11,
-        }));
-      } else {
-        setIsPortraitTabletView(false);
-        setlazyState((prevState: DATA_TABLE_LAZY_STATE_TYPES) => ({
-          ...prevState,
-          rows: 15,
-        }));
-      }
-    };
-
     updateDataTableRows();
-    window.addEventListener("resize", updateDataTableRows);
-    return () => {
-      window.removeEventListener("resize", updateDataTableRows);
+
+    const handleResize = () => {
+      updateDataTableRows();
     };
-  }, []);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [updateDataTableRows]);
 
   const header = (
     <div className="DashboardStatsListHeader">
@@ -190,6 +184,8 @@ const DashboardStatsList = () => {
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
           <InputText
+            id="nameFilter"
+            name="nameFilter"
             autoFocus
             className="DashboardStatsListHeaderSearchInput"
             value={lazyState.globalFilter}
@@ -273,27 +269,43 @@ const DashboardStatsList = () => {
               dataType="string"
               header="Crée le"
               sortable
-              body={(ticket) => changeDateFormat(ticket.createdAt)}
+              body={(ticket) =>
+                DateService.changeDateToStringFormatWithDateAndHours(
+                  ticket.createdAt
+                )
+              }
             ></Column>
             <Column
               field="deliveredAt"
               header="Délivré le"
               sortable
-              body={(ticket) => changeDateFormat(ticket.deliveredAt)}
+              body={(ticket) =>
+                DateService.changeDateToStringFormatWithDateAndHours(
+                  ticket.deliveredAt
+                )
+              }
               hidden={isPortraitTabletView === true ? true : false}
             ></Column>
             <Column
               field="placedAt"
               header="Placé le"
               sortable
-              body={(ticket) => changeDateFormat(ticket.placedAt)}
+              body={(ticket) =>
+                DateService.changeDateToStringFormatWithDateAndHours(
+                  ticket.placedAt
+                )
+              }
               hidden={isPortraitTabletView === true ? true : false}
             ></Column>
             <Column
               field="closedAt"
               header="Clos le"
               sortable
-              body={(ticket) => changeDateFormat(ticket.closedAt)}
+              body={(ticket) =>
+                DateService.changeDateToStringFormatWithDateAndHours(
+                  ticket.closedAt
+                )
+              }
               hidden={isPortraitTabletView === true ? true : false}
             ></Column>
           </DataTable>

@@ -28,6 +28,8 @@ const DashboardStatsExportModal = ({
     >
       <h1 className="dashboardStatsListModalTitle">Sélectionnez vos dates</h1>
       <DateRangePicker
+        id="dateRange"
+        name="dateRange"
         format="dd-MM-yyyy"
         shouldDisableDate={(date) => isAfter(date, new Date())}
         onChange={(value) => setValue(value)}

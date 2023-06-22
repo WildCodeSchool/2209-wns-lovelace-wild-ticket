@@ -5,8 +5,6 @@ import { hashSync, compareSync } from "bcryptjs";
 import SessionRepository from "./Session.repository";
 import Session from "./Session.entity";
 import { AppUserFixtures } from "../../DataFixtures/AppUserFixtures";
-import PoleRepository from "../Pole/Pole.repository";
-import Pole from "../Pole/Pole.entity";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import Restaurant from "../Restaurant/Restaurant.entity";
 import EmailService from "../../services/EmailService";
@@ -22,16 +20,7 @@ export default class AppUserRepository extends AppUserDb {
       AppUserFixtures.map(async (appUser) => {
         const appUserPassword = hashSync(appUser.password);
         const appUserCreationDate = new Date(appUser.createdAt);
-        let appUserPoles = [];
         let appUserRestaurant = undefined;
-
-        if (appUser.poles) {
-          for (const pole of appUser.poles) {
-            appUserPoles.push(
-              (await PoleRepository.getPoleByName(pole)) as Pole
-            );
-          }
-        }
 
         if (appUser.restaurant) {
           appUserRestaurant = (await RestaurantRepository.getRestaurantByName(
@@ -40,13 +29,11 @@ export default class AppUserRepository extends AppUserDb {
         }
 
         const newAppUser = new AppUser(
-          appUser.login,
           appUser.email,
           appUserPassword,
           appUser.role,
           appUserCreationDate,
-          appUserRestaurant,
-          appUserPoles
+          appUserRestaurant
         );
 
         await this.repository.save(newAppUser);
@@ -91,22 +78,13 @@ export default class AppUserRepository extends AppUserDb {
   }
 
   static async createUser(
-    login: string,
     email: string,
     password: string,
     role: string,
-    poles: string[],
     restaurant: string
   ): Promise<AppUser> {
     const createdAt = new Date();
-    let appUserPoles = [];
     let appUserRestaurant = undefined;
-
-    if (poles) {
-      for (const pole of poles) {
-        appUserPoles.push((await PoleRepository.getPoleById(pole)) as Pole);
-      }
-    }
 
     if (restaurant) {
       appUserRestaurant = (await RestaurantRepository.getRestaurantById(
@@ -115,13 +93,11 @@ export default class AppUserRepository extends AppUserDb {
     }
 
     const newAppUser = new AppUser(
-      login,
       email,
       password,
       role,
       createdAt,
-      appUserRestaurant,
-      appUserPoles
+      appUserRestaurant
     );
 
     return await this.repository.save(newAppUser);
@@ -129,23 +105,14 @@ export default class AppUserRepository extends AppUserDb {
 
   static async updateUser(
     id: string,
-    login: string,
     email: string,
     role: string,
-    poles: string[],
     restaurant: string
   ): Promise<AppUser> {
     const userToUpdate = await this.getUserById(id);
 
     const updatedAt = new Date();
-    let appUserPoles = [];
     let appUserRestaurant = undefined;
-
-    if (poles) {
-      for (const pole of poles) {
-        appUserPoles.push((await PoleRepository.getPoleById(pole)) as Pole);
-      }
-    }
 
     if (restaurant) {
       appUserRestaurant = (await RestaurantRepository.getRestaurantById(
@@ -155,11 +122,9 @@ export default class AppUserRepository extends AppUserDb {
 
     return this.repository.save({
       id: id,
-      login: login,
       email: email,
       role: role,
       updatedAt: updatedAt,
-      poles: appUserPoles,
       restaurant: appUserRestaurant,
     });
   }
@@ -289,10 +254,8 @@ export default class AppUserRepository extends AppUserDb {
     const user = await this.getUserByEmailAddress(email);
 
     let userId = "";
-    let userLogin = "";
     if (user) {
       userId = user.id;
-      userLogin = user.login;
     }
 
     // Generate token
@@ -302,12 +265,11 @@ export default class AppUserRepository extends AppUserDb {
     await this.updateUserToken(userId, token);
 
     // Construct email
-    const recipientName = userLogin;
     const subject = "Réinitialisation de votre mot de passe";
     const link = `http://localhost:3000/update-password/?token=${token}`;
-    const text = `Bonjour ${recipientName},\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.\n\n${link}`;
-    const html = `<p>Bonjour ${recipientName},<br /><br />Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.<br /><br /><a href="${link}">${link}</a></a></p>`;
+    const text = `Bonjour,\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.\n\n${link}`;
+    const html = `<p>Bonjour,<br /><br />Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.<br /><br /><a href="${link}">${link}</a></a></p>`;
     // Send email
-    await EmailService.sendEmail(email, recipientName, subject, text, html);
+    await EmailService.sendEmail(email, subject, text, html);
   }
 }

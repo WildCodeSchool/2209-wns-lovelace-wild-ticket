@@ -19,7 +19,7 @@ const DashboardRestaurant = () => {
       }
     },
   });
-  console.log(restaurants);
+
   return (
     <section className="DashboardRestaurantSection">
       <header className="DashboardRestaurantHeader">

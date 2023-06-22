@@ -52,18 +52,14 @@ export const MY_PROFILE = gql`
   query MyProfile {
     myProfile {
       id
-      login
       email
       role
-      poles {
-        id
-        name
-      }
       restaurant {
         id
         name
         picture
         ticketWaitingLimit
+        notComingTicketDisapearDelay
         openAt
         closeAt
       }
@@ -390,12 +386,14 @@ export const UPDATE_RESTAURANT = gql`
   mutation UpdateRestaurant(
     $updateRestaurantId: ID!
     $ticketWaitingLimit: Float!
+    $notComingTicketDisapearDelay: Float!
     $name: String!
     $picture: String
   ) {
     updateRestaurant(
       id: $updateRestaurantId
       ticketWaitingLimit: $ticketWaitingLimit
+      notComingTicketDisapearDelay: $notComingTicketDisapearDelay
       name: $name
       picture: $picture
     ) {
@@ -403,6 +401,7 @@ export const UPDATE_RESTAURANT = gql`
       name
       picture
       ticketWaitingLimit
+      notComingTicketDisapearDelay
       openAt
       closeAt
     }
