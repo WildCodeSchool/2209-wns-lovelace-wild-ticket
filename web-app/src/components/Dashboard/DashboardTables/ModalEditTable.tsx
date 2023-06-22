@@ -9,9 +9,13 @@ import { UPDATE_TABLE } from "../../../queries/Queries";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../../utils";
 
+import "./ModalEditTable.scss";
+
 const ModalEditTable = ({ tableId }: { tableId: string }) => {
   const [editNumber, setEditNumber] = useState<number>(1);
   const [editSeats, setEditSeats] = useState<number>(2);
+
+  const showHideClassName = show ? "edit-table-modal display-block" : "edit-table-modal display-none";
 
   console.log('get table id on modal edit table: ' + tableId)
 
@@ -36,7 +40,7 @@ const ModalEditTable = ({ tableId }: { tableId: string }) => {
   };
 
   return (
-    <div>
+    <div className="edit-table-modal">
       <form className="edit-table-form">
         <div className="edit-table-form-input">
           <label htmlFor="number">N° de table</label>
@@ -45,6 +49,7 @@ const ModalEditTable = ({ tableId }: { tableId: string }) => {
             required
             id="number"
             name="number"
+            min="0"
             value={editNumber}
             onChange={(event) => {
               setEditNumber(event.target.valueAsNumber);
@@ -58,13 +63,14 @@ const ModalEditTable = ({ tableId }: { tableId: string }) => {
             required
             id="seats"
             name="seats"
+            min="0"
             value={editSeats}
             onChange={(event) => {
               setEditSeats(event.target.valueAsNumber);
             }}
           />
         </div>
-        <button onClick={submitEditTableForm}>Valider</button>
+        <button className="edit-table-form-button" onClick={submitEditTableForm}>Modifier</button>
       </form>
     </div>
   );

@@ -40,7 +40,7 @@ const DashboardTable = () => {
         <div className="AddBtnSection">
           <button className="AddBtn">Ajout d'une table</button>
         </div>
-        <ModalCreateTable />
+        <ModalCreateTable/>
         <ModalEditTable tableId={tableId as string} />
         <ModalDeleteTable tableId={tableId as string}/>
         <TabTables propTableId={handleTableId} />
