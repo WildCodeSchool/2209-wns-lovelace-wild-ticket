@@ -11,8 +11,7 @@ export default function DashboardRestaurantListTab({
   isClickable,
   editRestaurantForm,
   confirmDelete,
-}: 
-{
+}: {
   restaurants: any;
   isClickable: boolean;
   editRestaurantForm: any;

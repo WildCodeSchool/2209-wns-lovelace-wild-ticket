@@ -153,8 +153,10 @@ const DashboardRestaurant = () => {
   // Suppression d'un restaurant
   const [restaurantId, setRestaurantId] = useState<string>("");
   const [restaurantName, setRestaurantName] = useState<string>("");
-  const [openConfirmDeleteRestaurantModal, setOpenConfirmDeleteRestaurantModal] =
-    useState<boolean>(false);
+  const [
+    openConfirmDeleteRestaurantModal,
+    setOpenConfirmDeleteRestaurantModal,
+  ] = useState<boolean>(false);
   const [deleteRestaurant] = useMutation<
     DeleteRestaurantMutation,
     DeleteRestaurantMutationVariables
@@ -169,8 +171,12 @@ const DashboardRestaurant = () => {
 
   const confirmDeleteRestaurant = async () => {
     try {
-      await deleteRestaurant({ variables: { deleteRestaurantId: restaurantId } });
-      toast.success(`Vous avez supprimé le pôle "${restaurantName}" avec succès.`);
+      await deleteRestaurant({
+        variables: { deleteRestaurantId: restaurantId },
+      });
+      toast.success(
+        `Vous avez supprimé le pôle "${restaurantName}" avec succès.`
+      );
       refetch();
     } catch (error) {
       toast.error(getErrorMessage(error));
