@@ -64,6 +64,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Nom"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           field="address"
@@ -71,6 +72,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Adresse"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           field="zipCode"
@@ -78,6 +80,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Code Postal"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           field="city"
@@ -85,6 +88,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Ville"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           field="email"
@@ -92,6 +96,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Email"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           header="Actions"

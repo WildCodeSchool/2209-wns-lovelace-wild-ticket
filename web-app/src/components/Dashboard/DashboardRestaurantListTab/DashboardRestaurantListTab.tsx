@@ -62,7 +62,7 @@ export default function DashboardPoleListTab({
         tableStyle={{ minWidth: "50rem" }}
         size="small"
         paginator
-        rows={5}
+        rows={10}
         rowsPerPageOptions={[5, 10, 20, 50]}
         dataKey="id"
         filters={filters}
@@ -74,6 +74,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Nom"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           header="Logo"
@@ -86,6 +87,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Pôle"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           header="Actions"
