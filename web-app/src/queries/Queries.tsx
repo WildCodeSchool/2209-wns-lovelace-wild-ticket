@@ -384,21 +384,9 @@ export const UPDATE_RESTAURANTS_TIME = gql`
 `;
 
 export const CREATE_RESTAURANT = gql`
-  mutation CreateRestaurant($name: String!, $pole: ID!, $picture: String) {
-    createRestaurant(name: $name, pole: $pole, picture: $picture) {
-      id
-    }
+  mutation CreateRestaurant($name: String!, $notComingTicketDisapearDelay: Float!, $pole: ID!, $ticketWaitingLimit: Float!, $picture: String) {
+  createRestaurant(name: $name, notComingTicketDisapearDelay: $notComingTicketDisapearDelay, pole: $pole, ticketWaitingLimit: $ticketWaitingLimit, picture: $picture) {
+    id
   }
-`;
-
-export const UPDATE_RESTAURANT = gql`
-  mutation UpdateRestaurant(
-    $updateRestaurantId: ID!
-    $name: String!
-    $picture: String
-  ) {
-    updateRestaurant(id: $updateRestaurantId, name: $name, picture: $picture) {
-      id
-    }
-  }
+}
 `;
