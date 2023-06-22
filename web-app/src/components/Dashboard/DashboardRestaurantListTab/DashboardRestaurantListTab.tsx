@@ -6,16 +6,17 @@ import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
 import { useState } from "react";
 import { FilterMatchMode } from "primereact/api";
 
-export default function DashboardPoleListTab({
+export default function DashboardRestaurantListTab({
   restaurants,
   isClickable,
   editRestaurantForm,
-}: /* confirmDelete, */
+  confirmDelete,
+}: 
 {
   restaurants: any;
   isClickable: boolean;
   editRestaurantForm: any;
-  /* confirmDelete: (pole: GET_POLE_TYPES) => Promise<void>; */
+  confirmDelete: (restaurant: GET_RESTAURANT_TYPES) => Promise<void>;
 }) {
   const actionButton = (restaurant: GET_RESTAURANT_TYPES) => {
     return (
@@ -26,12 +27,12 @@ export default function DashboardPoleListTab({
           }}
           isClickable={isClickable}
         />
-        {/* <SVGIconDelete
+        <SVGIconDelete
           onClick={async () => {
-            await confirmDelete(pole);
+            await confirmDelete(restaurant);
           }}
           isClickable={isClickable}
-        /> */}
+        />
       </div>
     );
   };

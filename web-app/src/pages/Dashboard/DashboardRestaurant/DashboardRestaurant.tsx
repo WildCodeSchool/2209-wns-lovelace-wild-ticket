@@ -11,6 +11,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import {
   CreateRestaurantMutation,
   CreateRestaurantMutationVariables,
+  DeleteRestaurantMutation,
+  DeleteRestaurantMutationVariables,
   GetRestaurantsQuery,
   PolesQuery,
   UpdateRestaurantMutation,
@@ -18,6 +20,7 @@ import {
 } from "../../../gql/graphql";
 import {
   CREATE_RESTAURANT,
+  DELETE_RESTAURANT,
   GET_POLES,
   GET_RESTAURANTS,
   UPDATE_RESTAURANT,
@@ -147,6 +150,34 @@ const DashboardRestaurant = () => {
     }
   };
 
+  // Suppression d'un restaurant
+  const [restaurantId, setRestaurantId] = useState<string>("");
+  const [restaurantName, setRestaurantName] = useState<string>("");
+  const [openConfirmDeleteRestaurantModal, setOpenConfirmDeleteRestaurantModal] =
+    useState<boolean>(false);
+  const [deleteRestaurant] = useMutation<
+    DeleteRestaurantMutation,
+    DeleteRestaurantMutationVariables
+  >(DELETE_RESTAURANT);
+
+  const confirmDelete = async (restaurant: GET_RESTAURANT_TYPES) => {
+    setRestaurantId(restaurant?.id as string);
+    setRestaurantName(restaurant?.name as string);
+    setOpenConfirmDeleteRestaurantModal(true);
+    setIsClickable(false);
+  };
+
+  const confirmDeleteRestaurant = async () => {
+    try {
+      await deleteRestaurant({ variables: { deleteRestaurantId: restaurantId } });
+      toast.success(`Vous avez supprimé le pôle "${restaurantName}" avec succès.`);
+      refetch();
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  // Rendu de la page
   return (
     <section className="DashboardRestaurantSection">
       <header className="DashboardRestaurantHeader">
@@ -163,38 +194,11 @@ const DashboardRestaurant = () => {
         </div>
       </header>
       <main className="DashboardRestaurantList">
-        {/*         {
-          <table className="ListTab">
-            <thead className="ListTabHeader">
-              <tr className="ListTabHeaderRow">
-                <td>Nom</td>
-                <td>Logo</td>
-                <td>Pôle</td>
-              </tr>
-            </thead>
-            <tbody className="ListTabBody">
-              {restaurants &&
-                restaurants.map((restaurant) => (
-                  <tr className="ListTabBodyRow">
-                    <td>{restaurant.name}</td>
-                    <td>
-                      {restaurant.picture ? (
-                        <img src={restaurant.picture} alt={restaurant.name} />
-                      ) : (
-                        "Pas d'image"
-                      )}
-                    </td>
-                    <td>{restaurant.pole?.name}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        } */}
         <DashboardRestaurantListTab
           restaurants={restaurants}
           isClickable={isClickable}
           editRestaurantForm={editRestaurantForm}
-          /* confirmDelete={confirmDelete} */
+          confirmDelete={confirmDelete}
         />
       </main>
 
@@ -343,6 +347,40 @@ const DashboardRestaurant = () => {
             }}
           >
             Annuler
+          </button>
+        </div>
+      </div>
+
+      {/* Modal de confirmation de suppression d'un restaurant */}
+      <div
+        className={
+          openConfirmDeleteRestaurantModal
+            ? "dashboardRestaurantListModal"
+            : "dashboardRestaurantListModalHidden"
+        }
+      >
+        <h1 className="dashboardRestaurantListModalTitle">
+          Voulez-vous supprimer le restaurant "{restaurantName}" ?
+        </h1>
+        <div className="dashboardRestaurantListModalButtonContainer">
+          <button
+            className="dashboardRestaurantListModalButton"
+            onClick={async () => {
+              await confirmDeleteRestaurant();
+              setOpenConfirmDeleteRestaurantModal(false);
+              setIsClickable(true);
+            }}
+          >
+            Oui
+          </button>
+          <button
+            className="dashboardRestaurantListModalButton"
+            onClick={() => {
+              setOpenConfirmDeleteRestaurantModal(false);
+              setIsClickable(true);
+            }}
+          >
+            Non
           </button>
         </div>
       </div>
