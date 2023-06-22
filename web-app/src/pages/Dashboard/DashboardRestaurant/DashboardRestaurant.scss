@@ -11,7 +11,8 @@
   margin: 10px 15px 15px 80px;
 
   .restaurant-logo {
-    width: 100px;
+    max-height: 70px;
+    max-width: 70px;
     border-radius: 10px;
     object-fit: cover;
   }
@@ -60,6 +61,10 @@
     width: 100%;
     height: 100%;
     overflow-y: auto;
+
+      tbody tr {
+        height: 80px;
+      }
   }
 
   .DashboardRestaurantFooter {
