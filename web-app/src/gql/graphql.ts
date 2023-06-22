@@ -674,6 +674,7 @@ export type GetRestaurantsQuery = {
     __typename?: "Restaurant";
     id: string;
     name: string;
+    picture?: string | null;
     pole: {
       __typename?: "Pole";
       id: string;
@@ -723,6 +724,19 @@ export type UpdateRestaurantOpeningTimeMutation = {
     closeAt?: any | null;
     openAt?: any | null;
   };
+};
+
+export type CreateRestaurantMutationVariables = Exact<{
+  name: Scalars["String"];
+  notComingTicketDisapearDelay: Scalars["Float"];
+  pole: Scalars["ID"];
+  ticketWaitingLimit: Scalars["Float"];
+  picture?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type CreateRestaurantMutation = {
+  __typename?: "Mutation";
+  createRestaurant: { __typename?: "Restaurant"; id: string };
 };
 
 export const SignInDocument = {
@@ -2431,6 +2445,7 @@ export const GetRestaurantsDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "picture" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "pole" },
@@ -2726,4 +2741,125 @@ export const UpdateRestaurantOpeningTimeDocument = {
 } as unknown as DocumentNode<
   UpdateRestaurantOpeningTimeMutation,
   UpdateRestaurantOpeningTimeMutationVariables
+>;
+export const CreateRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CreateRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "notComingTicketDisapearDelay" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "pole" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "ticketWaitingLimit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "picture" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "notComingTicketDisapearDelay" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "notComingTicketDisapearDelay" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "pole" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "pole" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "ticketWaitingLimit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "ticketWaitingLimit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "picture" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "picture" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateRestaurantMutation,
+  CreateRestaurantMutationVariables
 >;

@@ -86,6 +86,7 @@ export type GET_RESTAURANTS_TYPES = Array<{
   __typename?: "Restaurant";
   id: string;
   name: string;
+  picture?: string | null | undefined;
   pole?: {
     __typename?: "Pole";
     id: string;
@@ -96,6 +97,23 @@ export type GET_RESTAURANTS_TYPES = Array<{
     email: string;
   };
 }> | null;
+
+export type GET_RESTAURANT_TYPES = {
+  __typename?: "Restaurant";
+  id: string;
+  name: string;
+  picture?: string | null | undefined;
+  pole?: {
+    __typename?: "Pole";
+    id: string;
+    name: string;
+    address: string;
+    zipCode: string;
+    city: string;
+    email: string;
+  };
+} | null;
+
 export type EXPORT_TICKETS_BY_RESTAURANT_TYPES = Array<{
   __typename?: "Ticket" | undefined;
   number: string;

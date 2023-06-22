@@ -53,12 +53,14 @@ const documents = {
     types.DeletePoleDocument,
   "\n  query StatsByRestaurant($restaurantId: String!) {\n    StatsByRestaurant(restaurantId: $restaurantId) {\n      tableCapacity\n      daysOfWeek\n      lastThirtyDays\n      countTicketsBySeat\n      countActualWeekTickets\n      countLastThirtyDaysTickets\n    }\n  }\n":
     types.StatsByRestaurantDocument,
-  "\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n      pole {\n        id\n        name\n        address\n        zipCode\n        city\n        email\n      }\n    }\n  }\n":
+  "\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n      picture\n      pole {\n        id\n        name\n        address\n        zipCode\n        city\n        email\n      }\n    }\n  }\n":
     types.GetRestaurantsDocument,
   "\n  mutation UpdateRestaurant(\n    $updateRestaurantId: ID!\n    $ticketWaitingLimit: Float!\n    $notComingTicketDisapearDelay: Float!\n    $name: String!\n    $picture: String\n  ) {\n    updateRestaurant(\n      id: $updateRestaurantId\n      ticketWaitingLimit: $ticketWaitingLimit\n      notComingTicketDisapearDelay: $notComingTicketDisapearDelay\n      name: $name\n      picture: $picture\n    ) {\n      id\n      name\n      picture\n      ticketWaitingLimit\n      notComingTicketDisapearDelay\n      openAt\n      closeAt\n    }\n  }\n":
     types.UpdateRestaurantDocument,
   "\n  mutation UpdateRestaurantOpeningTime(\n    $updateRestaurantOpeningTimeId: ID!\n    $hourOpenAt: Float!\n    $minutesOpenAt: Float!\n    $hourCloseAt: Float!\n    $minutesCloseAt: Float!\n  ) {\n    updateRestaurantOpeningTime(\n      id: $updateRestaurantOpeningTimeId\n      hourOpenAt: $hourOpenAt\n      minutesOpenAt: $minutesOpenAt\n      hourCloseAt: $hourCloseAt\n      minutesCloseAt: $minutesCloseAt\n    ) {\n      closeAt\n      openAt\n    }\n  }\n":
     types.UpdateRestaurantOpeningTimeDocument,
+  "\n  mutation CreateRestaurant($name: String!, $notComingTicketDisapearDelay: Float!, $pole: ID!, $ticketWaitingLimit: Float!, $picture: String) {\n  createRestaurant(name: $name, notComingTicketDisapearDelay: $notComingTicketDisapearDelay, pole: $pole, ticketWaitingLimit: $ticketWaitingLimit, picture: $picture) {\n    id\n  }\n}\n":
+    types.CreateRestaurantDocument,
 };
 
 /**
@@ -199,8 +201,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n      pole {\n        id\n        name\n        address\n        zipCode\n        city\n        email\n      }\n    }\n  }\n"
-): (typeof documents)["\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n      pole {\n        id\n        name\n        address\n        zipCode\n        city\n        email\n      }\n    }\n  }\n"];
+  source: "\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n      picture\n      pole {\n        id\n        name\n        address\n        zipCode\n        city\n        email\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query GetRestaurants {\n    getRestaurants {\n      id\n      name\n      picture\n      pole {\n        id\n        name\n        address\n        zipCode\n        city\n        email\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -213,6 +215,12 @@ export function graphql(
 export function graphql(
   source: "\n  mutation UpdateRestaurantOpeningTime(\n    $updateRestaurantOpeningTimeId: ID!\n    $hourOpenAt: Float!\n    $minutesOpenAt: Float!\n    $hourCloseAt: Float!\n    $minutesCloseAt: Float!\n  ) {\n    updateRestaurantOpeningTime(\n      id: $updateRestaurantOpeningTimeId\n      hourOpenAt: $hourOpenAt\n      minutesOpenAt: $minutesOpenAt\n      hourCloseAt: $hourCloseAt\n      minutesCloseAt: $minutesCloseAt\n    ) {\n      closeAt\n      openAt\n    }\n  }\n"
 ): (typeof documents)["\n  mutation UpdateRestaurantOpeningTime(\n    $updateRestaurantOpeningTimeId: ID!\n    $hourOpenAt: Float!\n    $minutesOpenAt: Float!\n    $hourCloseAt: Float!\n    $minutesCloseAt: Float!\n  ) {\n    updateRestaurantOpeningTime(\n      id: $updateRestaurantOpeningTimeId\n      hourOpenAt: $hourOpenAt\n      minutesOpenAt: $minutesOpenAt\n      hourCloseAt: $hourCloseAt\n      minutesCloseAt: $minutesCloseAt\n    ) {\n      closeAt\n      openAt\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation CreateRestaurant($name: String!, $notComingTicketDisapearDelay: Float!, $pole: ID!, $ticketWaitingLimit: Float!, $picture: String) {\n  createRestaurant(name: $name, notComingTicketDisapearDelay: $notComingTicketDisapearDelay, pole: $pole, ticketWaitingLimit: $ticketWaitingLimit, picture: $picture) {\n    id\n  }\n}\n"
+): (typeof documents)["\n  mutation CreateRestaurant($name: String!, $notComingTicketDisapearDelay: Float!, $pole: ID!, $ticketWaitingLimit: Float!, $picture: String) {\n  createRestaurant(name: $name, notComingTicketDisapearDelay: $notComingTicketDisapearDelay, pole: $pole, ticketWaitingLimit: $ticketWaitingLimit, picture: $picture) {\n    id\n  }\n}\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

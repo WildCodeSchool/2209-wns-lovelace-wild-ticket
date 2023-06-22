@@ -63,13 +63,13 @@ export default function SideBar() {
           iconMinParams={MIN_ICON_PARAMS}
         />
         {userRole === ROLE_ADMIN && (
-          <SVGIconRestaurant
+          <SVGIconPole
             iconMaxParams={MAX_ICON_PARAMS}
             iconMinParams={MIN_ICON_PARAMS}
           />
         )}
         {userRole === ROLE_ADMIN && (
-          <SVGIconPole
+          <SVGIconRestaurant
             iconMaxParams={MAX_ICON_PARAMS}
             iconMinParams={MIN_ICON_PARAMS}
           />
