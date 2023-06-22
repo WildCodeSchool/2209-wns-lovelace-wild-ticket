@@ -370,6 +370,7 @@ export const GET_RESTAURANTS = gql`
     getRestaurants {
       id
       name
+      picture
       pole {
         id
         name
@@ -425,6 +426,26 @@ export const UPDATE_RESTAURANTS_TIME = gql`
     ) {
       closeAt
       openAt
+    }
+  }
+`;
+
+export const CREATE_RESTAURANT = gql`
+  mutation CreateRestaurant(
+    $name: String!
+    $notComingTicketDisapearDelay: Float!
+    $pole: ID!
+    $ticketWaitingLimit: Float!
+    $picture: String
+  ) {
+    createRestaurant(
+      name: $name
+      notComingTicketDisapearDelay: $notComingTicketDisapearDelay
+      pole: $pole
+      ticketWaitingLimit: $ticketWaitingLimit
+      picture: $picture
+    ) {
+      id
     }
   }
 `;
