@@ -34,15 +34,18 @@ const DashboardRestaurant = () => {
   // Fonction pour la conversion d'une image en base64
   const convertImage = (e: any) => {
     const file = e.target.files[0];
-    ImageService.validateAndConvertImageToBase64(file, (error: any, base64Image: any) => {
-      if (error) {
-        toast.error(error);
-        e.target.value = null;
-      } else {
-        setSelectedPicture(base64Image);
-        setEditRestaurantPicture(base64Image);
+    ImageService.validateAndConvertImageToBase64(
+      file,
+      (error: any, base64Image: any) => {
+        if (error) {
+          toast.error(error);
+          e.target.value = null;
+        } else {
+          setSelectedPicture(base64Image);
+          setEditRestaurantPicture(base64Image);
+        }
       }
-    });
+    );
   };
 
   // Chargement des restaurants
@@ -83,12 +86,12 @@ const DashboardRestaurant = () => {
   const submitAddRestaurantForm = async () => {
     try {
       await createRestaurant({
-        variables: { 
-          name: name, 
-          picture: selectedPicture, 
+        variables: {
+          name: name,
+          picture: selectedPicture,
           ticketWaitingLimit: 5,
-          notComingTicketDisapearDelay: 2, 
-          pole: pole 
+          notComingTicketDisapearDelay: 2,
+          pole: pole,
         },
       });
       setName("");
@@ -105,7 +108,9 @@ const DashboardRestaurant = () => {
     useState<boolean>(false);
   const [editRestaurantId, setEditRestaurantId] = useState<string>("");
   const [editRestaurantName, setEditRestaurantName] = useState<string>("");
-  const [editRestaurantPicture, setEditRestaurantPicture] = useState<string>("" as any);
+  const [editRestaurantPicture, setEditRestaurantPicture] = useState<string>(
+    "" as any
+  );
 
   const [editRestaurant] = useMutation<
     UpdateRestaurantMutation,
