@@ -16,11 +16,11 @@ const DashboardOptionsGeneralOpForm = () => {
   const restaurantId = userData?.restaurant?.id;
   const restaurantName = userData?.restaurant.name;
   const restaurantPicture = userData?.restaurant.picture;
-  const [ticketWaitingLimit, setTicketWaitingLimit] = useState<number>(
+  const [ticketWaitingLimit, setTicketWaitingLimit] = useState<string>(
     userData?.restaurant?.ticketWaitingLimit
   );
   const [notComingTicketDisapearDelay, setNotComingTicketDisapearDelay] =
-    useState<number>(userData?.restaurant?.notComingTicketDisapearDelay);
+    useState<string>(userData?.restaurant?.notComingTicketDisapearDelay);
 
   const [updateRestaurant] = useMutation<
     UpdateRestaurantMutation,
@@ -29,8 +29,8 @@ const DashboardOptionsGeneralOpForm = () => {
     notifyOnNetworkStatusChange: true,
     variables: {
       updateRestaurantId: restaurantId,
-      ticketWaitingLimit: ticketWaitingLimit,
-      notComingTicketDisapearDelay: notComingTicketDisapearDelay,
+      ticketWaitingLimit: parseInt(ticketWaitingLimit),
+      notComingTicketDisapearDelay: parseInt(notComingTicketDisapearDelay),
       name: restaurantName,
       picture: restaurantPicture,
     },
@@ -40,8 +40,27 @@ const DashboardOptionsGeneralOpForm = () => {
     },
     onError: (error) => {
       toast.error(error.message);
+      appContext?.refetch();
     },
   });
+
+  const handleTicketWaitingLimitChange = (e: any) => {
+    if (parseInt(e.target.value) <= 0 || isNaN(parseInt(e.target.value))) {
+      setTicketWaitingLimit("0");
+      return;
+    }
+    let value = parseInt(e.target.value).toString();
+    setTicketWaitingLimit(value);
+  };
+
+  const handleNotComingTicketDisapearDelayChange = (e: any) => {
+    if (parseInt(e.target.value) <= 0 || isNaN(parseInt(e.target.value))) {
+      setNotComingTicketDisapearDelay("0");
+      return;
+    }
+    let value = parseInt(e.target.value).toString();
+    setNotComingTicketDisapearDelay(value);
+  };
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -82,7 +101,7 @@ const DashboardOptionsGeneralOpForm = () => {
               min="0"
               required
               value={ticketWaitingLimit}
-              onChange={(e) => setTicketWaitingLimit(parseInt(e.target.value))}
+              onChange={(e) => handleTicketWaitingLimitChange(e)}
             />
           </div>
         </div>
@@ -103,9 +122,7 @@ const DashboardOptionsGeneralOpForm = () => {
               min="0"
               required
               value={notComingTicketDisapearDelay}
-              onChange={(e) =>
-                setNotComingTicketDisapearDelay(parseInt(e.target.value))
-              }
+              onChange={(e) => handleNotComingTicketDisapearDelayChange(e)}
             />
           </div>
         </div>
