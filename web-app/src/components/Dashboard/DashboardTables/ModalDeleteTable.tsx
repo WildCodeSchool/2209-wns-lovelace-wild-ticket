@@ -28,7 +28,6 @@ const confirmDeleteTable = async () => {
       <button onClick={confirmDeleteTable}>Supprimer</button>
       <button >Annuler</button>
     </div>
-    
   )
 }
 
