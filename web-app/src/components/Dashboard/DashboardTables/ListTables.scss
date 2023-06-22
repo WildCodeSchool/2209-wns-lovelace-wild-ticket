@@ -1,0 +1,16 @@
+.list-table-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+
+  .table-data {
+    // display: flex;
+    // justify-content: center;
+    .table-number-column, .table-capacity-column, .table-action-column {
+      border: 3px solid #000;
+      width: 40%;
+    }
+  }
+  
+}

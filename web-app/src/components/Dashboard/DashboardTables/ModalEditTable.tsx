@@ -21,7 +21,6 @@ const ModalEditTable = ({
   const [editNumber, setEditNumber] = useState<number>(1);
   const [editSeats, setEditSeats] = useState<number>(2);
 
-  console.log("get table id on modal edit table: " + tableId);
 
   const [updateTable] = useMutation<
     UpdateTableMutation,

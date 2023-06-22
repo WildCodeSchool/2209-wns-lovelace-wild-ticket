@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { TableQuery, TableQueryVariables } from "../../../gql/graphql";
-import { GET_TABLE_BY_ID_TYPES } from "../../../types/DataTypes";
 import { GET_TABLE_BY_ID } from "../../../queries/Queries";
 
 import TabTables from "../../../components/Dashboard/DashboardTables/ListTables";
@@ -9,6 +8,7 @@ import ModalCreateTable from "../../../components/Dashboard/DashboardTables/Moda
 import ModalEditTable from "../../../components/Dashboard/DashboardTables/ModalEditTable";
 import ModalDeleteTable from "../../../components/Dashboard/DashboardTables/ModalDeleteTable";
 
+import "./DashboardTable.scss";
 import "../../../components/Dashboard/DashboardTables/ModalEditTable.scss";
 
 const DashboardTable = () => {
@@ -33,9 +33,9 @@ const DashboardTable = () => {
   );
 
   return (
-    <div className="DashboardMain">
-      <div className="DashboardContent">
-        <div className="AddBtnSection">
+    <div className="dashboard-table">
+      <div className="dashboard-table-container">
+        <div className="add-table-button-section">
           <button className="add-table-button" onClick={() => setShowModal(true)} >Ajout d'une table</button>
         </div>
         {showModal && <ModalCreateTable setShowModal={setShowModal}/>}

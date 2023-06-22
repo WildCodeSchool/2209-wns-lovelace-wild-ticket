@@ -12,6 +12,7 @@ import { GET_TABLES_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
 
 import SVGIconEdit from "../../SVG/SVGIconEdit/SVGIconEdit";
 import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
+import "./ListTables.scss"
 
 const ListTables = ({
   propTableId, editModal, deleteModal
@@ -69,17 +70,18 @@ const ListTables = ({
   };
 
   return (
-    <div>
+    <div className="list-table-container">
       <DataTable
-        tableStyle={{ minWidth: "50rem" }}
+      paginator rows={8} tableStyle={{ minWidth: '50rem' }}
         value={tables as DataTableValueArray}
+        className="table-data"
       >
-        <Column field="id" header="Test id"></Column>
-        <Column field="number" header="N° de table"></Column>
-        <Column field="capacity" header="Couverts"></Column>
+        {/* <Column field="id" header="Test id" sortable></Column> */}
+        <Column field="number" header="N° de table" className="table-number-column" sortable></Column>
+        <Column field="capacity" header="Couverts" className="table-capacity-column" sortable></Column>
         <Column
           header="Action"
-          body={(table: GET_TABLES_BY_RESTAURANT_TYPES) => actionButton(table)}
+          body={(table: GET_TABLES_BY_RESTAURANT_TYPES) => actionButton(table)} className="table-action-column"
         ></Column>
       </DataTable>
     </div>
