@@ -5,7 +5,6 @@ import SVGIconEdit from "../../SVG/SVGIconEdit/SVGIconEdit";
 import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
 import { useState } from "react";
 import { FilterMatchMode } from "primereact/api";
-import DateService from "../../../services/DateService";
 
 export default function DashboardUserListTab({
   users,
@@ -110,15 +109,6 @@ export default function DashboardUserListTab({
             user.role === "ROLE_RESTAURANT"
               ? user.restaurant?.pole.name + " - " + user.restaurant?.name
               : "-"
-          }
-        ></Column>
-        <Column
-          field="createdAt"
-          header="Crée le"
-          filterPlaceholder="Crée le"
-          style={{ minWidth: "10rem" }}
-          body={(user) =>
-            DateService.changeDateToStringFormatWithDateAndHours(user.createdAt)
           }
         ></Column>
         <Column

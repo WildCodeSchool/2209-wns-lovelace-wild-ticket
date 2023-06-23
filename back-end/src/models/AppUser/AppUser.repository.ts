@@ -90,7 +90,7 @@ export default class AppUserRepository extends AppUserDb {
     const createdAt = new Date();
     const password = await PasswordService.generateRandomPassword();
     let appUserRestaurant = undefined;
-    console.log(restaurant);
+
     if (restaurant) {
       appUserRestaurant = (await RestaurantRepository.getRestaurantById(
         restaurant
@@ -109,7 +109,7 @@ export default class AppUserRepository extends AppUserDb {
 
     const userCreated = await this.repository.save(newAppUser);
 
-    await this.sendNewUserResetPasswordEmail(userCreated.email);
+    userCreated && (await this.prepareResetPasswordEmail(userCreated));
 
     return userCreated;
   }
@@ -309,24 +309,17 @@ export default class AppUserRepository extends AppUserDb {
     await EmailService.sendResetPasswordEmail(user, link);
   }
 
-  static async sendNewUserResetPasswordEmail(email: string): Promise<void> {
-    // Check if email exists in database
-    const user = (await this.getUserByEmailAddress(email)) as AppUser;
-
+  static async prepareResetPasswordEmail(user: AppUser): Promise<void> {
     if (user.email !== process.env.MJ_AVAILABLE_EMAIL) {
       return;
-    }
-
-    let userId = "";
-    if (user) {
-      userId = user.id;
     }
 
     // Generate token
     const crypto = require("crypto");
     const token = crypto.randomBytes(32).toString("hex");
+
     // Save token in database
-    await this.newUserToken(userId, token);
+    await this.newUserToken(user.id, token);
 
     // Construct email
     const link = `http://localhost:3000/update-password/?token=${token}`;
