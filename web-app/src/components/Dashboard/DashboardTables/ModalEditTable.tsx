@@ -12,14 +12,14 @@ import { getErrorMessage } from "../../../utils";
 import "./ModalEditTable.scss";
 
 const ModalEditTable = ({
-  tableId,
+  table,
   editModal,
 }: {
-  tableId: string;
+  table: any;
   editModal: any;
 }) => {
-  const [editNumber, setEditNumber] = useState<number>(1);
-  const [editSeats, setEditSeats] = useState<number>(2);
+  const [editNumber, setEditNumber] = useState<string>(table.number);
+  const [editSeats, setEditSeats] = useState<string>(table.capacity);
 
 
   const [updateTable] = useMutation<
@@ -31,9 +31,9 @@ const ModalEditTable = ({
     try {
       await updateTable({
         variables: {
-          updateTableId: tableId,
-          capacity: editSeats,
-          number: editNumber,
+          updateTableId: table.id,
+          capacity: parseInt(editSeats),
+          number: parseInt(editNumber),
         },
       });
       toast.success(`Vous avez modifié une table avec succès.`);
@@ -41,6 +41,26 @@ const ModalEditTable = ({
       toast.error(getErrorMessage(error));
     }
   };
+
+  const handleChangeEditNumber = (e : any) => {
+    if (parseInt(e.target.value) <= 0 || isNaN(parseInt(e.target.value))) {
+      setEditNumber("0")
+      return;
+    }
+
+    let numberValue =  parseInt(e.target.value).toString();
+    setEditNumber(numberValue);
+  }
+
+  const handleChangeCapacityNumber = (e : any) => {
+    if (parseInt(e.target.value) <= 0 || isNaN(parseInt(e.target.value))) {
+      setEditSeats("0")
+      return;
+    }
+
+    let capacityValue =  parseInt(e.target.value).toString();
+    setEditSeats(capacityValue);
+  }
 
   return (
     <div className="edit-table-modal">
@@ -56,7 +76,7 @@ const ModalEditTable = ({
             min="0"
             value={editNumber}
             onChange={(event) => {
-              setEditNumber(event.target.valueAsNumber);
+              handleChangeEditNumber(event);
             }}
           />
         </div>
@@ -70,7 +90,7 @@ const ModalEditTable = ({
             min="0"
             value={editSeats}
             onChange={(event) => {
-              setEditSeats(event.target.valueAsNumber);
+              handleChangeCapacityNumber(event);
             }}
           />
         </div>

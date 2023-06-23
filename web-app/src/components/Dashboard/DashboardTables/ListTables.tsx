@@ -54,14 +54,14 @@ const ListTables = ({
         <SVGIconEdit
           onClick={async () => {
             editModal(true);
-            await propTableId(table.id as string);
+            await propTableId(table);
           }}
           isClickable={isClickable}
         />
         <SVGIconDelete
           onClick={async () => {
             deleteModal(true);
-            await propTableId(table.id as string);
+            await propTableId(table);
           }}
           isClickable={isClickable}
         />

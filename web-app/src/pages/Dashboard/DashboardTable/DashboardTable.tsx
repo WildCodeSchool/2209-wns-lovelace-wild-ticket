@@ -16,10 +16,11 @@ const DashboardTable = () => {
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [tableId, setTableId] = useState<string>("");
- 
+  const [table, setTable] = useState(null);
 
-  const handleTableId = async (tableId: string) => {
-    setTableId(tableId)
+  const handleTableId = async (table: any) => {
+    setTableId(table.id);
+    setTable(table);
   };
 
   const [getTablebyId] = useLazyQuery<TableQuery, TableQueryVariables>(
@@ -36,13 +37,32 @@ const DashboardTable = () => {
     <div className="dashboard-table">
       <div className="dashboard-table-container">
         <div className="add-table-button-section">
-          <button className="add-table-button" onClick={() => setShowModal(true)} >Ajout d'une table</button>
+          <button
+            className="add-table-button"
+            onClick={() => setShowModal(true)}
+          >
+            Ajout d'une table
+          </button>
         </div>
-        {showModal && <ModalCreateTable setShowModal={setShowModal}/>}
-        {showEditModal && <ModalEditTable tableId={tableId as string} editModal={setShowEditModal} />}
-        {showDeleteModal && <ModalDeleteTable tableId={tableId as string} deleteModal={setShowDeleteModal}/>}
+        {showModal && <ModalCreateTable setShowModal={setShowModal} />}
+        {showEditModal && (
+          <ModalEditTable
+            table={table}
+            editModal={setShowEditModal}
+          />
+        )}
+        {showDeleteModal && (
+          <ModalDeleteTable
+            tableId={tableId as string}
+            deleteModal={setShowDeleteModal}
+          />
+        )}
 
-        <TabTables propTableId={handleTableId} editModal={setShowEditModal} deleteModal={setShowDeleteModal}/>
+        <TabTables
+          propTableId={handleTableId}
+          editModal={setShowEditModal}
+          deleteModal={setShowDeleteModal}
+        />
       </div>
     </div>
   );
