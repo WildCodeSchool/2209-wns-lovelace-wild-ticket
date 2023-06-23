@@ -9,6 +9,7 @@ import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import Restaurant from "../Restaurant/Restaurant.entity";
 import EmailService from "../../services/EmailService";
 import DateUpdates from "../../services/DateUpdates";
+import PasswordService from "../../services/PasswordService";
 
 export const INVALID_CREDENTIALS_ERROR_MESSAGE = "Identifiants incorrects.";
 
@@ -29,6 +30,8 @@ export default class AppUserRepository extends AppUserDb {
         }
 
         const newAppUser = new AppUser(
+          appUser.firstname,
+          appUser.lastname,
           appUser.email,
           appUserPassword,
           appUser.role,
@@ -78,12 +81,16 @@ export default class AppUserRepository extends AppUserDb {
   }
 
   static async createUser(
+    firstname: string,
+    lastname: string,
     email: string,
-    password: string,
     role: string,
     restaurant: string
   ): Promise<AppUser> {
     const createdAt = new Date();
+    const password = "password";
+    //TODO : Problem with password generation in integration tests
+    //const password = await PasswordService.generateRandomPassword();
     let appUserRestaurant = undefined;
 
     if (restaurant) {
@@ -93,18 +100,26 @@ export default class AppUserRepository extends AppUserDb {
     }
 
     const newAppUser = new AppUser(
+      firstname,
+      lastname,
       email,
-      password,
+      hashSync(password),
       role,
       createdAt,
       appUserRestaurant
     );
 
-    return await this.repository.save(newAppUser);
+    const userCreated = await this.repository.save(newAppUser);
+
+    userCreated && (await this.prepareResetPasswordEmail(userCreated));
+
+    return userCreated;
   }
 
   static async updateUser(
     id: string,
+    firstname: string,
+    lastname: string,
     email: string,
     role: string,
     restaurant: string
@@ -120,8 +135,10 @@ export default class AppUserRepository extends AppUserDb {
       )) as Restaurant;
     }
 
-    return this.repository.save({
+    return await this.repository.save({
       id: id,
+      firstname: firstname,
+      lastname: lastname,
       email: email,
       role: role,
       updatedAt: updatedAt,
@@ -205,6 +222,25 @@ export default class AppUserRepository extends AppUserDb {
     });
   }
 
+  static async newUserToken(
+    id: string,
+    resetPasswordToken: string
+  ): Promise<AppUser> {
+    const newUser = await this.getUserById(id);
+
+    // Token expiration date set to 24 hours
+    const resetPasswordTokenExpiration = DateUpdates.addHoursToDate(
+      new Date(),
+      24
+    );
+
+    return this.repository.save({
+      id: id,
+      resetPasswordToken: resetPasswordToken,
+      resetPasswordTokenExpiration: resetPasswordTokenExpiration,
+    });
+  }
+
   static async deleteUser(id: string): Promise<AppUser | null> {
     const user = await this.getUserById(id);
 
@@ -251,7 +287,11 @@ export default class AppUserRepository extends AppUserDb {
 
   static async sendResetPasswordEmail(email: string): Promise<void> {
     // Check if email exists in database
-    const user = await this.getUserByEmailAddress(email);
+    const user = (await this.getUserByEmailAddress(email)) as AppUser;
+
+    if (user.email !== process.env.MJ_AVAILABLE_EMAIL) {
+      return;
+    }
 
     let userId = "";
     if (user) {
@@ -265,11 +305,28 @@ export default class AppUserRepository extends AppUserDb {
     await this.updateUserToken(userId, token);
 
     // Construct email
-    const subject = "Réinitialisation de votre mot de passe";
     const link = `http://localhost:3000/update-password/?token=${token}`;
-    const text = `Bonjour,\n\nPour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.\n\n${link}`;
-    const html = `<p>Bonjour,<br /><br />Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous.<br /><br /><a href="${link}">${link}</a></a></p>`;
+
     // Send email
-    await EmailService.sendEmail(email, subject, text, html);
+    await EmailService.sendResetPasswordEmail(user, link);
+  }
+
+  static async prepareResetPasswordEmail(user: AppUser): Promise<void> {
+    if (user.email !== process.env.MJ_AVAILABLE_EMAIL) {
+      return;
+    }
+
+    // Generate token
+    const crypto = require("crypto");
+    const token = crypto.randomBytes(32).toString("hex");
+
+    // Save token in database
+    await this.newUserToken(user.id, token);
+
+    // Construct email
+    const link = `http://localhost:3000/update-password/?token=${token}`;
+
+    // Send email
+    await EmailService.sendNewUserPasswordEmail(user, link);
   }
 }

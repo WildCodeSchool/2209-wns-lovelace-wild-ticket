@@ -2,14 +2,17 @@ import { useContext } from "react";
 import "./DashboardStats.scss";
 import { AppContext } from "../../../context/AppContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
-import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
+import {
+  BIG_LOGO_DASHBOARD_SIZE,
+  ROLE_ADMIN,
+} from "../../../constants/Constants";
 import DashboardStatsGraph from "../../../components/Dashboard/DashboardStatsGraph/DashboardStatsGraph";
 import DashboardStatsList from "../../../components/Dashboard/DashboardStatsList/DashboardStatsList";
 
 const DashboardStats = () => {
   const appContext = useContext(AppContext);
 
-  return appContext?.userData.role === "ROLE_ADMIN" ? (
+  return ROLE_ADMIN.includes(appContext?.userData.role) ? (
     <section className="DashboardStatsSection">
       <div className="DashboardContent">
         <SVGLogo

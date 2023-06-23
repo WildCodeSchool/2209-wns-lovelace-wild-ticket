@@ -26,7 +26,9 @@ export type AppUser = {
   __typename?: "AppUser";
   createdAt: Scalars["DateTime"];
   email: Scalars["String"];
+  firstname: Scalars["String"];
   id: Scalars["ID"];
+  lastname: Scalars["String"];
   resetPasswordToken?: Maybe<Scalars["String"]>;
   resetPasswordTokenExpiration?: Maybe<Scalars["DateTime"]>;
   restaurant?: Maybe<Restaurant>;
@@ -92,7 +94,8 @@ export type MutationCreateTicketArgs = {
 
 export type MutationCreateUserArgs = {
   email: Scalars["String"];
-  password: Scalars["String"];
+  firstname: Scalars["String"];
+  lastname: Scalars["String"];
   restaurant?: InputMaybe<Scalars["String"]>;
   role: Scalars["String"];
 };
@@ -173,7 +176,9 @@ export type MutationUpdateTableArgs = {
 
 export type MutationUpdateUserArgs = {
   email: Scalars["String"];
+  firstname: Scalars["String"];
   id: Scalars["ID"];
+  lastname: Scalars["String"];
   restaurant?: InputMaybe<Scalars["String"]>;
   role: Scalars["String"];
 };
@@ -424,6 +429,64 @@ export type MyProfileQuery = {
       closeAt?: any | null;
     } | null;
   };
+};
+
+export type GetUsersQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetUsersQuery = {
+  __typename?: "Query";
+  getUsers: Array<{
+    __typename?: "AppUser";
+    id: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    role: string;
+    createdAt: any;
+    updatedAt?: any | null;
+    restaurant?: {
+      __typename?: "Restaurant";
+      id: string;
+      name: string;
+      pole: { __typename?: "Pole"; name: string };
+    } | null;
+  }>;
+};
+
+export type CreateUserMutationVariables = Exact<{
+  firstname: Scalars["String"];
+  email: Scalars["String"];
+  role: Scalars["String"];
+  lastname: Scalars["String"];
+  restaurant?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type CreateUserMutation = {
+  __typename?: "Mutation";
+  createUser: { __typename?: "AppUser"; id: string };
+};
+
+export type UpdateUserMutationVariables = Exact<{
+  updateUserId: Scalars["ID"];
+  firstname: Scalars["String"];
+  lastname: Scalars["String"];
+  email: Scalars["String"];
+  role: Scalars["String"];
+  restaurant?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type UpdateUserMutation = {
+  __typename?: "Mutation";
+  updateUser: { __typename?: "AppUser"; id: string };
+};
+
+export type DeleteUserMutationVariables = Exact<{
+  deleteUserId: Scalars["String"];
+}>;
+
+export type DeleteUserMutation = {
+  __typename?: "Mutation";
+  deleteUser: { __typename?: "AppUser"; firstname: string };
 };
 
 export type TicketsByRestaurantQueryVariables = Exact<{
@@ -1214,6 +1277,391 @@ export const MyProfileDocument = {
     },
   ],
 } as unknown as DocumentNode<MyProfileQuery, MyProfileQueryVariables>;
+export const GetUsersDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetUsers" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getUsers" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "firstname" } },
+                { kind: "Field", name: { kind: "Name", value: "lastname" } },
+                { kind: "Field", name: { kind: "Name", value: "email" } },
+                { kind: "Field", name: { kind: "Name", value: "role" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "restaurant" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "pole" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
+                { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetUsersQuery, GetUsersQueryVariables>;
+export const CreateUserDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CreateUser" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "firstname" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "email" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "lastname" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurant" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createUser" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "firstname" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "firstname" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "email" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "email" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "role" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "role" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "lastname" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "lastname" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurant" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurant" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreateUserMutation, CreateUserMutationVariables>;
+export const UpdateUserDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateUser" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "updateUserId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "firstname" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "lastname" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "email" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "role" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurant" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateUser" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "updateUserId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "firstname" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "firstname" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "lastname" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "lastname" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "email" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "email" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "role" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "role" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurant" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurant" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UpdateUserMutation, UpdateUserMutationVariables>;
+export const DeleteUserDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteUser" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "deleteUserId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteUser" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "deleteUserId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "firstname" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DeleteUserMutation, DeleteUserMutationVariables>;
 export const TicketsByRestaurantDocument = {
   kind: "Document",
   definitions: [

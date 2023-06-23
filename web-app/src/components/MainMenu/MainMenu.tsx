@@ -5,7 +5,6 @@ import {
   DASHBOARD_RESTAURANT,
   DASHBOARD_TICKET,
   DASHBOARD_TABLE,
-  DASHBOARD_STATS,
   DASHBOARD_USER,
 } from "../../pages/paths";
 import { useContext } from "react";
@@ -35,19 +34,15 @@ export default function MainMenu() {
     navigate(DASHBOARD_USER);
   };
 
-  const goToStat = () => {
-    navigate(DASHBOARD_STATS);
-  };
-
   return (
     <div className="mainMenu-container">
-      {userRole === ROLE_ADMIN && (
+      {ROLE_ADMIN.includes(userRole) && (
         <button className="mainMenu-button" onClick={goToPole}>
           Pôles restaurateurs
         </button>
       )}
 
-      {userRole === ROLE_ADMIN && (
+      {ROLE_ADMIN.includes(userRole) && (
         <button className="mainMenu-button" onClick={goToRestaurant}>
           Restaurants
         </button>
@@ -65,15 +60,9 @@ export default function MainMenu() {
         </button>
       )}
 
-      {userRole === ROLE_ADMIN && (
+      {ROLE_ADMIN.includes(userRole) && (
         <button className="mainMenu-button" onClick={goToUser}>
           Utilisateurs
-        </button>
-      )}
-
-      {(userRole === ROLE_ADMIN || userRole === ROLE_RESTAURANT) && (
-        <button className="mainMenu-button" onClick={goToStat}>
-          Statistiques
         </button>
       )}
     </div>

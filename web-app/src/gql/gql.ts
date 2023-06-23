@@ -25,6 +25,14 @@ const documents = {
     types.UpdateUserPasswordDocument,
   "\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        notComingTicketDisapearDelay\n        openAt\n        closeAt\n      }\n    }\n  }\n":
     types.MyProfileDocument,
+  "\n  query GetUsers {\n    getUsers {\n      id\n      firstname\n      lastname\n      email\n      role\n      restaurant {\n        id\n        name\n        pole {\n          name\n        }\n      }\n      createdAt\n      updatedAt\n    }\n  }\n":
+    types.GetUsersDocument,
+  "\n  mutation CreateUser(\n    $firstname: String!\n    $email: String!\n    $role: String!\n    $lastname: String!\n    $restaurant: String\n  ) {\n    createUser(\n      firstname: $firstname\n      email: $email\n      role: $role\n      lastname: $lastname\n      restaurant: $restaurant\n    ) {\n      id\n    }\n  }\n":
+    types.CreateUserDocument,
+  "\n  mutation UpdateUser(\n    $updateUserId: ID!\n    $firstname: String!\n    $lastname: String!\n    $email: String!\n    $role: String!\n    $restaurant: String\n  ) {\n    updateUser(\n      id: $updateUserId\n      firstname: $firstname\n      lastname: $lastname\n      email: $email\n      role: $role\n      restaurant: $restaurant\n    ) {\n      id\n    }\n  }\n":
+    types.UpdateUserDocument,
+  "\n  mutation DeleteUser($deleteUserId: String!) {\n    deleteUser(id: $deleteUserId) {\n      firstname\n    }\n  }\n":
+    types.DeleteUserDocument,
   "\n  query TicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    TicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n":
     types.TicketsByRestaurantDocument,
   "\n  query WaitingTicketsByRestaurant($restaurantId: ID!, $seats: Float) {\n    WaitingTicketsByRestaurant(restaurantId: $restaurantId, seats: $seats) {\n      id\n      number\n      name\n      seats\n      email\n      phoneNumber\n      createdAt\n      deliveredAt\n      placedAt\n      closedAt\n      table {\n        id\n        number\n      }\n    }\n  }\n":
@@ -123,6 +131,30 @@ export function graphql(
 export function graphql(
   source: "\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        notComingTicketDisapearDelay\n        openAt\n        closeAt\n      }\n    }\n  }\n"
 ): (typeof documents)["\n  query MyProfile {\n    myProfile {\n      id\n      email\n      role\n      restaurant {\n        id\n        name\n        picture\n        ticketWaitingLimit\n        notComingTicketDisapearDelay\n        openAt\n        closeAt\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query GetUsers {\n    getUsers {\n      id\n      firstname\n      lastname\n      email\n      role\n      restaurant {\n        id\n        name\n        pole {\n          name\n        }\n      }\n      createdAt\n      updatedAt\n    }\n  }\n"
+): (typeof documents)["\n  query GetUsers {\n    getUsers {\n      id\n      firstname\n      lastname\n      email\n      role\n      restaurant {\n        id\n        name\n        pole {\n          name\n        }\n      }\n      createdAt\n      updatedAt\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation CreateUser(\n    $firstname: String!\n    $email: String!\n    $role: String!\n    $lastname: String!\n    $restaurant: String\n  ) {\n    createUser(\n      firstname: $firstname\n      email: $email\n      role: $role\n      lastname: $lastname\n      restaurant: $restaurant\n    ) {\n      id\n    }\n  }\n"
+): (typeof documents)["\n  mutation CreateUser(\n    $firstname: String!\n    $email: String!\n    $role: String!\n    $lastname: String!\n    $restaurant: String\n  ) {\n    createUser(\n      firstname: $firstname\n      email: $email\n      role: $role\n      lastname: $lastname\n      restaurant: $restaurant\n    ) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation UpdateUser(\n    $updateUserId: ID!\n    $firstname: String!\n    $lastname: String!\n    $email: String!\n    $role: String!\n    $restaurant: String\n  ) {\n    updateUser(\n      id: $updateUserId\n      firstname: $firstname\n      lastname: $lastname\n      email: $email\n      role: $role\n      restaurant: $restaurant\n    ) {\n      id\n    }\n  }\n"
+): (typeof documents)["\n  mutation UpdateUser(\n    $updateUserId: ID!\n    $firstname: String!\n    $lastname: String!\n    $email: String!\n    $role: String!\n    $restaurant: String\n  ) {\n    updateUser(\n      id: $updateUserId\n      firstname: $firstname\n      lastname: $lastname\n      email: $email\n      role: $role\n      restaurant: $restaurant\n    ) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation DeleteUser($deleteUserId: String!) {\n    deleteUser(id: $deleteUserId) {\n      firstname\n    }\n  }\n"
+): (typeof documents)["\n  mutation DeleteUser($deleteUserId: String!) {\n    deleteUser(id: $deleteUserId) {\n      firstname\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

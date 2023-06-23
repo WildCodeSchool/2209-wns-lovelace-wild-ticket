@@ -165,6 +165,44 @@ export type DATA_TABLE_LAZY_STATE_TYPES = {
   sortOrder: number[];
 };
 
+export type GET_USERS_TYPES = Array<{
+  __typename?: "AppUser" | undefined;
+  id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  role: string;
+  createdAt: any;
+  updatedAt?: any;
+  restaurant?:
+    | {
+        __typename?: "Restaurant" | undefined;
+        id: string;
+        name: string;
+      }
+    | null
+    | undefined;
+}> | null;
+
+export type GET_USER_TYPES = {
+  __typename?: "AppUser" | undefined;
+  id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  role: string;
+  createdAt: any;
+  updatedAt?: any;
+  restaurant?:
+    | {
+        __typename?: "Restaurant" | undefined;
+        id: string;
+        name: string;
+      }
+    | null
+    | undefined;
+} | null;
+
 export type GET_TABLE_BY_ID_TYPES = {
   __typename?: "Table" | undefined;
   id: string;

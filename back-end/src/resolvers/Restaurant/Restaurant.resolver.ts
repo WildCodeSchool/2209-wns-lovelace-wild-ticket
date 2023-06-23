@@ -15,7 +15,7 @@ const PAGE_SIZE = 4;
 @Resolver(Restaurant)
 export default class RestaurantResolver {
   //Comment "Authorized" decorator to enable access in apollo server
-  //@Authorized("ROLE_ADMIN")
+  //@Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
   @Query(() => [Restaurant])
   getRestaurants(): Promise<Restaurant[]> {
     return RestaurantRepository.getRestaurants();
@@ -39,7 +39,7 @@ export default class RestaurantResolver {
     return RestaurantRepository.getRestaurantById(id);
   }
 
-  @Authorized("ROLE_ADMIN")
+  @Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
   @Mutation(() => Restaurant)
   createRestaurant(
     @Args()
@@ -102,7 +102,7 @@ export default class RestaurantResolver {
     );
   }
 
-  @Authorized("ROLE_ADMIN")
+  @Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
   @Mutation(() => Restaurant)
   deleteRestaurant(@Arg("id") id: string): Promise<Restaurant> {
     return RestaurantRepository.deleteRestaurant(id);
