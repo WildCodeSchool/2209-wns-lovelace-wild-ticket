@@ -35,8 +35,7 @@ const DashboardTable = () => {
 
   return (
     <div className="dashboard-table">
-      <div className="dashboard-table-container">
-        <div className="add-table-button-section">
+      <div className="add-table-button-section">
           <button
             className="add-table-button"
             onClick={() => setShowModal(true)}
@@ -44,6 +43,7 @@ const DashboardTable = () => {
             Ajout d'une table
           </button>
         </div>
+      <div className="dashboard-table-container">
         {showModal && <ModalCreateTable setShowModal={setShowModal} />}
         {showEditModal && (
           <ModalEditTable table={table} editModal={setShowEditModal} />
