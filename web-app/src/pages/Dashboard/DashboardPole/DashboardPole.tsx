@@ -76,6 +76,21 @@ const DashboardPole = () => {
   const [editPoleCity, setEditPoleCity] = useState<string>("");
   const [editPoleEmail, setEditPoleEmail] = useState<string>("");
 
+  const oldPole = poles?.find((pole) => pole.id === editPoleId);
+
+  const poleIsModified = () => {
+    if (
+      oldPole?.name === editPoleName &&
+      oldPole?.address === editPoleAddress &&
+      oldPole?.zipCode === editPoleZipCode &&
+      oldPole?.city === editPoleCity &&
+      oldPole?.email === editPoleEmail
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   const [editPole] = useMutation<
     UpdatePoleMutation,
     UpdatePoleMutationVariables
@@ -93,25 +108,33 @@ const DashboardPole = () => {
 
   const submitEditPoleForm = async () => {
     try {
-      await editPole({
-        variables: {
-          name: editPoleName,
-          address: editPoleAddress,
-          zipCode: editPoleZipCode,
-          city: editPoleCity,
-          email: editPoleEmail,
-          updatePoleId: editPoleId,
-        },
-      });
-      setEditPoleId("");
-      setEditPoleName("");
-      setEditPoleAddress("");
-      setEditPoleZipCode("");
-      setEditPoleCity("");
-      setEditPoleEmail("");
-      toast.success(`Vous avez modifié le pôle "${editPoleName}" avec succès.`);
-      refetch();
+      if (poleIsModified()) {
+        await editPole({
+          variables: {
+            name: editPoleName,
+            address: editPoleAddress,
+            zipCode: editPoleZipCode,
+            city: editPoleCity,
+            email: editPoleEmail,
+            updatePoleId: editPoleId,
+          },
+        });
+        setOpenEditPoleModal(false);
+        setIsClickable(true);
+        setEditPoleId("");
+        setEditPoleName("");
+        setEditPoleAddress("");
+        setEditPoleZipCode("");
+        setEditPoleCity("");
+        setEditPoleEmail("");
+        toast.success(`Vous avez modifié le pôle "${editPoleName}" avec succès.`);
+        refetch();
+      } else {
+        toast.info(`Les champs ne comportent aucune modification pour le pôle "${editPoleName}".`);
+      }
     } catch (error) {
+      setOpenEditPoleModal(false);
+      setIsClickable(true);
       toast.error(getErrorMessage(error));
     }
   };
@@ -402,8 +425,6 @@ const DashboardPole = () => {
             className="dashboardPoleListModalButton"
             onClick={async () => {
               await submitEditPoleForm();
-              setOpenEditPoleModal(false);
-              setIsClickable(true);
             }}
           >
             Modifier
