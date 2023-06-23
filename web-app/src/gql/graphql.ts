@@ -593,6 +593,51 @@ export type TablesByRestaurantQuery = {
   }>;
 };
 
+export type TableQueryVariables = Exact<{
+  tableId: Scalars["String"];
+}>;
+
+export type TableQuery = {
+  __typename?: "Query";
+  Table: { __typename?: "Table"; id: string; number: number; capacity: number };
+};
+
+export type CreateTableMutationVariables = Exact<{
+  number: Scalars["Float"];
+  capacity: Scalars["Float"];
+  restaurant: Scalars["String"];
+}>;
+
+export type CreateTableMutation = {
+  __typename?: "Mutation";
+  createTable: {
+    __typename?: "Table";
+    capacity: number;
+    number: number;
+    restaurant: { __typename?: "Restaurant"; id: string };
+  };
+};
+
+export type UpdateTableMutationVariables = Exact<{
+  updateTableId: Scalars["ID"];
+  number: Scalars["Float"];
+  capacity: Scalars["Float"];
+}>;
+
+export type UpdateTableMutation = {
+  __typename?: "Mutation";
+  updateTable: { __typename?: "Table"; capacity: number; number: number };
+};
+
+export type DeleteTableMutationVariables = Exact<{
+  deleteTableId: Scalars["String"];
+}>;
+
+export type DeleteTableMutation = {
+  __typename?: "Mutation";
+  deleteTable: { __typename?: "Table"; id: string };
+};
+
 export type PolesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type PolesQuery = {
@@ -1976,6 +2021,297 @@ export const TablesByRestaurantDocument = {
   TablesByRestaurantQuery,
   TablesByRestaurantQueryVariables
 >;
+export const TableDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Table" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "tableId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "Table" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "tableId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "number" } },
+                { kind: "Field", name: { kind: "Name", value: "capacity" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TableQuery, TableQueryVariables>;
+export const CreateTableDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CreateTable" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "number" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "capacity" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "restaurant" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createTable" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "number" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "number" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "capacity" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "capacity" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "restaurant" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "restaurant" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "capacity" } },
+                { kind: "Field", name: { kind: "Name", value: "number" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "restaurant" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreateTableMutation, CreateTableMutationVariables>;
+export const UpdateTableDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateTable" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "updateTableId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "number" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "capacity" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateTable" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "updateTableId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "number" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "number" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "capacity" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "capacity" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "capacity" } },
+                { kind: "Field", name: { kind: "Name", value: "number" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UpdateTableMutation, UpdateTableMutationVariables>;
+export const DeleteTableDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteTable" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "deleteTableId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteTable" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "deleteTableId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DeleteTableMutation, DeleteTableMutationVariables>;
 export const PolesDocument = {
   kind: "Document",
   definitions: [

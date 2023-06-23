@@ -164,3 +164,10 @@ export type DATA_TABLE_LAZY_STATE_TYPES = {
   sortField: string[];
   sortOrder: number[];
 };
+
+export type GET_TABLE_BY_ID_TYPES = {
+  __typename?: "Table" | undefined;
+  id: string;
+  number: number;
+  capacity: number;
+} | null;
