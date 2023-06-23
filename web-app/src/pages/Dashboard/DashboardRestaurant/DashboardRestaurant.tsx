@@ -257,6 +257,7 @@ const DashboardRestaurant = () => {
                   setPole(event.target.value);
                 }}
               >
+                <option value="">-- Veuillez sélectionner un Pôle --</option>
                 {poles ? (
                   poles.map((poleOption) => (
                     <option key={poleOption.id} value={poleOption.id}>
