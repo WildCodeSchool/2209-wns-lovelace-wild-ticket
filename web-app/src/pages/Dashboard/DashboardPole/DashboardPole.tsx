@@ -52,16 +52,22 @@ const DashboardPole = () => {
 
   const submitAddPoleForm = async () => {
     try {
-      await createPole({
-        variables: { name, address, zipCode, city, email },
-      });
-      setName("");
-      setAddress("");
-      setZipCode("");
-      setCity("");
-      setEmail("");
-      toast.success(`Vous avez créé un pôle avec succès.`);
-      refetch();
+      if (name && address && zipCode && city && email) {
+        await createPole({
+          variables: { name, address, zipCode, city, email },
+        });
+        setOpenAddPoleModal(false);
+        setIsClickable(true);
+        setName("");
+        setAddress("");
+        setZipCode("");
+        setCity("");
+        setEmail("");
+        toast.success(`Vous avez créé un pôle avec succès.`);
+        refetch();
+      } else {
+        toast.error(`Veuillez remplir tous les champs.`);
+      }
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -327,8 +333,6 @@ const DashboardPole = () => {
               className="dashboardPoleListModalButton"
               onClick={async () => {
                 await submitAddPoleForm();
-                setOpenAddPoleModal(false);
-                setIsClickable(true);
               }}
             >
               Enregister
