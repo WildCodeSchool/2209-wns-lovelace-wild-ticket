@@ -321,7 +321,7 @@ const DashboardRestaurant = () => {
                 }}
               />
             </div>
-            <div className="add-restaurant-form-input">
+            <div className="add-restaurant-form-input-file">
               <label htmlFor="name">Logo</label>
               <input
                 type="file"
