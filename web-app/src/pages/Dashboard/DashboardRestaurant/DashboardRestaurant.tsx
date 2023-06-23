@@ -88,6 +88,18 @@ const DashboardRestaurant = () => {
 
   const submitAddRestaurantForm = async () => {
     try {
+      if (!name) {
+        toast.error("Vous devez saisir un nom.");
+        return;
+      }
+      if (!selectedPicture) {
+        toast.error("Vous devez sélectionner une image.");
+        return;
+      }
+      if (!pole) {
+        toast.error("Vous devez sélectionner un pôle.");
+        return;
+      }
       await createRestaurant({
         variables: {
           name: name,
@@ -97,6 +109,8 @@ const DashboardRestaurant = () => {
           pole: pole,
         },
       });
+      setOpenAddRestaurantModal(false);
+      setIsClickable(true);
       setName("");
       setPole("");
       toast.success(`Vous avez créé un restaurant avec succès.`);
@@ -277,8 +291,6 @@ const DashboardRestaurant = () => {
               className="dashboardRestaurantListModalButton"
               onClick={async () => {
                 await submitAddRestaurantForm();
-                setOpenAddRestaurantModal(false);
-                setIsClickable(true);
               }}
             >
               Enregister
