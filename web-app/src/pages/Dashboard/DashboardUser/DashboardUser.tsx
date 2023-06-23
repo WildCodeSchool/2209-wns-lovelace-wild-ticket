@@ -1,8 +1,7 @@
 import "./DashboardUser.scss";
 import "../DashboardTemp.scss";
 import DashboardUserListTab from "../../../components/Dashboard/DashboardUserListTab/DashboardUserListTab";
-import { useContext, useState } from "react";
-import { AppContext } from "../../../context/AppContext";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../../utils";
 import {
