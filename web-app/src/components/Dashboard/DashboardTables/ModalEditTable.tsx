@@ -21,7 +21,6 @@ const ModalEditTable = ({
   const [editNumber, setEditNumber] = useState<string>(table.number);
   const [editSeats, setEditSeats] = useState<string>(table.capacity);
 
-
   const [updateTable] = useMutation<
     UpdateTableMutation,
     UpdateTableMutationVariables
@@ -42,25 +41,25 @@ const ModalEditTable = ({
     }
   };
 
-  const handleChangeEditNumber = (e : any) => {
+  const handleChangeEditNumber = (e: any) => {
     if (parseInt(e.target.value) <= 0 || isNaN(parseInt(e.target.value))) {
-      setEditNumber("0")
+      setEditNumber("0");
       return;
     }
 
-    let numberValue =  parseInt(e.target.value).toString();
+    let numberValue = parseInt(e.target.value).toString();
     setEditNumber(numberValue);
-  }
+  };
 
-  const handleChangeCapacityNumber = (e : any) => {
+  const handleChangeCapacityNumber = (e: any) => {
     if (parseInt(e.target.value) <= 0 || isNaN(parseInt(e.target.value))) {
-      setEditSeats("0")
+      setEditSeats("0");
       return;
     }
 
-    let capacityValue =  parseInt(e.target.value).toString();
+    let capacityValue = parseInt(e.target.value).toString();
     setEditSeats(capacityValue);
-  }
+  };
 
   return (
     <div className="edit-table-modal">

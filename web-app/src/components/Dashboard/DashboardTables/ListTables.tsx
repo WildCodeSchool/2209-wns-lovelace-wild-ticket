@@ -12,12 +12,16 @@ import { GET_TABLES_BY_RESTAURANT_TYPES } from "../../../types/DataTypes";
 
 import SVGIconEdit from "../../SVG/SVGIconEdit/SVGIconEdit";
 import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
-import "./ListTables.scss"
+import "./ListTables.scss";
 
 const ListTables = ({
-  propTableId, editModal, deleteModal
+  propTableId,
+  editModal,
+  deleteModal,
 }: {
-  propTableId: (tableId: string) => Promise<void>, editModal : any, deleteModal: any
+  propTableId: (tableId: string) => Promise<void>;
+  editModal: any;
+  deleteModal: any;
 }) => {
   const appContext = useContext(AppContext);
   const restaurantId = appContext?.userData.restaurant.id;
@@ -72,15 +76,27 @@ const ListTables = ({
   return (
     <div className="list-table-container">
       <DataTable
-      paginator rows={5} 
+        paginator
+        rows={5}
         value={tables as DataTableValueArray}
         className="table-data"
       >
-        <Column field="number" header="N° de table" className="table-number-column" sortable></Column>
-        <Column field="capacity" header="Couverts" className="table-capacity-column" sortable></Column>
+        <Column
+          field="number"
+          header="N° de table"
+          className="table-number-column"
+          sortable
+        ></Column>
+        <Column
+          field="capacity"
+          header="Couverts"
+          className="table-capacity-column"
+          sortable
+        ></Column>
         <Column
           header="Action"
-          body={(table: GET_TABLES_BY_RESTAURANT_TYPES) => actionButton(table)} className="table-action-column"
+          body={(table: GET_TABLES_BY_RESTAURANT_TYPES) => actionButton(table)}
+          className="table-action-column"
         ></Column>
       </DataTable>
     </div>
