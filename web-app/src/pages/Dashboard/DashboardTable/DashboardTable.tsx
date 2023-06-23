@@ -46,10 +46,7 @@ const DashboardTable = () => {
         </div>
         {showModal && <ModalCreateTable setShowModal={setShowModal} />}
         {showEditModal && (
-          <ModalEditTable
-            table={table}
-            editModal={setShowEditModal}
-          />
+          <ModalEditTable table={table} editModal={setShowEditModal} />
         )}
         {showDeleteModal && (
           <ModalDeleteTable

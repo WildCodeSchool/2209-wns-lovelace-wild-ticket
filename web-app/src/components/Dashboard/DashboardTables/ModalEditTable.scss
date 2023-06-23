@@ -1,7 +1,8 @@
 @import "../../../index.scss";
 
 .edit-table-modal,
-.add-table-modal, .delete-table-modal {
+.add-table-modal,
+.delete-table-modal {
   width: 400px;
   padding: 2rem;
   position: absolute;
@@ -12,7 +13,8 @@
   transition: all 0.3s ease;
 
   .edit-table-form,
-  .add-table-form, .delete-table-container {
+  .add-table-form,
+  .delete-table-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,13 +25,13 @@
 
     .delete-table-text {
       font-size: 20px;
-      // text-align: center;
       margin: 0 0 1.5rem;
     }
 
     .edit-table-form-input,
     .add-table-form-input {
       width: 100%;
+
       label {
         font-size: 16px;
         font-weight: 600;
@@ -72,7 +74,8 @@
     .add-table-form-button,
     .delete-table-form-button,
     .edit-table-form-button-close,
-    .add-table-form-button-close, .delete-table-form-button-close {
+    .add-table-form-button-close,
+    .delete-table-form-button-close {
       align-self: center;
       border: none;
       border-radius: 5px;
@@ -90,7 +93,8 @@
       }
     }
 
-    .delete-table-form-button, .delete-table-form-button-close {
+    .delete-table-form-button,
+    .delete-table-form-button-close {
       width: 125px;
     }
   }

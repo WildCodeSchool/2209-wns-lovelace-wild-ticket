@@ -72,11 +72,10 @@ const ListTables = ({
   return (
     <div className="list-table-container">
       <DataTable
-      paginator rows={8} tableStyle={{ minWidth: '50rem' }}
+      paginator rows={5} 
         value={tables as DataTableValueArray}
         className="table-data"
       >
-        {/* <Column field="id" header="Test id" sortable></Column> */}
         <Column field="number" header="N° de table" className="table-number-column" sortable></Column>
         <Column field="capacity" header="Couverts" className="table-capacity-column" sortable></Column>
         <Column
