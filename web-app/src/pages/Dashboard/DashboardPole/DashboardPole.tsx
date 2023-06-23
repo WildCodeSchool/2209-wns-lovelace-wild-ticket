@@ -201,12 +201,7 @@ const DashboardPole = () => {
       </main>
 
       {/* Modal de confirmation de suppression */}
-      <div className={
-        openConfirmDeletePoleModal
-          ? "modalOverlay"
-          : ""
-      }
-      >
+      <div className={openConfirmDeletePoleModal ? "modalOverlay" : ""}>
         <div
           className={
             openConfirmDeletePoleModal
@@ -242,12 +237,7 @@ const DashboardPole = () => {
       </div>
 
       {/* Modal d'ajout d'un nouveau pole */}
-      <div className={
-        openAddPoleModal
-          ? "modalOverlay"
-          : ""
-      }
-      >
+      <div className={openAddPoleModal ? "modalOverlay" : ""}>
         <div
           className={
             openAddPoleModal
@@ -357,12 +347,7 @@ const DashboardPole = () => {
       </div>
 
       {/* Modal d'édition d'un pole */}
-      <div className={
-        openEditPoleModal
-          ? "modalOverlay"
-          : ""
-      }
-      >
+      <div className={openEditPoleModal ? "modalOverlay" : ""}>
         <div
           className={
             openEditPoleModal
@@ -370,7 +355,9 @@ const DashboardPole = () => {
               : "dashboardPoleListModalHidden"
           }
         >
-          <h1 className="dashboardPoleListModalTitle">Modification d'un pôle</h1>
+          <h1 className="dashboardPoleListModalTitle">
+            Modification d'un pôle
+          </h1>
           <div className="dashboardPoleListModalTablesContainer">
             <form className="add-pole-form">
               <div className="add-pole-form-input">
