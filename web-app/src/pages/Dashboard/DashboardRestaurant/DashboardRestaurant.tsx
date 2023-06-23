@@ -129,6 +129,18 @@ const DashboardRestaurant = () => {
     "" as any
   );
 
+  const oldRestaurant = restaurants?.find(restaurant => restaurant.id === editRestaurantId);
+
+  const restaurantIsModified = () => {
+    if (
+      oldRestaurant?.name === editRestaurantName &&
+      oldRestaurant?.picture === editRestaurantPicture
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   const [editRestaurant] = useMutation<
     UpdateRestaurantMutation,
     UpdateRestaurantMutationVariables
@@ -143,22 +155,28 @@ const DashboardRestaurant = () => {
 
   const submitEditRestaurantForm = async () => {
     try {
-      await editRestaurant({
-        variables: {
-          name: editRestaurantName,
-          picture: editRestaurantPicture,
-          updateRestaurantId: editRestaurantId,
-          ticketWaitingLimit: 5,
-          notComingTicketDisapearDelay: 2,
-        },
-      });
-      setEditRestaurantId("");
-      setEditRestaurantName("");
-      setEditRestaurantPicture("");
-      toast.success(
-        `Vous avez modifié le pôle "${editRestaurantName}" avec succès.`
-      );
-      refetch();
+      if (restaurantIsModified()) {
+        await editRestaurant({
+          variables: {
+            name: editRestaurantName,
+            picture: editRestaurantPicture,
+            updateRestaurantId: editRestaurantId,
+            ticketWaitingLimit: 5,
+            notComingTicketDisapearDelay: 2,
+          },
+        });
+        setOpenEditRestaurantModal(false);
+        setIsClickable(true);
+        setEditRestaurantId("");
+        setEditRestaurantName("");
+        setEditRestaurantPicture("");
+        toast.success(
+          `Vous avez modifié le pôle "${editRestaurantName}" avec succès.`
+        );
+        refetch();
+      } else {
+        toast.error("Les champs ne comportent aucune modification.");
+      }
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -355,8 +373,6 @@ const DashboardRestaurant = () => {
               className="dashboardRestaurantListModalButton"
               onClick={async () => {
                 await submitEditRestaurantForm();
-                setOpenEditRestaurantModal(false);
-                setIsClickable(true);
               }}
             >
               Modifier
