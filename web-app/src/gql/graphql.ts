@@ -784,6 +784,15 @@ export type CreateRestaurantMutation = {
   createRestaurant: { __typename?: "Restaurant"; id: string };
 };
 
+export type DeleteRestaurantMutationVariables = Exact<{
+  deleteRestaurantId: Scalars["String"];
+}>;
+
+export type DeleteRestaurantMutation = {
+  __typename?: "Mutation";
+  deleteRestaurant: { __typename?: "Restaurant"; id: string };
+};
+
 export const SignInDocument = {
   kind: "Document",
   definitions: [
@@ -3198,4 +3207,58 @@ export const CreateRestaurantDocument = {
 } as unknown as DocumentNode<
   CreateRestaurantMutation,
   CreateRestaurantMutationVariables
+>;
+export const DeleteRestaurantDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteRestaurant" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "deleteRestaurantId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteRestaurant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "deleteRestaurantId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteRestaurantMutation,
+  DeleteRestaurantMutationVariables
 >;

@@ -69,6 +69,8 @@ const documents = {
     types.UpdateRestaurantOpeningTimeDocument,
   "\n  mutation CreateRestaurant(\n    $name: String!\n    $notComingTicketDisapearDelay: Float!\n    $pole: ID!\n    $ticketWaitingLimit: Float!\n    $picture: String\n  ) {\n    createRestaurant(\n      name: $name\n      notComingTicketDisapearDelay: $notComingTicketDisapearDelay\n      pole: $pole\n      ticketWaitingLimit: $ticketWaitingLimit\n      picture: $picture\n    ) {\n      id\n    }\n  }\n":
     types.CreateRestaurantDocument,
+  "\n  mutation DeleteRestaurant($deleteRestaurantId: String!) {\n    deleteRestaurant(id: $deleteRestaurantId) {\n      id\n    }\n  }\n":
+    types.DeleteRestaurantDocument,
 };
 
 /**
@@ -253,6 +255,12 @@ export function graphql(
 export function graphql(
   source: "\n  mutation CreateRestaurant(\n    $name: String!\n    $notComingTicketDisapearDelay: Float!\n    $pole: ID!\n    $ticketWaitingLimit: Float!\n    $picture: String\n  ) {\n    createRestaurant(\n      name: $name\n      notComingTicketDisapearDelay: $notComingTicketDisapearDelay\n      pole: $pole\n      ticketWaitingLimit: $ticketWaitingLimit\n      picture: $picture\n    ) {\n      id\n    }\n  }\n"
 ): (typeof documents)["\n  mutation CreateRestaurant(\n    $name: String!\n    $notComingTicketDisapearDelay: Float!\n    $pole: ID!\n    $ticketWaitingLimit: Float!\n    $picture: String\n  ) {\n    createRestaurant(\n      name: $name\n      notComingTicketDisapearDelay: $notComingTicketDisapearDelay\n      pole: $pole\n      ticketWaitingLimit: $ticketWaitingLimit\n      picture: $picture\n    ) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation DeleteRestaurant($deleteRestaurantId: String!) {\n    deleteRestaurant(id: $deleteRestaurantId) {\n      id\n    }\n  }\n"
+): (typeof documents)["\n  mutation DeleteRestaurant($deleteRestaurantId: String!) {\n    deleteRestaurant(id: $deleteRestaurantId) {\n      id\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

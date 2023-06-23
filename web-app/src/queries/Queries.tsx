@@ -449,3 +449,11 @@ export const CREATE_RESTAURANT = gql`
     }
   }
 `;
+
+export const DELETE_RESTAURANT = gql`
+  mutation DeleteRestaurant($deleteRestaurantId: String!) {
+    deleteRestaurant(id: $deleteRestaurantId) {
+      id
+    }
+  }
+`;

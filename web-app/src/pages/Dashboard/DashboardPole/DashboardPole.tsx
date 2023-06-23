@@ -52,9 +52,31 @@ const DashboardPole = () => {
 
   const submitAddPoleForm = async () => {
     try {
+      if (!name) {
+        toast.error("Veuillez renseigner un nom.");
+        return;
+      }
+      if (!address) {
+        toast.error("Veuillez renseigner une adresse.");
+        return;
+      }
+      if (!zipCode) {
+        toast.error("Veuillez renseigner un code postal.");
+        return;
+      }
+      if (!city) {
+        toast.error("Veuillez renseigner une ville.");
+        return;
+      }
+      if (!email) {
+        toast.error("Veuillez renseigner un email.");
+        return;
+      }
       await createPole({
         variables: { name, address, zipCode, city, email },
       });
+      setOpenAddPoleModal(false);
+      setIsClickable(true);
       setName("");
       setAddress("");
       setZipCode("");
@@ -76,6 +98,21 @@ const DashboardPole = () => {
   const [editPoleCity, setEditPoleCity] = useState<string>("");
   const [editPoleEmail, setEditPoleEmail] = useState<string>("");
 
+  const oldPole = poles?.find((pole) => pole.id === editPoleId);
+
+  const poleIsModified = () => {
+    if (
+      oldPole?.name === editPoleName &&
+      oldPole?.address === editPoleAddress &&
+      oldPole?.zipCode === editPoleZipCode &&
+      oldPole?.city === editPoleCity &&
+      oldPole?.email === editPoleEmail
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   const [editPole] = useMutation<
     UpdatePoleMutation,
     UpdatePoleMutationVariables
@@ -93,25 +130,37 @@ const DashboardPole = () => {
 
   const submitEditPoleForm = async () => {
     try {
-      await editPole({
-        variables: {
-          name: editPoleName,
-          address: editPoleAddress,
-          zipCode: editPoleZipCode,
-          city: editPoleCity,
-          email: editPoleEmail,
-          updatePoleId: editPoleId,
-        },
-      });
-      setEditPoleId("");
-      setEditPoleName("");
-      setEditPoleAddress("");
-      setEditPoleZipCode("");
-      setEditPoleCity("");
-      setEditPoleEmail("");
-      toast.success(`Vous avez modifié le pôle "${editPoleName}" avec succès.`);
-      refetch();
+      if (poleIsModified()) {
+        await editPole({
+          variables: {
+            name: editPoleName,
+            address: editPoleAddress,
+            zipCode: editPoleZipCode,
+            city: editPoleCity,
+            email: editPoleEmail,
+            updatePoleId: editPoleId,
+          },
+        });
+        setOpenEditPoleModal(false);
+        setIsClickable(true);
+        setEditPoleId("");
+        setEditPoleName("");
+        setEditPoleAddress("");
+        setEditPoleZipCode("");
+        setEditPoleCity("");
+        setEditPoleEmail("");
+        toast.success(
+          `Vous avez modifié le pôle "${editPoleName}" avec succès.`
+        );
+        refetch();
+      } else {
+        toast.info(
+          `Les champs ne comportent aucune modification pour le pôle "${editPoleName}".`
+        );
+      }
     } catch (error) {
+      setOpenEditPoleModal(false);
+      setIsClickable(true);
       toast.error(getErrorMessage(error));
     }
   };
@@ -169,254 +218,259 @@ const DashboardPole = () => {
           isClickable={isClickable}
           editPoleForm={editPoleForm}
           confirmDelete={confirmDelete}
+          setIsClickable={setIsClickable}
         />
       </main>
 
       {/* Modal de confirmation de suppression */}
-      <div
-        className={
-          openConfirmDeletePoleModal
-            ? "dashboardPoleListModal"
-            : "dashboardPoleListModalHidden"
-        }
-      >
-        <h1 className="dashboardPoleListModalTitle">
-          Voulez-vous supprimer le pôle "{poleName}" ?
-        </h1>
-        <div className="dashboardPoleListModalButtonContainer">
-          <button
-            className="dashboardPoleListModalButton"
-            onClick={async () => {
-              await confirmDeletePole();
-              setOpenConfirmDeletePoleModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Oui
-          </button>
-          <button
-            className="dashboardPoleListModalButton"
-            onClick={() => {
-              setOpenConfirmDeletePoleModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Non
-          </button>
+      <div className={openConfirmDeletePoleModal ? "modalOverlay" : ""}>
+        <div
+          className={
+            openConfirmDeletePoleModal
+              ? "dashboardPoleListModal"
+              : "dashboardPoleListModalHidden"
+          }
+        >
+          <h1 className="dashboardPoleListModalTitle">
+            Voulez-vous supprimer le pôle "{poleName}" ?
+          </h1>
+          <div className="dashboardPoleListModalButtonContainer">
+            <button
+              className="dashboardPoleListModalButton"
+              onClick={async () => {
+                await confirmDeletePole();
+                setOpenConfirmDeletePoleModal(false);
+                setIsClickable(true);
+              }}
+            >
+              Oui
+            </button>
+            <button
+              className="dashboardPoleListModalButton"
+              onClick={() => {
+                setOpenConfirmDeletePoleModal(false);
+                setIsClickable(true);
+              }}
+            >
+              Non
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Modal d'ajout d'un nouveau pole */}
-      <div
-        className={
-          openAddPoleModal
-            ? "dashboardPoleListModal"
-            : "dashboardPoleListModalHidden"
-        }
-      >
-        <h1 className="dashboardPoleListModalTitle">
-          Enregistement d'un nouveau pôle
-        </h1>
-        <div className="dashboardPoleListModalTablesContainer">
-          <form className="add-pole-form">
-            <div className="add-pole-form-input">
-              <label htmlFor="name">Nom</label>
-              <input
-                type="text"
-                required
-                autoComplete="name"
-                id="name"
-                name="name"
-                value={name}
-                onChange={(event) => {
-                  setName(event.target.value);
-                }}
-              />
-            </div>
-            <div className="add-pole-form-input">
-              <label htmlFor="name">Adresse</label>
-              <input
-                type="text"
-                required
-                autoComplete="address"
-                id="address"
-                name="address"
-                value={address}
-                onChange={(event) => {
-                  setAddress(event.target.value);
-                }}
-              />
-            </div>
-            <div className="add-pole-form-input">
-              <label htmlFor="zipCode">Code Postal</label>
-              <input
-                type="text"
-                required
-                autoComplete="zipCode"
-                id="zipCode"
-                name="zipCode"
-                value={zipCode}
-                onChange={(event) => {
-                  setZipCode(event.target.value);
-                }}
-              />
-            </div>
-            <div className="add-pole-form-input">
-              <label htmlFor="city">Ville</label>
-              <input
-                type="text"
-                required
-                autoComplete="city"
-                id="city"
-                name="city"
-                value={city}
-                onChange={(event) => {
-                  setCity(event.target.value);
-                }}
-              />
-            </div>
-            <div className="add-pole-form-input">
-              <label htmlFor="email">Email</label>
-              <input
-                type="text"
-                required
-                autoComplete="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={(event) => {
-                  setEmail(event.target.value);
-                }}
-              />
-            </div>
-          </form>
-        </div>
-        <div className="dashboardPoleListModalButtonContainer">
-          <button
-            className="dashboardPoleListModalButton"
-            onClick={async () => {
-              await submitAddPoleForm();
-              setOpenAddPoleModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Enregister
-          </button>
-          <button
-            className="dashboardPoleListModalButton"
-            onClick={() => {
-              setOpenAddPoleModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Annuler
-          </button>
+      <div className={openAddPoleModal ? "modalOverlay" : ""}>
+        <div
+          className={
+            openAddPoleModal
+              ? "dashboardPoleListModal"
+              : "dashboardPoleListModalHidden"
+          }
+        >
+          <h1 className="dashboardPoleListModalTitle">
+            Enregistement d'un nouveau pôle
+          </h1>
+          <div className="dashboardPoleListModalTablesContainer">
+            <form className="add-pole-form">
+              <div className="add-pole-form-input">
+                <label htmlFor="name">Nom</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="name"
+                  id="name"
+                  name="name"
+                  value={name}
+                  onChange={(event) => {
+                    setName(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="add-pole-form-input">
+                <label htmlFor="name">Adresse</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="address"
+                  id="address"
+                  name="address"
+                  value={address}
+                  onChange={(event) => {
+                    setAddress(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="add-pole-form-input">
+                <label htmlFor="zipCode">Code Postal</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="zipCode"
+                  id="zipCode"
+                  name="zipCode"
+                  value={zipCode}
+                  onChange={(event) => {
+                    setZipCode(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="add-pole-form-input">
+                <label htmlFor="city">Ville</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="city"
+                  id="city"
+                  name="city"
+                  value={city}
+                  onChange={(event) => {
+                    setCity(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="add-pole-form-input">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="email"
+                  id="email"
+                  name="email"
+                  value={email}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                  }}
+                />
+              </div>
+            </form>
+          </div>
+          <div className="dashboardPoleListModalButtonContainer">
+            <button
+              className="dashboardPoleListModalButton"
+              onClick={async () => {
+                await submitAddPoleForm();
+              }}
+            >
+              Enregister
+            </button>
+            <button
+              className="dashboardPoleListModalButton"
+              onClick={() => {
+                setOpenAddPoleModal(false);
+                setIsClickable(true);
+              }}
+            >
+              Annuler
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Modal d'édition d'un pole */}
-      <div
-        className={
-          openEditPoleModal
-            ? "dashboardPoleListModal"
-            : "dashboardPoleListModalHidden"
-        }
-      >
-        <h1 className="dashboardPoleListModalTitle">Modification d'un pôle</h1>
-        <div className="dashboardPoleListModalTablesContainer">
-          <form className="add-pole-form">
-            <div className="add-pole-form-input">
-              <label htmlFor="name">Nom</label>
-              <input
-                type="text"
-                required
-                autoComplete="name"
-                id="name"
-                name="name"
-                value={editPoleName}
-                onChange={(event) => {
-                  setEditPoleName(event.target.value);
-                }}
-              />
-            </div>
-            <div className="add-pole-form-input">
-              <label htmlFor="name">Adresse</label>
-              <input
-                type="text"
-                required
-                autoComplete="address"
-                id="address"
-                name="address"
-                value={editPoleAddress}
-                onChange={(event) => {
-                  setEditPoleAddress(event.target.value);
-                }}
-              />
-            </div>
-            <div className="add-pole-form-input">
-              <label htmlFor="zipCode">Code Postal</label>
-              <input
-                type="text"
-                required
-                autoComplete="zipCode"
-                id="zipCode"
-                name="zipCode"
-                value={editPoleZipCode}
-                onChange={(event) => {
-                  setEditPoleZipCode(event.target.value);
-                }}
-              />
-            </div>
-            <div className="add-pole-form-input">
-              <label htmlFor="city">Ville</label>
-              <input
-                type="text"
-                required
-                autoComplete="city"
-                id="city"
-                name="city"
-                value={editPoleCity}
-                onChange={(event) => {
-                  setEditPoleCity(event.target.value);
-                }}
-              />
-            </div>
-            <div className="add-pole-form-input">
-              <label htmlFor="email">Email</label>
-              <input
-                type="text"
-                required
-                autoComplete="email"
-                id="email"
-                name="email"
-                value={editPoleEmail}
-                onChange={(event) => {
-                  setEditPoleEmail(event.target.value);
-                }}
-              />
-            </div>
-          </form>
-        </div>
-        <div className="dashboardPoleListModalButtonContainer">
-          <button
-            className="dashboardPoleListModalButton"
-            onClick={async () => {
-              await submitEditPoleForm();
-              setOpenEditPoleModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Modifier
-          </button>
-          <button
-            className="dashboardPoleListModalButton"
-            onClick={() => {
-              setOpenEditPoleModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Annuler
-          </button>
+      <div className={openEditPoleModal ? "modalOverlay" : ""}>
+        <div
+          className={
+            openEditPoleModal
+              ? "dashboardPoleListModal"
+              : "dashboardPoleListModalHidden"
+          }
+        >
+          <h1 className="dashboardPoleListModalTitle">
+            Modification d'un pôle
+          </h1>
+          <div className="dashboardPoleListModalTablesContainer">
+            <form className="add-pole-form">
+              <div className="add-pole-form-input">
+                <label htmlFor="name">Nom</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="name"
+                  id="name"
+                  name="name"
+                  value={editPoleName}
+                  onChange={(event) => {
+                    setEditPoleName(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="add-pole-form-input">
+                <label htmlFor="name">Adresse</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="address"
+                  id="address"
+                  name="address"
+                  value={editPoleAddress}
+                  onChange={(event) => {
+                    setEditPoleAddress(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="add-pole-form-input">
+                <label htmlFor="zipCode">Code Postal</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="zipCode"
+                  id="zipCode"
+                  name="zipCode"
+                  value={editPoleZipCode}
+                  onChange={(event) => {
+                    setEditPoleZipCode(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="add-pole-form-input">
+                <label htmlFor="city">Ville</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="city"
+                  id="city"
+                  name="city"
+                  value={editPoleCity}
+                  onChange={(event) => {
+                    setEditPoleCity(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="add-pole-form-input">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="email"
+                  id="email"
+                  name="email"
+                  value={editPoleEmail}
+                  onChange={(event) => {
+                    setEditPoleEmail(event.target.value);
+                  }}
+                />
+              </div>
+            </form>
+          </div>
+          <div className="dashboardPoleListModalButtonContainer">
+            <button
+              className="dashboardPoleListModalButton"
+              onClick={async () => {
+                await submitEditPoleForm();
+              }}
+            >
+              Modifier
+            </button>
+            <button
+              className="dashboardPoleListModalButton"
+              onClick={() => {
+                setOpenEditPoleModal(false);
+                setIsClickable(true);
+              }}
+            >
+              Annuler
+            </button>
+          </div>
         </div>
       </div>
     </section>
