@@ -22,7 +22,7 @@ import { GlobalContext } from "../..";
 
 @Resolver(AppUser)
 export default class AppUserResolver {
-  @Authorized("ROLE_ADMIN")
+  @Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
   @Query(() => [AppUser])
   getUsers(): Promise<AppUser[]> {
     return AppUserRepository.getUsers();
@@ -34,24 +34,37 @@ export default class AppUserResolver {
     return AppUserRepository.getUserById(id);
   }
 
-  @Authorized("ROLE_ADMIN")
+  //@Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
   @Mutation(() => AppUser)
   createUser(
     @Args()
-    { email, password, role, restaurant }: UserCreationArgs
+    { firstname, lastname, email, role, restaurant }: UserCreationArgs
   ): Promise<AppUser> {
-    return AppUserRepository.createUser(email, password, role, restaurant);
+    return AppUserRepository.createUser(
+      firstname,
+      lastname,
+      email,
+      role,
+      restaurant
+    );
   }
 
   @Authorized()
   @Mutation(() => AppUser)
   updateUser(
-    @Args() { id, email, role, restaurant }: UserUpdateArgs
+    @Args() { id, firstname, lastname, email, role, restaurant }: UserUpdateArgs
   ): Promise<AppUser> {
-    return AppUserRepository.updateUser(id, email, role, restaurant);
+    return AppUserRepository.updateUser(
+      id,
+      firstname,
+      lastname,
+      email,
+      role,
+      restaurant
+    );
   }
 
-  @Authorized("ROLE_ADMIN")
+  @Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
   @Mutation(() => AppUser)
   deleteUser(@Arg("id") id: string): Promise<AppUser | null> {
     return AppUserRepository.deleteUser(id);

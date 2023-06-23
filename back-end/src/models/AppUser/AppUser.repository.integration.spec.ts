@@ -1,4 +1,3 @@
-import { hashSync } from "bcryptjs";
 import {
   clearAllRepositories,
   closeConnection,
@@ -31,6 +30,8 @@ describe("AppUserRepository integration", () => {
         return expect(() =>
           AppUserRepository.updateUser(
             falseUuid,
+            "John",
+            "Doe",
             "jean@user.com",
             "ROLE_ADMIN",
             ""
@@ -41,14 +42,17 @@ describe("AppUserRepository integration", () => {
     describe("when a user exists", () => {
       it("returns the updated user", async () => {
         const user = await AppUserRepository.createUser(
+          "John",
+          "Doe",
           "jean@user.com",
-          hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
           ""
         );
 
         const updatedUser = await AppUserRepository.updateUser(
           user.id,
+          "John",
+          "Doe",
           "jean@user.fr",
           "ROLE_ADMIN",
           ""
@@ -73,8 +77,9 @@ describe("AppUserRepository integration", () => {
     describe("when a user exists", () => {
       it("expects user is null in database", async () => {
         const user = await AppUserRepository.createUser(
+          "John",
+          "Doe",
           "jean@user.com",
-          hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
           ""
         );
@@ -103,8 +108,9 @@ describe("AppUserRepository integration", () => {
         describe("when password invalid", () => {
           it("throws invalid credentials error", async () => {
             await AppUserRepository.createUser(
+              "John",
+              "Doe",
               emailAddress,
-              hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
               ""
             );
@@ -118,16 +124,14 @@ describe("AppUserRepository integration", () => {
         describe("when password valid", () => {
           it("creates session in database", async () => {
             await AppUserRepository.createUser(
+              "John",
+              "Doe",
               emailAddress,
-              hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
               ""
             );
 
-            await AppUserRepository.signIn(
-              emailAddress,
-              "mot-de-passe-de-jean"
-            );
+            await AppUserRepository.signIn(emailAddress, "password");
 
             const sessions = await SessionRepository.repository.find();
             expect(sessions).toHaveLength(1);
@@ -136,15 +140,16 @@ describe("AppUserRepository integration", () => {
 
           it("returns user and session", async () => {
             await AppUserRepository.createUser(
+              "John",
+              "Doe",
               emailAddress,
-              hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
               ""
             );
 
             const result = await AppUserRepository.signIn(
               emailAddress,
-              "mot-de-passe-de-jean"
+              "password"
             );
             expect(result).toHaveProperty("user");
             expect(result).toHaveProperty("session");
@@ -160,16 +165,14 @@ describe("AppUserRepository integration", () => {
       const emailAddress = "jean@user.com";
       it("deletes session in database", async () => {
         await AppUserRepository.createUser(
+          "John",
+          "Doe",
           emailAddress,
-          hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
           ""
         );
 
-        const signIn = await AppUserRepository.signIn(
-          emailAddress,
-          "mot-de-passe-de-jean"
-        );
+        const signIn = await AppUserRepository.signIn(emailAddress, "password");
 
         const userId = signIn.user.id;
 
@@ -180,16 +183,14 @@ describe("AppUserRepository integration", () => {
 
       it("returns user", async () => {
         await AppUserRepository.createUser(
+          "John",
+          "Doe",
           emailAddress,
-          hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
           ""
         );
 
-        const signIn = await AppUserRepository.signIn(
-          emailAddress,
-          "mot-de-passe-de-jean"
-        );
+        const signIn = await AppUserRepository.signIn(emailAddress, "password");
 
         const userId = signIn.user.id;
 

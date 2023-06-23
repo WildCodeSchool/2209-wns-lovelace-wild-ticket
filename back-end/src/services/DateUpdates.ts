@@ -11,6 +11,12 @@ export default class DateUpdates {
     return ticketsDay;
   }
 
+  static addHoursToDate(dateNow: Date, hoursToAdd: number) {
+    let ticketsDay = new Date(dateNow);
+    ticketsDay.setHours(ticketsDay.getHours() + hoursToAdd);
+    return ticketsDay;
+  }
+
   static substractMinutesToDate(dateNow: Date, minutesToSubstract: number) {
     let ticketsDay = new Date(dateNow);
     ticketsDay.setMinutes(ticketsDay.getMinutes() - minutesToSubstract);

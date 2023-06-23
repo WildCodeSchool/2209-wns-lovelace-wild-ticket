@@ -2,7 +2,10 @@ import { useContext } from "react";
 import "../DashboardTemp.scss";
 import { AppContext } from "../../../context/AppContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
-import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
+import {
+  BIG_LOGO_DASHBOARD_SIZE,
+  ROLE_ADMIN,
+} from "../../../constants/Constants";
 import "./DashboardOptions.scss";
 import "primeicons/primeicons.css";
 import DashboardOptionsRestaurantForm from "../../../components/Dashboard/DashboardOptions/DashboardOptionsRestaurantForm/DashboardOptionsRestaurantForm";
@@ -12,7 +15,7 @@ import DashboardOptionsGeneralOpForm from "../../../components/Dashboard/Dashboa
 const DashboardOptions = () => {
   const appContext = useContext(AppContext);
 
-  return appContext?.userData.role === "ROLE_ADMIN" ? (
+  return ROLE_ADMIN.includes(appContext?.userData.role) ? (
     <div className="DashboardMain">
       <div className="DashboardContent">
         <SVGLogo

@@ -62,19 +62,19 @@ export default function SideBar() {
           iconMaxParams={MAX_ICON_PARAMS}
           iconMinParams={MIN_ICON_PARAMS}
         />
-        {userRole === ROLE_ADMIN && (
+        {ROLE_ADMIN.includes(userRole) && (
           <SVGIconPole
             iconMaxParams={MAX_ICON_PARAMS}
             iconMinParams={MIN_ICON_PARAMS}
           />
         )}
-        {userRole === ROLE_ADMIN && (
+        {ROLE_ADMIN.includes(userRole) && (
           <SVGIconRestaurant
             iconMaxParams={MAX_ICON_PARAMS}
             iconMinParams={MIN_ICON_PARAMS}
           />
         )}
-        {userRole === ROLE_ADMIN && (
+        {ROLE_ADMIN.includes(userRole) && (
           <SVGIconUser
             iconMaxParams={MAX_ICON_PARAMS}
             iconMinParams={MIN_ICON_PARAMS}
@@ -92,16 +92,21 @@ export default function SideBar() {
             iconMinParams={MIN_ICON_PARAMS}
           />
         )}
-        <SVGIconStats
-          iconMaxParams={MAX_ICON_PARAMS}
-          iconMinParams={MIN_ICON_PARAMS}
-        />
+        {userRole === ROLE_RESTAURANT && (
+          <SVGIconStats
+            iconMaxParams={MAX_ICON_PARAMS}
+            iconMinParams={MIN_ICON_PARAMS}
+          />
+        )}
       </div>
+
       <div className="SideBarIconsContainer">
-        <SVGIconOptions
-          iconMaxParams={MAX_ICON_PARAMS}
-          iconMinParams={MIN_ICON_PARAMS}
-        />
+        {userRole === ROLE_RESTAURANT && (
+          <SVGIconOptions
+            iconMaxParams={MAX_ICON_PARAMS}
+            iconMinParams={MIN_ICON_PARAMS}
+          />
+        )}
         <SVGIconExit
           iconMaxParams={MAX_ICON_PARAMS}
           iconMinParams={MIN_ICON_PARAMS}

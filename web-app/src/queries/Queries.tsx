@@ -67,6 +67,77 @@ export const MY_PROFILE = gql`
   }
 `;
 
+export const GET_USERS = gql`
+  query GetUsers {
+    getUsers {
+      id
+      firstname
+      lastname
+      email
+      role
+      restaurant {
+        id
+        name
+        pole {
+          name
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const CREATE_USER = gql`
+  mutation CreateUser(
+    $firstname: String!
+    $email: String!
+    $role: String!
+    $lastname: String!
+    $restaurant: String
+  ) {
+    createUser(
+      firstname: $firstname
+      email: $email
+      role: $role
+      lastname: $lastname
+      restaurant: $restaurant
+    ) {
+      id
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser(
+    $updateUserId: ID!
+    $firstname: String!
+    $lastname: String!
+    $email: String!
+    $role: String!
+    $restaurant: String
+  ) {
+    updateUser(
+      id: $updateUserId
+      firstname: $firstname
+      lastname: $lastname
+      email: $email
+      role: $role
+      restaurant: $restaurant
+    ) {
+      id
+    }
+  }
+`;
+
+export const DELETE_USER = gql`
+  mutation DeleteUser($deleteUserId: String!) {
+    deleteUser(id: $deleteUserId) {
+      firstname
+    }
+  }
+`;
+
 /**
  * **************** TICKET QUERIES ***********************
  */

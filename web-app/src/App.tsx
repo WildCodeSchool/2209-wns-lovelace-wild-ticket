@@ -48,10 +48,12 @@ function App() {
   const [primeReactMinThemePages] = useState<string[]>([
     DASHBOARD_POLE,
     DASHBOARD_RESTAURANT,
+    DASHBOARD_USER,
   ]);
   const [primeReactLaraLightIndigoThemePages] = useState<string[]>([
     DASHBOARD_POLE,
     DASHBOARD_RESTAURANT,
+    DASHBOARD_USER,
   ]);
   const [primeReactNanoThemePages] = useState<string[]>([
     DASHBOARD_HOME,

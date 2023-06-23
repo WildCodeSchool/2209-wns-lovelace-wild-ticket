@@ -10,7 +10,10 @@ import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
 } from "../../../types/DataTypes";
-import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
+import {
+  BIG_LOGO_DASHBOARD_SIZE,
+  ROLE_ADMIN,
+} from "../../../constants/Constants";
 import {
   DASHBOARD_STATS,
   DASHBOARD_TABLE,
@@ -57,7 +60,7 @@ const DashboardHome = () => {
     navigate(DASHBOARD_TABLE);
   };
 
-  return appContext?.userData.role === "ROLE_ADMIN" ? (
+  return ROLE_ADMIN.includes(appContext?.userData.role) ? (
     <div className="DashboardMain">
       <div className="DashboardContent">
         <SVGLogo
@@ -65,9 +68,8 @@ const DashboardHome = () => {
           logoHeight={BIG_LOGO_DASHBOARD_SIZE}
           logoFill={appContext?.userSVGColorScheme}
         />
-        <h1>DASHBOARD</h1>
+        <h1>ESPACE ADMINISTRATEUR</h1>
         <MainMenu />
-        <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
       </div>
     </div>
   ) : (

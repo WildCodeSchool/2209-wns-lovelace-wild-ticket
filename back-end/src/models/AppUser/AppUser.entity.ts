@@ -14,6 +14,8 @@ import Restaurant from "../Restaurant/Restaurant.entity";
 @ObjectType()
 export default class AppUser {
   constructor(
+    firstname: string,
+    lastname: string,
     email: string,
     hashedPassword: string,
     role: string,
@@ -23,6 +25,8 @@ export default class AppUser {
     resetPasswordToken?: string,
     resetPasswordTokenExpiration?: Date
   ) {
+    this.firstname = firstname;
+    this.lastname = lastname;
     this.email = email;
     this.hashedPassword = hashedPassword;
     this.role = role;
@@ -44,6 +48,18 @@ export default class AppUser {
   @PrimaryGeneratedColumn("uuid")
   @Field(() => ID)
   id: string;
+
+  @Column("varchar", {
+    length: 255,
+  })
+  @Field()
+  firstname: string;
+
+  @Column("varchar", {
+    length: 255,
+  })
+  @Field()
+  lastname: string;
 
   @Column("varchar", {
     length: 255,

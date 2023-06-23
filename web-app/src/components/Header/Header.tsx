@@ -69,7 +69,7 @@ export default function DashBoardHeader() {
       )}
 
       {(userRole === ROLE_RESTAURANT && dashboardLocation === "Accueil") ||
-      userRole === "ROLE_ADMIN" ? (
+      ROLE_ADMIN.includes(userRole) ? (
         ""
       ) : (
         <div className="DashboardHeaderStatsContainer">
@@ -88,12 +88,9 @@ export default function DashBoardHeader() {
         </div>
       )}
 
-      {
-        //TODO: A voir si on rajoute des stats pour les admins
-        userRole === ROLE_ADMIN && (
-          <div className="DashboardHeaderStatsContainer"></div>
-        )
-      }
+      {ROLE_ADMIN.includes(userRole) && (
+        <div className="DashboardHeaderStatsContainer"></div>
+      )}
     </header>
   );
 }
