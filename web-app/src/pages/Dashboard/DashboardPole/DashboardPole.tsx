@@ -127,10 +127,14 @@ const DashboardPole = () => {
         setEditPoleZipCode("");
         setEditPoleCity("");
         setEditPoleEmail("");
-        toast.success(`Vous avez modifié le pôle "${editPoleName}" avec succès.`);
+        toast.success(
+          `Vous avez modifié le pôle "${editPoleName}" avec succès.`
+        );
         refetch();
       } else {
-        toast.info(`Les champs ne comportent aucune modification pour le pôle "${editPoleName}".`);
+        toast.info(
+          `Les champs ne comportent aucune modification pour le pôle "${editPoleName}".`
+        );
       }
     } catch (error) {
       setOpenEditPoleModal(false);
