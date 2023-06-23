@@ -202,3 +202,10 @@ export type GET_USER_TYPES = {
     | null
     | undefined;
 } | null;
+
+export type GET_TABLE_BY_ID_TYPES = {
+  __typename?: "Table" | undefined;
+  id: string;
+  number: number;
+  capacity: number;
+} | null;

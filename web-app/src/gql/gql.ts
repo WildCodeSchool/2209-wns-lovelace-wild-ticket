@@ -51,6 +51,14 @@ const documents = {
     types.UpdateClosedAtDocument,
   "\n  query TablesByRestaurant($restaurantId: ID!, $capacity: Float) {\n    TablesByRestaurant(restaurantId: $restaurantId, capacity: $capacity) {\n      id\n      number\n      capacity\n    }\n  }\n":
     types.TablesByRestaurantDocument,
+  "\n  query Table($tableId: String!) {\n    Table(id: $tableId) {\n      id\n      number\n      capacity\n    }\n  }\n":
+    types.TableDocument,
+  "\n  mutation CreateTable(\n    $number: Float!\n    $capacity: Float!\n    $restaurant: String!\n  ) {\n    createTable(number: $number, capacity: $capacity, restaurant: $restaurant) {\n      capacity\n      number\n      restaurant {\n        id\n      }\n    }\n  }\n":
+    types.CreateTableDocument,
+  "\n  mutation UpdateTable(\n    $updateTableId: ID!\n    $number: Float!\n    $capacity: Float!\n  ) {\n    updateTable(id: $updateTableId, number: $number, capacity: $capacity) {\n      capacity\n      number\n    }\n  }\n":
+    types.UpdateTableDocument,
+  "\n  mutation DeleteTable($deleteTableId: String!) {\n    deleteTable(id: $deleteTableId) {\n      id\n    }\n  }\n":
+    types.DeleteTableDocument,
   "\n  query Poles {\n    poles {\n      id\n      name\n      address\n      zipCode\n      city\n      email\n      restaurant {\n        id\n        name\n      }\n    }\n  }\n":
     types.PolesDocument,
   "\n  mutation CreatePole(\n    $name: String!\n    $address: String!\n    $zipCode: String!\n    $city: String!\n    $email: String!\n  ) {\n    createPole(\n      name: $name\n      address: $address\n      zipCode: $zipCode\n      city: $city\n      email: $email\n    ) {\n      id\n    }\n  }\n":
@@ -69,6 +77,8 @@ const documents = {
     types.UpdateRestaurantOpeningTimeDocument,
   "\n  mutation CreateRestaurant(\n    $name: String!\n    $notComingTicketDisapearDelay: Float!\n    $pole: ID!\n    $ticketWaitingLimit: Float!\n    $picture: String\n  ) {\n    createRestaurant(\n      name: $name\n      notComingTicketDisapearDelay: $notComingTicketDisapearDelay\n      pole: $pole\n      ticketWaitingLimit: $ticketWaitingLimit\n      picture: $picture\n    ) {\n      id\n    }\n  }\n":
     types.CreateRestaurantDocument,
+  "\n  mutation DeleteRestaurant($deleteRestaurantId: String!) {\n    deleteRestaurant(id: $deleteRestaurantId) {\n      id\n    }\n  }\n":
+    types.DeleteRestaurantDocument,
 };
 
 /**
@@ -203,6 +213,30 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: "\n  query Table($tableId: String!) {\n    Table(id: $tableId) {\n      id\n      number\n      capacity\n    }\n  }\n"
+): (typeof documents)["\n  query Table($tableId: String!) {\n    Table(id: $tableId) {\n      id\n      number\n      capacity\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation CreateTable(\n    $number: Float!\n    $capacity: Float!\n    $restaurant: String!\n  ) {\n    createTable(number: $number, capacity: $capacity, restaurant: $restaurant) {\n      capacity\n      number\n      restaurant {\n        id\n      }\n    }\n  }\n"
+): (typeof documents)["\n  mutation CreateTable(\n    $number: Float!\n    $capacity: Float!\n    $restaurant: String!\n  ) {\n    createTable(number: $number, capacity: $capacity, restaurant: $restaurant) {\n      capacity\n      number\n      restaurant {\n        id\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation UpdateTable(\n    $updateTableId: ID!\n    $number: Float!\n    $capacity: Float!\n  ) {\n    updateTable(id: $updateTableId, number: $number, capacity: $capacity) {\n      capacity\n      number\n    }\n  }\n"
+): (typeof documents)["\n  mutation UpdateTable(\n    $updateTableId: ID!\n    $number: Float!\n    $capacity: Float!\n  ) {\n    updateTable(id: $updateTableId, number: $number, capacity: $capacity) {\n      capacity\n      number\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation DeleteTable($deleteTableId: String!) {\n    deleteTable(id: $deleteTableId) {\n      id\n    }\n  }\n"
+): (typeof documents)["\n  mutation DeleteTable($deleteTableId: String!) {\n    deleteTable(id: $deleteTableId) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: "\n  query Poles {\n    poles {\n      id\n      name\n      address\n      zipCode\n      city\n      email\n      restaurant {\n        id\n        name\n      }\n    }\n  }\n"
 ): (typeof documents)["\n  query Poles {\n    poles {\n      id\n      name\n      address\n      zipCode\n      city\n      email\n      restaurant {\n        id\n        name\n      }\n    }\n  }\n"];
 /**
@@ -253,6 +287,12 @@ export function graphql(
 export function graphql(
   source: "\n  mutation CreateRestaurant(\n    $name: String!\n    $notComingTicketDisapearDelay: Float!\n    $pole: ID!\n    $ticketWaitingLimit: Float!\n    $picture: String\n  ) {\n    createRestaurant(\n      name: $name\n      notComingTicketDisapearDelay: $notComingTicketDisapearDelay\n      pole: $pole\n      ticketWaitingLimit: $ticketWaitingLimit\n      picture: $picture\n    ) {\n      id\n    }\n  }\n"
 ): (typeof documents)["\n  mutation CreateRestaurant(\n    $name: String!\n    $notComingTicketDisapearDelay: Float!\n    $pole: ID!\n    $ticketWaitingLimit: Float!\n    $picture: String\n  ) {\n    createRestaurant(\n      name: $name\n      notComingTicketDisapearDelay: $notComingTicketDisapearDelay\n      pole: $pole\n      ticketWaitingLimit: $ticketWaitingLimit\n      picture: $picture\n    ) {\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  mutation DeleteRestaurant($deleteRestaurantId: String!) {\n    deleteRestaurant(id: $deleteRestaurantId) {\n      id\n    }\n  }\n"
+): (typeof documents)["\n  mutation DeleteRestaurant($deleteRestaurantId: String!) {\n    deleteRestaurant(id: $deleteRestaurantId) {\n      id\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
