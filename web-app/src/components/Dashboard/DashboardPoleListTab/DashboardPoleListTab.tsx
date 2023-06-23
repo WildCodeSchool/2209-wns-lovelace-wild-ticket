@@ -11,11 +11,13 @@ export default function DashboardPoleListTab({
   isClickable,
   editPoleForm,
   confirmDelete,
+  setIsClickable,
 }: {
   poles: any;
   isClickable: boolean;
   editPoleForm: any;
   confirmDelete: (pole: GET_POLE_TYPES) => Promise<void>;
+  setIsClickable: any;
 }) {
   const actionButton = (pole: GET_POLE_TYPES) => {
     return (
@@ -23,12 +25,14 @@ export default function DashboardPoleListTab({
         <SVGIconEdit
           onClick={async () => {
             editPoleForm(pole);
+            setIsClickable(false);
           }}
           isClickable={isClickable}
         />
         <SVGIconDelete
           onClick={async () => {
             await confirmDelete(pole);
+            setIsClickable(false);
           }}
           isClickable={isClickable}
         />
