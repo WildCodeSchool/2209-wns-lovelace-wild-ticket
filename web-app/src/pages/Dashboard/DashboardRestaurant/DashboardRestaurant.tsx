@@ -129,7 +129,9 @@ const DashboardRestaurant = () => {
     "" as any
   );
 
-  const oldRestaurant = restaurants?.find(restaurant => restaurant.id === editRestaurantId);
+  const oldRestaurant = restaurants?.find(
+    (restaurant) => restaurant.id === editRestaurantId
+  );
 
   const restaurantIsModified = () => {
     if (
