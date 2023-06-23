@@ -209,186 +209,192 @@ const DashboardRestaurant = () => {
       </main>
 
       {/* Modal d'ajout d'un nouveau restaurant */}
-      <div
-        className={
-          openAddRestaurantModal
-            ? "dashboardRestaurantListModal"
-            : "dashboardRestaurantListModalHidden"
-        }
-      >
-        <h1 className="dashboardRestaurantListModalTitle">
-          Enregistement d'un nouveau restaurant
-        </h1>
-        <div className="dashboardRestaurantListModalTablesContainer">
-          <form className="add-restaurant-form">
-            <div className="add-restaurant-form-input">
-              <label htmlFor="name">Nom</label>
-              <input
-                type="text"
-                required
-                autoComplete="name"
-                id="name"
-                name="name"
-                value={name}
-                onChange={(event) => {
-                  setName(event.target.value);
-                }}
-              />
-            </div>
-            <div className="add-restaurant-form-input-file">
-              <label htmlFor="picture">Logo</label>
-              <input
-                type="file"
-                id="picture"
-                name="picture"
-                accept="image/*"
-                onChange={(event) => {
-                  convertImage(event);
-                }}
-              />
-            </div>
-            <div className="add-restaurant-form-input-file">
-              <label htmlFor="pole">Pôle</label>
-              <select
-                id="pole"
-                name="pole"
-                value={pole}
-                onChange={(event) => {
-                  setPole(event.target.value);
-                }}
-              >
-                <option value="">-- Veuillez sélectionner un Pôle --</option>
-                {poles ? (
-                  poles.map((poleOption) => (
-                    <option key={poleOption.id} value={poleOption.id}>
-                      {poleOption.name}
-                    </option>
-                  ))
-                ) : (
-                  <option value="">Chargement des pôles...</option>
-                )}
-              </select>
-            </div>
-          </form>
-        </div>
-        <div className="dashboardRestaurantListModalButtonContainer">
-          <button
-            className="dashboardRestaurantListModalButton"
-            onClick={async () => {
-              await submitAddRestaurantForm();
-              setOpenAddRestaurantModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Enregister
-          </button>
-          <button
-            className="dashboardRestaurantListModalButton"
-            onClick={() => {
-              setOpenAddRestaurantModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Annuler
-          </button>
+      <div className={openAddRestaurantModal ? "modalOverlay" : ""}>
+        <div
+          className={
+            openAddRestaurantModal
+              ? "dashboardRestaurantListModal"
+              : "dashboardRestaurantListModalHidden"
+          }
+        >
+          <h1 className="dashboardRestaurantListModalTitle">
+            Enregistement d'un nouveau restaurant
+          </h1>
+          <div className="dashboardRestaurantListModalTablesContainer">
+            <form className="add-restaurant-form">
+              <div className="add-restaurant-form-input">
+                <label htmlFor="name">Nom</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="name"
+                  id="name"
+                  name="name"
+                  value={name}
+                  onChange={(event) => {
+                    setName(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="add-restaurant-form-input-file">
+                <label htmlFor="picture">Logo</label>
+                <input
+                  type="file"
+                  id="picture"
+                  name="picture"
+                  accept="image/*"
+                  onChange={(event) => {
+                    convertImage(event);
+                  }}
+                />
+              </div>
+              <div className="add-restaurant-form-input-file">
+                <label htmlFor="pole">Pôle</label>
+                <select
+                  id="pole"
+                  name="pole"
+                  value={pole}
+                  onChange={(event) => {
+                    setPole(event.target.value);
+                  }}
+                >
+                  <option value="">-- Veuillez sélectionner un Pôle --</option>
+                  {poles ? (
+                    poles.map((poleOption) => (
+                      <option key={poleOption.id} value={poleOption.id}>
+                        {poleOption.name}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">Chargement des pôles...</option>
+                  )}
+                </select>
+              </div>
+            </form>
+          </div>
+          <div className="dashboardRestaurantListModalButtonContainer">
+            <button
+              className="dashboardRestaurantListModalButton"
+              onClick={async () => {
+                await submitAddRestaurantForm();
+                setOpenAddRestaurantModal(false);
+                setIsClickable(true);
+              }}
+            >
+              Enregister
+            </button>
+            <button
+              className="dashboardRestaurantListModalButton"
+              onClick={() => {
+                setOpenAddRestaurantModal(false);
+                setIsClickable(true);
+              }}
+            >
+              Annuler
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Modal d'édition d'un restaurant */}
-      <div
-        className={
-          openEditRestaurantModal
-            ? "dashboardRestaurantListModal"
-            : "dashboardRestaurantListModalHidden"
-        }
-      >
-        <h1 className="dashboardRestaurantListModalTitle">
-          Modification d'un restaurant
-        </h1>
-        <div className="dashboardRestaurantListModalTablesContainer">
-          <form className="add-restaurant-form">
-            <div className="add-restaurant-form-input">
-              <label htmlFor="name">Nom</label>
-              <input
-                type="text"
-                required
-                autoComplete="name"
-                id="name"
-                name="name"
-                value={editRestaurantName}
-                onChange={(event) => {
-                  setEditRestaurantName(event.target.value);
-                }}
-              />
-            </div>
-            <div className="add-restaurant-form-input-file">
-              <label htmlFor="name">Logo</label>
-              <input
-                type="file"
-                id="picture"
-                name="picture"
-                accept="image/*"
-                onChange={(event) => {
-                  convertImage(event);
-                }}
-              />
-            </div>
-          </form>
-        </div>
-        <div className="dashboardRestaurantListModalButtonContainer">
-          <button
-            className="dashboardRestaurantListModalButton"
-            onClick={async () => {
-              await submitEditRestaurantForm();
-              setOpenEditRestaurantModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Modifier
-          </button>
-          <button
-            className="dashboardRestaurantListModalButton"
-            onClick={() => {
-              setOpenEditRestaurantModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Annuler
-          </button>
+      <div className={openEditRestaurantModal ? "modalOverlay" : ""}>
+        <div
+          className={
+            openEditRestaurantModal
+              ? "dashboardRestaurantListModal"
+              : "dashboardRestaurantListModalHidden"
+          }
+        >
+          <h1 className="dashboardRestaurantListModalTitle">
+            Modification d'un restaurant
+          </h1>
+          <div className="dashboardRestaurantListModalTablesContainer">
+            <form className="add-restaurant-form">
+              <div className="add-restaurant-form-input">
+                <label htmlFor="name">Nom</label>
+                <input
+                  type="text"
+                  required
+                  autoComplete="name"
+                  id="name"
+                  name="name"
+                  value={editRestaurantName}
+                  onChange={(event) => {
+                    setEditRestaurantName(event.target.value);
+                  }}
+                />
+              </div>
+              <div className="add-restaurant-form-input-file">
+                <label htmlFor="name">Logo</label>
+                <input
+                  type="file"
+                  id="picture"
+                  name="picture"
+                  accept="image/*"
+                  onChange={(event) => {
+                    convertImage(event);
+                  }}
+                />
+              </div>
+            </form>
+          </div>
+          <div className="dashboardRestaurantListModalButtonContainer">
+            <button
+              className="dashboardRestaurantListModalButton"
+              onClick={async () => {
+                await submitEditRestaurantForm();
+                setOpenEditRestaurantModal(false);
+                setIsClickable(true);
+              }}
+            >
+              Modifier
+            </button>
+            <button
+              className="dashboardRestaurantListModalButton"
+              onClick={() => {
+                setOpenEditRestaurantModal(false);
+                setIsClickable(true);
+              }}
+            >
+              Annuler
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Modal de confirmation de suppression d'un restaurant */}
-      <div
-        className={
-          openConfirmDeleteRestaurantModal
-            ? "dashboardRestaurantListModal"
-            : "dashboardRestaurantListModalHidden"
-        }
-      >
-        <h1 className="dashboardRestaurantListModalTitle">
-          Voulez-vous supprimer le restaurant "{restaurantName}" ?
-        </h1>
-        <div className="dashboardRestaurantListModalButtonContainer">
-          <button
-            className="dashboardRestaurantListModalButton"
-            onClick={async () => {
-              await confirmDeleteRestaurant();
-              setOpenConfirmDeleteRestaurantModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Oui
-          </button>
-          <button
-            className="dashboardRestaurantListModalButton"
-            onClick={() => {
-              setOpenConfirmDeleteRestaurantModal(false);
-              setIsClickable(true);
-            }}
-          >
-            Non
-          </button>
+      <div className={openConfirmDeleteRestaurantModal ? "modalOverlay" : ""}>
+        <div
+          className={
+            openConfirmDeleteRestaurantModal
+              ? "dashboardRestaurantListModal"
+              : "dashboardRestaurantListModalHidden"
+          }
+        >
+          <h1 className="dashboardRestaurantListModalTitle">
+            Voulez-vous supprimer le restaurant "{restaurantName}" ?
+          </h1>
+          <div className="dashboardRestaurantListModalButtonContainer">
+            <button
+              className="dashboardRestaurantListModalButton"
+              onClick={async () => {
+                await confirmDeleteRestaurant();
+                setOpenConfirmDeleteRestaurantModal(false);
+                setIsClickable(true);
+              }}
+            >
+              Oui
+            </button>
+            <button
+              className="dashboardRestaurantListModalButton"
+              onClick={() => {
+                setOpenConfirmDeleteRestaurantModal(false);
+                setIsClickable(true);
+              }}
+            >
+              Non
+            </button>
+          </div>
         </div>
       </div>
     </section>
