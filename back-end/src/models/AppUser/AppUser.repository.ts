@@ -88,9 +88,12 @@ export default class AppUserRepository extends AppUserDb {
     restaurant: string
   ): Promise<AppUser> {
     const createdAt = new Date();
-    const password = "password";
-    //TODO : Problem with password generation in integration tests
-    //const password = await PasswordService.generateRandomPassword();
+
+    const password =
+      process.env.NODE_ENV === "test"
+        ? "password"
+        : await PasswordService.generateRandomPassword();
+
     let appUserRestaurant = undefined;
 
     if (restaurant) {
