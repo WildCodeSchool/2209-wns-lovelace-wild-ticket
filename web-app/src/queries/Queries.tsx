@@ -21,8 +21,8 @@ export const SIGN_OUT = gql`
 `;
 
 export const SEND_RESET_PASSWORD_EMAIL = gql`
-  mutation SendResetPasswordEmail($email: String!) {
-    sendResetPasswordEmail(email: $email)
+  mutation PrepareAndSendResetPasswordEmail($email: String!) {
+    prepareAndSendResetPasswordEmail(email: $email)
   }
 `;
 

@@ -1,6 +1,5 @@
 import AppUserDb from "./AppUser.db";
 import AppUser from "./AppUser.entity";
-
 import { hashSync, compareSync } from "bcryptjs";
 import SessionRepository from "./Session.repository";
 import Session from "./Session.entity";
@@ -114,7 +113,11 @@ export default class AppUserRepository extends AppUserDb {
 
     const userCreated = await this.repository.save(newAppUser);
 
-    userCreated && (await this.prepareResetPasswordEmail(userCreated));
+    userCreated &&
+      (await this.prepareAndSendResetPasswordEmail(
+        userCreated.email,
+        "newUser"
+      ));
 
     return userCreated;
   }
@@ -147,6 +150,33 @@ export default class AppUserRepository extends AppUserDb {
       updatedAt: updatedAt,
       restaurant: appUserRestaurant,
     });
+  }
+
+  static async prepareAndSendResetPasswordEmail(
+    email: string,
+    state: string | null = null
+  ): Promise<void> {
+    // Check if email exists in database
+    const user = (await this.getUserByEmailAddress(email)) as AppUser;
+
+    if (email !== process.env.MJ_AVAILABLE_EMAIL) {
+      return;
+    }
+
+    // Generate token
+    const crypto = require("crypto");
+    const token = crypto.randomBytes(32).toString("hex");
+
+    // Save token in database
+    await this.setUserPasswordToken(user.id, token, state);
+
+    // Construct email
+    const link = `http://localhost:3000/update-password/?token=${token}`;
+
+    // Send email
+    state === "newUser"
+      ? await EmailService.sendNewUserPasswordEmail(user, link)
+      : await EmailService.sendResetPasswordEmail(user, link);
   }
 
   static async updateUserPassword(
@@ -206,44 +236,6 @@ export default class AppUserRepository extends AppUserDb {
     });
   }
 
-  static async updateUserToken(
-    id: string,
-    resetPasswordToken: string
-  ): Promise<AppUser> {
-    const userToUpdate = await this.getUserById(id);
-
-    // Token expiration date set to 30 minutes
-    const resetPasswordTokenExpiration = DateUpdates.addMinutesToDate(
-      new Date(),
-      30
-    );
-
-    return this.repository.save({
-      id: id,
-      resetPasswordToken: resetPasswordToken,
-      resetPasswordTokenExpiration: resetPasswordTokenExpiration,
-    });
-  }
-
-  static async newUserToken(
-    id: string,
-    resetPasswordToken: string
-  ): Promise<AppUser> {
-    const newUser = await this.getUserById(id);
-
-    // Token expiration date set to 24 hours
-    const resetPasswordTokenExpiration = DateUpdates.addHoursToDate(
-      new Date(),
-      24
-    );
-
-    return this.repository.save({
-      id: id,
-      resetPasswordToken: resetPasswordToken,
-      resetPasswordTokenExpiration: resetPasswordTokenExpiration,
-    });
-  }
-
   static async deleteUser(id: string): Promise<AppUser | null> {
     const user = await this.getUserById(id);
 
@@ -288,48 +280,21 @@ export default class AppUserRepository extends AppUserDb {
     return session.user;
   }
 
-  static async sendResetPasswordEmail(email: string): Promise<void> {
-    // Check if email exists in database
-    const user = (await this.getUserByEmailAddress(email)) as AppUser;
+  static async setUserPasswordToken(
+    id: string,
+    resetPasswordToken: string,
+    state: string | null = null
+  ): Promise<AppUser> {
+    // Token expiration date set to 24 hours for new user's password and 30 minutes for reset password
+    const resetPasswordTokenExpiration =
+      state === "newUser"
+        ? DateUpdates.addHoursToDate(new Date(), 24)
+        : DateUpdates.addMinutesToDate(new Date(), 30);
 
-    if (user.email !== process.env.MJ_AVAILABLE_EMAIL) {
-      return;
-    }
-
-    let userId = "";
-    if (user) {
-      userId = user.id;
-    }
-
-    // Generate token
-    const crypto = require("crypto");
-    const token = crypto.randomBytes(32).toString("hex");
-    // Save token in database
-    await this.updateUserToken(userId, token);
-
-    // Construct email
-    const link = `http://localhost:3000/update-password/?token=${token}`;
-
-    // Send email
-    await EmailService.sendResetPasswordEmail(user, link);
-  }
-
-  static async prepareResetPasswordEmail(user: AppUser): Promise<void> {
-    if (user.email !== process.env.MJ_AVAILABLE_EMAIL) {
-      return;
-    }
-
-    // Generate token
-    const crypto = require("crypto");
-    const token = crypto.randomBytes(32).toString("hex");
-
-    // Save token in database
-    await this.newUserToken(user.id, token);
-
-    // Construct email
-    const link = `http://localhost:3000/update-password/?token=${token}`;
-
-    // Send email
-    await EmailService.sendNewUserPasswordEmail(user, link);
+    return this.repository.save({
+      id: id,
+      resetPasswordToken: resetPasswordToken,
+      resetPasswordTokenExpiration: resetPasswordTokenExpiration,
+    });
   }
 }

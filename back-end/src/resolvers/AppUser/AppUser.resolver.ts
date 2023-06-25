@@ -14,7 +14,7 @@ import {
   UserCreationArgs,
   UserUpdateArgs,
   updateUserPasswordArgs,
-  sendResetPasswordEmailArgs,
+  prepareAndSendResetPasswordEmailArgs,
   updateUserPasswordWithTokenArgs,
 } from "./AppUser.input";
 import { setSessionIdInCookie } from "../../http-utils";
@@ -103,10 +103,10 @@ export default class AppUserResolver {
   }
 
   @Mutation(() => Boolean)
-  async sendResetPasswordEmail(
-    @Args() { email }: sendResetPasswordEmailArgs
+  async prepareAndSendResetPasswordEmail(
+    @Args() { email }: prepareAndSendResetPasswordEmailArgs
   ): Promise<boolean> {
-    await AppUserRepository.sendResetPasswordEmail(email);
+    await AppUserRepository.prepareAndSendResetPasswordEmail(email);
     return true;
   }
 
