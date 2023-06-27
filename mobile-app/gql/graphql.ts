@@ -26,7 +26,9 @@ export type AppUser = {
   __typename?: "AppUser";
   createdAt: Scalars["DateTime"];
   email: Scalars["String"];
+  firstname: Scalars["String"];
   id: Scalars["ID"];
+  lastname: Scalars["String"];
   resetPasswordToken?: Maybe<Scalars["String"]>;
   resetPasswordTokenExpiration?: Maybe<Scalars["DateTime"]>;
   restaurant?: Maybe<Restaurant>;
@@ -45,7 +47,7 @@ export type Mutation = {
   deleteRestaurant: Restaurant;
   deleteTable: Table;
   deleteUser: AppUser;
-  sendResetPasswordEmail: Scalars["Boolean"];
+  prepareAndSendResetPasswordEmail: Scalars["Boolean"];
   signIn: AppUser;
   signOut: AppUser;
   updateClosedAt: Ticket;
@@ -92,7 +94,8 @@ export type MutationCreateTicketArgs = {
 
 export type MutationCreateUserArgs = {
   email: Scalars["String"];
-  password: Scalars["String"];
+  firstname: Scalars["String"];
+  lastname: Scalars["String"];
   restaurant?: InputMaybe<Scalars["String"]>;
   role: Scalars["String"];
 };
@@ -113,7 +116,7 @@ export type MutationDeleteUserArgs = {
   id: Scalars["String"];
 };
 
-export type MutationSendResetPasswordEmailArgs = {
+export type MutationPrepareAndSendResetPasswordEmailArgs = {
   email: Scalars["String"];
 };
 
@@ -173,7 +176,9 @@ export type MutationUpdateTableArgs = {
 
 export type MutationUpdateUserArgs = {
   email: Scalars["String"];
+  firstname: Scalars["String"];
   id: Scalars["ID"];
+  lastname: Scalars["String"];
   restaurant?: InputMaybe<Scalars["String"]>;
   role: Scalars["String"];
 };

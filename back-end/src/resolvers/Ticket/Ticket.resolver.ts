@@ -26,22 +26,6 @@ export default class TicketResolver {
     return TicketRepository.getTicketsByRestaurant(restaurantId, seats);
   }
 
-  @Query(() => [Ticket])
-  @Authorized("ROLE_RESTAURANT")
-  WaitingTicketsByRestaurant(
-    @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs
-  ): Promise<Ticket[] | null> {
-    return TicketRepository.getWaitingTicketsByRestaurant(restaurantId, seats);
-  }
-
-  @Query(() => [Ticket])
-  @Authorized("ROLE_RESTAURANT")
-  PlacedTicketsByRestaurant(
-    @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs
-  ): Promise<Ticket[] | null> {
-    return TicketRepository.getPlacedTicketsByRestaurant(restaurantId, seats);
-  }
-
   @Authorized("ROLE_RESTAURANT")
   @Query(() => PageOfTickets)
   PaginatedAndSortedTickets(
@@ -65,10 +49,20 @@ export default class TicketResolver {
     );
   }
 
+  @Query(() => [Ticket])
   @Authorized("ROLE_RESTAURANT")
-  @Query(() => Ticket)
-  Ticket(@Arg("id") id: string): Promise<Ticket | null> {
-    return TicketRepository.getTicketById(id);
+  WaitingTicketsByRestaurant(
+    @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs
+  ): Promise<Ticket[] | null> {
+    return TicketRepository.getWaitingTicketsByRestaurant(restaurantId, seats);
+  }
+
+  @Query(() => [Ticket])
+  @Authorized("ROLE_RESTAURANT")
+  PlacedTicketsByRestaurant(
+    @Args() { restaurantId, seats }: GetTicketsByRestaurantArgs
+  ): Promise<Ticket[] | null> {
+    return TicketRepository.getPlacedTicketsByRestaurant(restaurantId, seats);
   }
 
   @Query(() => [Ticket])
@@ -81,6 +75,12 @@ export default class TicketResolver {
       dateMin,
       dateMax
     );
+  }
+
+  @Authorized("ROLE_RESTAURANT")
+  @Query(() => Ticket)
+  Ticket(@Arg("id") id: string): Promise<Ticket | null> {
+    return TicketRepository.getTicketById(id);
   }
 
   @Mutation(() => Ticket)

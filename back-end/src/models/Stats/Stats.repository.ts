@@ -4,7 +4,7 @@ import TicketRepository from "../Ticket/Ticket.repository";
 import Stats from "./Stats.entity";
 
 export default class StatsRepository {
-  static async getTicketStatsByRestaurantId(
+  public static async getTicketStatsByRestaurantId(
     restaurantId: string
   ): Promise<Stats | null> {
     const tickets = await TicketRepository.getTicketsByRestaurant(

@@ -6,22 +6,22 @@ import { getErrorMessage } from "../../utils";
 import { HOME_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
 import {
-  SendResetPasswordEmailMutation,
-  SendResetPasswordEmailMutationVariables,
+  PrepareAndSendResetPasswordEmailMutation,
+  PrepareAndSendResetPasswordEmailMutationVariables,
 } from "../../gql/graphql";
 import { SEND_RESET_PASSWORD_EMAIL } from "../../queries/Queries";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [sendResetPasswordEmail] = useMutation<
-    SendResetPasswordEmailMutation,
-    SendResetPasswordEmailMutationVariables
+  const [prepareAndSendResetPasswordEmail] = useMutation<
+    PrepareAndSendResetPasswordEmailMutation,
+    PrepareAndSendResetPasswordEmailMutationVariables
   >(SEND_RESET_PASSWORD_EMAIL);
 
   const submit = async () => {
     try {
-      await sendResetPasswordEmail({ variables: { email } });
+      await prepareAndSendResetPasswordEmail({ variables: { email } });
       toast.success(`Un mail vient de vous être envoyé à l'adresse ${email}.`);
       navigate(HOME_PATH);
     } catch (error) {

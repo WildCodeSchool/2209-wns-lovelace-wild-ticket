@@ -3,10 +3,10 @@ import {
   closeConnection,
   initializeDatabaseRepositories,
 } from "../../database/utils";
-import PoleRepository from "../Pole/Pole.repository";
 import AppUserRepository, {
   INVALID_CREDENTIALS_ERROR_MESSAGE,
 } from "./AppUser.repository";
+import Session from "./Session.entity";
 import SessionRepository from "./Session.repository";
 
 describe("AppUserRepository integration", () => {
@@ -86,9 +86,9 @@ describe("AppUserRepository integration", () => {
 
         await AppUserRepository.deleteUser(user.id);
 
-        const userById = await PoleRepository.getPoleById(user.id);
-
-        expect(userById).toBe(null);
+        expect(() =>
+          AppUserRepository.getUserById(user.id)
+        ).rejects.toThrowError("Aucun utilisateur ne correspond à cet ID.");
       });
     });
   });
@@ -99,7 +99,7 @@ describe("AppUserRepository integration", () => {
         const emailAddress = "unknown@user.com";
         expect(() =>
           AppUserRepository.signIn(emailAddress, "whatever")
-        ).rejects.toThrowError(INVALID_CREDENTIALS_ERROR_MESSAGE);
+        ).rejects.toThrowError("Aucun utilisateur ne correspond à cet email.");
       });
 
       describe("when email address belongs to existing user", () => {
@@ -133,7 +133,8 @@ describe("AppUserRepository integration", () => {
 
             await AppUserRepository.signIn(emailAddress, "password");
 
-            const sessions = await SessionRepository.repository.find();
+            const sessions =
+              (await SessionRepository.getSessions()) as Session[];
             expect(sessions).toHaveLength(1);
             expect(sessions[0].user.email).toEqual(emailAddress);
           });

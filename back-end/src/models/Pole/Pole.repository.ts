@@ -1,39 +1,22 @@
-import { Repository } from "typeorm";
 import Pole from "./Pole.entity";
-import { getRepository } from "../../database/utils";
-import PoleFixtures from "../../DataFixtures/PoleFixtures";
+import PoleDb from "./Pole.db";
 
-export default class PoleRepository {
-  private static repository: Repository<Pole>;
-
-  static async initializeRepository() {
-    this.repository = await getRepository(Pole);
+export default class PoleRepository extends PoleDb {
+  public static async getPoles(): Promise<Pole[]> {
+    return await this.repository.find();
   }
 
-  static async clearRepository(): Promise<void> {
-    await this.repository.delete({});
-  }
+  public static async getPoleById(id: string): Promise<Pole | null> {
+    const pole = await this.repository.findOneBy({ id: id });
 
-  static async initializePoles(): Promise<void> {
-    const poleFixtures = PoleFixtures.PoleFixtures;
-    for (const poleFixture of poleFixtures) {
-      await this.repository.save(poleFixture);
+    if (!pole) {
+      throw new Error("Aucun pôle ne correspond à cet ID.");
     }
+
+    return pole;
   }
 
-  static async getPoles(): Promise<Pole[]> {
-    return this.repository.find();
-  }
-
-  static async getPoleById(id: string): Promise<Pole | null> {
-    return this.repository.findOneBy({ id: id });
-  }
-
-  static async getPoleByName(name: string): Promise<Pole | null> {
-    return this.repository.findOneBy({ name: name });
-  }
-
-  static async createPole(
+  public static async createPole(
     name: string,
     address: string,
     zipCode: string,
@@ -41,6 +24,7 @@ export default class PoleRepository {
     email: string
   ): Promise<Pole> {
     const createdAt = new Date();
+
     const newPole = new Pole(name, address, zipCode, city, email, createdAt);
 
     await this.repository.save(newPole);
@@ -48,7 +32,7 @@ export default class PoleRepository {
     return newPole;
   }
 
-  static async updatePole(
+  public static async updatePole(
     id: string,
     name: string,
     address: string,
@@ -65,11 +49,7 @@ export default class PoleRepository {
       email: string;
     } & Pole
   > {
-    const existingPole = await this.repository.findOneBy({ id });
-
-    if (!existingPole) {
-      throw new Error("Aucun pôle ne correspond à cet ID.");
-    }
+    await this.getPoleById(id);
 
     const updatedAt = new Date();
 
@@ -84,18 +64,14 @@ export default class PoleRepository {
     });
   }
 
-  static async deletePole(id: string): Promise<Pole> {
-    const existingPole = await this.getPoleById(id);
+  public static async deletePole(id: string): Promise<Pole> {
+    const pole = (await this.getPoleById(id)) as Pole;
 
-    if (!existingPole) {
-      throw new Error("Aucun pôle ne correspond à cet ID.");
-    }
+    await this.repository.remove(pole);
 
-    await this.repository.remove(existingPole);
+    // resetting ID because pole loses ID after calling remove
+    pole.id = id;
 
-    // resetting ID because existingPole loses ID after calling remove
-    existingPole.id = id;
-
-    return existingPole;
+    return pole;
   }
 }

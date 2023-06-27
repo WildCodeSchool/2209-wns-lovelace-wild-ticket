@@ -14,7 +14,7 @@ import {
   UserCreationArgs,
   UserUpdateArgs,
   updateUserPasswordArgs,
-  sendResetPasswordEmailArgs,
+  prepareAndSendResetPasswordEmailArgs,
   updateUserPasswordWithTokenArgs,
 } from "./AppUser.input";
 import { setSessionIdInCookie } from "../../http-utils";
@@ -34,7 +34,7 @@ export default class AppUserResolver {
     return AppUserRepository.getUserById(id);
   }
 
-  //@Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
+  @Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
   @Mutation(() => AppUser)
   createUser(
     @Args()
@@ -70,22 +70,6 @@ export default class AppUserResolver {
     return AppUserRepository.deleteUser(id);
   }
 
-  @Mutation(() => AppUser)
-  async signIn(
-    @Args() { email, password, rememberMe }: SignInArgs,
-    @Ctx() context: GlobalContext
-  ): Promise<AppUser> {
-    const { user, session } = await AppUserRepository.signIn(email, password);
-    setSessionIdInCookie(context, session.id, rememberMe);
-    return user;
-  }
-
-  @Authorized()
-  @Mutation(() => AppUser)
-  async signOut(@Arg("id") id: string): Promise<AppUser | null> {
-    return AppUserRepository.signOut(id);
-  }
-
   @Authorized()
   @Mutation(() => AppUser)
   async updateUserPassword(
@@ -103,11 +87,27 @@ export default class AppUserResolver {
   }
 
   @Mutation(() => Boolean)
-  async sendResetPasswordEmail(
-    @Args() { email }: sendResetPasswordEmailArgs
+  async prepareAndSendResetPasswordEmail(
+    @Args() { email }: prepareAndSendResetPasswordEmailArgs
   ): Promise<boolean> {
-    await AppUserRepository.sendResetPasswordEmail(email);
+    await AppUserRepository.prepareAndSendResetPasswordEmail(email);
     return true;
+  }
+
+  @Mutation(() => AppUser)
+  async signIn(
+    @Args() { email, password, rememberMe }: SignInArgs,
+    @Ctx() context: GlobalContext
+  ): Promise<AppUser> {
+    const { user, session } = await AppUserRepository.signIn(email, password);
+    setSessionIdInCookie(context, session.id, rememberMe);
+    return user;
+  }
+
+  @Authorized()
+  @Mutation(() => AppUser)
+  async signOut(@Arg("id") id: string): Promise<AppUser | null> {
+    return AppUserRepository.signOut(id);
   }
 
   @Authorized()

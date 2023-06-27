@@ -1,5 +1,4 @@
 import { Arg, Args, Authorized, Mutation, Query, Resolver } from "type-graphql";
-
 import Restaurant from "../../models/Restaurant/Restaurant.entity";
 import RestaurantRepository from "../../models/Restaurant/Restaurant.repository";
 import PageOfRestaurants from "./PageOfRestaurant";
@@ -15,7 +14,7 @@ const PAGE_SIZE = 4;
 @Resolver(Restaurant)
 export default class RestaurantResolver {
   //Comment "Authorized" decorator to enable access in apollo server
-  //@Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
+  @Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
   @Query(() => [Restaurant])
   getRestaurants(): Promise<Restaurant[]> {
     return RestaurantRepository.getRestaurants();

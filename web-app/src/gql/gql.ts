@@ -17,8 +17,8 @@ const documents = {
     types.SignInDocument,
   "\n  mutation SignOut($signOutId: String!) {\n    signOut(id: $signOutId) {\n      id\n    }\n  }\n":
     types.SignOutDocument,
-  "\n  mutation SendResetPasswordEmail($email: String!) {\n    sendResetPasswordEmail(email: $email)\n  }\n":
-    types.SendResetPasswordEmailDocument,
+  "\n  mutation PrepareAndSendResetPasswordEmail($email: String!) {\n    prepareAndSendResetPasswordEmail(email: $email)\n  }\n":
+    types.PrepareAndSendResetPasswordEmailDocument,
   "\n  mutation updateUserPasswordWithToken($token: String!, $password: String!) {\n    updateUserPasswordWithToken(token: $token, password: $password)\n  }\n":
     types.UpdateUserPasswordWithTokenDocument,
   "\n  mutation UpdateUserPassword(\n    $updateUserPasswordId: ID!\n    $password: String!\n    $newUserPassword: String!\n  ) {\n    updateUserPassword(\n      id: $updateUserPasswordId\n      password: $password\n      newUserPassword: $newUserPassword\n    ) {\n      id\n    }\n  }\n":
@@ -111,8 +111,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  mutation SendResetPasswordEmail($email: String!) {\n    sendResetPasswordEmail(email: $email)\n  }\n"
-): (typeof documents)["\n  mutation SendResetPasswordEmail($email: String!) {\n    sendResetPasswordEmail(email: $email)\n  }\n"];
+  source: "\n  mutation PrepareAndSendResetPasswordEmail($email: String!) {\n    prepareAndSendResetPasswordEmail(email: $email)\n  }\n"
+): (typeof documents)["\n  mutation PrepareAndSendResetPasswordEmail($email: String!) {\n    prepareAndSendResetPasswordEmail(email: $email)\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

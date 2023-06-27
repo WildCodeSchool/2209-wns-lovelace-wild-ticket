@@ -47,7 +47,7 @@ export type Mutation = {
   deleteRestaurant: Restaurant;
   deleteTable: Table;
   deleteUser: AppUser;
-  sendResetPasswordEmail: Scalars["Boolean"];
+  prepareAndSendResetPasswordEmail: Scalars["Boolean"];
   signIn: AppUser;
   signOut: AppUser;
   updateClosedAt: Ticket;
@@ -116,7 +116,7 @@ export type MutationDeleteUserArgs = {
   id: Scalars["String"];
 };
 
-export type MutationSendResetPasswordEmailArgs = {
+export type MutationPrepareAndSendResetPasswordEmailArgs = {
   email: Scalars["String"];
 };
 
@@ -379,13 +379,13 @@ export type SignOutMutation = {
   signOut: { __typename?: "AppUser"; id: string };
 };
 
-export type SendResetPasswordEmailMutationVariables = Exact<{
+export type PrepareAndSendResetPasswordEmailMutationVariables = Exact<{
   email: Scalars["String"];
 }>;
 
-export type SendResetPasswordEmailMutation = {
+export type PrepareAndSendResetPasswordEmailMutation = {
   __typename?: "Mutation";
-  sendResetPasswordEmail: boolean;
+  prepareAndSendResetPasswordEmail: boolean;
 };
 
 export type UpdateUserPasswordWithTokenMutationVariables = Exact<{
@@ -1003,13 +1003,13 @@ export const SignOutDocument = {
     },
   ],
 } as unknown as DocumentNode<SignOutMutation, SignOutMutationVariables>;
-export const SendResetPasswordEmailDocument = {
+export const PrepareAndSendResetPasswordEmailDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "mutation",
-      name: { kind: "Name", value: "SendResetPasswordEmail" },
+      name: { kind: "Name", value: "PrepareAndSendResetPasswordEmail" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -1031,7 +1031,7 @@ export const SendResetPasswordEmailDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "sendResetPasswordEmail" },
+            name: { kind: "Name", value: "prepareAndSendResetPasswordEmail" },
             arguments: [
               {
                 kind: "Argument",
@@ -1048,8 +1048,8 @@ export const SendResetPasswordEmailDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  SendResetPasswordEmailMutation,
-  SendResetPasswordEmailMutationVariables
+  PrepareAndSendResetPasswordEmailMutation,
+  PrepareAndSendResetPasswordEmailMutationVariables
 >;
 export const UpdateUserPasswordWithTokenDocument = {
   kind: "Document",

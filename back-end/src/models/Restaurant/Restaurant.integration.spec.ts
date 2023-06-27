@@ -142,11 +142,9 @@ describe("RestaurantRepository integration", () => {
 
         await RestaurantRepository.deleteRestaurant(restaurant.id);
 
-        const restaurantById = await RestaurantRepository.getRestaurantById(
-          restaurant.id
-        );
-
-        expect(restaurantById).toBe(null);
+        expect(() =>
+          RestaurantRepository.getRestaurantById(restaurant.id)
+        ).rejects.toThrowError("Aucun restaurant ne correspond à cet ID.");
       });
     });
   });
