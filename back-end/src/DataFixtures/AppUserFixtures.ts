@@ -1,42 +1,27 @@
 export type AppUserFixtures = {
-  login: string;
+  firstname: string;
+  lastname: string;
   email: string;
   password: string;
   role: string;
   createdAt: string;
-  poles?: string[];
   restaurant?: string;
 };
 
 export const AppUserFixtures: AppUserFixtures[] = [
   {
-    login: "Vincent",
-    email: "vincent@r-ticket.agtn.fr",
-    password: "Vincent69!",
-    role: "ROLE_ADMIN",
+    firstname: "John",
+    lastname: "Lesuperadmin",
+    email: process.env.APP_USER_ADMIN_EMAIL as string,
+    password: process.env.APP_USER_ADMIN_PASSWORD as string,
+    role: "ROLE_SUPER_ADMIN",
     createdAt: "2022-12-20T11:00:00",
-    poles: ["Pôle de Lyon"],
   },
   {
-    login: "Estelle",
-    email: "estelle@r-ticket.agtn.fr",
-    password: "Estelle69!",
-    role: "ROLE_RESTAURANT",
-    createdAt: "2022-12-20T11:00:00",
-    restaurant: "Pura Vegan",
-  },
-  {
-    login: "Anthony",
-    email: "anthony@r-ticket.agtn.fr",
-    password: "Anthony69!",
-    role: "ROLE_RESTAURANT",
-    createdAt: "2022-12-20T11:00:00",
-    restaurant: "La Suzette",
-  },
-  {
-    login: "Michel",
-    email: "michel.lardonnaise@r-ticket.agtn.fr",
-    password: "Michel69!",
+    firstname: "John",
+    lastname: "Lerestaurateur",
+    email: process.env.APP_USER_RESTAURANT_EMAIL as string,
+    password: process.env.APP_USER_RESTAURANT_PASSWORD as string,
     role: "ROLE_RESTAURANT",
     createdAt: "2022-12-20T11:00:00",
     restaurant: "Butcher Shop",

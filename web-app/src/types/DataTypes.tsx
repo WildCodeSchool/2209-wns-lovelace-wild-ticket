@@ -86,6 +86,7 @@ export type GET_RESTAURANTS_TYPES = Array<{
   __typename?: "Restaurant";
   id: string;
   name: string;
+  picture?: string | null | undefined;
   pole?: {
     __typename?: "Pole";
     id: string;
@@ -96,6 +97,23 @@ export type GET_RESTAURANTS_TYPES = Array<{
     email: string;
   };
 }> | null;
+
+export type GET_RESTAURANT_TYPES = {
+  __typename?: "Restaurant";
+  id: string;
+  name: string;
+  picture?: string | null | undefined;
+  pole?: {
+    __typename?: "Pole";
+    id: string;
+    name: string;
+    address: string;
+    zipCode: string;
+    city: string;
+    email: string;
+  };
+} | null;
+
 export type EXPORT_TICKETS_BY_RESTAURANT_TYPES = Array<{
   __typename?: "Ticket" | undefined;
   number: string;
@@ -146,3 +164,48 @@ export type DATA_TABLE_LAZY_STATE_TYPES = {
   sortField: string[];
   sortOrder: number[];
 };
+
+export type GET_USERS_TYPES = Array<{
+  __typename?: "AppUser" | undefined;
+  id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  role: string;
+  createdAt: any;
+  updatedAt?: any;
+  restaurant?:
+    | {
+        __typename?: "Restaurant" | undefined;
+        id: string;
+        name: string;
+      }
+    | null
+    | undefined;
+}> | null;
+
+export type GET_USER_TYPES = {
+  __typename?: "AppUser" | undefined;
+  id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  role: string;
+  createdAt: any;
+  updatedAt?: any;
+  restaurant?:
+    | {
+        __typename?: "Restaurant" | undefined;
+        id: string;
+        name: string;
+      }
+    | null
+    | undefined;
+} | null;
+
+export type GET_TABLE_BY_ID_TYPES = {
+  __typename?: "Table" | undefined;
+  id: string;
+  number: number;
+  capacity: number;
+} | null;

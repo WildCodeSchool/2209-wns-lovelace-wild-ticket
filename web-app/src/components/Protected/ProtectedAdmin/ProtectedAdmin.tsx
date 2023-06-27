@@ -20,7 +20,7 @@ const ProtectedAdmin = ({ children }: { children: any }) => {
     return <Navigate to={SIGN_IN_PATH} />;
   }
 
-  if (appContext?.userData.role !== ROLE_ADMIN) {
+  if (!ROLE_ADMIN.includes(appContext?.userData.role)) {
     toast.error("Vous n'êtes pas autorisé à vous rendre sur cette page.");
     appContext?.refetch();
     return <Navigate to={DASHBOARD_HOME} />;

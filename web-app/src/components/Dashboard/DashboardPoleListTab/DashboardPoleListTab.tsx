@@ -11,11 +11,13 @@ export default function DashboardPoleListTab({
   isClickable,
   editPoleForm,
   confirmDelete,
+  setIsClickable,
 }: {
   poles: any;
   isClickable: boolean;
   editPoleForm: any;
   confirmDelete: (pole: GET_POLE_TYPES) => Promise<void>;
+  setIsClickable: any;
 }) {
   const actionButton = (pole: GET_POLE_TYPES) => {
     return (
@@ -23,12 +25,14 @@ export default function DashboardPoleListTab({
         <SVGIconEdit
           onClick={async () => {
             editPoleForm(pole);
+            setIsClickable(false);
           }}
           isClickable={isClickable}
         />
         <SVGIconDelete
           onClick={async () => {
             await confirmDelete(pole);
+            setIsClickable(false);
           }}
           isClickable={isClickable}
         />
@@ -64,6 +68,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Nom"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           field="address"
@@ -71,6 +76,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Adresse"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           field="zipCode"
@@ -78,6 +84,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Code Postal"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           field="city"
@@ -85,6 +92,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Ville"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           field="email"
@@ -92,6 +100,7 @@ export default function DashboardPoleListTab({
           filter
           filterPlaceholder="Email"
           style={{ minWidth: "10rem" }}
+          sortable
         ></Column>
         <Column
           header="Actions"

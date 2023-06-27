@@ -30,6 +30,7 @@ describe("RestaurantRepository integration", () => {
             "restaurant",
             undefined,
             5,
+            2,
             falseUuid
           )
         ).rejects.toThrowError("Aucun pôle ne correspond à cet ID.");
@@ -49,6 +50,7 @@ describe("RestaurantRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -67,7 +69,8 @@ describe("RestaurantRepository integration", () => {
             falseUuid,
             "restaurant",
             undefined,
-            5
+            5,
+            2
           )
         ).rejects.toThrowError("Aucun restaurant ne correspond à cet ID.");
       });
@@ -86,6 +89,7 @@ describe("RestaurantRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
@@ -93,7 +97,8 @@ describe("RestaurantRepository integration", () => {
           restaurant.id,
           "newRestaurant",
           undefined,
-          5
+          5,
+          2
         );
 
         expect(updatedRestaurant.name).toBe("newRestaurant");
@@ -111,7 +116,8 @@ describe("RestaurantRepository integration", () => {
             falseUuid,
             "restaurant",
             undefined,
-            5
+            5,
+            2
           )
         ).rejects.toThrowError("Aucun restaurant ne correspond à cet ID.");
       });
@@ -130,16 +136,15 @@ describe("RestaurantRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 
         await RestaurantRepository.deleteRestaurant(restaurant.id);
 
-        const restaurantById = await RestaurantRepository.getRestaurantById(
-          restaurant.id
-        );
-
-        expect(restaurantById).toBe(null);
+        expect(() =>
+          RestaurantRepository.getRestaurantById(restaurant.id)
+        ).rejects.toThrowError("Aucun restaurant ne correspond à cet ID.");
       });
     });
   });
@@ -154,7 +159,8 @@ describe("RestaurantRepository integration", () => {
             falseUuid,
             "restaurant",
             undefined,
-            5
+            5,
+            2
           )
         ).rejects.toThrowError("Aucun restaurant ne correspond à cet ID.");
       });
@@ -173,6 +179,7 @@ describe("RestaurantRepository integration", () => {
           "restaurant",
           undefined,
           5,
+          2,
           pole.id
         );
 

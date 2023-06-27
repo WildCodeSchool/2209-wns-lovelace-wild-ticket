@@ -49,7 +49,7 @@ const startServer = async () => {
       const sessionId = getSessionIdInCookie(context);
       const user = !sessionId
         ? null
-        : await AppUserRepository.findBySessionId(sessionId);
+        : await AppUserRepository.getUserBySessionId(sessionId);
 
       return { res: context.res, req: context.req, user };
     },

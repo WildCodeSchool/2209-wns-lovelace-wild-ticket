@@ -1,7 +1,4 @@
 import { Between, Brackets, MoreThan } from "typeorm";
-import TicketFixtures, {
-  TicketFixturesType,
-} from "../../DataFixtures/TicketFixtures";
 import DateUpdates from "../../services/DateUpdates";
 import EmailService from "../../services/EmailService";
 import Restaurant from "../Restaurant/Restaurant.entity";
@@ -14,64 +11,15 @@ import PageOfTickets from "../../resolvers/Ticket/PageOfTickets";
 import TicketService from "../../services/TicketService";
 
 export default class TicketRepository extends TicketDb {
-  static async initializeTickets(): Promise<void> {
-    const restaurants =
-      (await RestaurantRepository.getRestaurants()) as Restaurant[];
-
-    for (const restaurant of restaurants) {
-      const ticketsFixtures: TicketFixturesType[] =
-        await TicketFixtures.getRandomTickets();
-      await Promise.all(
-        ticketsFixtures.map(async (ticket) => {
-          const table = ticket.table
-            ? ((await TableRepository.getTableByNumber(
-                ticket.table,
-                restaurant
-              )) as Table)
-            : undefined;
-
-          const ticketNumber = TicketService.formatTicketNumberForFixtures(
-            restaurant,
-            ticket.number,
-            ticket.createdAt
-          );
-
-          const newTicket = new Ticket(
-            ticketNumber,
-            ticket.name,
-            ticket.seats,
-            ticket.createdAt,
-            restaurant,
-            ticket.email,
-            ticket.phoneNumber,
-            table,
-            ticket.deliveredAt,
-            ticket.placedAt,
-            ticket.closedAt
-          );
-
-          await this.repository.save(newTicket);
-        })
-      );
-    }
-  }
-
-  static async getTickets(): Promise<Ticket[]> {
+  public static async getTickets(): Promise<Ticket[]> {
     return this.repository.find();
   }
 
-  static async getTicketByNumber(number: string): Promise<Ticket | null> {
-    return this.repository.findOneBy({ number: number });
-  }
-
-  static async getTicketsByRestaurant(
+  public static async getTicketsByRestaurant(
     restaurantId: string,
     seats: number | null
   ): Promise<Ticket[] | null> {
-    const restaurant = await RestaurantRepository.getRestaurantById(
-      restaurantId
-    );
-    if (!restaurant) throw new Error();
+    (await RestaurantRepository.getRestaurantById(restaurantId)) as Restaurant;
     let query = this.repository
       .createQueryBuilder("ticket")
       .leftJoinAndSelect("ticket.restaurant", "restaurant")
@@ -89,14 +37,14 @@ export default class TicketRepository extends TicketDb {
     return await query.getMany();
   }
 
-  static async getTicketsBySeats(
+  public static async getTicketsBySeats(
     restaurantId: string,
     seats: number
   ): Promise<Ticket[] | null> {
-    const restaurant = await RestaurantRepository.getRestaurantById(
+    const restaurant = (await RestaurantRepository.getRestaurantById(
       restaurantId
-    );
-    if (!restaurant) throw new Error();
+    )) as Restaurant;
+
     return await this.repository.findBy({
       restaurant,
       seats: Between(seats - 1, seats),
@@ -104,7 +52,7 @@ export default class TicketRepository extends TicketDb {
     });
   }
 
-  static async getPaginatedAndSortedTicketsByRestaurant(
+  public static async getPaginatedAndSortedTicketsByRestaurant(
     restaurantId: string,
     globalFilter: string,
     pageSize: number,
@@ -112,11 +60,9 @@ export default class TicketRepository extends TicketDb {
     sort: string[],
     order: number[]
   ): Promise<PageOfTickets> {
-    const restaurant = await RestaurantRepository.getRestaurantById(
+    const restaurant = (await RestaurantRepository.getRestaurantById(
       restaurantId
-    );
-    if (!restaurant)
-      throw new Error("Aucun restaurant ne correspond à cet ID.");
+    )) as Restaurant;
 
     const countTotalTickets = await this.repository.count({
       where: { restaurant },
@@ -152,18 +98,123 @@ export default class TicketRepository extends TicketDb {
     };
   }
 
-  static async getTicketById(id: string): Promise<Ticket | null> {
-    return this.repository.findOneBy({ id });
+  public static async getWaitingTicketsByRestaurant(
+    restaurantId: string,
+    seats: number | null
+  ): Promise<Ticket[] | null> {
+    const restaurant = (await RestaurantRepository.getRestaurantById(
+      restaurantId
+    )) as Restaurant;
+
+    const maxDisapearDelay = restaurant.notComingTicketDisapearDelay;
+
+    let query = this.repository
+      .createQueryBuilder("ticket")
+      .leftJoinAndSelect("ticket.restaurant", "restaurant")
+      .leftJoinAndSelect("ticket.table", "userTable")
+      .where("ticket.restaurant.id = :restaurantId", {
+        restaurantId: restaurantId,
+      })
+      .andWhere("ticket.placedAt IS NULL")
+      .andWhere(
+        new Brackets((qb) =>
+          qb
+            .where("ticket.deliveredAt IS NOT NULL")
+            .andWhere(
+              `ticket.closedAt + interval '${maxDisapearDelay} minute' > NOW()`
+            )
+            .orWhere("ticket.closedAt IS NULL")
+        )
+      );
+
+    if (seats) {
+      query.andWhere("ticket.seats = :seats", {
+        seats: seats,
+      });
+    }
+
+    query.orderBy("ticket.number", "ASC");
+
+    return await query.getMany();
   }
 
-  static async getLastTicket(restaurant: Restaurant): Promise<Ticket | null> {
-    return this.repository.findOne({
-      where: { restaurant: restaurant },
-      order: { createdAt: "DESC" },
-    });
+  public static async getPlacedTicketsByRestaurant(
+    restaurantId: string,
+    seats: number | null
+  ): Promise<Ticket[] | null> {
+    const restaurant = (await RestaurantRepository.getRestaurantById(
+      restaurantId
+    )) as Restaurant;
+
+    const ticketWaitingLimit = restaurant.ticketWaitingLimit as number;
+
+    let query = this.repository
+      .createQueryBuilder("ticket")
+      .leftJoinAndSelect("ticket.restaurant", "restaurant")
+      .leftJoinAndSelect("ticket.table", "userTable")
+      .where("ticket.restaurant.id = :restaurantId", {
+        restaurantId: restaurantId,
+      })
+      .andWhere("ticket.placedAt IS NOT NULL")
+      .andWhere("ticket.deliveredAt IS NOT NULL")
+      .andWhere("ticket.closedAt > :delay", {
+        delay: DateUpdates.addMinutesToDate(new Date(), ticketWaitingLimit),
+      });
+
+    if (seats) {
+      query.andWhere("ticket.seats = :seats", {
+        seats: seats,
+      });
+    }
+
+    query.orderBy("ticket.number", "ASC");
+
+    return await query.getMany();
   }
 
-  static async createTicket(
+  public static async getExportTicketsByRestaurant(
+    restaurantId: string,
+    dateMin: Date | null,
+    dateMax: Date | null
+  ): Promise<Ticket[] | null> {
+    await RestaurantRepository.getRestaurantById(restaurantId);
+
+    let query = this.repository
+      .createQueryBuilder("ticket")
+      .leftJoinAndSelect("ticket.restaurant", "restaurant")
+      .leftJoinAndSelect("ticket.table", "userTable")
+      .where("ticket.restaurant.id = :restaurantId", {
+        restaurantId: restaurantId,
+      });
+
+    if (dateMin as Date) {
+      query.andWhere("ticket.createdAt > :dateMin", {
+        dateMin: dateMin,
+      });
+    }
+
+    if (dateMin as Date) {
+      query.andWhere("ticket.createdAt < :dateMax", {
+        dateMax: dateMax,
+      });
+    }
+
+    query.orderBy("ticket.number", "ASC");
+
+    return await query.getMany();
+  }
+
+  public static async getTicketById(id: string): Promise<Ticket | null> {
+    const ticket = await this.repository.findOneBy({ id });
+
+    if (!ticket) {
+      throw new Error("Aucun ticket ne correspond à cet ID.");
+    }
+
+    return ticket;
+  }
+
+  public static async createTicket(
     name: string,
     seats: number,
     restaurantId: string,
@@ -179,9 +230,6 @@ export default class TicketRepository extends TicketDb {
     const restaurant = (await RestaurantRepository.getRestaurantById(
       restaurantId
     )) as Restaurant;
-
-    if (!restaurant)
-      throw new Error("Aucun restaurant ne correspond à cet ID.");
 
     const lastTicket = await this.getLastTicket(restaurant);
 
@@ -205,7 +253,7 @@ export default class TicketRepository extends TicketDb {
     return newTicket;
   }
 
-  static async updateDeliveredAt(
+  public static async updateDeliveredAt(
     id: string,
     tableId: string
   ): Promise<
@@ -214,20 +262,16 @@ export default class TicketRepository extends TicketDb {
       table: Table;
     } & Ticket
   > {
-    const existingTicket = await this.repository.findOneBy({ id });
-
-    if (!existingTicket) {
-      throw new Error("Aucun ticket ne correspond à cet ID.");
-    }
+    const ticket = (await this.getTicketById(id)) as Ticket;
 
     const table = (await TableRepository.getTableById(tableId)) as Table;
 
-    if (!table) {
-      throw new Error("Aucune table ne correspond à cet ID.");
-    }
-
+    const ticketWaitingLimit = ticket.restaurant.ticketWaitingLimit;
     const deliveredAt = new Date();
-    const closedAt = DateUpdates.addMinutesToDate(deliveredAt, 15);
+    const closedAt = DateUpdates.addMinutesToDate(
+      deliveredAt,
+      ticketWaitingLimit
+    );
 
     const deliveredTicket = await this.repository.save({
       id,
@@ -237,22 +281,18 @@ export default class TicketRepository extends TicketDb {
     });
 
     if (deliveredTicket) {
-      EmailService.sendDeliveredTicketEmail(existingTicket, table);
+      EmailService.sendDeliveredTicketEmail(ticket, table);
     }
 
     return deliveredTicket;
   }
 
-  static async updatePlacedAt(id: string): Promise<
+  public static async updatePlacedAt(id: string): Promise<
     {
       id: string;
     } & Ticket
   > {
-    const existingTicket = await this.repository.findOneBy({ id });
-
-    if (!existingTicket) {
-      throw new Error("Aucun ticket ne correspond à cet ID.");
-    }
+    (await this.getTicketById(id)) as Ticket;
 
     const placedAt = new Date();
     const closedAt = DateUpdates.addMinutesToDate(placedAt, 240);
@@ -264,16 +304,12 @@ export default class TicketRepository extends TicketDb {
     });
   }
 
-  static async updateClosedAt(id: string): Promise<
+  public static async updateClosedAt(id: string): Promise<
     {
       id: string;
     } & Ticket
   > {
-    const existingTicket = await this.repository.findOneBy({ id });
-
-    if (!existingTicket) {
-      throw new Error("Aucun ticket ne correspond à cet ID.");
-    }
+    (await this.getTicketById(id)) as Ticket;
 
     const closedAt = new Date();
 
@@ -281,95 +317,5 @@ export default class TicketRepository extends TicketDb {
       id,
       closedAt,
     });
-  }
-
-  static async getExportTicketsByRestaurant(
-    restaurantId: string,
-    dateMin: Date | null,
-    dateMax: Date | null
-  ): Promise<Ticket[] | null> {
-    const restaurant = await RestaurantRepository.getRestaurantById(
-      restaurantId
-    );
-    if (!restaurant) throw new Error();
-    let query = this.repository
-      .createQueryBuilder("ticket")
-      .leftJoinAndSelect("ticket.restaurant", "restaurant")
-      .leftJoinAndSelect("ticket.table", "userTable")
-      .where("ticket.restaurant.id = :restaurantId", {
-        restaurantId: restaurantId,
-      });
-    if (dateMin as Date) {
-      query.andWhere("ticket.createdAt > :dateMin", {
-        dateMin: dateMin,
-      });
-    }
-    if (dateMin as Date) {
-      query.andWhere("ticket.createdAt < :dateMax", {
-        dateMax: dateMax,
-      });
-    }
-    query.orderBy("ticket.number", "ASC");
-    return await query.getMany();
-  }
-
-  static async getWaitingTicketsByRestaurant(
-    restaurantId: string,
-    seats: number | null
-  ): Promise<Ticket[] | null> {
-    const restaurant = await RestaurantRepository.getRestaurantById(
-      restaurantId
-    );
-    if (!restaurant) throw new Error();
-    let query = this.repository
-      .createQueryBuilder("ticket")
-      .leftJoinAndSelect("ticket.restaurant", "restaurant")
-      .leftJoinAndSelect("ticket.table", "userTable")
-      .where("ticket.restaurant.id = :restaurantId", {
-        restaurantId: restaurantId,
-      })
-      .andWhere("ticket.placedAt IS NULL")
-      .andWhere(
-        new Brackets((qb) =>
-          qb
-            .where("ticket.deliveredAt IS NOT NULL")
-            .andWhere("ticket.closedAt + interval '1 minute' > NOW()")
-            .orWhere("ticket.closedAt IS NULL")
-        )
-      );
-    if (seats) {
-      query.andWhere("ticket.seats = :seats", {
-        seats: seats,
-      });
-    }
-    query.orderBy("ticket.number", "ASC");
-    return await query.getMany();
-  }
-
-  static async getPlacedTicketsByRestaurant(
-    restaurantId: string,
-    seats: number | null
-  ): Promise<Ticket[] | null> {
-    const restaurant = await RestaurantRepository.getRestaurantById(
-      restaurantId
-    );
-    if (!restaurant) throw new Error();
-    let query = this.repository
-      .createQueryBuilder("ticket")
-      .leftJoinAndSelect("ticket.restaurant", "restaurant")
-      .leftJoinAndSelect("ticket.table", "userTable")
-      .where("ticket.restaurant.id = :restaurantId", {
-        restaurantId: restaurantId,
-      })
-      .andWhere("ticket.placedAt IS NOT NULL")
-      .andWhere("ticket.deliveredAt IS NOT NULL")
-      .andWhere("ticket.closedAt > NOW() + interval '5 minute'");
-    if (seats) {
-      query.andWhere("ticket.seats = :seats", {
-        seats: seats,
-      });
-    }
-    query.orderBy("ticket.number", "ASC");
-    return await query.getMany();
   }
 }

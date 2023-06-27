@@ -1,5 +1,4 @@
 import { Arg, Args, Authorized, Mutation, Query, Resolver } from "type-graphql";
-
 import Restaurant from "../../models/Restaurant/Restaurant.entity";
 import RestaurantRepository from "../../models/Restaurant/Restaurant.repository";
 import PageOfRestaurants from "./PageOfRestaurant";
@@ -15,6 +14,7 @@ const PAGE_SIZE = 4;
 @Resolver(Restaurant)
 export default class RestaurantResolver {
   //Comment "Authorized" decorator to enable access in apollo server
+  @Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
   @Query(() => [Restaurant])
   getRestaurants(): Promise<Restaurant[]> {
     return RestaurantRepository.getRestaurants();
@@ -38,15 +38,23 @@ export default class RestaurantResolver {
     return RestaurantRepository.getRestaurantById(id);
   }
 
-  @Authorized("ROLE_ADMIN")
+  @Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
   @Mutation(() => Restaurant)
   createRestaurant(
-    @Args() { name, picture, ticketWaitingLimit, pole }: CreateRestaurantArgs
+    @Args()
+    {
+      name,
+      picture,
+      ticketWaitingLimit,
+      notComingTicketDisapearDelay,
+      pole,
+    }: CreateRestaurantArgs
   ): Promise<Restaurant> {
     return RestaurantRepository.createRestaurant(
       name,
       picture,
       ticketWaitingLimit,
+      notComingTicketDisapearDelay,
       pole
     );
   }
@@ -54,13 +62,21 @@ export default class RestaurantResolver {
   @Authorized()
   @Mutation(() => Restaurant)
   updateRestaurant(
-    @Args() { id, name, ticketWaitingLimit, picture }: UpdateRestaurantArgs
+    @Args()
+    {
+      id,
+      name,
+      ticketWaitingLimit,
+      notComingTicketDisapearDelay,
+      picture,
+    }: UpdateRestaurantArgs
   ): Promise<Restaurant> {
     return RestaurantRepository.updateRestaurant(
       id,
       name,
       picture,
-      ticketWaitingLimit
+      ticketWaitingLimit,
+      notComingTicketDisapearDelay
     );
   }
 
@@ -85,7 +101,7 @@ export default class RestaurantResolver {
     );
   }
 
-  @Authorized("ROLE_ADMIN")
+  @Authorized("ROLE_ADMIN", "ROLE_SUPER_ADMIN")
   @Mutation(() => Restaurant)
   deleteRestaurant(@Arg("id") id: string): Promise<Restaurant> {
     return RestaurantRepository.deleteRestaurant(id);

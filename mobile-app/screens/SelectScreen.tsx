@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     color: "lightgrey",
   },
   selectScreenMain: {
-    width: "85%",
+    width: "90%",
     alignItems: "center",
     justifyContent: "space-around",
     marginTop: 50,

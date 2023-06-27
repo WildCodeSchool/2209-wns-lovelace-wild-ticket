@@ -1,12 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InfinitySpin } from "react-loader-spinner";
-import { BUTTON_DISAPPEAR_DELAY } from "../../../constants/Constants";
-import {
-  substractMinutesToDate,
-  waitingTime,
-} from "../../../services/DateService";
+import DateService from "../../../services/DateService";
 import {
   GET_TABLES_BY_RESTAURANT_TYPES,
   GET_TICKETS_BY_RESTAURANT_TYPES,
@@ -17,6 +13,7 @@ import SVGIconDelete from "../../SVG/SVGIconDelete/SVGIconDelete";
 import SVGIconValid from "../../SVG/SVGIconValid/SVGIconValid";
 import DashboardTicketListStatus from "./DashboardTicketListStatus/DashboardTicketListStatus";
 import "./DashboardTicketListTab.scss";
+import { AppContext } from "../../../context/AppContext";
 
 export default function DashboardTicketListTab({
   waitingTickets,
@@ -35,6 +32,11 @@ export default function DashboardTicketListTab({
   handleDeliver: (ticketId: string, tableId: string) => Promise<void>;
   handlePlace: (ticketId: string) => Promise<void>;
 }) {
+  const appContext = useContext(AppContext);
+  const MAX_DELIVERED_TICKET_DELAY =
+    appContext?.userData.restaurant.ticketWaitingLimit;
+  const NOT_COMING_TICKET_DISAPEAR_DELAY =
+    appContext?.userData.restaurant.notComingTicketDisapearDelay;
   const [ticketId, setTicketId] = useState<string>("");
   const [tableId, setTableId] = useState<string>("");
   const [ticketNumber, setTicketNumber] = useState<string>("");
@@ -85,15 +87,31 @@ export default function DashboardTicketListTab({
   };
 
   const waitingTimes = (waitingTicket: any) => {
-    return <p>{waitingTime(waitingTicket.createdAt)} mn</p>;
+    return (
+      <p>{DateService.waitingTimeSinceDelivery(waitingTicket.createdAt)} mn</p>
+    );
   };
 
   const waitingTicketsStatus = (waitingTicket: any) => {
-    return <DashboardTicketListStatus ticket={waitingTicket} tables={tables} />;
+    return (
+      <DashboardTicketListStatus
+        ticket={waitingTicket}
+        tables={tables}
+        maxDeliveredTicketDelay={MAX_DELIVERED_TICKET_DELAY}
+        notComingTicketDisapearDelay={NOT_COMING_TICKET_DISAPEAR_DELAY}
+      />
+    );
   };
 
   const placedTicketsStatus = (placedTicket: any) => {
-    return <DashboardTicketListStatus ticket={placedTicket} tables={tables} />;
+    return (
+      <DashboardTicketListStatus
+        ticket={placedTicket}
+        tables={tables}
+        maxDeliveredTicketDelay={MAX_DELIVERED_TICKET_DELAY}
+        notComingTicketDisapearDelay={NOT_COMING_TICKET_DISAPEAR_DELAY}
+      />
+    );
   };
 
   const waitingTicketsActions = (waitingTicket: any) => {
@@ -101,7 +119,10 @@ export default function DashboardTicketListTab({
       <div className="ListTabBodyRowActionsButtonContainer">
         {waitingTicket.deliveredAt !== null &&
           new Date(waitingTicket.closedAt) >
-            substractMinutesToDate(new Date(), BUTTON_DISAPPEAR_DELAY) && (
+            DateService.substractMinutesToDate(
+              new Date(),
+              NOT_COMING_TICKET_DISAPEAR_DELAY
+            ) && (
             <SVGIconValid
               onClick={async () => {
                 await confirmPlace(waitingTicket);

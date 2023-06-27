@@ -1,30 +1,62 @@
-import { useContext } from "react";
-import { AppContext } from "../../../context/AppContext";
-import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
-import { BIG_LOGO_DASHBOARD_SIZE } from "../../../constants/Constants";
-import TabTables from "../../../components/TabTables/TabTables";
+import { useState } from "react";
+import { useLazyQuery } from "@apollo/client";
+import { TableQuery, TableQueryVariables } from "../../../gql/graphql";
+import { GET_TABLE_BY_ID } from "../../../queries/Queries";
 
-import "../DashboardTemp.scss";
+import TabTables from "../../../components/Dashboard/DashboardTables/ListTables";
+import ModalCreateTable from "../../../components/Dashboard/DashboardTables/ModalCreateTable";
+import ModalEditTable from "../../../components/Dashboard/DashboardTables/ModalEditTable";
+import ModalDeleteTable from "../../../components/Dashboard/DashboardTables/ModalDeleteTable";
+
+import "./DashboardTable.scss";
+import "../../../components/Dashboard/DashboardTables/ModalEditTable.scss";
 
 const DashboardTable = () => {
-  const appContext = useContext(AppContext);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [tableId, setTableId] = useState<string>("");
+  const [table, setTable] = useState(null);
+
+  const handleTableId = async (table: any) => {
+    setTableId(table.id);
+    setTable(table);
+  };
+
+  const [getTablebyId] = useLazyQuery<TableQuery, TableQueryVariables>(
+    GET_TABLE_BY_ID,
+    {
+      notifyOnNetworkStatusChange: true,
+      variables: {
+        tableId: tableId as string,
+      },
+    }
+  );
 
   return (
-    <div className="DashboardMain">
-      <div className="DashboardContent">
-        <div className="AddBtnSection">
-          <button className="AddBtn">Ajout d'une table</button>
-        </div>
-        <TabTables />
+    <div className="dashboard-table">
+      <div className="add-table-button-section">
+        <button className="add-table-button" onClick={() => setShowModal(true)}>
+          Ajout d'une table
+        </button>
+      </div>
+      <div className="dashboard-table-container">
+        {showModal && <ModalCreateTable setShowModal={setShowModal} />}
+        {showEditModal && (
+          <ModalEditTable table={table} editModal={setShowEditModal} />
+        )}
+        {showDeleteModal && (
+          <ModalDeleteTable
+            tableId={tableId as string}
+            deleteModal={setShowDeleteModal}
+          />
+        )}
 
-        {/* <SVGLogo
-          logoWidth={BIG_LOGO_DASHBOARD_SIZE}
-          logoHeight={BIG_LOGO_DASHBOARD_SIZE}
-          logoFill={appContext?.userSVGColorScheme}
+        <TabTables
+          propTableId={handleTableId}
+          editModal={setShowEditModal}
+          deleteModal={setShowDeleteModal}
         />
-        <h1>DASHBOARD TABLE</h1>
-        <p className="DashboardText">Page Under Construction...</p> */}
-        <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
       </div>
     </div>
   );

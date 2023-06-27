@@ -1,13 +1,12 @@
-import { hashSync } from "bcryptjs";
 import {
   clearAllRepositories,
   closeConnection,
   initializeDatabaseRepositories,
 } from "../../database/utils";
-import PoleRepository from "../Pole/Pole.repository";
 import AppUserRepository, {
   INVALID_CREDENTIALS_ERROR_MESSAGE,
 } from "./AppUser.repository";
+import Session from "./Session.entity";
 import SessionRepository from "./Session.repository";
 
 describe("AppUserRepository integration", () => {
@@ -31,10 +30,10 @@ describe("AppUserRepository integration", () => {
         return expect(() =>
           AppUserRepository.updateUser(
             falseUuid,
-            "Jean",
+            "John",
+            "Doe",
             "jean@user.com",
             "ROLE_ADMIN",
-            [],
             ""
           )
         ).rejects.toThrowError("Aucun utilisateur ne correspond à cet ID.");
@@ -42,29 +41,20 @@ describe("AppUserRepository integration", () => {
     });
     describe("when a user exists", () => {
       it("returns the updated user", async () => {
-        const pole = await PoleRepository.createPole(
-          "Pôle de Lyon",
-          "rue de la Poste",
-          "69002",
-          "Lyon",
-          "polelyon@polelyon.fr"
-        );
-
         const user = await AppUserRepository.createUser(
-          "Jean",
+          "John",
+          "Doe",
           "jean@user.com",
-          hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
-          [],
           ""
         );
 
         const updatedUser = await AppUserRepository.updateUser(
           user.id,
-          "Jean",
+          "John",
+          "Doe",
           "jean@user.fr",
           "ROLE_ADMIN",
-          [pole.id],
           ""
         );
 
@@ -87,19 +77,18 @@ describe("AppUserRepository integration", () => {
     describe("when a user exists", () => {
       it("expects user is null in database", async () => {
         const user = await AppUserRepository.createUser(
-          "Jean",
+          "John",
+          "Doe",
           "jean@user.com",
-          hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
-          [],
           ""
         );
 
         await AppUserRepository.deleteUser(user.id);
 
-        const userById = await PoleRepository.getPoleById(user.id);
-
-        expect(userById).toBe(null);
+        expect(() =>
+          AppUserRepository.getUserById(user.id)
+        ).rejects.toThrowError("Aucun utilisateur ne correspond à cet ID.");
       });
     });
   });
@@ -110,7 +99,7 @@ describe("AppUserRepository integration", () => {
         const emailAddress = "unknown@user.com";
         expect(() =>
           AppUserRepository.signIn(emailAddress, "whatever")
-        ).rejects.toThrowError(INVALID_CREDENTIALS_ERROR_MESSAGE);
+        ).rejects.toThrowError("Aucun utilisateur ne correspond à cet email.");
       });
 
       describe("when email address belongs to existing user", () => {
@@ -119,11 +108,10 @@ describe("AppUserRepository integration", () => {
         describe("when password invalid", () => {
           it("throws invalid credentials error", async () => {
             await AppUserRepository.createUser(
-              "Jean",
+              "John",
+              "Doe",
               emailAddress,
-              hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
-              [],
               ""
             );
 
@@ -136,37 +124,33 @@ describe("AppUserRepository integration", () => {
         describe("when password valid", () => {
           it("creates session in database", async () => {
             await AppUserRepository.createUser(
-              "Jean",
+              "John",
+              "Doe",
               emailAddress,
-              hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
-              [],
               ""
             );
 
-            await AppUserRepository.signIn(
-              emailAddress,
-              "mot-de-passe-de-jean"
-            );
+            await AppUserRepository.signIn(emailAddress, "password");
 
-            const sessions = await SessionRepository.repository.find();
+            const sessions =
+              (await SessionRepository.getSessions()) as Session[];
             expect(sessions).toHaveLength(1);
             expect(sessions[0].user.email).toEqual(emailAddress);
           });
 
           it("returns user and session", async () => {
             await AppUserRepository.createUser(
-              "Jean",
+              "John",
+              "Doe",
               emailAddress,
-              hashSync("mot-de-passe-de-jean"),
               "ROLE_ADMIN",
-              [],
               ""
             );
 
             const result = await AppUserRepository.signIn(
               emailAddress,
-              "mot-de-passe-de-jean"
+              "password"
             );
             expect(result).toHaveProperty("user");
             expect(result).toHaveProperty("session");
@@ -182,18 +166,14 @@ describe("AppUserRepository integration", () => {
       const emailAddress = "jean@user.com";
       it("deletes session in database", async () => {
         await AppUserRepository.createUser(
-          "Jean",
+          "John",
+          "Doe",
           emailAddress,
-          hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
-          [],
           ""
         );
 
-        const signIn = await AppUserRepository.signIn(
-          emailAddress,
-          "mot-de-passe-de-jean"
-        );
+        const signIn = await AppUserRepository.signIn(emailAddress, "password");
 
         const userId = signIn.user.id;
 
@@ -204,18 +184,14 @@ describe("AppUserRepository integration", () => {
 
       it("returns user", async () => {
         await AppUserRepository.createUser(
-          "Jean",
+          "John",
+          "Doe",
           emailAddress,
-          hashSync("mot-de-passe-de-jean"),
           "ROLE_ADMIN",
-          [],
           ""
         );
 
-        const signIn = await AppUserRepository.signIn(
-          emailAddress,
-          "mot-de-passe-de-jean"
-        );
+        const signIn = await AppUserRepository.signIn(emailAddress, "password");
 
         const userId = signIn.user.id;
 

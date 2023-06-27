@@ -3,10 +3,14 @@ import { getRepository } from "../../database/utils";
 import Session from "./Session.entity";
 
 export default class SessionDb {
-  static repository: Repository<Session>;
+  protected static repository: Repository<Session>;
 
-  static async initializeRepository() {
+  public static async initializeRepository() {
     this.repository = await getRepository(Session);
+  }
+
+  public static async clearRepository(): Promise<void> {
+    await this.repository.delete({});
   }
 
   protected static saveSession(session: Session): Promise<Session> {
@@ -15,9 +19,5 @@ export default class SessionDb {
 
   protected static removeSession(session: Session): Promise<Session> {
     return this.repository.remove(session);
-  }
-
-  static async clearRepository(): Promise<void> {
-    await this.repository.delete({});
   }
 }

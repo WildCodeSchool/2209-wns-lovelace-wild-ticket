@@ -16,17 +16,17 @@ For using Mailjet, you need to create an account on https://www.mailjet.com/ and
 
 You need to create some transactionnal templates :
 
-1. Go to https://app.mailjet.com/templates/transactional.
+1. Go to https://app.mailjet.com/templates/transactional. For each template :
 2. Click on "Create a new template" button
 3. Choose "By coding it in HTML"
 4. Click on "Import HTML from file" button
 5. Choose a name for the template (ex: R'Ticket Delivered Template)
 6. Import the html file located in the back-end/email-templates folder of this repository
-7. Copy the Template ID that appears on the top of the next page, and paste it in your .env file (MJ_DELIVERED_TEMPLATE_ID)
+7. Copy the Template ID that appears on the top of the next page, and paste it in your .env file.
 8. Click on "Save & Publish" button
 9. Enter a Subject and a Name (Mandatory but not used in our project) and save your template
 10. Click a second time on "Save & Publish" button
-10. Don't forget to put your email address in the .env file (MJ_AVAILABLE_EMAIL)
+11. Don't forget to put your email address in the .env file (MJ_AVAILABLE_EMAIL)
 
 ### Run server in dev mode
 
@@ -60,6 +60,13 @@ Use this command in the root of the project, when the server is running.
 ```
 docker compose -f docker-compose.dev.yml exec back-end npm run test:watch
 ```
+
+If you have some errors with tests that are running from 'js' files :
+
+1. Stop Docker
+2. Delete the 'dist' folder in the back-end folder
+3. Restart Docker
+4. Re-run the tests.
 
 ## Run Web-app's Integration testing (web-app)
 

@@ -21,8 +21,8 @@ export const SIGN_OUT = gql`
 `;
 
 export const SEND_RESET_PASSWORD_EMAIL = gql`
-  mutation SendResetPasswordEmail($email: String!) {
-    sendResetPasswordEmail(email: $email)
+  mutation PrepareAndSendResetPasswordEmail($email: String!) {
+    prepareAndSendResetPasswordEmail(email: $email)
   }
 `;
 
@@ -52,21 +52,88 @@ export const MY_PROFILE = gql`
   query MyProfile {
     myProfile {
       id
-      login
       email
       role
-      poles {
-        id
-        name
-      }
       restaurant {
         id
         name
         picture
         ticketWaitingLimit
+        notComingTicketDisapearDelay
         openAt
         closeAt
       }
+    }
+  }
+`;
+
+export const GET_USERS = gql`
+  query GetUsers {
+    getUsers {
+      id
+      firstname
+      lastname
+      email
+      role
+      restaurant {
+        id
+        name
+        pole {
+          name
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const CREATE_USER = gql`
+  mutation CreateUser(
+    $firstname: String!
+    $email: String!
+    $role: String!
+    $lastname: String!
+    $restaurant: String
+  ) {
+    createUser(
+      firstname: $firstname
+      email: $email
+      role: $role
+      lastname: $lastname
+      restaurant: $restaurant
+    ) {
+      id
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser(
+    $updateUserId: ID!
+    $firstname: String!
+    $lastname: String!
+    $email: String!
+    $role: String!
+    $restaurant: String
+  ) {
+    updateUser(
+      id: $updateUserId
+      firstname: $firstname
+      lastname: $lastname
+      email: $email
+      role: $role
+      restaurant: $restaurant
+    ) {
+      id
+    }
+  }
+`;
+
+export const DELETE_USER = gql`
+  mutation DeleteUser($deleteUserId: String!) {
+    deleteUser(id: $deleteUserId) {
+      firstname
     }
   }
 `;
@@ -233,6 +300,53 @@ export const GET_TABLES_BY_RESTAURANT = gql`
   }
 `;
 
+export const GET_TABLE_BY_ID = gql`
+  query Table($tableId: String!) {
+    Table(id: $tableId) {
+      id
+      number
+      capacity
+    }
+  }
+`;
+
+export const CREATE_TABLE = gql`
+  mutation CreateTable(
+    $number: Float!
+    $capacity: Float!
+    $restaurant: String!
+  ) {
+    createTable(number: $number, capacity: $capacity, restaurant: $restaurant) {
+      capacity
+      number
+      restaurant {
+        id
+      }
+    }
+  }
+`;
+
+export const UPDATE_TABLE = gql`
+  mutation UpdateTable(
+    $updateTableId: ID!
+    $number: Float!
+    $capacity: Float!
+  ) {
+    updateTable(id: $updateTableId, number: $number, capacity: $capacity) {
+      capacity
+      number
+    }
+  }
+`;
+
+export const DELETE_TABLE = gql`
+  mutation DeleteTable($deleteTableId: String!) {
+    deleteTable(id: $deleteTableId) {
+      id
+    }
+  }
+`;
+
 /**
  * *************** POLE QUERIES **********************
  */
@@ -327,6 +441,7 @@ export const GET_RESTAURANTS = gql`
     getRestaurants {
       id
       name
+      picture
       pole {
         id
         name
@@ -343,12 +458,14 @@ export const UPDATE_RESTAURANT = gql`
   mutation UpdateRestaurant(
     $updateRestaurantId: ID!
     $ticketWaitingLimit: Float!
+    $notComingTicketDisapearDelay: Float!
     $name: String!
     $picture: String
   ) {
     updateRestaurant(
       id: $updateRestaurantId
       ticketWaitingLimit: $ticketWaitingLimit
+      notComingTicketDisapearDelay: $notComingTicketDisapearDelay
       name: $name
       picture: $picture
     ) {
@@ -356,6 +473,7 @@ export const UPDATE_RESTAURANT = gql`
       name
       picture
       ticketWaitingLimit
+      notComingTicketDisapearDelay
       openAt
       closeAt
     }
@@ -379,6 +497,34 @@ export const UPDATE_RESTAURANTS_TIME = gql`
     ) {
       closeAt
       openAt
+    }
+  }
+`;
+
+export const CREATE_RESTAURANT = gql`
+  mutation CreateRestaurant(
+    $name: String!
+    $notComingTicketDisapearDelay: Float!
+    $pole: ID!
+    $ticketWaitingLimit: Float!
+    $picture: String
+  ) {
+    createRestaurant(
+      name: $name
+      notComingTicketDisapearDelay: $notComingTicketDisapearDelay
+      pole: $pole
+      ticketWaitingLimit: $ticketWaitingLimit
+      picture: $picture
+    ) {
+      id
+    }
+  }
+`;
+
+export const DELETE_RESTAURANT = gql`
+  mutation DeleteRestaurant($deleteRestaurantId: String!) {
+    deleteRestaurant(id: $deleteRestaurantId) {
+      id
     }
   }
 `;

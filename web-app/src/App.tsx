@@ -1,7 +1,6 @@
-import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer, Flip } from "react-toastify";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /* PATHS */
 import {
@@ -46,17 +45,22 @@ function App() {
 
   const currentPage = window.location.pathname;
 
-  const primeReactMinThemePages = [DASHBOARD_POLE, DASHBOARD_RESTAURANT];
-  const primeReactLaraLightIndigoThemePages = [
+  const [primeReactMinThemePages] = useState<string[]>([
     DASHBOARD_POLE,
     DASHBOARD_RESTAURANT,
-  ];
-  const primeReactNanoThemePages = [
+    DASHBOARD_USER,
+  ]);
+  const [primeReactLaraLightIndigoThemePages] = useState<string[]>([
+    DASHBOARD_POLE,
+    DASHBOARD_RESTAURANT,
+    DASHBOARD_USER,
+  ]);
+  const [primeReactNanoThemePages] = useState<string[]>([
     DASHBOARD_HOME,
     DASHBOARD_TICKET,
     DASHBOARD_TABLE,
     DASHBOARD_STATS,
-  ];
+  ]);
 
   // Fonction pour créer un lien de thème dans le DOM
   function createThemeLink(themeLink: string, themePages: string) {
@@ -121,7 +125,12 @@ function App() {
     } else if (!primeReactNanoThemePages.includes(currentPage)) {
       removeThemeLinks("primeReactNanoThemePages");
     }
-  }, [currentPage]);
+  }, [
+    currentPage,
+    primeReactLaraLightIndigoThemePages,
+    primeReactNanoThemePages,
+    primeReactMinThemePages,
+  ]);
 
   return (
     <>
