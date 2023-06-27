@@ -3,47 +3,16 @@ import AppUser from "./AppUser.entity";
 import { hashSync, compareSync } from "bcryptjs";
 import SessionRepository from "./Session.repository";
 import Session from "./Session.entity";
-import { AppUserFixtures } from "../../DataFixtures/AppUserFixtures";
 import RestaurantRepository from "../Restaurant/Restaurant.repository";
 import Restaurant from "../Restaurant/Restaurant.entity";
 import EmailService from "../../services/EmailService";
-import DateUpdates from "../../services/DateUpdates";
 import PasswordService from "../../services/PasswordService";
+import { randomBytes } from "crypto";
 
 export const INVALID_CREDENTIALS_ERROR_MESSAGE = "Identifiants incorrects.";
 
 export default class AppUserRepository extends AppUserDb {
-  static async initializeAppUsers(
-    AppUserFixtures: AppUserFixtures[]
-  ): Promise<void> {
-    await Promise.all(
-      AppUserFixtures.map(async (appUser) => {
-        const appUserPassword = hashSync(appUser.password);
-        const appUserCreationDate = new Date(appUser.createdAt);
-        let appUserRestaurant = undefined;
-
-        if (appUser.restaurant) {
-          appUserRestaurant = (await RestaurantRepository.getRestaurantByName(
-            appUser.restaurant
-          )) as Restaurant;
-        }
-
-        const newAppUser = new AppUser(
-          appUser.firstname,
-          appUser.lastname,
-          appUser.email,
-          appUserPassword,
-          appUser.role,
-          appUserCreationDate,
-          appUserRestaurant
-        );
-
-        await this.repository.save(newAppUser);
-      })
-    );
-  }
-
-  static getUsers(): Promise<AppUser[]> {
+  public static async getUsers(): Promise<AppUser[]> {
     return this.repository.find();
   }
 
@@ -57,29 +26,7 @@ export default class AppUserRepository extends AppUserDb {
     return user;
   }
 
-  static async getUserByToken(
-    resetPasswordToken: string
-  ): Promise<AppUser | null> {
-    const user = await this.findOneByResetPasswordToken(resetPasswordToken);
-
-    if (!user) {
-      throw new Error("Aucun utilisateur ne correspond à ce token.");
-    }
-
-    return user;
-  }
-
-  static async getUserByEmailAddress(email: string): Promise<AppUser | null> {
-    const user = await this.findByEmailAddress(email);
-
-    if (!user) {
-      throw new Error("Aucun utilisateur correspond à cet email.");
-    }
-
-    return user;
-  }
-
-  static async createUser(
+  public static async createUser(
     firstname: string,
     lastname: string,
     email: string,
@@ -122,7 +69,7 @@ export default class AppUserRepository extends AppUserDb {
     return userCreated;
   }
 
-  static async updateUser(
+  public static async updateUser(
     id: string,
     firstname: string,
     lastname: string,
@@ -130,13 +77,13 @@ export default class AppUserRepository extends AppUserDb {
     role: string,
     restaurant: string
   ): Promise<AppUser> {
-    const userToUpdate = await this.getUserById(id);
+    await this.getUserById(id);
 
     const updatedAt = new Date();
-    let appUserRestaurant = undefined;
+    let userRestaurant = undefined;
 
     if (restaurant) {
-      appUserRestaurant = (await RestaurantRepository.getRestaurantById(
+      userRestaurant = (await RestaurantRepository.getRestaurantById(
         restaurant
       )) as Restaurant;
     }
@@ -148,38 +95,19 @@ export default class AppUserRepository extends AppUserDb {
       email: email,
       role: role,
       updatedAt: updatedAt,
-      restaurant: appUserRestaurant,
+      restaurant: userRestaurant,
     });
   }
 
-  static async prepareAndSendResetPasswordEmail(
-    email: string,
-    state: string | null = null
-  ): Promise<void> {
-    // Check if email exists in database
-    const user = (await this.getUserByEmailAddress(email)) as AppUser;
+  public static async deleteUser(id: string): Promise<AppUser | null> {
+    const user = (await this.getUserById(id)) as AppUser;
 
-    if (email !== process.env.MJ_AVAILABLE_EMAIL) {
-      return;
-    }
+    await this.repository.remove(user);
 
-    // Generate token
-    const crypto = require("crypto");
-    const token = crypto.randomBytes(32).toString("hex");
-
-    // Save token in database
-    await this.setUserPasswordToken(user.id, token, state);
-
-    // Construct email
-    const link = `http://localhost:3000/update-password/?token=${token}`;
-
-    // Send email
-    state === "newUser"
-      ? await EmailService.sendNewUserPasswordEmail(user, link)
-      : await EmailService.sendResetPasswordEmail(user, link);
+    return user;
   }
 
-  static async updateUserPassword(
+  public static async updateUserPassword(
     id: string,
     password: string,
     newPassword: string
@@ -199,24 +127,22 @@ export default class AppUserRepository extends AppUserDb {
     });
   }
 
-  static async updateUserPasswordWithToken(
+  public static async updateUserPasswordWithToken(
     token: string,
     password: string
   ): Promise<AppUser> {
     // Check if token is valid and get user
-    const userToUpdate = await this.getUserByToken(token);
+    const userToUpdate = (await this.getUserByToken(token)) as AppUser;
 
-    let userId = "";
-    let resetPasswordTokenExpiration = null;
-    if (userToUpdate) {
-      userId = userToUpdate.id;
-      resetPasswordTokenExpiration = userToUpdate.resetPasswordTokenExpiration;
-    }
+    const userId = userToUpdate.id;
+    const resetPasswordTokenExpiration =
+      userToUpdate.resetPasswordTokenExpiration;
 
     // Check if token is expired
     if (!resetPasswordTokenExpiration) {
       throw new Error("Ce token n'est pas valide.");
     }
+
     if (resetPasswordTokenExpiration < new Date()) {
       throw new Error("Ce token a expiré.");
     }
@@ -236,23 +162,39 @@ export default class AppUserRepository extends AppUserDb {
     });
   }
 
-  static async deleteUser(id: string): Promise<AppUser | null> {
-    const user = await this.getUserById(id);
+  public static async prepareAndSendResetPasswordEmail(
+    email: string,
+    state: string | null = null
+  ): Promise<void> {
+    // Check if user exists in database
+    const user = (await this.getUserByEmailAddress(email)) as AppUser;
 
-    if (user) {
-      await this.repository.remove(user);
-      return user;
+    if (email !== process.env.MJ_AVAILABLE_EMAIL) {
+      return;
     }
-    return null;
+
+    // Generate token
+    const token = randomBytes(32).toString("hex");
+
+    // Save token in database
+    await this.setUserPasswordToken(user.id, token, state);
+
+    // Construct email
+    const link = `http://localhost:3000/update-password/?token=${token}`;
+
+    // Send email
+    state === "newUser"
+      ? await EmailService.sendNewUserPasswordEmail(user, link)
+      : await EmailService.sendResetPasswordEmail(user, link);
   }
 
-  static async signIn(
+  public static async signIn(
     email: string,
     password: string
   ): Promise<{ user: AppUser; session: Session }> {
-    const user = await this.findByEmailAddress(email);
+    const user = (await this.getUserByEmailAddress(email)) as AppUser;
 
-    if (!user || !compareSync(password, user.hashedPassword)) {
+    if (!compareSync(password, user.hashedPassword)) {
       throw new Error(INVALID_CREDENTIALS_ERROR_MESSAGE);
     }
 
@@ -261,40 +203,11 @@ export default class AppUserRepository extends AppUserDb {
     return { user, session };
   }
 
-  static async signOut(id: string): Promise<AppUser> {
-    const user = await this.getUserById(id);
+  public static async signOut(id: string): Promise<AppUser> {
+    const user = (await this.getUserById(id)) as AppUser;
 
-    if (user) {
-      await SessionRepository.deleteSession(user);
-    }
-    return user as AppUser;
-  }
+    await SessionRepository.deleteSession(user);
 
-  static async findBySessionId(sessionId: string): Promise<AppUser | null> {
-    const session = await SessionRepository.findById(sessionId);
-
-    if (!session) {
-      return null;
-    }
-
-    return session.user;
-  }
-
-  static async setUserPasswordToken(
-    id: string,
-    resetPasswordToken: string,
-    state: string | null = null
-  ): Promise<AppUser> {
-    // Token expiration date set to 24 hours for new user's password and 30 minutes for reset password
-    const resetPasswordTokenExpiration =
-      state === "newUser"
-        ? DateUpdates.addHoursToDate(new Date(), 24)
-        : DateUpdates.addMinutesToDate(new Date(), 30);
-
-    return this.repository.save({
-      id: id,
-      resetPasswordToken: resetPasswordToken,
-      resetPasswordTokenExpiration: resetPasswordTokenExpiration,
-    });
+    return user;
   }
 }

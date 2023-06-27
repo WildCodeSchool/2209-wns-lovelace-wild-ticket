@@ -124,9 +124,9 @@ describe("TableRepository integration", () => {
 
         await TableRepository.deleteTable(table.id);
 
-        const tableById = await TableRepository.getTableById(table.id);
-
-        expect(tableById).toBe(null);
+        expect(() =>
+          TableRepository.getTableById(table.id)
+        ).rejects.toThrowError("Aucune table ne correspond à cet ID.");
       });
     });
   });

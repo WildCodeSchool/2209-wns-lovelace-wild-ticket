@@ -3,53 +3,20 @@ import Pole from "../Pole/Pole.entity";
 import PoleRepository from "../Pole/Pole.repository";
 import RestaurantDb from "./Restaurant.db";
 import PageOfRestaurants from "../../resolvers/Restaurant/PageOfRestaurant";
-import RestaurantFixtures, {
-  RestaurantFixturesType,
-} from "../../DataFixtures/RestaurantFixtures";
 import DateUpdates from "../../services/DateUpdates";
 import TicketRepository from "../Ticket/Ticket.repository";
 
 export default class RestaurantRepository extends RestaurantDb {
-  static async initializeRestaurants(): Promise<void> {
-    const lyonPole = (await PoleRepository.getPoleByName(
-      "Pôle de Lyon"
-    )) as Pole;
-    const restaurantFixtures: RestaurantFixturesType[] =
-      await RestaurantFixtures.getRestaurants();
-
-    await Promise.all(
-      restaurantFixtures.map(async (restaurant) => {
-        const newRestaurant = new Restaurant(
-          restaurant.name,
-          lyonPole,
-          restaurant.createdAt,
-          restaurant.ticketWaitingLimit,
-          restaurant.notComingTicketDisapearDelay,
-          undefined,
-          restaurant.openAt,
-          restaurant.closeAt,
-          restaurant.picture
-        );
-
-        await this.repository.save(newRestaurant);
-      })
-    );
-  }
-
-  static async getRestaurants(): Promise<Restaurant[]> {
+  public static async getRestaurants(): Promise<Restaurant[]> {
     return this.repository.find();
   }
 
-  static async getPaginateRestaurantsByPole(
+  public static async getPaginateRestaurantsByPole(
     poleName: string,
     pageSize: number,
     pageNumber: number
   ): Promise<PageOfRestaurants> {
     const pole = (await PoleRepository.getPoleByName(poleName)) as Pole;
-
-    if (!pole) {
-      throw new Error("Aucun pôle ne correspond à ce nom.");
-    }
 
     const [restaurants, totalCount] = await this.repository.findAndCount({
       where: { pole: pole },
@@ -66,15 +33,19 @@ export default class RestaurantRepository extends RestaurantDb {
     };
   }
 
-  static async getRestaurantById(id: string): Promise<Restaurant | null> {
-    return this.repository.findOneBy({ id: id });
+  public static async getRestaurantById(
+    id: string
+  ): Promise<Restaurant | null> {
+    const restaurant = await this.repository.findOneBy({ id: id });
+
+    if (!restaurant) {
+      throw new Error("Aucun restaurant ne correspond à cet ID.");
+    }
+
+    return restaurant;
   }
 
-  static async getRestaurantByName(name: string): Promise<Restaurant | null> {
-    return this.repository.findOneBy({ name: name });
-  }
-
-  static async createRestaurant(
+  public static async createRestaurant(
     name: string,
     picture: string | undefined,
     ticketWaitingLimit: number,
@@ -82,10 +53,6 @@ export default class RestaurantRepository extends RestaurantDb {
     idPole: string
   ): Promise<Restaurant> {
     const pole = (await PoleRepository.getPoleById(idPole)) as Pole;
-
-    if (!pole) {
-      throw new Error("Aucun pôle ne correspond à cet ID.");
-    }
 
     const createdAt = new Date();
 
@@ -107,7 +74,7 @@ export default class RestaurantRepository extends RestaurantDb {
     return newRestaurant;
   }
 
-  static async updateRestaurant(
+  public static async updateRestaurant(
     id: string,
     name: string,
     picture: string | undefined,
@@ -119,15 +86,11 @@ export default class RestaurantRepository extends RestaurantDb {
       name: string;
     } & Restaurant
   > {
-    const existingRestaurant = await this.repository.findOneBy({ id });
+    const restaurant = (await this.getRestaurantById(id)) as Restaurant;
 
-    if (!existingRestaurant) {
-      throw new Error("Aucun restaurant ne correspond à cet ID.");
-    }
-
-    const existingTicketWaitingLimit = existingRestaurant.ticketWaitingLimit;
+    const existingTicketWaitingLimit = restaurant.ticketWaitingLimit;
     const existingNotComingTicketDisapearDelay =
-      existingRestaurant.notComingTicketDisapearDelay;
+      restaurant.notComingTicketDisapearDelay;
 
     if (
       existingTicketWaitingLimit !== ticketWaitingLimit ||
@@ -156,7 +119,7 @@ export default class RestaurantRepository extends RestaurantDb {
     });
   }
 
-  static async updateRestaurantOpeningTime(
+  public static async updateRestaurantOpeningTime(
     id: string,
     hourOpenAt: number,
     minutesOpenAt: number,
@@ -169,11 +132,7 @@ export default class RestaurantRepository extends RestaurantDb {
       closeAt: Date;
     } & Restaurant
   > {
-    const existingRestaurant = await this.repository.findOneBy({ id });
-
-    if (!existingRestaurant) {
-      throw new Error("Aucun restaurant ne correspond à cet ID.");
-    }
+    await this.getRestaurantById(id);
 
     const updatedAt = new Date();
 
@@ -194,18 +153,14 @@ export default class RestaurantRepository extends RestaurantDb {
     });
   }
 
-  static async deleteRestaurant(id: string): Promise<Restaurant> {
-    const existingRestaurant = await this.findRestaurantById(id);
+  public static async deleteRestaurant(id: string): Promise<Restaurant> {
+    const restaurant = (await this.getRestaurantById(id)) as Restaurant;
 
-    if (!existingRestaurant) {
-      throw new Error("Aucun restaurant ne correspond à cet ID.");
-    }
+    await this.repository.remove(restaurant);
 
-    await this.repository.remove(existingRestaurant);
+    // resetting ID because restaurant loses ID after calling remove
+    restaurant.id = id;
 
-    // resetting ID because existingRestaurant loses ID after calling remove
-    existingRestaurant.id = id;
-
-    return existingRestaurant;
+    return restaurant;
   }
 }

@@ -105,9 +105,9 @@ describe("PoleRepository integration", () => {
 
         await PoleRepository.deletePole(pole.id);
 
-        const poleById = await PoleRepository.getPoleById(pole.id);
-
-        expect(poleById).toBe(null);
+        expect(() => PoleRepository.getPoleById(pole.id)).rejects.toThrowError(
+          "Aucun pôle ne correspond à cet ID."
+        );
       });
     });
   });

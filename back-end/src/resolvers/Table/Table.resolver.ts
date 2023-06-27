@@ -9,12 +9,6 @@ import {
 
 @Resolver(Table)
 export default class TableResolver {
-  @Authorized("ROLE_RESTAURANT")
-  @Query(() => Table)
-  Table(@Arg("id") id: string): Promise<Table | null> {
-    return TableRepository.getTableById(id);
-  }
-
   @Authorized()
   @Query(() => [Table])
   Tables(): Promise<Table[]> {
@@ -27,6 +21,12 @@ export default class TableResolver {
     @Args() { restaurantId, capacity }: GetTablesByRestaurantArgs
   ): Promise<Table[] | null> {
     return TableRepository.getTablesByRestaurant(restaurantId, capacity);
+  }
+
+  @Authorized("ROLE_RESTAURANT")
+  @Query(() => Table)
+  Table(@Arg("id") id: string): Promise<Table | null> {
+    return TableRepository.getTableById(id);
   }
 
   @Authorized("ROLE_RESTAURANT")
