@@ -2,6 +2,7 @@ import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { getErrorMessage } from "../../utils";
 import { SIGN_IN_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
@@ -47,45 +48,50 @@ const UpdatePassword = () => {
   };
 
   return (
-    <>
-      <div className="signin-form-container">
-        <h1>Réinitialisation de votre mot de passe</h1>
-        <form
-          onSubmit={async (event) => {
-            event.preventDefault();
-            await submit();
-          }}
-        >
-          <div className="signin-form-input">
-            <label>Nouveau mot de passe</label>
-            <input
-              type="password"
-              required
-              id="new-password"
-              name="email"
-              value={newPassword}
-              onChange={(event) => {
-                setNewPassword(event.target.value);
-              }}
-            />
-          </div>
-          <div className="signin-form-input">
-            <label>Vérification du mot de passe</label>
-            <input
-              type="password"
-              required
-              id="new-password-check"
-              name="email"
-              value={newPasswordCheck}
-              onChange={(event) => {
-                setNewPasswordCheck(event.target.value);
-              }}
-            />
-          </div>
-          <button>Valider</button>
-        </form>
-      </div>
-    </>
+    <HelmetProvider>
+      <Helmet>
+        <title>R'Ticket - Initialisation de votre mot de passe</title>
+      </Helmet>
+      <>
+        <div className="signin-form-container">
+          <h1>Réinitialisation de votre mot de passe</h1>
+          <form
+            onSubmit={async (event) => {
+              event.preventDefault();
+              await submit();
+            }}
+          >
+            <div className="signin-form-input">
+              <label>Nouveau mot de passe</label>
+              <input
+                type="password"
+                required
+                id="new-password"
+                name="email"
+                value={newPassword}
+                onChange={(event) => {
+                  setNewPassword(event.target.value);
+                }}
+              />
+            </div>
+            <div className="signin-form-input">
+              <label>Vérification du mot de passe</label>
+              <input
+                type="password"
+                required
+                id="new-password-check"
+                name="email"
+                value={newPasswordCheck}
+                onChange={(event) => {
+                  setNewPasswordCheck(event.target.value);
+                }}
+              />
+            </div>
+            <button>Valider</button>
+          </form>
+        </div>
+      </>
+    </HelmetProvider>
   );
 };
 

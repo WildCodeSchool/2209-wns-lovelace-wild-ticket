@@ -22,8 +22,6 @@ const ModalDeleteTable = ({
     DeleteTableMutationVariables
   >(DELETE_TABLE);
 
-  console.log("get table id on modal delete table: " + tableId);
-
   const confirmDeleteTable = async () => {
     try {
       await deleteTable({ variables: { deleteTableId: tableId } });

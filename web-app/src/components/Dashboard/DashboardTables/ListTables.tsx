@@ -26,7 +26,9 @@ const ListTables = ({
   const appContext = useContext(AppContext);
   const restaurantId = appContext?.userData.restaurant.id;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isClickable, setIsClickable] = useState<boolean>(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [seats, setSeats] = useState<number | null>(null);
   const [tables, setTables] = useState<
     GET_TABLES_BY_RESTAURANT_TYPES | undefined

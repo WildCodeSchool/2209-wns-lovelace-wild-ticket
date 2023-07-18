@@ -98,7 +98,6 @@ export default class RestaurantRepository extends RestaurantDb {
     ) {
       const countTodayTickets =
         await TicketRepository.getCountTicketsByRestaurantSinceMidnight(id);
-      console.log(countTodayTickets);
 
       if (countTodayTickets && countTodayTickets > 0) {
         throw new Error(
