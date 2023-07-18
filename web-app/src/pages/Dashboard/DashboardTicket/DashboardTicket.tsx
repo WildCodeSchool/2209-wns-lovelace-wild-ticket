@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Button } from "primereact/button";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import DashboardTicketListTab from "../../../components/Dashboard/DashboardTicketListTab/DashboardTicketListTab";
 import { AppContext } from "../../../context/AppContext";
 import { TicketsFilterTabContent } from "../../../data/DashboardTicketDatas";
@@ -212,39 +213,44 @@ const DashboardTicket = () => {
   ]);
 
   return (
-    <section className="DashboardTicketSection">
-      <header className="DashboardTicketHeader">
-        <div className="DashboardTicketHeaderButtonContainer">
-          <span className="DashboardTicketHeaderButtonSet">
-            {TicketsFilterTabContent.map((ticketContent, index) => (
-              <Button
-                className={
-                  activeFilterButton === ticketContent.seats
-                    ? "DashboardTicketHeaderButton DashboardTicketHeaderButtonActive"
-                    : "DashboardTicketHeaderButton"
-                }
-                key={index}
-                label={ticketContent.label}
-                onClick={() => {
-                  handleFilterButtonClick(ticketContent.seats);
-                }}
-              />
-            ))}
-          </span>
-        </div>
-      </header>
-      <main className="DashboardTicketList">
-        <DashboardTicketListTab
-          waitingTickets={waitingTickets}
-          placedTickets={placedTickets}
-          tables={emptyTables}
-          isLoading={ticketsLoading}
-          handleDelete={onDelete}
-          handleDeliver={onDeliver}
-          handlePlace={onPlace}
-        />
-      </main>
-    </section>
+    <HelmetProvider>
+      <Helmet>
+        <title>R'Ticket - File d'attente</title>
+      </Helmet>
+      <section className="DashboardTicketSection">
+        <header className="DashboardTicketHeader">
+          <div className="DashboardTicketHeaderButtonContainer">
+            <span className="DashboardTicketHeaderButtonSet">
+              {TicketsFilterTabContent.map((ticketContent, index) => (
+                <Button
+                  className={
+                    activeFilterButton === ticketContent.seats
+                      ? "DashboardTicketHeaderButton DashboardTicketHeaderButtonActive"
+                      : "DashboardTicketHeaderButton"
+                  }
+                  key={index}
+                  label={ticketContent.label}
+                  onClick={() => {
+                    handleFilterButtonClick(ticketContent.seats);
+                  }}
+                />
+              ))}
+            </span>
+          </div>
+        </header>
+        <main className="DashboardTicketList">
+          <DashboardTicketListTab
+            waitingTickets={waitingTickets}
+            placedTickets={placedTickets}
+            tables={emptyTables}
+            isLoading={ticketsLoading}
+            handleDelete={onDelete}
+            handleDeliver={onDeliver}
+            handlePlace={onPlace}
+          />
+        </main>
+      </section>
+    </HelmetProvider>
   );
 };
 

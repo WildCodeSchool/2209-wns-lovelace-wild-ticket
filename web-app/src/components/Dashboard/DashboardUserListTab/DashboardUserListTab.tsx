@@ -44,8 +44,6 @@ export default function DashboardUserListTab({
     );
   };
 
-  console.log(users);
-
   const [filters] = useState<DataTableFilterMeta>({
     firstname: { value: null, matchMode: FilterMatchMode.CONTAINS },
     lastname: { value: null, matchMode: FilterMatchMode.CONTAINS },
