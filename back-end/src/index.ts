@@ -28,6 +28,24 @@ export type GlobalContext = ExpressContext & {
   user: AppUser | null;
 };
 
+const authenticationChecker = async (
+  { context }: any,
+  roles: string[]
+): Promise<boolean> => {
+  return roles.length === 0
+    ? Boolean(context.user)
+    : Boolean(roles.includes(context.user.role));
+};
+
+const getUserContext = async (context: any) => {
+  const sessionId = getSessionIdInCookie(context);
+  const user = !sessionId
+    ? null
+    : await AppUserRepository.getUserBySessionId(sessionId);
+
+  return { res: context.res, req: context.req, user };
+};
+
 const startServer = async () => {
   const server = new ApolloServer({
     schema: await buildSchema({
@@ -39,29 +57,11 @@ const startServer = async () => {
         RestaurantResolver,
         StatsResolver,
       ],
-      authChecker: async ({ context }, roles: string[]) => {
-        return roles.length === 0
-          ? Boolean(context.user)
-          : Boolean(roles.includes(context.user.role));
-      },
+      authChecker: authenticationChecker,
     }),
-    context: async (context): Promise<GlobalContext> => {
-      const sessionId = getSessionIdInCookie(context);
-      const user = !sessionId
-        ? null
-        : await AppUserRepository.getUserBySessionId(sessionId);
-
-      return { res: context.res, req: context.req, user };
-    },
+    context: getUserContext,
     csrfPrevention: true,
     cache: "bounded",
-    /**
-     * What's up with this embed: true option?
-     * These are our recommended settings for using AS;
-     * they aren't the defaults in AS3 for backwards-compatibility reasons but
-     * will be the defaults in AS4. For production environments, use
-     * ApolloServerPluginLandingPageProductionDefault instead.
-     **/
     plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
   });
 
