@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineConfirmationNumber, MdOutlineTableBar } from "react-icons/md";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { AppContext } from "../../../context/AppContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 import MainMenu from "../../../components/MainMenu/MainMenu";
@@ -61,57 +62,67 @@ const DashboardHome = () => {
   };
 
   return ROLE_ADMIN.includes(appContext?.userData.role) ? (
-    <div className="DashboardMain">
-      <div className="DashboardContent">
-        <SVGLogo
-          logoWidth={BIG_LOGO_DASHBOARD_SIZE}
-          logoHeight={BIG_LOGO_DASHBOARD_SIZE}
-          logoFill={appContext?.userSVGColorScheme}
-        />
-        <h1>ESPACE ADMINISTRATEUR</h1>
-        <MainMenu />
-      </div>
-    </div>
-  ) : (
-    <section className="DashboardHomeSection">
-      <div className="DashboardHomeTopContent">
-        <div className="DashboardHomeTopLeftContainer">
-          <div className="boxStatsTickets" onClick={goToTickets}>
-            <div className="statsTickets">
-              <span>{waitingTickets}</span>
-              <p>Ticket{waitingTickets > 1 ? "s" : ""} en attente</p>
-            </div>
-            <MdOutlineConfirmationNumber className="icon" />
-          </div>
-          <button className="btnStats" onClick={goToTables}>
-            Tables
-          </button>
-        </div>
-        <div className="DashboardHomeTopMiddleContainer">
-          <img
-            className="DashboardHomeTopMiddleRestaurantLogo"
-            src={userData.restaurant.picture}
-            alt="restaurant logo"
+    <HelmetProvider>
+      <Helmet>
+        <title>R'Ticket - Dashboard</title>
+      </Helmet>
+      <div className="DashboardMain">
+        <div className="DashboardContent">
+          <SVGLogo
+            logoWidth={BIG_LOGO_DASHBOARD_SIZE}
+            logoHeight={BIG_LOGO_DASHBOARD_SIZE}
+            logoFill={appContext?.userSVGColorScheme}
           />
-          <Clock></Clock>
+          <h1>ESPACE ADMINISTRATEUR</h1>
+          <MainMenu />
         </div>
-        <div className="DashboardHomeTopRightContainer">
-          <div className="boxStatsTables" onClick={goToTickets}>
-            <div className="statsTables">
-              <span> {occupiedTables}</span>
-              <p>Tables occupées</p>
+      </div>
+    </HelmetProvider>
+  ) : (
+    <HelmetProvider>
+      <Helmet>
+        <title>R'Ticket - Dashboard</title>
+      </Helmet>
+      <section className="DashboardHomeSection">
+        <div className="DashboardHomeTopContent">
+          <div className="DashboardHomeTopLeftContainer">
+            <div className="boxStatsTickets" onClick={goToTickets}>
+              <div className="statsTickets">
+                <span>{waitingTickets}</span>
+                <p>Ticket{waitingTickets > 1 ? "s" : ""} en attente</p>
+              </div>
+              <MdOutlineConfirmationNumber className="icon" />
             </div>
-            <MdOutlineTableBar className="icon" />
+            <button className="btnStats" onClick={goToTables}>
+              Tables
+            </button>
           </div>
-          <button className="btnStats" onClick={goToStats}>
-            Statistiques
-          </button>
+          <div className="DashboardHomeTopMiddleContainer">
+            <img
+              className="DashboardHomeTopMiddleRestaurantLogo"
+              src={userData.restaurant.picture}
+              alt="restaurant logo"
+            />
+            <Clock></Clock>
+          </div>
+          <div className="DashboardHomeTopRightContainer">
+            <div className="boxStatsTables" onClick={goToTickets}>
+              <div className="statsTables">
+                <span> {occupiedTables}</span>
+                <p>Tables occupées</p>
+              </div>
+              <MdOutlineTableBar className="icon" />
+            </div>
+            <button className="btnStats" onClick={goToStats}>
+              Statistiques
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="DashboardHomeBottomContent">
-        <OpenCloseTime />
-      </div>
-    </section>
+        <div className="DashboardHomeBottomContent">
+          <OpenCloseTime />
+        </div>
+      </section>
+    </HelmetProvider>
   );
 };
 
