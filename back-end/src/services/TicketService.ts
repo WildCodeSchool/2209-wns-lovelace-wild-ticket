@@ -34,16 +34,13 @@ export default class TicketService {
     const restaurantInitials = this.getRestaurantInitials(restaurant);
     const dateString = DateUpdates.dateToString(new Date());
 
-    const isLastTicketFromYesterday = lastTicket
+    const ticketNumber = lastTicket
       ? this.isLastTicketFromYesterday(lastTicket)
-      : true;
-
-    const ticketNumber = isLastTicketFromYesterday
-      ? "001"
-      : lastTicket &&
-        (parseInt(lastTicket.number.split("-")[2], 10) + 1)
-          .toString()
-          .padStart(3, "0");
+        ? "001"
+        : (parseInt(lastTicket.number.split("-")[2], 10) + 1)
+            .toString()
+            .padStart(3, "0")
+      : "001";
 
     return `${restaurantInitials}-${dateString}-${ticketNumber}`;
   };
