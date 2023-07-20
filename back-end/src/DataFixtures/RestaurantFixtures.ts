@@ -31,7 +31,7 @@ export default class RestaurantFixtures {
         ticketWaitingLimit: 5,
         notComingTicketDisapearDelay: 2,
         createdAt: new Date("2022-12-20T11:00:00"),
-        openAt: DateUpdates.updateOpenedClosedHoursRestaurant(9, 30),
+        openAt: DateUpdates.updateOpenedClosedHoursRestaurant(5, 30),
         closeAt: DateUpdates.updateOpenedClosedHoursRestaurant(23, 30),
       },
       {

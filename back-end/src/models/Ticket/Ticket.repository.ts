@@ -227,6 +227,8 @@ export default class TicketRepository extends TicketDb {
       );
     }
 
+    await TicketService.formValidations(email, phoneNumber);
+
     const restaurant = (await RestaurantRepository.getRestaurantById(
       restaurantId
     )) as Restaurant;
@@ -250,6 +252,9 @@ export default class TicketRepository extends TicketDb {
       phoneNumber
     );
     await this.repository.save(newTicket);
+
+    email && (await EmailService.sendCreatedTicketEmail(newTicket));
+
     return newTicket;
   }
 
@@ -280,7 +285,7 @@ export default class TicketRepository extends TicketDb {
       closedAt,
     });
 
-    if (deliveredTicket) {
+    if (deliveredTicket && ticket.email) {
       EmailService.sendDeliveredTicketEmail(ticket, table);
     }
 

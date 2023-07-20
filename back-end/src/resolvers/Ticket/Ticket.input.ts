@@ -1,8 +1,6 @@
 import {
   IsUUID,
   MinLength,
-  IsEmail,
-  Matches,
   MaxLength,
   IsInt,
   Min,
@@ -13,8 +11,6 @@ import {
   IsString,
 } from "class-validator";
 import { ArgsType, Field, ID } from "type-graphql";
-
-const regexPhoneNumber = new RegExp("^(06|07)[0-9]{8}$");
 
 @ArgsType()
 class CreateTicketArgs {
@@ -37,15 +33,10 @@ class CreateTicketArgs {
   seats: number;
 
   @Field({ nullable: true })
-  @IsEmail({ message: "L'email rentré n'est pas au bon format." })
   @ValidateIf((value) => value == null)
   email?: string;
 
   @Field({ nullable: true })
-  @Matches(regexPhoneNumber, {
-    message:
-      "Le numéro de téléphone doit être au format: 06######## ou 07########",
-  })
   @ValidateIf((value) => value == null)
   phoneNumber?: string;
 

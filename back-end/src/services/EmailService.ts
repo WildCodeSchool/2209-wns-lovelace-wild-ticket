@@ -15,6 +15,44 @@ export default class EmailService {
   private static senderEmail = process.env.MJ_SENDER_EMAIL;
   private static senderName = process.env.MJ_SENDER_NAME;
 
+  static async sendCreatedTicketEmail(ticket: Ticket) {
+    if (ticket.email === process.env.MJ_AVAILABLE_EMAIL) {
+      const templateId = parseInt(process.env.MJ_CREATED_TEMPLATE_ID as string);
+
+      await this.mailjet
+        .post("send", { version: "v3.1" })
+        .request({
+          Messages: [
+            {
+              From: {
+                Email: this.senderEmail,
+                Name: this.senderName,
+              },
+              To: [
+                {
+                  Email: ticket.email,
+                  Name: ticket.name,
+                },
+              ],
+              TemplateID: templateId,
+              TemplateLanguage: true,
+              Subject: "R'Ticket : Votre ticket a été crée !",
+              Variables: {
+                ticketName: ticket.name,
+                ticketRestaurant: ticket.restaurant.name,
+              },
+            },
+          ],
+        })
+        .then((result) => {
+          console.log(result.body);
+        })
+        .catch((err) => {
+          console.log(err.statusCode);
+        });
+    }
+  }
+
   static async sendDeliveredTicketEmail(ticket: Ticket, table: Table) {
     if (ticket.email === process.env.MJ_AVAILABLE_EMAIL) {
       const templateId = parseInt(
@@ -41,10 +79,11 @@ export default class EmailService {
               Subject: "R'Ticket : Votre table est prête !",
               Variables: {
                 ticketName: ticket.name,
-                ticketNumber: ticket.number,
+                ticketNumber: parseInt(ticket.number.split("-")[2], 10),
                 ticketRestaurant: ticket.restaurant.name,
                 tableNumber: table.number,
                 ticketSeats: ticket.seats,
+                ticketDelay: ticket.restaurant.ticketWaitingLimit,
               },
             },
           ],

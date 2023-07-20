@@ -15,8 +15,13 @@ const formValidations = async (
     )
   ) {
     return "Votre adresse email n'est pas au bon format.";
-  } else if (phoneNumber && !phoneNumber.match(/^\d{10}$/)) {
-    return "Merci de rentrer votre numéro de téléphone au format : XXXXXXXXXX.";
+  } else if (
+    phoneNumber &&
+    !phoneNumber.match(
+      /^(?:(?:\+|00)33[\s.-]?|0)(?:(?:6|7)[\s.-]?)(?:\d{2}[\s.-]?){3}\d{2}$/
+    )
+  ) {
+    return "Votre numéro de téléphone n'est pas au bon format.";
   }
 };
 

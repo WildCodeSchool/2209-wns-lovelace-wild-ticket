@@ -20,6 +20,7 @@ const TicketConfirmationScreen = ({
 }: RootStackScreenProps<"TicketConfirm">) => {
   const { resto } = route.params;
   const ticketContext = useContext(TicketContext);
+  const displayTicketNumber = ticketContext?.ticketNumber.toString() as string;
 
   const returnHome = () => {
     ticketContext?.initialState();
@@ -38,7 +39,7 @@ const TicketConfirmationScreen = ({
             source={{ uri: resto.picture }}
           ></Image>
           <Text style={styles.ticketText}>
-            TICKET N° {ticketContext?.ticketNumber}
+            TICKET N° {parseInt(displayTicketNumber.split("-")[2], 10)}
           </Text>
           <Text style={styles.delayText}>
             Vous recevrez un message par mail et/ou sms dès que la table sera
