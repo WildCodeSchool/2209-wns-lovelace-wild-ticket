@@ -65,7 +65,7 @@ describe("TicketRepository integration", () => {
           });
         });
         describe("when a user submits an email or a phone number", () => {
-          it("returns ticket number 1", async () => {
+          it("returns expected ticket number", async () => {
             const pole = await PoleRepository.createPole(
               "Pôle de Lyon",
               "rue de la Poste",
