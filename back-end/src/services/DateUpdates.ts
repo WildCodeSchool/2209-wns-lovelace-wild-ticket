@@ -1,32 +1,32 @@
 export default class DateUpdates {
   static substractDaysToDate(dateNow: Date, daysToSubstract: number) {
-    let ticketsDay = new Date(dateNow);
-    ticketsDay.setDate(ticketsDay.getDate() - daysToSubstract);
-    return ticketsDay;
+    const newDate = new Date(dateNow);
+    newDate.setDate(newDate.getDate() - daysToSubstract);
+    return newDate;
   }
 
   static substractHoursToDate(dateNow: Date, hoursToSubstract: number) {
-    let ticketsDay = new Date(dateNow);
-    ticketsDay.setHours(ticketsDay.getHours() - hoursToSubstract);
-    return ticketsDay;
+    const newDate = new Date(dateNow);
+    newDate.setHours(newDate.getHours() - hoursToSubstract);
+    return newDate;
   }
 
   static addHoursToDate(dateNow: Date, hoursToAdd: number) {
-    let ticketsDay = new Date(dateNow);
-    ticketsDay.setHours(ticketsDay.getHours() + hoursToAdd);
-    return ticketsDay;
+    const newDate = new Date(dateNow);
+    newDate.setHours(newDate.getHours() + hoursToAdd);
+    return newDate;
   }
 
   static substractMinutesToDate(dateNow: Date, minutesToSubstract: number) {
-    let ticketsDay = new Date(dateNow);
-    ticketsDay.setMinutes(ticketsDay.getMinutes() - minutesToSubstract);
-    return ticketsDay;
+    const newDate = new Date(dateNow);
+    newDate.setMinutes(newDate.getMinutes() - minutesToSubstract);
+    return newDate;
   }
 
   static addMinutesToDate(dateNow: Date, minutesToAdd: number) {
-    let ticketsDay = new Date(dateNow);
-    ticketsDay.setMinutes(ticketsDay.getMinutes() + minutesToAdd);
-    return ticketsDay;
+    const newDate = new Date(dateNow);
+    newDate.setMinutes(newDate.getMinutes() + minutesToAdd);
+    return newDate;
   }
 
   static updateOpenedClosedHoursRestaurant(hours: number, minutes: number) {
