@@ -140,14 +140,13 @@ function App() {
           httpEquiv="Content-Security-Policy"
           content={`
                       default-src 'self';
-                      script-src 'self' 'unsafe-inline';
+                      script-src 'self';
                       style-src 'self' 'unsafe-inline';
                       img-src 'self' data: blob:;
                       font-src 'self';
                       object-src 'none';
                       media-src 'self';
                       frame-src 'none';
-                      child-src 'self';
                       connect-src 'self';
                 `}
         ></meta>
