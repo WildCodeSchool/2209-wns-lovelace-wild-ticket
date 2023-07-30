@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
+import { HelmetProvider } from "react-helmet-async";
 import Home from "./Home";
 import { MemoryRouter } from "react-router";
 
@@ -7,7 +8,9 @@ const renderHome = (mock?: any) => {
   render(
     <MockedProvider mocks={mock}>
       <MemoryRouter>
-        <Home />
+        <HelmetProvider>
+          <Home />
+        </HelmetProvider>
       </MemoryRouter>
     </MockedProvider>
   );

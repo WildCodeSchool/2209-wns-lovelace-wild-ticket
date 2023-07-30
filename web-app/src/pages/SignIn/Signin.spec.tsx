@@ -1,4 +1,5 @@
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
+import { HelmetProvider } from "react-helmet-async";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { SignInMutation } from "../../gql/graphql";
@@ -12,7 +13,9 @@ const renderSignIn = (mock?: any) => {
   render(
     <MockedProvider mocks={mock}>
       <MemoryRouter>
-        <SignIn />
+        <HelmetProvider>
+          <SignIn />
+        </HelmetProvider>
       </MemoryRouter>
     </MockedProvider>
   );

@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
+import { HelmetProvider } from "react-helmet-async";
 import DashboardTicket from "./DashboardTicket";
 import DateService from "../../../services/DateService";
 import {
@@ -13,7 +14,9 @@ const renderDashboardTicket = (mock?: any) => {
   render(
     <MockedProvider mocks={mock}>
       <MemoryRouter>
-        <DashboardTicket />
+        <HelmetProvider>
+          <DashboardTicket />
+        </HelmetProvider>
       </MemoryRouter>
     </MockedProvider>
   );
