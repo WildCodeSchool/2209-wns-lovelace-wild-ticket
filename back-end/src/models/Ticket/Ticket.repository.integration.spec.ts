@@ -102,7 +102,7 @@ describe("TicketRepository integration", () => {
     });
   });
 
-  describe("UpdageDeliveredAt", () => {
+  describe("UpdateDeliveredAt", () => {
     describe("when a ticket doesn't exists", () => {
       it("returns no matching Id error", async () => {
         let falseUuid = "c1b646ca-926b-4fdc-8571-1423d47c295d";
@@ -164,7 +164,7 @@ describe("TicketRepository integration", () => {
       });
     });
     describe("when a restaurant and a ticket extists", () => {
-      it("a closedAt must be present", async () => {
+      it("a closedAt must be present corresponding to the date of issue + waiting period", async () => {
         const pole = await PoleRepository.createPole(
           "Pôle de Lyon",
           "rue de la Poste",

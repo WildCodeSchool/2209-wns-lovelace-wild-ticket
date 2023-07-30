@@ -23,6 +23,7 @@ import RestaurantResolver from "./resolvers/Restaurant/Restaurant.resolver";
 import StatsResolver from "./resolvers/Stats/Stats.resolver";
 import { AppUserFixtures } from "./DataFixtures/AppUserFixtures";
 import { TableFixtures } from "./DataFixtures/TableFixtures";
+import { IS_PRODUCTION } from "./config";
 
 export type GlobalContext = ExpressContext & {
   user: AppUser | null;
@@ -32,6 +33,17 @@ const authenticationChecker = async (
   { context }: any,
   roles: string[]
 ): Promise<boolean> => {
+  // Vérifier si l'environnement est Apollo Sandbox
+  const isApolloSandbox =
+    !IS_PRODUCTION &&
+    context.req.headers["apollographql-client-name"] === "apollo-sandbox";
+
+  // Autoriser automatiquement l'accès si c'est Apollo Sandbox
+  if (isApolloSandbox) {
+    return true;
+  }
+
+  // Sinon, procéder à l'authentification normale
   return roles.length === 0
     ? Boolean(context.user)
     : Boolean(roles.includes(context.user.role));
