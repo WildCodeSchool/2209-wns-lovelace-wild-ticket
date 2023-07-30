@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import "../DashboardTemp.scss";
 import "./DashboardRestaurant.scss";
 import {
@@ -217,7 +217,7 @@ const DashboardRestaurant = () => {
 
   // Rendu de la page
   return (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - Restaurants</title>
       </Helmet>
@@ -432,7 +432,7 @@ const DashboardRestaurant = () => {
           </div>
         </div>
       </section>
-    </HelmetProvider>
+    </>
   );
 };
 

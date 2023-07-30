@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import { SignInMutation, SignInMutationVariables } from "../../gql/graphql";
 import { getErrorMessage } from "../../utils";
 import { DASHBOARD_HOME, FORGOT_PASSWORD_PATH } from "../paths";
@@ -38,7 +38,7 @@ const SignIn = () => {
   };
 
   return (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - Connexion</title>
       </Helmet>
@@ -107,7 +107,7 @@ const SignIn = () => {
           </form>
         </div>
       </>
-    </HelmetProvider>
+    </>
   );
 };
 

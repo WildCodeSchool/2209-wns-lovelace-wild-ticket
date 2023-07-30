@@ -39,6 +39,7 @@ import ProtectedAdmin from "./components/Protected/ProtectedAdmin/ProtectedAdmin
 import ProtectedRestaurant from "./components/Protected/ProtectedRestaurant/ProtectedRestaurant";
 import DashBoardHeader from "./components/Header/Header";
 import SideBar from "./components/Sidebar/Sidebar";
+import { Helmet } from "react-helmet-async";
 
 function App() {
   const location = useLocation();
@@ -134,6 +135,30 @@ function App() {
 
   return (
     <>
+      <Helmet>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content={`
+                      default-src 'self';
+                      script-src 'self' 'unsafe-inline';
+                      style-src 'self' 'unsafe-inline';
+                      img-src 'self' data: blob:;
+                      font-src 'self';
+                      object-src 'none';
+                      media-src 'self';
+                      frame-src 'none';
+                      child-src 'self';
+                      connect-src 'self';
+                `}
+        ></meta>
+        <meta http-equiv="X-Content-Type-Options" content="nosniff"></meta>
+        <meta http-equiv="X-XSS-Protection" content="1; mode=block"></meta>
+        <meta
+          http-equiv="Strict-Transport-Security"
+          content="max-age=31536000; includeSubDomains; preload"
+        ></meta>
+        <meta name="referrer" content="strict-origin-when-cross-origin"></meta>
+      </Helmet>
       <main>
         {location.pathname.includes(DASHBOARD_HOME) && <SideBar />}
         <>

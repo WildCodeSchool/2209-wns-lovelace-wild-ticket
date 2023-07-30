@@ -3,7 +3,7 @@ import "../DashboardTemp.scss";
 import DashboardUserListTab from "../../../components/Dashboard/DashboardUserListTab/DashboardUserListTab";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import { getErrorMessage } from "../../../utils";
 import {
   GET_RESTAURANTS_TYPES,
@@ -201,7 +201,7 @@ const DashboardUser = () => {
 
   // Rendu de la page
   return (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - Utilisateurs</title>
       </Helmet>
@@ -497,7 +497,7 @@ const DashboardUser = () => {
           </div>
         </div>
       </section>
-    </HelmetProvider>
+    </>
   );
 };
 

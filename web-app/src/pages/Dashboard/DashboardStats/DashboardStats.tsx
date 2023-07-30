@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import "./DashboardStats.scss";
 import { AppContext } from "../../../context/AppContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
@@ -14,7 +14,7 @@ const DashboardStats = () => {
   const appContext = useContext(AppContext);
 
   return ROLE_ADMIN.includes(appContext?.userData.role) ? (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - Statistiques</title>
       </Helmet>
@@ -30,9 +30,9 @@ const DashboardStats = () => {
           <p>Connecté avec l'adresse email : {appContext?.userData.email}</p>
         </div>
       </section>
-    </HelmetProvider>
+    </>
   ) : (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - Statistiques</title>
       </Helmet>
@@ -42,7 +42,7 @@ const DashboardStats = () => {
           <DashboardStatsList />
         </div>
       </section>
-    </HelmetProvider>
+    </>
   );
 };
 

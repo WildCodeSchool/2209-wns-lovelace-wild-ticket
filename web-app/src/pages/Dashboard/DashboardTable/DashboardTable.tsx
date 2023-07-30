@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 
 import TabTables from "../../../components/Dashboard/DashboardTables/ListTables";
 import ModalCreateTable from "../../../components/Dashboard/DashboardTables/ModalCreateTable";
@@ -22,7 +22,7 @@ const DashboardTable = () => {
   };
 
   return (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - Tables</title>
       </Helmet>
@@ -54,7 +54,7 @@ const DashboardTable = () => {
           />
         </div>
       </div>
-    </HelmetProvider>
+    </>
   );
 };
 

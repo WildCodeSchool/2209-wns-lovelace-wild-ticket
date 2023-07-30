@@ -7,6 +7,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { AppContextProvider } from "./context/AppContext";
 
 import "./index.scss";
+import { HelmetProvider } from "react-helmet-async";
 
 const client = new ApolloClient({
   uri: "/api",
@@ -21,7 +22,9 @@ root.render(
     <ApolloProvider client={client}>
       <AppContextProvider>
         <BrowserRouter>
-          <App />
+          <HelmetProvider>
+            <App />
+          </HelmetProvider>
         </BrowserRouter>
       </AppContextProvider>
     </ApolloProvider>

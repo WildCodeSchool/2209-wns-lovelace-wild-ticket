@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import { getErrorMessage } from "../../utils";
 import { SIGN_IN_PATH } from "../paths";
 import "react-toastify/dist/ReactToastify.css";
@@ -48,7 +48,7 @@ const UpdatePassword = () => {
   };
 
   return (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - Initialisation de votre mot de passe</title>
       </Helmet>
@@ -91,7 +91,7 @@ const UpdatePassword = () => {
           </form>
         </div>
       </>
-    </HelmetProvider>
+    </>
   );
 };
 

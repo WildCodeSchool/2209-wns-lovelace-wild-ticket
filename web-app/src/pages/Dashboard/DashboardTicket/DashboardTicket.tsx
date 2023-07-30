@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Button } from "primereact/button";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import DashboardTicketListTab from "../../../components/Dashboard/DashboardTicketListTab/DashboardTicketListTab";
 import { AppContext } from "../../../context/AppContext";
 import { TicketsFilterTabContent } from "../../../data/DashboardTicketDatas";
@@ -213,7 +213,7 @@ const DashboardTicket = () => {
   ]);
 
   return (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - File d'attente</title>
       </Helmet>
@@ -250,7 +250,7 @@ const DashboardTicket = () => {
           />
         </main>
       </section>
-    </HelmetProvider>
+    </>
   );
 };
 

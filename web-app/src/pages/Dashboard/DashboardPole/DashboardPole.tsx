@@ -3,7 +3,7 @@ import "../DashboardTemp.scss";
 import DashboardPoleListTab from "../../../components/Dashboard/DashboardPoleListTab/DashboardPoleListTab";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import { getErrorMessage } from "../../../utils";
 import { GET_POLES_TYPES, GET_POLE_TYPES } from "../../../types/DataTypes";
 import {
@@ -192,7 +192,7 @@ const DashboardPole = () => {
 
   // Rendu de la page
   return (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - Pôles restaurateurs</title>
       </Helmet>
@@ -475,7 +475,7 @@ const DashboardPole = () => {
           </div>
         </div>
       </section>
-    </HelmetProvider>
+    </>
   );
 };
 

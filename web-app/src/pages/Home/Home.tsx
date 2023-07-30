@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
 import { BIG_LOGO_DEFAULT_SIZE } from "../../constants/Constants";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
   const appContext = useContext(AppContext);
@@ -21,7 +21,7 @@ const Home = () => {
 
   //TODO: FAIRE LA PAGE D'ACCUEIL (PRESENTATION EQUIPE + BOUTON ACCES DASHBOARD)
   return (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - Bienvenue</title>
       </Helmet>
@@ -37,7 +37,7 @@ const Home = () => {
           </button>
         </div>
       </div>
-    </HelmetProvider>
+    </>
   );
 };
 

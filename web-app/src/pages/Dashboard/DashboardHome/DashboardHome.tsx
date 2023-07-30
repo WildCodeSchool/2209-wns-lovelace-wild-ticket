@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineConfirmationNumber, MdOutlineTableBar } from "react-icons/md";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import { AppContext } from "../../../context/AppContext";
 import SVGLogo from "../../../components/SVG/SVGLogo/SVGLogo";
 import MainMenu from "../../../components/MainMenu/MainMenu";
@@ -62,7 +62,7 @@ const DashboardHome = () => {
   };
 
   return ROLE_ADMIN.includes(appContext?.userData.role) ? (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - Dashboard</title>
       </Helmet>
@@ -77,9 +77,9 @@ const DashboardHome = () => {
           <MainMenu />
         </div>
       </div>
-    </HelmetProvider>
+    </>
   ) : (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - Dashboard</title>
       </Helmet>
@@ -122,7 +122,7 @@ const DashboardHome = () => {
           <OpenCloseTime />
         </div>
       </section>
-    </HelmetProvider>
+    </>
   );
 };
 

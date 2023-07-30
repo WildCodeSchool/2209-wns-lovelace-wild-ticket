@@ -1,7 +1,7 @@
 import "./NotFound.scss";
 
 import { useNavigate } from "react-router-dom";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
 import { HOME_PATH } from "../paths";
 import SVGLogo from "../../components/SVG/SVGLogo/SVGLogo";
 import { AppContext } from "../../context/AppContext";
@@ -17,7 +17,7 @@ const NotFound = () => {
   };
 
   return (
-    <HelmetProvider>
+    <>
       <Helmet>
         <title>R'Ticket - 404 Not Found</title>
       </Helmet>
@@ -35,7 +35,7 @@ const NotFound = () => {
           </button>
         </div>
       </div>
-    </HelmetProvider>
+    </>
   );
 };
 
