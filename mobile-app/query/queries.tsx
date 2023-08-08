@@ -8,6 +8,7 @@ export const GET_RESTAURANTS = gql`
       openAt
       closeAt
       picture
+      ticketWaitingLimit
     }
   }
 `;
@@ -21,6 +22,7 @@ export const GET_PAGINATED_RESTAURANTS_BY_POLE = gql`
         openAt
         closeAt
         picture
+        ticketWaitingLimit
       }
       nextPageNumber
       totalCount

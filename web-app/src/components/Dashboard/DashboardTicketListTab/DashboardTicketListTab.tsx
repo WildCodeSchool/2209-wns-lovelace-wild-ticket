@@ -239,7 +239,7 @@ export default function DashboardTicketListTab({
       >
         <h1 className="dashboardTicketListModalTitle">
           Voulez-vous placer le ticket <br />
-          n° {ticketNumber} ?
+          n° {parseInt(ticketNumber.split("-")[2], 10)} ?
         </h1>
         <div className="dashboardTicketListModalButtonContainer">
           <button
@@ -272,7 +272,7 @@ export default function DashboardTicketListTab({
       >
         <h1 className="dashboardTicketListModalTitle">
           Voulez-vous clore le ticket <br />
-          n° {ticketNumber} ?
+          n° {parseInt(ticketNumber.split("-")[2], 10)} ?
         </h1>
         <div className="dashboardTicketListModalButtonContainer">
           <button

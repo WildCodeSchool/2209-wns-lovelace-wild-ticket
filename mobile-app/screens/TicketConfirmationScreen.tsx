@@ -43,10 +43,10 @@ const TicketConfirmationScreen = ({
           </Text>
           <Text style={styles.delayText}>
             Vous recevrez un message par mail et/ou sms dès que la table sera
-            disponible. Vous aurez ensuite 15 minutes pour vous présenter à
-            l'accueil du restaurant. Passé ce délai, nous serons dans
-            l'obligation de clôturer automatiquement ce ticket et ainsi libérer
-            la table.
+            disponible. Vous aurez ensuite {resto.ticketWaitingLimit} minutes
+            pour vous présenter à l'accueil du restaurant. Passé ce délai, nous
+            serons dans l'obligation de clôturer automatiquement ce ticket et
+            ainsi libérer la table.
           </Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity

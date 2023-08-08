@@ -5,6 +5,7 @@ export type RESTAURANT_TYPE = {
   openAt?: any;
   closeAt?: any;
   picture?: string | null | undefined;
+  ticketWaitingLimit?: number | null | undefined;
 };
 
 export type GET_TICKETS_BY_RESTAURANT_TYPES = Array<{

@@ -50,7 +50,7 @@ const DashboardOptionsRestaurantForm = () => {
     const file = e.target.files[0];
     ImageService.validateAndConvertImageToBase64(
       file,
-      (error: any, base64Image: any) => {
+      (error: any, base64Image: string) => {
         if (error) {
           toast.error(error);
           e.target.value = null;

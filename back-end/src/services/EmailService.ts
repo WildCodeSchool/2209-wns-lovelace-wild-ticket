@@ -40,6 +40,7 @@ export default class EmailService {
               Variables: {
                 ticketName: ticket.name,
                 ticketRestaurant: ticket.restaurant.name,
+                ticketDelay: ticket.restaurant.ticketWaitingLimit,
               },
             },
           ],
