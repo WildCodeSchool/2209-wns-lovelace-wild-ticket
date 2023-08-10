@@ -68,8 +68,6 @@ export default function DashboardTicketListTab({
     return availableTables && availableTables.length !== 0 ? true : false;
   };
 
-  console.log(waitingTickets);
-
   const confirmDeliver = async (ticket: GET_TICKET_BY_RESTAURANT_TYPES) => {
     const ticketSeats = ticket?.seats as number;
     setAvailableTables(ticketSeats % 2 === 0 ? ticketSeats : ticketSeats + 1);

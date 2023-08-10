@@ -318,7 +318,6 @@ export default class TicketRepository extends TicketDb {
 
     const minutesToSubstract =
       ticket.restaurant.notComingTicketDisapearDelay + 1;
-    console.log(minutesToSubstract);
     const closedAt =
       ticket.deliveredAt && !ticket.placedAt
         ? DateUpdates.substractMinutesToDate(new Date(), minutesToSubstract)
