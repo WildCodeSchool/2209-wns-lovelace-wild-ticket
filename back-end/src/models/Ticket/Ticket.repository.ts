@@ -314,9 +314,15 @@ export default class TicketRepository extends TicketDb {
       id: string;
     } & Ticket
   > {
-    (await this.getTicketById(id)) as Ticket;
+    const ticket = (await this.getTicketById(id)) as Ticket;
 
-    const closedAt = new Date();
+    const minutesToSubstract =
+      ticket.restaurant.notComingTicketDisapearDelay + 1;
+    console.log(minutesToSubstract);
+    const closedAt =
+      ticket.deliveredAt && !ticket.placedAt
+        ? DateUpdates.substractMinutesToDate(new Date(), minutesToSubstract)
+        : new Date();
 
     return await this.repository.save({
       id,

@@ -118,7 +118,29 @@ const DashboardTicket = () => {
     setFreeTableToDeliver(tableId as string);
   };
 
-  const onDeliver = async (ticketId: string, tableId: string) => {
+  const onDeliver = async (
+    waitingTickets: GET_TICKETS_BY_RESTAURANT_TYPES,
+    ticketId: string,
+    tableId: string
+  ) => {
+    const notEmtyTables: number[] = [];
+
+    waitingTickets?.forEach((ticket) => {
+      if (ticket.table) {
+        const tableNumber: number = ticket.table.number;
+        notEmtyTables.push(tableNumber);
+      }
+    });
+
+    const tableNumber = tables?.find((table) => table.id === tableId)?.number;
+
+    if (tableNumber && notEmtyTables.includes(tableNumber)) {
+      toast.warning(
+        "Merci de clôturer le ticket du client qui ne s'est pas présenté avant de réserver cette table pour ce ticket."
+      );
+      return;
+    }
+
     await setTicketAndTableToDeliver(ticketId as string, tableId as string);
     await updateDeliveredAtTicket();
   };

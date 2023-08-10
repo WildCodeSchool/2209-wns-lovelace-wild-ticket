@@ -29,7 +29,11 @@ export default function DashboardTicketListTab({
   tables: GET_TABLES_BY_RESTAURANT_TYPES;
   isLoading: boolean;
   handleDelete: (ticketId: string) => Promise<void>;
-  handleDeliver: (ticketId: string, tableId: string) => Promise<void>;
+  handleDeliver: (
+    waitingTickets: GET_TICKETS_BY_RESTAURANT_TYPES,
+    ticketId: string,
+    tableId: string
+  ) => Promise<void>;
   handlePlace: (ticketId: string) => Promise<void>;
 }) {
   const appContext = useContext(AppContext);
@@ -63,6 +67,8 @@ export default function DashboardTicketListTab({
 
     return availableTables && availableTables.length !== 0 ? true : false;
   };
+
+  console.log(waitingTickets);
 
   const confirmDeliver = async (ticket: GET_TICKET_BY_RESTAURANT_TYPES) => {
     const ticketSeats = ticket?.seats as number;
@@ -142,7 +148,12 @@ export default function DashboardTicketListTab({
           )}
         {((waitingTicket.deliveredAt !== null &&
           new Date(waitingTicket.closedAt) > new Date()) ||
-          waitingTicket.closedAt === null) && (
+          waitingTicket.closedAt === null ||
+          (waitingTicket?.deliveredAt !== null &&
+            waitingTicket?.placedAt === null &&
+            waitingTicket.closedAt !== null &&
+            DateService.addMinutesToDate(new Date(waitingTicket?.closedAt), 5) >
+              new Date())) && (
           <SVGIconDelete
             onClick={async () => {
               await confirmDelete(waitingTicket);
@@ -211,7 +222,7 @@ export default function DashboardTicketListTab({
           <button
             className="dashboardTicketListModalButton"
             onClick={async () => {
-              await handleDeliver(ticketId, tableId);
+              await handleDeliver(waitingTickets, ticketId, tableId);
               setOpenConfirmDeliveredAtModal(false);
               setIsClickable(true);
             }}
