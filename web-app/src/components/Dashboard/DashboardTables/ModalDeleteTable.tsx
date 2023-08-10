@@ -13,9 +13,11 @@ import "./ModalEditTable.scss";
 const ModalDeleteTable = ({
   tableId,
   deleteModal,
+  refetch,
 }: {
   tableId: string;
   deleteModal: any;
+  refetch: any;
 }) => {
   const [deleteTable] = useMutation<
     DeleteTableMutation,
@@ -26,6 +28,8 @@ const ModalDeleteTable = ({
     try {
       await deleteTable({ variables: { deleteTableId: tableId } });
       toast.success(`Vous avez supprimé cette table avec succès.`);
+      deleteModal(false);
+      refetch();
     } catch (error) {
       toast.error(getErrorMessage(error));
     }

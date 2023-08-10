@@ -10,9 +10,16 @@ import { AppContext } from "../../../context/AppContext";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../../utils";
 
-const ModalCreateTable = ({ setShowModal }: { setShowModal: any }) => {
+const ModalCreateTable = ({
+  setShowModal,
+  refetch,
+}: {
+  setShowModal: any;
+  refetch: any;
+}) => {
   const appContext = useContext(AppContext);
   const restaurantId = appContext?.userData.restaurant.id;
+  const tables = appContext?.tables;
 
   // Création d'une table
   const [number, setNumber] = useState<number | null>(null);
@@ -22,7 +29,26 @@ const ModalCreateTable = ({ setShowModal }: { setShowModal: any }) => {
     CreateTableMutation,
     CreateTableMutationVariables
   >(CREATE_TABLE);
-  const submitAddTableForm = async () => {
+  const submitAddTableForm = async (e: any) => {
+    e.preventDefault();
+    if (seats && (seats < 2 || seats > 8)) {
+      toast.error("Le nombre de couverts doit être entre 2 et 8.");
+      return;
+    }
+    if (seats && seats % 2 !== 0) {
+      toast.error("Le nombre de couverts doit être pair.");
+      return;
+    }
+    const tableNumbers: any[] = [];
+    tables?.forEach((table) => {
+      tableNumbers.push(table.number);
+    });
+
+    if (tableNumbers.includes(number)) {
+      toast.error("Ce numéro de table existe déjà.");
+      return;
+    }
+
     try {
       await createTable({
         variables: {
@@ -32,6 +58,8 @@ const ModalCreateTable = ({ setShowModal }: { setShowModal: any }) => {
         },
       });
       toast.success(`Vous avez créé une table avec succès.`);
+      setShowModal(false);
+      refetch();
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -68,7 +96,9 @@ const ModalCreateTable = ({ setShowModal }: { setShowModal: any }) => {
         <div className="form-buttons">
           <button
             className="add-table-form-button"
-            onClick={submitAddTableForm}
+            onClick={(e) => {
+              submitAddTableForm(e);
+            }}
           >
             Ajouter
           </button>

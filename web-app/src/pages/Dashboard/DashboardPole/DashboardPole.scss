@@ -40,6 +40,14 @@
         font-weight: 700;
         cursor: pointer;
         box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+        transition: 0.2s;
+
+        &:hover {
+          background-color: $cyan800;
+          color: $gray100;
+          padding: 9px 11px;
+          border-radius: 5px !important;
+        }
       }
     }
   }

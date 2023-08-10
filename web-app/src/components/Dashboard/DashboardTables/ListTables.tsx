@@ -76,29 +76,31 @@ const ListTables = ({
   };
 
   return (
-    <div className="list-table-container">
+    <div className="card DashboardTableListContainer">
       <DataTable
         paginator
-        rows={5}
+        rows={7}
+        sortField="number"
+        sortOrder={1}
         value={tables as DataTableValueArray}
-        className="table-data"
+        tableStyle={{ minWidth: "100%" }}
       >
         <Column
           field="number"
           header="N° de table"
-          className="table-number-column"
           sortable
+          style={{ textAlign: "center", height: "60px" }}
         ></Column>
         <Column
           field="capacity"
           header="Couverts"
-          className="table-capacity-column"
           sortable
+          style={{ textAlign: "center" }}
         ></Column>
         <Column
           header="Action"
           body={(table: GET_TABLES_BY_RESTAURANT_TYPES) => actionButton(table)}
-          className="table-action-column"
+          style={{ textAlign: "center" }}
         ></Column>
       </DataTable>
     </div>

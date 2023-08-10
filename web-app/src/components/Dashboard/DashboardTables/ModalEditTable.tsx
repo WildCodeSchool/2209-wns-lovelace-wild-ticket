@@ -14,9 +14,11 @@ import "./ModalEditTable.scss";
 const ModalEditTable = ({
   table,
   editModal,
+  refetch,
 }: {
   table: any;
   editModal: any;
+  refetch: any;
 }) => {
   const [editNumber, setEditNumber] = useState<string>(table.number);
   const [editSeats, setEditSeats] = useState<string>(table.capacity);
@@ -26,7 +28,16 @@ const ModalEditTable = ({
     UpdateTableMutationVariables
   >(UPDATE_TABLE);
 
-  const submitEditTableForm = async () => {
+  const submitEditTableForm = async (e: any) => {
+    e.preventDefault();
+    if (parseInt(editSeats) < 2 || parseInt(editSeats) > 8) {
+      toast.error("Le nombre de couverts doit être entre 2 et 8.");
+      return;
+    }
+    if (parseInt(editSeats) % 2 !== 0) {
+      toast.error("Le nombre de couverts doit être pair.");
+      return;
+    }
     try {
       await updateTable({
         variables: {
@@ -36,6 +47,8 @@ const ModalEditTable = ({
         },
       });
       toast.success(`Vous avez modifié une table avec succès.`);
+      editModal(false);
+      refetch();
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -77,6 +90,7 @@ const ModalEditTable = ({
             onChange={(event) => {
               handleChangeEditNumber(event);
             }}
+            disabled
           />
         </div>
         <div className="edit-table-form-input">
@@ -96,7 +110,9 @@ const ModalEditTable = ({
         <div className="form-buttons">
           <button
             className="edit-table-form-button"
-            onClick={submitEditTableForm}
+            onClick={(e) => {
+              submitEditTableForm(e);
+            }}
           >
             Modifier
           </button>

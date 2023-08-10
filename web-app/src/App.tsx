@@ -139,15 +139,15 @@ function App() {
         <meta
           httpEquiv="Content-Security-Policy"
           content={`
-                      default-src 'self';
-                      script-src 'self';
-                      style-src 'self' 'unsafe-inline';
-                      img-src 'self' data: blob:;
-                      font-src 'self';
-                      object-src 'none';
-                      media-src 'self';
-                      frame-src 'none';
-                      connect-src 'self';
+            default-src 'self';
+            script-src 'self';
+            style-src 'self' 'unsafe-inline';
+            img-src 'self' data: blob:;
+            font-src 'self';
+            object-src 'none';
+            media-src 'self';
+            frame-src 'none';
+            connect-src 'self';
                 `}
         ></meta>
         <meta http-equiv="X-Content-Type-Options" content="nosniff"></meta>
