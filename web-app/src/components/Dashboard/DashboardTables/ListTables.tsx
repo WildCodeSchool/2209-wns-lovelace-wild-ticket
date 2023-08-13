@@ -26,6 +26,7 @@ const ListTables = ({
   const appContext = useContext(AppContext);
   const restaurantId = appContext?.userData.restaurant.id;
 
+  const [visibleRows, setVisibleRows] = useState(7);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isClickable, setIsClickable] = useState<boolean>(true);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -50,8 +51,22 @@ const ListTables = ({
     },
   });
 
+  const calculateVisibleRows = () => {
+    const windowHeight = window.innerHeight;
+    const numRows =
+      windowHeight < 800 ? 3 : Math.floor((windowHeight - 200) / 105);
+    setVisibleRows(numRows > 0 ? numRows : 1);
+  };
+
   useEffect(() => {
     tablesRefetch();
+    calculateVisibleRows();
+
+    window.addEventListener("resize", calculateVisibleRows);
+
+    return () => {
+      window.removeEventListener("resize", calculateVisibleRows);
+    };
   }, [tablesRefetch]);
 
   const actionButton = (table: any) => {
@@ -79,7 +94,7 @@ const ListTables = ({
     <div className="card DashboardTableListContainer">
       <DataTable
         paginator
-        rows={7}
+        rows={visibleRows}
         sortField="number"
         sortOrder={1}
         value={tables as DataTableValueArray}
