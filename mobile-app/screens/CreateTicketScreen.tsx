@@ -188,7 +188,7 @@ const CreateTicketScreen = ({
                       style={styles.createTicketScreenTicketFormInput}
                       onChangeText={onChangeFirstName}
                       value={firstName}
-                      placeholder="Nom et prénom"
+                      placeholder="Nom et/ou prénom"
                     />
                   )}
                   name="firstName"

@@ -4,7 +4,7 @@ const formValidations = async (
   phoneNumber: string
 ) => {
   if (firstName.trim() == "") {
-    return "Merci de renseigner votre nom et prénom.";
+    return "Merci de renseigner votre nom et/ou prénom.";
   }
   if (email.trim() == "" && phoneNumber.trim() == "") {
     return "Merci de renseigner votre email et/ou numéro de téléphone.";
