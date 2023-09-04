@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { DataTable, DataTableValueArray } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useQuery } from "@apollo/client";
@@ -33,6 +33,7 @@ const ListTables = ({
   const [tables, setTables] = useState<
     GET_TABLES_BY_RESTAURANT_TYPES | undefined
   >(undefined);
+  const [rows, setRows] = useState<number>(7);
 
   const { refetch: tablesRefetch } = useQuery<
     TablesByRestaurantQuery,
@@ -50,9 +51,18 @@ const ListTables = ({
     },
   });
 
+  const updateDataTableRows = useCallback((): void => {
+    const width = window.innerWidth;
+    const isPortraitTablet = width < 1190;
+    const isLargeDesktop = width >= 1400;
+
+    setRows(isPortraitTablet ? 9 : isLargeDesktop ? 7 : 4);
+  }, [setRows]);
+
   useEffect(() => {
+    updateDataTableRows();
     tablesRefetch();
-  }, [tablesRefetch]);
+  }, [tablesRefetch, updateDataTableRows]);
 
   const actionButton = (table: any) => {
     return (
@@ -79,7 +89,7 @@ const ListTables = ({
     <div className="card DashboardTableListContainer">
       <DataTable
         paginator
-        rows={7}
+        rows={rows}
         sortField="number"
         sortOrder={1}
         value={tables as DataTableValueArray}

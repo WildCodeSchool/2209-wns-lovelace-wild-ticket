@@ -40,6 +40,7 @@ export default class EmailService {
               Variables: {
                 ticketName: ticket.name,
                 ticketRestaurant: ticket.restaurant.name,
+                ticketNumber: parseInt(ticket.number.split("-")[2], 10),
                 ticketDelay: ticket.restaurant.ticketWaitingLimit,
               },
             },

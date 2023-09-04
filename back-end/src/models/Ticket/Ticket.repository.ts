@@ -193,7 +193,7 @@ export default class TicketRepository extends TicketDb {
       });
     }
 
-    if (dateMin as Date) {
+    if (dateMax as Date) {
       query.andWhere("ticket.createdAt < :dateMax", {
         dateMax: dateMax,
       });

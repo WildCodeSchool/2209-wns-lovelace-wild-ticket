@@ -153,14 +153,14 @@ const DashboardStatsList = () => {
 
   const updateDataTableRows = useCallback((): void => {
     const width = window.innerWidth;
-    const isPortraitTablet = width < 768;
-    const isLargeDesktop = width >= 1200;
+    const isPortraitTablet = width < 1190;
+    const isLargeDesktop = width >= 1400;
 
     setIsPortraitTabletView(isPortraitTablet);
 
     setlazyState((prevState: DATA_TABLE_LAZY_STATE_TYPES) => ({
       ...prevState,
-      rows: isPortraitTablet ? 18 : isLargeDesktop ? 15 : 11,
+      rows: isPortraitTablet ? 17 : isLargeDesktop ? 15 : 11,
     }));
   }, [setIsPortraitTabletView, setlazyState]);
 
